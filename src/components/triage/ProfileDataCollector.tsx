@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState, type ChangeEvent } from "react";
 import { EnhancedInput, NumericInput } from "@/components/ui/EnhancedInput";
 import { toNumber, maskWeight, maskHeight } from "@/lib/format/number";
+import { coercePhoneLike, validateBrazilPhoneInput } from "@/lib/phone/normalize";
 import { cn } from "@/lib/utils";
 import { getBrandBySlug, BRAND_CONFIG } from "@/lib/brand/config";
 
@@ -75,11 +76,8 @@ export function ProfileDataCollector({
     if (!whatsapp.trim()) {
       newErrors.whatsapp = "WhatsApp é obrigatório";
     } else {
-      // Validar formato básico de telefone (aceita com ou sem formatação)
-      const cleanWhatsapp = whatsapp.replace(/\D/g, "");
-      if (cleanWhatsapp.length < 10) {
-        newErrors.whatsapp = "WhatsApp inválido";
-      }
+      const whatsappError = validateBrazilPhoneInput(whatsapp);
+      if (whatsappError) newErrors.whatsapp = whatsappError;
     }
 
     if (!email.trim()) {
@@ -141,7 +139,7 @@ export function ProfileDataCollector({
 
       await onSubmit({
         name: name.trim(),
-        whatsapp: whatsapp.trim(),
+        whatsapp: coercePhoneLike(whatsapp) ?? whatsapp.trim(),
         email: email.trim(),
         weight: weightNum,
         height: heightNum,
@@ -387,4 +385,3 @@ export function ProfileDataCollector({
     </motion.div>
   );
 }
-

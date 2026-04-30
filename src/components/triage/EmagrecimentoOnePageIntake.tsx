@@ -5,6 +5,7 @@ import LegalLinksAccordion from '@/components/triage/LegalLinksAccordion';
 import { EnhancedInput, NumericInput } from '@/components/ui/EnhancedInput';
 import { RefinedButton } from '@/components/ui/RefinedButton';
 import { trackMejoyConversionEvent } from '@/lib/funnel/events-client';
+import { validateBrazilPhoneInput } from '@/lib/phone/normalize';
 import { cn } from '@/lib/utils';
 import type { StepDef, TriageFlow } from '@/lib/triage/schema';
 import {
@@ -81,12 +82,6 @@ const storeAnswers = (triageId: string, answers: Record<string, any>) => {
     /* ignore */
   }
 };
-
-function validateWhatsappBR(raw: string): string | null {
-  const d = raw.replace(/\D/g, '');
-  if (d.length < 10 || d.length > 11) return 'Informe DDD + número com 10 ou 11 dígitos.';
-  return null;
-}
 
 const SEGMENTS = 12;
 const NUMERIC_UNITS_BY_KEY: Record<string, string> = {
@@ -414,7 +409,7 @@ export function EmagrecimentoOnePageIntake({ triageId, flow, initialAnswers = {}
         errs[step.key] = 'Responda para continuar.';
       }
       if (step.key === 'whatsapp' && answers.whatsapp) {
-        const wErr = validateWhatsappBR(String(answers.whatsapp));
+        const wErr = validateBrazilPhoneInput(String(answers.whatsapp));
         if (wErr) errs.whatsapp = wErr;
       }
       if (step.key === 'data_nascimento' && answers.data_nascimento) {

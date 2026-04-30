@@ -209,13 +209,13 @@ export default function TriageSlugPage() {
         clearLocalCache(triageId);
         setFinalizeState("completed");
         setFinalizeError(null);
+        const finalId = reportId ?? triageId;
         trackFunnelEvent("triage_completed", {
           triage_slug: slug,
           triage_id: triageId,
-          report_id: reportId ?? session?.reportId
+          report_id: finalId
         });
 
-        const finalId = reportId ?? session?.reportId;
         setSession(prev =>
           prev
             ? {
@@ -248,7 +248,8 @@ export default function TriageSlugPage() {
   );
 
   const handleViewReport = () => {
-    if (!session?.reportId) {
+    const reportContextId = session?.triageId;
+    if (!reportContextId) {
       setFinalizeError("O relatório ainda está sendo processado. Aguarde alguns instantes e tente novamente.");
       void fetchSession(false, { silent: true });
       return;
@@ -257,8 +258,8 @@ export default function TriageSlugPage() {
     const redirectPath = ZAPFARM_TRIAGE_SLUGS_WITH_PRODUCT_RELATORIO.includes(
       (slug || '') as (typeof ZAPFARM_TRIAGE_SLUGS_WITH_PRODUCT_RELATORIO)[number]
     )
-      ? `/${slug}/relatorio?id=${session.reportId}`
-      : `/relatorio/${session.reportId}`;
+      ? `/${slug}/relatorio?id=${reportContextId}`
+      : `/relatorio/${reportContextId}`;
     
     void router.push(redirectPath);
   };
@@ -390,7 +391,7 @@ export default function TriageSlugPage() {
                     partners={['zapvida', 'zapfarm']} 
                     context="triage_done" 
                     triageId={session.triageId}
-                    reportId={session.reportId}
+                    reportId={session.triageId}
                     variant="primary"
                     fullWidth
                   />

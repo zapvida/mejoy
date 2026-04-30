@@ -29,6 +29,29 @@ interface RelatorioEmagrecimentoProps {
   error?: string;
 }
 
+async function resolveTriageId(
+  supabase: any,
+  id: string
+): Promise<string> {
+  const sessionQuery = await supabase
+    .from('triage_sessions')
+    .select('triage_id')
+    .eq('triage_id', id)
+    .maybeSingle();
+  const sessionMatch = sessionQuery.data as { triage_id?: string } | null;
+
+  if (sessionMatch?.triage_id) return sessionMatch.triage_id;
+
+  const reportQuery = await supabase
+    .from('triage_reports')
+    .select('triage_id')
+    .eq('id', id)
+    .maybeSingle();
+  const reportMatch = reportQuery.data as { triage_id?: string } | null;
+
+  return reportMatch?.triage_id || id;
+}
+
 export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: RelatorioEmagrecimentoProps) {
   const [stickyHandoffLoading, setStickyHandoffLoading] = useState(false);
   const [stickyHandoffError, setStickyHandoffError] = useState<string | null>(null);
@@ -333,10 +356,11 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const resolvedId = await resolveTriageId(supabase, id);
     const { data: sessionRow, error: sessionError } = await supabase
       .from('triage_sessions')
       .select('*')
-      .eq('triage_id', id)
+      .eq('triage_id', resolvedId)
       .single();
 
     if (sessionError || !sessionRow) {
@@ -392,11 +416,11 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     });
     
     const vm = await deriveReport({
-      triageId: id,
+      triageId: resolvedId,
       sessionData: {
         answers,
         profile: {
-          id: id,
+          id: resolvedId,
           name: name,
           sex: patientSnapshot.sex ?? answers.sex ?? 'undisclosed',
           age: age ?? null,
@@ -416,7 +440,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     // Adicionar preferência ao contexto do VM para passar para o componente
     (vm as any).answers = answers;
 
-    return { props: { vm, reportId: id } };
+    return { props: { vm, reportId: resolvedId } };
   } catch (error: any) {
     console.error('[relatorio] Error:', error);
     return { props: { vm: null, reportId: id, error: error?.message || 'Erro ao gerar relatório' } };

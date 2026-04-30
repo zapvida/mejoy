@@ -18,6 +18,29 @@ interface RelatorioProductProps {
   error?: string;
 }
 
+async function resolveTriageId(
+  supabase: any,
+  id: string
+): Promise<string> {
+  const sessionQuery = await supabase
+    .from('triage_sessions')
+    .select('triage_id')
+    .eq('triage_id', id)
+    .maybeSingle();
+  const sessionMatch = sessionQuery.data as { triage_id?: string } | null;
+
+  if (sessionMatch?.triage_id) return sessionMatch.triage_id;
+
+  const reportQuery = await supabase
+    .from('triage_reports')
+    .select('triage_id')
+    .eq('id', id)
+    .maybeSingle();
+  const reportMatch = reportQuery.data as { triage_id?: string } | null;
+
+  return reportMatch?.triage_id || id;
+}
+
 export default function RelatorioProductPage({ vm, reportId, productConfig, error }: RelatorioProductProps) {
   const router = useRouter();
   const product = router.query.product as string;
@@ -173,6 +196,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const resolvedId = await resolveTriageId(supabase, id);
 
     // Otimização: buscar sessão + relatório em uma única query
     const { data: sessionRow, error: sessionError } = await supabase
@@ -181,7 +205,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
         *,
         triage_reports(status, sections)
       `)
-      .eq('triage_id', id)
+      .eq('triage_id', resolvedId)
       .single();
 
     if (sessionError || !sessionRow) {
@@ -199,7 +223,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
       const cached = reportRow.sections as ReportViewModel;
       if (cached?.id && cached?.basics && cached?.content) {
         (cached as any).answers = answers;
-        return { props: { vm: cached, reportId: id, productConfig } };
+        return { props: { vm: cached, reportId: resolvedId, productConfig } };
       }
     }
 
@@ -220,13 +244,13 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
     };
 
     const vm = await deriveReport({
-      triageId: id,
+      triageId: resolvedId,
       sessionData: { answers, profile: normalizedProfile, triageSlug },
       options: { includeAudio: false },
     }, { persist: false });
 
     (vm as any).answers = answers;
-    return { props: { vm, reportId: id, productConfig } };
+    return { props: { vm, reportId: resolvedId, productConfig } };
   } catch (error: any) {
     if (process.env.NODE_ENV === 'production') {
       console.error('[relatorio] Error:', error?.message);
@@ -236,4 +260,3 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
     return { props: { vm: null, reportId: id, productConfig: null, error: error?.message || 'Erro ao gerar relatório' } };
   }
 };
-

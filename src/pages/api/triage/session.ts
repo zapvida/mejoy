@@ -73,6 +73,17 @@ const normalizeAnswersPayload = (answers: Record<string, any> | null | undefined
   return normalized;
 };
 
+const resolveReportId = (
+  triageId: string,
+  triageReports: Array<{ id?: string | null }> | { id?: string | null } | null | undefined
+) => {
+  if (Array.isArray(triageReports)) {
+    return triageReports.length > 0 ? triageId : undefined;
+  }
+
+  return triageReports?.id ? triageId : undefined;
+};
+
 const isLocalHost = (host: string | undefined) => {
   if (!host) return false;
   return (
@@ -145,10 +156,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         answers,
         progress: sessionRow.progress_percent ?? 0,
         completed: !!sessionRow.completed_at,
-        reportId:
-          Array.isArray(sessionRow.triage_reports) && sessionRow.triage_reports.length > 0
-            ? sessionRow.triage_reports[0]?.id
-            : undefined
+        reportId: resolveReportId(sessionRow.triage_id, sessionRow.triage_reports)
       });
     }
 
@@ -236,7 +244,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           answers,
           progress: existing.progress_percent ?? 0,
           completed: !!existing.completed_at,
-          reportId: Array.isArray(existing.triage_reports) && existing.triage_reports.length > 0 ? existing.triage_reports[0]?.id : undefined
+          reportId: resolveReportId(existing.triage_id, existing.triage_reports)
         });
       }
     }
@@ -311,7 +319,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             answers,
             progress: existing.progress_percent ?? 0,
             completed: !!existing.completed_at,
-            reportId: Array.isArray(existing.triage_reports) && existing.triage_reports.length > 0 ? existing.triage_reports[0]?.id : undefined
+            reportId: resolveReportId(existing.triage_id, existing.triage_reports)
           });
         }
       }
