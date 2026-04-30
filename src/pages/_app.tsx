@@ -41,7 +41,6 @@ import { toCssVars } from '@/lib/tenancy/theme';
 import { captureUtms } from '@/lib/utm';
 import { isZapFarmDomain } from '@/lib/host';
 import { deriveBrand, applyBrandVars, type Hex } from '@/lib/theme/brand';
-import { WhatsappFloatingButton } from '@/components/ui/WhatsappFloatingButton';
 
 function ConversionModalWithTriggers() {
   const { shouldShow, setShouldShow } = useConversionTriggers(true)
@@ -188,7 +187,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             
             <ConversionModalWithTriggers />
             <CookieBanner />
-            <WhatsappFloatingButton />
           </AuthProvider>
         </TenantProvider>
       </div>

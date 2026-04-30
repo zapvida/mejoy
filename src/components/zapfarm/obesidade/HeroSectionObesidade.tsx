@@ -12,9 +12,9 @@ const COPY = {
     sub: 'Plano personalizado com avaliação clínica e acompanhamento contínuo.',
   },
   emagrecimento: {
-    h1: 'Emagrecimento com avaliação médica, plano personalizado e suporte contínuo',
+    h1: 'Emagrecimento com avaliação médica e acompanhamento contínuo',
     sub:
-      'Triagem objetiva, decisão clínica individual e acompanhamento contínuo para sustentar resultado com menos tentativa e erro.',
+      'Triagem curta, conduta individual e próximos passos claros no mesmo fluxo.',
   },
 } as const;
 
@@ -27,9 +27,8 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
   const emagrecimentoHeadline = (
     <>
       Emagrecimento com
-      <span className="text-emerald-700"> avaliação médica</span>,
-      <span className="text-emerald-700"> plano personalizado</span> e
-      <span className="text-emerald-700"> suporte contínuo</span>.
+      <span className="text-emerald-700"> avaliação médica</span> e
+      <span className="text-emerald-700"> acompanhamento contínuo</span>.
     </>
   );
 
@@ -50,31 +49,68 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
   };
 
   return (
-    <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-50/70 via-white to-white pt-24 sm:pt-28">
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
-          <div className="w-full flex-1 space-y-6 text-center lg:text-left">
+    <section className="relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-50/70 via-white to-white pt-20 sm:pt-28 lg:min-h-[88vh]">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-10 lg:px-8 lg:py-16">
+        <div className="flex flex-col items-center gap-6 lg:flex-row lg:gap-12">
+          <div className="w-full flex-1 space-y-5 text-center lg:text-left">
             {variant === 'emagrecimento' && (
               <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-800">
                 Programa 100% online com avaliação médica
               </div>
             )}
-            <div className="space-y-4 sm:space-y-5">
-              <h1 className="px-2 text-4xl font-bold leading-[1.02] text-gray-900 sm:text-5xl md:text-6xl lg:px-0 lg:text-[66px]">
+
+            {variant === 'emagrecimento' && (
+              <div className="relative mx-auto w-full max-w-[440px] lg:hidden">
+                <div className="relative aspect-[1.18/1] w-full overflow-hidden rounded-[2rem] shadow-[0_26px_60px_rgba(15,23,42,0.14)] ring-1 ring-emerald-100">
+                  <Image
+                    src="/images/emagrecimento/medvi/hero-main.webp"
+                    alt="Paciente em consulta para programa de emagrecimento com acompanhamento profissional"
+                    fill
+                    className="object-cover object-center"
+                    priority
+                    sizes="100vw"
+                    quality={88}
+                  />
+                </div>
+
+                <div className="absolute -bottom-2 left-3 overflow-hidden rounded-2xl border border-white/80 bg-white shadow-2xl">
+                  <div className="relative h-16 w-24 sm:h-20 sm:w-28">
+                    <Image
+                      src="/images/emagrecimento/medvi/hero-secondary.webp"
+                      alt="Acompanhamento contínuo para manutenção de resultados"
+                      fill
+                      className="object-cover"
+                      sizes="128px"
+                      quality={84}
+                    />
+                  </div>
+                </div>
+
+                <div className="absolute right-3 top-3 rounded-2xl border border-emerald-100 bg-white/95 px-3 py-2 shadow-xl backdrop-blur">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-emerald-700">
+                    Fluxo completo
+                  </p>
+                  <p className="whitespace-nowrap text-xs font-semibold text-slate-900">Triagem → Consulta → Suporte</p>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3 sm:space-y-5">
+              <h1 className="px-2 text-[1.95rem] font-bold leading-[1.02] text-gray-900 sm:text-5xl md:text-6xl lg:px-0 lg:text-[66px]">
                 {variant === 'emagrecimento' ? emagrecimentoHeadline : h1}
               </h1>
 
-              <p className="mx-auto max-w-2xl px-2 text-lg leading-8 text-gray-700 sm:text-xl lg:mx-0 lg:px-0">
+              <p className="mx-auto max-w-2xl px-2 text-[15px] leading-6 text-gray-700 sm:text-xl sm:leading-8 lg:mx-0 lg:px-0">
                 {sub}
               </p>
 
               {variant === 'emagrecimento' && (
                 <ul className="mx-auto max-w-2xl space-y-2 px-2 text-left lg:mx-0 lg:px-0">
                   {[
-                    'Triagem curta para mapear histórico, rotina e objetivos.',
-                    'Conduta individualizada, sem promessa milagrosa e com próximos passos claros.',
+                    'Triagem rápida para entender histórico, rotina e objetivos.',
+                    'Conduta individual, sem promessa milagrosa e com próximos passos objetivos.',
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-slate-700">
+                    <li key={item} className="flex items-start gap-2 text-sm text-slate-700 sm:text-base">
                       <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">
                         ✓
                       </span>
@@ -82,12 +118,6 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
                     </li>
                   ))}
                 </ul>
-              )}
-
-              {variant === 'emagrecimento' && (
-                <p className="mx-auto max-w-2xl rounded-xl border border-emerald-100 bg-emerald-50/70 px-3 py-3 text-sm text-gray-700 sm:text-base lg:mx-0">
-                  {getLpPriceHook()}
-                </p>
               )}
             </div>
 
@@ -115,11 +145,7 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
                   href="#como-funciona"
                   onClick={handleSecondaryCta}
                   className={cn(
-                    'inline-flex items-center justify-center',
-                    'h-14 px-7 sm:h-16 sm:px-10',
-                    'whitespace-nowrap text-base font-bold text-emerald-800 sm:text-lg',
-                    'rounded-full border-2 border-emerald-200 bg-white',
-                    'hover:bg-emerald-50 transition-colors',
+                    'inline-flex items-center justify-center whitespace-nowrap text-sm font-bold text-emerald-800 transition-colors hover:text-emerald-900 sm:h-16 sm:rounded-full sm:border-2 sm:border-emerald-200 sm:bg-white sm:px-10 sm:text-lg sm:hover:bg-emerald-50',
                     'w-full sm:w-auto'
                   )}
                 >
@@ -129,13 +155,18 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
             </div>
 
             {variant === 'emagrecimento' && (
-              <p className="px-2 text-xs sm:text-sm text-slate-500">
-                Prescrição somente quando indicada em consulta médica. Dados tratados com boas práticas de privacidade.
-              </p>
+              <div className="space-y-3 px-2">
+                <p className="mx-auto max-w-2xl rounded-xl border border-emerald-100 bg-emerald-50/70 px-3 py-3 text-sm text-gray-700 lg:mx-0">
+                  {getLpPriceHook()}
+                </p>
+                <p className="text-xs text-slate-500 sm:text-sm">
+                  Prescrição somente quando indicada em consulta médica. Dados tratados com boas práticas de privacidade.
+                </p>
+              </div>
             )}
           </div>
 
-          <div className="relative flex w-full max-w-xl flex-1 items-center justify-center">
+          <div className="relative hidden w-full max-w-xl flex-1 items-center justify-center lg:flex">
             <div className="relative w-full max-w-xl">
               <div className="relative aspect-[11/10] w-full overflow-hidden rounded-[2rem] shadow-[0_30px_80px_rgba(15,23,42,0.16)] ring-1 ring-emerald-100">
                 <Image

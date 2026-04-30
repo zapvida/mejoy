@@ -12,6 +12,12 @@ function isHtml(req: NextRequest) {
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
+  const host = req.headers.get('host') || '';
+
+  if (/(^|:)(localhost|127\.0\.0\.1)/.test(host)) {
+    return NextResponse.next();
+  }
+
   const res = NextResponse.next();
 
   // Detectar tenant por host

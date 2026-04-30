@@ -76,7 +76,7 @@ export function MeJoyGreenHome() {
         primaryCtaMobileLabel="Ver jornada"
         secondaryCtaHref="/produtos"
         secondaryCtaLabel="Ver catálogo"
-        brandSubtitle="Saúde digital com avaliação médica"
+        brandSubtitle="Me cuido. Me amo!"
         transparentAtTop
       />
 

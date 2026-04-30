@@ -98,11 +98,7 @@ export function HeaderZapfarm({
   const resolvedPrimaryLabel = primaryCtaLabel ?? (isReportPage ? 'Ver programa sugerido' : 'Começar avaliação');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel ?? (resolvedPrimaryLabel.length > 18 ? 'Começar' : resolvedPrimaryLabel);
-  const effectiveSubtitle =
-    brandSubtitle ??
-    (router.pathname.startsWith('/emagrecimento') || asPath.startsWith('/triagem/emagrecimento')
-      ? 'Cuidado digital com avaliação médica'
-      : 'Saúde digital com acompanhamento humano');
+  const effectiveSubtitle = brandSubtitle ?? 'Me cuido. Me amo!';
 
   const lightHeader = !transparentAtTop || scrolled || isReportPage;
 
@@ -118,25 +114,25 @@ export function HeaderZapfarm({
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <a
           href={homeHref}
-          className="flex min-w-0 shrink-0 items-center gap-3"
-          aria-label="Me Joy — página inicial"
+          className="flex min-w-0 shrink-0 items-center"
+          aria-label="MeJoy — página inicial"
         >
           <div
             className={cn(
-              'flex h-12 items-center rounded-full px-3 shadow-sm transition-colors',
+              'flex min-h-12 items-center rounded-full px-3 py-1.5 shadow-sm transition-colors',
               lightHeader ? 'bg-emerald-50 ring-1 ring-emerald-100' : 'bg-white/92'
             )}
           >
-            <MeJoyBrand iconClassName="h-8 w-8 rounded-xl" titleClassName="text-[15px]" />
+            <MeJoyBrand
+              iconClassName="h-8 w-8 rounded-xl"
+              titleClassName="text-[15px] font-semibold"
+              subtitle={effectiveSubtitle}
+              subtitleClassName={cn(
+                'mt-0.5 text-[10px] font-semibold tracking-[-0.01em]',
+                lightHeader ? 'text-slate-500' : 'text-emerald-100/95'
+              )}
+            />
           </div>
-          <span
-            className={cn(
-              'hidden text-xs font-semibold tracking-[0.16em] md:inline',
-              lightHeader ? 'text-slate-600' : 'text-white/90'
-            )}
-          >
-            {effectiveSubtitle}
-          </span>
         </a>
 
         <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex">
@@ -146,7 +142,7 @@ export function HeaderZapfarm({
               href={link.href}
               className={cn(
                 'whitespace-nowrap text-sm font-semibold transition-colors',
-                lightHeader ? 'text-slate-700 hover:text-emerald-700' : 'text-white/92 hover:text-white'
+                lightHeader ? 'text-slate-700 hover:text-emerald-700' : 'text-emerald-50/95 hover:text-white'
               )}
             >
               {link.label}
@@ -161,7 +157,7 @@ export function HeaderZapfarm({
               'hidden whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-colors md:inline-flex',
               lightHeader
                 ? 'border border-emerald-200 text-emerald-800 hover:bg-emerald-50'
-                : 'border border-white/35 bg-white/10 text-white hover:bg-white/16'
+                : 'border border-white/30 bg-white/10 text-white hover:bg-white/16'
             )}
           >
             {secondaryCtaLabel}

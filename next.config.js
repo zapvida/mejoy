@@ -25,6 +25,12 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@react-pdf/renderer', 'openai'],
   },
+
+  i18n: {
+    locales: ['pt-BR'],
+    defaultLocale: 'pt-BR',
+    localeDetection: false,
+  },
   
   // Otimizações de imagem
   images: {

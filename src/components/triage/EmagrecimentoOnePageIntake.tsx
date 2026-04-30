@@ -850,7 +850,12 @@ export function EmagrecimentoOnePageIntake({
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
             <div className="rounded-full bg-emerald-50 px-3 py-2 ring-1 ring-emerald-100">
-              <MeJoyBrand iconClassName="h-8 w-8 rounded-xl" titleClassName="text-[15px]" />
+              <MeJoyBrand
+                iconClassName="h-8 w-8 rounded-xl"
+                titleClassName="text-[15px]"
+                subtitle="Me cuido. Me amo!"
+                subtitleClassName="mt-0.5 text-[10px] font-semibold tracking-[-0.01em] text-slate-500"
+              />
             </div>
             <div className="hidden sm:block">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Triagem de emagrecimento</p>

@@ -128,42 +128,47 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[9999] px-2.5 pb-[max(10px,env(safe-area-inset-bottom))] sm:px-4">
-      <div className="mx-auto max-w-5xl rounded-[24px] border border-zinc-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
-        <div className="px-3 py-3.5 sm:px-5 sm:py-5">
+    <div className="fixed inset-x-0 bottom-0 z-[9999] px-3 pb-[max(10px,env(safe-area-inset-bottom))] sm:px-4">
+      <div className="mx-auto max-w-5xl rounded-[26px] border border-zinc-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
+        <div className="px-3 py-3 sm:px-5 sm:py-5">
           {!showSettings ? (
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-3.5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 sm:h-10 sm:w-10">
                   <Cookie className="h-4.5 w-4.5" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[13px] font-semibold text-zinc-900 sm:text-sm">
+                  <p className="text-[13px] font-semibold leading-5 text-zinc-900 sm:text-sm">
                     Cookies para uma navegação estável e segura
                   </p>
-                  <p className="mt-1 max-w-2xl text-[13px] leading-5 text-zinc-600 sm:text-sm sm:leading-6">
+                  <p className="mt-1 max-w-2xl text-[12px] leading-5 text-zinc-600 sm:hidden">
+                    Cookies essenciais para funcionamento e opcionais para análise de uso.
+                  </p>
+                  <p className="mt-1 hidden max-w-2xl text-[12px] leading-5 text-zinc-600 sm:block sm:text-sm sm:leading-6">
                     Usamos cookies essenciais para funcionamento do site e opcionais para análise de uso.
                   </p>
-                  <a
-                    href="/politicas-lgpd#cookies"
-                    className="mt-2 inline-flex text-[11px] font-semibold text-emerald-700 underline underline-offset-2 sm:text-xs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ler política de cookies
-                  </a>
+                  <div className="mt-2 flex items-center gap-3">
+                    <a
+                      href="/politicas-lgpd#cookies"
+                      className="hidden text-[11px] font-semibold text-emerald-700 underline underline-offset-2 sm:inline-flex sm:text-xs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Ler política de cookies
+                    </a>
+                    <button
+                      type="button"
+                      onClick={handleRejectAll}
+                      className="hidden text-xs font-semibold text-zinc-500 transition hover:text-zinc-700 sm:inline-flex"
+                      disabled={isLoading}
+                    >
+                      Rejeitar opcionais
+                    </button>
+                  </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center">
-                <button
-                  type="button"
-                  onClick={handleRejectAll}
-                  className="col-span-2 inline-flex justify-center whitespace-nowrap text-xs font-semibold text-zinc-500 transition hover:text-zinc-700 sm:col-auto sm:text-sm"
-                  disabled={isLoading}
-                >
-                  Rejeitar opcionais
-                </button>
                 <RefinedButton
                   onClick={() => setShowSettings(true)}
                   variant="outline"

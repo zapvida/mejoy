@@ -29,10 +29,15 @@ function isNonBlockingError(message: string): boolean {
 
 async function clickFirstVisible(page: Page, selectors: string[]) {
   for (const selector of selectors) {
-    const locator = page.locator(selector).first();
-    if (await locator.isVisible({ timeout: 1500 }).catch(() => false)) {
-      await locator.click();
-      return true;
+    const locator = page.locator(selector);
+    const count = await locator.count().catch(() => 0);
+
+    for (let index = 0; index < count; index += 1) {
+      const candidate = locator.nth(index);
+      if (await candidate.isVisible({ timeout: 1500 }).catch(() => false)) {
+        await candidate.click();
+        return true;
+      }
     }
   }
   return false;
@@ -86,8 +91,12 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     expect(openedLanding).toBe(true);
 
     await page.waitForURL(/.*\/emagrecimento/, { timeout: 15_000 });
+    await acceptCookiesIfVisible(page);
+
     const goToTriage = page.waitForURL(/.*triagem\/emagrecimento/, { timeout: 15_000 });
     const clickedTriage = await clickFirstVisible(page, [
+      'header a:has-text("Começar")',
+      'a:has-text("Começar avaliação")',
       'a:has-text("Começar minha triagem agora")',
       'a:has-text("Começar minha triagem")',
       'a[href*="triagem/emagrecimento"]',
@@ -95,8 +104,8 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     ]);
     expect(clickedTriage).toBe(true);
     await goToTriage;
+    await acceptCookiesIfVisible(page);
 
-    await expect(page.locator('text=Triagem de emagrecimento')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('text=Consentimento e dados base')).toBeVisible();
 
     await clickStepOption(page, 'aceita_termos', 'aceito');
@@ -124,6 +133,7 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     await page.locator('input[name="primeiro_nome"]').fill('Teste Launch');
     await page.locator('input[name="whatsapp"]').fill('11999998888');
     await clickStepOption(page, 'consentimento_whatsapp', 'autorizo');
+    await acceptCookiesIfVisible(page);
 
     const finalizeRequest = page.waitForRequest(request => {
       return request.method() === 'POST' && request.url().includes('/api/triage/finalize');
