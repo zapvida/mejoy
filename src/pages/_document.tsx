@@ -61,13 +61,13 @@ class MyDocument extends Document {
           <meta name="twitter:site" content="@mejoy" />
           <meta name="twitter:creator" content="@mejoy" />
 
-          {/* 🔥 Favicon - Me Joy Farma */}
+          {/* 🔥 Favicon */}
+          <link rel="icon" type="image/svg+xml" href="/logosmejoy/me-mark.svg" />
           <link rel="icon" type="image/png" sizes="32x32" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="96x96" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="192x192" href="/logosmejoy/faviconmejoy.png" />
           <link rel="apple-touch-icon" sizes="180x180" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="icon" type="image/png" href="/logosmejoy/faviconmejoy.png" />
 
           {/* 🔥 Fonts */}
           <link

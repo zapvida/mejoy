@@ -111,7 +111,7 @@ export function HeaderZapfarm({
           : 'bg-transparent'
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:gap-4 sm:px-6 sm:py-3 lg:px-8">
         <a
           href={homeHref}
           className="flex min-w-0 shrink-0 items-center"
@@ -119,16 +119,16 @@ export function HeaderZapfarm({
         >
           <div
             className={cn(
-              'flex min-h-12 items-center rounded-full px-3 py-1.5 shadow-sm transition-colors',
+              'flex min-h-11 items-center rounded-full px-2.5 py-1.5 shadow-sm transition-colors sm:min-h-12 sm:px-3',
               lightHeader ? 'bg-emerald-50 ring-1 ring-emerald-100' : 'bg-white/92'
             )}
           >
             <MeJoyBrand
-              iconClassName="h-8 w-8 rounded-xl"
-              titleClassName="text-[15px] font-semibold"
+              iconClassName="h-7 w-7 rounded-[0.95rem] sm:h-8 sm:w-8 sm:rounded-xl"
+              titleClassName="text-[14px] font-semibold sm:text-[15px]"
               subtitle={effectiveSubtitle}
               subtitleClassName={cn(
-                'mt-0.5 text-[10px] font-semibold tracking-[-0.01em]',
+                'mt-0.5 text-[9px] font-semibold tracking-[-0.01em] sm:text-[10px]',
                 lightHeader ? 'text-slate-500' : 'text-emerald-100/95'
               )}
             />
@@ -165,7 +165,7 @@ export function HeaderZapfarm({
           <a
             href={resolvedPrimaryHref}
             className={cn(
-              'inline-flex items-center whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-bold shadow-lg transition-all sm:px-6 sm:py-3',
+              'inline-flex items-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold shadow-lg transition-all sm:px-6 sm:py-3',
               lightHeader
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-xl'
                 : 'bg-white text-emerald-800 hover:bg-emerald-50 hover:shadow-xl'

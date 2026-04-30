@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface MeJoyBrandProps {
@@ -22,19 +21,19 @@ export function MeJoyBrand({
     <span className={cn('inline-flex items-center gap-3', className)}>
       <span
         className={cn(
-          'relative inline-flex h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-[#ff7a00] ring-1 ring-black/5',
+          'relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.05rem] bg-[linear-gradient(180deg,#ff9c40_0%,#ff7700_100%)] shadow-[0_12px_28px_rgba(255,122,0,0.28)] ring-1 ring-[#d56400]/28',
           iconClassName
         )}
       >
-        <Image
-          src="/logosmejoy/faviconmejoy.png"
-          alt=""
-          fill
-          sizes="40px"
-          className="object-contain p-1.5"
+        <span className="absolute inset-[3px] rounded-[0.9rem] bg-[#fff7ea]" aria-hidden="true" />
+        <span
+          className="relative inline-flex h-[58%] w-[58%] items-center justify-center rounded-[0.72rem] bg-[linear-gradient(180deg,#ffa44d_0%,#ff7a00_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.34),0_6px_12px_rgba(255,122,0,0.22)]"
           aria-hidden="true"
-          priority
-        />
+        >
+          <span className="translate-y-[-0.5px] text-[0.56rem] font-black uppercase tracking-[-0.05em] text-white">
+            Me
+          </span>
+        </span>
       </span>
       <span className="flex min-w-0 flex-col leading-none">
         <span className={cn('text-base font-semibold tracking-[-0.04em] text-slate-950', titleClassName)}>

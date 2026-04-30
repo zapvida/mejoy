@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="20" fill="url(#outer)" />
+  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#outerGlow)" fill-opacity="0.28" />
+  <rect x="9" y="9" width="46" height="46" rx="16" fill="#FFF8EE" />
+  <rect x="18" y="18" width="28" height="28" rx="11" fill="url(#inner)" />
+  <path
+    d="M25.2617 35V27.875H27.2148L29.168 32.2188L31.1328 27.875H33.0742V35H31.543V30.0977L29.8242 33.8594H28.4883L26.7812 30.0977V35H25.2617ZM34.5273 35V29.3125H36.0352V35H34.5273ZM35.2773 28.5625C35.0273 28.5625 34.8164 28.4844 34.6445 28.3281C34.4805 28.1641 34.3984 27.9688 34.3984 27.7422C34.3984 27.5156 34.4805 27.3242 34.6445 27.168C34.8164 27.0039 35.0273 26.9219 35.2773 26.9219C35.5273 26.9219 35.7344 27.0039 35.8984 27.168C36.0703 27.3242 36.1562 27.5156 36.1562 27.7422C36.1562 27.9688 36.0703 28.1641 35.8984 28.3281C35.7344 28.4844 35.5273 28.5625 35.2773 28.5625Z"
+    fill="white"
+  />
+  <defs>
+    <linearGradient id="outer" x1="32" y1="0" x2="32" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF9B3F" />
+      <stop offset="1" stop-color="#FF7600" />
+    </linearGradient>
+    <linearGradient id="outerGlow" x1="32" y1="4" x2="32" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD0A0" />
+      <stop offset="1" stop-color="#FF8420" />
+    </linearGradient>
+    <linearGradient id="inner" x1="32" y1="18" x2="32" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFA145" />
+      <stop offset="1" stop-color="#FF7A00" />
+    </linearGradient>
+  </defs>
+</svg>
