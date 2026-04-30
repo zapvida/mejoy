@@ -8,7 +8,7 @@ globs:
 
 **Parágrafo único (qualquer chat):** Depois de commitar, rode `pnpm run deploy` — faz push em `main`; com repo ligado na Vercel (`vercel git connect`), cada push dispara build no projeto **mejoy** do time **zapvida**. Deployments: https://vercel.com/zap-12b300bd/mejoy/deployments
 
-**Scripts úteis:** `scripts/deploy-vercel.sh` — push `main` | `pnpm deploy` / `pnpm deploy:prod` | `node scripts/sync-env-vercel-from-local.cjs` — envia `.env.local` para Production + Preview no projeto Vercel já linkado
+**Scripts úteis:** `scripts/deploy-vercel.sh` — push `main` | `pnpm deploy` / `pnpm deploy:prod` | `node scripts/sync-env-vercel-from-local.cjs` — envia `.env.local` para **Production** no projeto linkado (Preview para PRs: duplicar envs em Vercel → Environment Variables ou configurar por branch na UI).
 
 ## Referência canônica
 
