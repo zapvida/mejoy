@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { X, Cookie, Settings, Check } from 'lucide-react';
-import { RefinedButton } from '@/components/ui/RefinedButton';
+import React, { useEffect, useState } from 'react';
+import { Check, Cookie, Settings, X } from 'lucide-react';
 import Cookies from 'js-cookie';
+import { RefinedButton } from '@/components/ui/RefinedButton';
 
 interface CookiePreferences {
   essential: boolean;
@@ -19,120 +19,62 @@ export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
-    essential: true, // Sempre true, não pode ser desativado
+    essential: true,
     analytics: false,
     marketing: false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Verificar se já existe consentimento
     const consent = Cookies.get(COOKIE_CONSENT_KEY);
     const storedVersion = Cookies.get('cookie_policy_version');
-    
-    // Se não tem consentimento OU versão mudou, mostrar banner
+
     if (!consent || storedVersion !== COOKIE_VERSION) {
       setIsVisible(true);
-    } else {
-      // Carregar preferências salvas
-      const savedPrefs = Cookies.get(COOKIE_PREFERENCES_KEY);
-      if (savedPrefs) {
-        try {
-          const parsed = JSON.parse(savedPrefs);
-          setPreferences(parsed);
-          applyCookiePreferences(parsed);
-        } catch (e) {
-          console.error('Erro ao carregar preferências:', e);
-        }
-      }
+      return;
+    }
+
+    const savedPrefs = Cookies.get(COOKIE_PREFERENCES_KEY);
+    if (!savedPrefs) return;
+
+    try {
+      const parsed = JSON.parse(savedPrefs);
+      setPreferences(parsed);
+      applyCookiePreferences(parsed);
+    } catch (error) {
+      console.error('Erro ao carregar preferências:', error);
     }
   }, []);
 
   const applyCookiePreferences = (prefs: CookiePreferences) => {
-    // Cookies essenciais sempre ativos
-    if (prefs.essential) {
-      // Não fazer nada, já estão ativos
-    }
+    if (typeof window === 'undefined' || !(window as any).gtag) return;
 
-    // Analytics (Google Analytics, etc)
-    if (prefs.analytics) {
-      // Habilitar Google Analytics
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          analytics_storage: 'granted',
-        });
-      }
-    } else {
-      // Desabilitar analytics
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          analytics_storage: 'denied',
-        });
-      }
-    }
-
-    // Marketing (pixels, remarketing)
-    if (prefs.marketing) {
-      // Habilitar pixels de marketing
-      // Implementar conforme necessário
-    } else {
-      // Desabilitar marketing
-      // Implementar conforme necessário
-    }
-  };
-
-  const handleAcceptAll = () => {
-    setIsLoading(true);
-    const allAccepted: CookiePreferences = {
-      essential: true,
-      analytics: true,
-      marketing: true,
-    };
-    
-    saveConsent(allAccepted);
-  };
-
-  const handleAcceptSelected = () => {
-    setIsLoading(true);
-    saveConsent(preferences);
-  };
-
-  const handleRejectAll = () => {
-    setIsLoading(true);
-    const minimal: CookiePreferences = {
-      essential: true,
-      analytics: false,
-      marketing: false,
-    };
-    saveConsent(minimal);
+    (window as any).gtag('consent', 'update', {
+      analytics_storage: prefs.analytics ? 'granted' : 'denied',
+    });
   };
 
   const saveConsent = (prefs: CookiePreferences) => {
-    // Salvar consentimento
     Cookies.set(COOKIE_CONSENT_KEY, 'true', {
-      expires: 365, // 1 ano
+      expires: 365,
       sameSite: 'Lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
-    // Salvar versão da política
     Cookies.set('cookie_policy_version', COOKIE_VERSION, {
       expires: 365,
       sameSite: 'Lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
-    // Salvar preferências
     Cookies.set(COOKIE_PREFERENCES_KEY, JSON.stringify(prefs), {
       expires: 365,
       sameSite: 'Lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
-    // Aplicar preferências
     applyCookiePreferences(prefs);
 
-    // Salvar no servidor (opcional, para auditoria LGPD)
     if (typeof window !== 'undefined') {
       fetch('/api/lgpd/cookie-consent', {
         method: 'POST',
@@ -143,7 +85,7 @@ export function CookieBanner() {
           timestamp: new Date().toISOString(),
         }),
       }).catch(() => {
-        // Silenciar erro, não é crítico
+        /* noop */
       });
     }
 
@@ -152,10 +94,32 @@ export function CookieBanner() {
     setShowSettings(false);
   };
 
+  const handleAcceptAll = () => {
+    setIsLoading(true);
+    saveConsent({
+      essential: true,
+      analytics: true,
+      marketing: true,
+    });
+  };
+
+  const handleAcceptSelected = () => {
+    setIsLoading(true);
+    saveConsent(preferences);
+  };
+
+  const handleRejectAll = () => {
+    setIsLoading(true);
+    saveConsent({
+      essential: true,
+      analytics: false,
+      marketing: false,
+    });
+  };
+
   const togglePreference = (key: keyof CookiePreferences) => {
-    if (key === 'essential') return; // Não pode desativar essenciais
-    
-    setPreferences((prev) => ({
+    if (key === 'essential') return;
+    setPreferences(prev => ({
       ...prev,
       [key]: !prev[key],
     }));
@@ -164,163 +128,172 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <>
-      {/* Banner fixo na parte inferior - design profissional para apresentação */}
-      <div className="fixed bottom-0 left-0 right-0 z-[9999] animate-fade-in-up">
-        <div className="bg-white/98 backdrop-blur-lg border-t border-zinc-200 shadow-[0_-8px_32px_rgba(0,0,0,0.06)] rounded-t-2xl overflow-hidden safe-area-bottom">
-          <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4">
-            {!showSettings ? (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="p-1.5 rounded-full bg-[color:var(--brand-50)] flex-shrink-0">
-                    <Cookie className="w-4 h-4 text-[color:var(--brand-600)]" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-zinc-700 leading-snug">
-                      Cookies para melhorar sua experiência. Dados seguros • LGPD
-                    </p>
-                    <a
-                      href="/politicas-lgpd#cookies"
-                      className="text-[10px] text-zinc-500 hover:text-[color:var(--brand-600)] transition-colors underline underline-offset-1"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Política de cookies
-                    </a>
-                  </div>
+    <div className="fixed inset-x-0 bottom-0 z-[9999] px-2.5 pb-[max(10px,env(safe-area-inset-bottom))] sm:px-4">
+      <div className="mx-auto max-w-5xl rounded-[24px] border border-zinc-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
+        <div className="px-3 py-3.5 sm:px-5 sm:py-5">
+          {!showSettings ? (
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+                  <Cookie className="h-4.5 w-4.5" />
                 </div>
-                <div className="flex items-center justify-end gap-2">
-                  <RefinedButton
-                    onClick={handleRejectAll}
-                    variant="ghost"
-                    size="sm"
-                    disabled={isLoading}
-                    className="text-xs py-1.5 px-3"
+                <div className="min-w-0">
+                  <p className="text-[13px] font-semibold text-zinc-900 sm:text-sm">
+                    Cookies para uma navegação estável e segura
+                  </p>
+                  <p className="mt-1 max-w-2xl text-[13px] leading-5 text-zinc-600 sm:text-sm sm:leading-6">
+                    Usamos cookies essenciais para funcionamento do site e opcionais para análise de uso.
+                  </p>
+                  <a
+                    href="/politicas-lgpd#cookies"
+                    className="mt-2 inline-flex text-[11px] font-semibold text-emerald-700 underline underline-offset-2 sm:text-xs"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    Rejeitar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={() => setShowSettings(true)}
-                    variant="outline"
-                    size="sm"
-                    className="text-xs py-1.5 px-3"
-                  >
-                    <Settings className="w-3 h-3 mr-1" />
-                    Personalizar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={handleAcceptAll}
-                    disabled={isLoading}
-                    size="sm"
-                    className="text-xs py-1.5 px-4"
-                  >
-                    Aceitar
-                  </RefinedButton>
+                    Ler política de cookies
+                  </a>
                 </div>
               </div>
-            ) : (
-              <>
-              {/* Settings View - painel que expande no próprio banner */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-zinc-900 text-center flex-1">
-                    Personalizar Cookies
-                  </h4>
-                  <button
-                    onClick={() => setShowSettings(false)}
-                    className="p-1.5 -mr-1.5 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-lg transition-colors"
-                    aria-label="Voltar"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
 
-                <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
-                  {/* Essential Cookies */}
-                  <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-medium text-zinc-900">Essenciais</h5>
-                        <p className="text-xs text-zinc-600">Necessários ao site</p>
-                      </div>
-                      <div className="w-9 h-5 bg-[color:var(--brand-500)] rounded-full flex items-center justify-end px-1 flex-shrink-0">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Analytics Cookies */}
-                  <div className="p-3 bg-white rounded-xl border border-zinc-200 hover:border-[color:var(--brand-300)] transition-colors">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-medium text-zinc-900">Análise</h5>
-                        <p className="text-xs text-zinc-600">Google Analytics</p>
-                      </div>
-                      <button
-                        onClick={() => togglePreference('analytics')}
-                        className={`w-9 h-5 rounded-full transition-all duration-200 flex-shrink-0 ${
-                          preferences.analytics ? 'bg-[color:var(--brand-500)]' : 'bg-zinc-300'
-                        }`}
-                        aria-label="Alternar cookies de análise"
-                      >
-                        <div
-                          className={`w-3.5 h-3.5 bg-white rounded-full shadow-sm transform transition-transform duration-200 m-0.5 ${
-                            preferences.analytics ? 'translate-x-4' : 'translate-x-0'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Marketing Cookies */}
-                  <div className="p-3 bg-white rounded-xl border border-zinc-200 hover:border-[color:var(--brand-300)] transition-colors">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-medium text-zinc-900">Marketing</h5>
-                        <p className="text-xs text-zinc-600">Anúncios personalizados</p>
-                      </div>
-                      <button
-                        onClick={() => togglePreference('marketing')}
-                        className={`w-9 h-5 rounded-full transition-all duration-200 flex-shrink-0 ${
-                          preferences.marketing ? 'bg-[color:var(--brand-500)]' : 'bg-zinc-300'
-                        }`}
-                        aria-label="Alternar cookies de marketing"
-                      >
-                        <div
-                          className={`w-3.5 h-3.5 bg-white rounded-full shadow-sm transform transition-transform duration-200 m-0.5 ${
-                            preferences.marketing ? 'translate-x-4' : 'translate-x-0'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 pt-1">
-                  <RefinedButton
-                    onClick={handleAcceptSelected}
-                    disabled={isLoading}
-                    size="sm"
-                    className="flex-1 py-2"
-                  >
-                    Salvar preferências
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={() => setShowSettings(false)}
-                    variant="outline"
-                    size="sm"
-                    className="py-2"
-                  >
-                    Voltar
-                  </RefinedButton>
-                </div>
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center">
+                <button
+                  type="button"
+                  onClick={handleRejectAll}
+                  className="col-span-2 inline-flex justify-center whitespace-nowrap text-xs font-semibold text-zinc-500 transition hover:text-zinc-700 sm:col-auto sm:text-sm"
+                  disabled={isLoading}
+                >
+                  Rejeitar opcionais
+                </button>
+                <RefinedButton
+                  onClick={() => setShowSettings(true)}
+                  variant="outline"
+                  size="sm"
+                  className="justify-center rounded-full border-zinc-300 px-4 text-sm"
+                >
+                  <Settings className="h-4 w-4" />
+                  Personalizar
+                </RefinedButton>
+                <RefinedButton
+                  onClick={handleAcceptAll}
+                  disabled={isLoading}
+                  size="sm"
+                  className="justify-center rounded-full bg-emerald-600 px-5 text-sm hover:bg-emerald-700"
+                >
+                  Aceitar
+                </RefinedButton>
               </div>
-              </>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-zinc-900">Personalizar cookies</p>
+                  <p className="mt-1 text-sm text-zinc-600">
+                    Você pode manter apenas o essencial ou liberar análise e marketing.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSettings(false)}
+                  className="rounded-xl p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700"
+                  aria-label="Fechar preferências"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-3">
+                <CookiePreferenceCard
+                  title="Essenciais"
+                  description="Login, sessão, segurança e funcionamento básico."
+                  enabled
+                  locked
+                />
+                <CookiePreferenceCard
+                  title="Análise"
+                  description="Medição de uso para melhorar páginas e fluxos."
+                  enabled={preferences.analytics}
+                  onToggle={() => togglePreference('analytics')}
+                />
+                <CookiePreferenceCard
+                  title="Marketing"
+                  description="Campanhas, remarketing e comunicação personalizada."
+                  enabled={preferences.marketing}
+                  onToggle={() => togglePreference('marketing')}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={handleRejectAll}
+                  className="inline-flex justify-center text-sm font-semibold text-zinc-500 transition hover:text-zinc-700"
+                  disabled={isLoading}
+                >
+                  Manter só essenciais
+                </button>
+                <RefinedButton
+                  onClick={() => setShowSettings(false)}
+                  variant="outline"
+                  size="sm"
+                  className="justify-center rounded-full border-zinc-300 px-4"
+                >
+                  Voltar
+                </RefinedButton>
+                <RefinedButton
+                  onClick={handleAcceptSelected}
+                  disabled={isLoading}
+                  size="sm"
+                  className="justify-center rounded-full bg-emerald-600 px-5 hover:bg-emerald-700"
+                >
+                  Salvar preferências
+                </RefinedButton>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
+function CookiePreferenceCard({
+  title,
+  description,
+  enabled,
+  locked = false,
+  onToggle,
+}: {
+  title: string;
+  description: string;
+  enabled: boolean;
+  locked?: boolean;
+  onToggle?: () => void;
+}) {
+  return (
+    <div className="rounded-3xl border border-zinc-200 bg-zinc-50/70 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold text-zinc-900">{title}</p>
+          <p className="mt-1 text-sm leading-6 text-zinc-600">{description}</p>
+        </div>
+        {locked ? (
+          <div className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-emerald-600 px-1.5 text-white">
+            <Check className="h-3.5 w-3.5" />
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={onToggle}
+            className={`relative inline-flex h-6 w-11 shrink-0 rounded-full transition ${enabled ? 'bg-emerald-600' : 'bg-zinc-300'}`}
+            aria-label={`Alternar cookies ${title}`}
+          >
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-5' : 'translate-x-0.5'}`}
+            />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

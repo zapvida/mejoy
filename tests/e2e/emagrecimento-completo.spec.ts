@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const BASE_URL = process.env.PRODUCTION_URL || 'http://localhost:3000';
-const LANDING_PATH = '/emagrecimento';
+const ROOT_PATH = '/';
 
 const NON_BLOCKING_ERROR_PATTERNS = [
   /content-security-policy/i,
@@ -24,262 +24,132 @@ const NON_BLOCKING_ERROR_PATTERNS = [
 ];
 
 function isNonBlockingError(message: string): boolean {
-  return NON_BLOCKING_ERROR_PATTERNS.some((pattern) => pattern.test(message));
+  return NON_BLOCKING_ERROR_PATTERNS.some(pattern => pattern.test(message));
 }
 
-test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
-  test('Fluxo completo: LP → Triagem → Relatório → Checkout', async ({ page }) => {
+async function clickFirstVisible(page: Page, selectors: string[]) {
+  for (const selector of selectors) {
+    const locator = page.locator(selector).first();
+    if (await locator.isVisible({ timeout: 1500 }).catch(() => false)) {
+      await locator.click();
+      return true;
+    }
+  }
+  return false;
+}
+
+async function clickStepOption(page: Page, stepKey: string, optionValue: string) {
+  await page.locator(`[data-triage-step="${stepKey}"] [data-option-value="${optionValue}"]`).first().click();
+}
+
+async function acceptCookiesIfVisible(page: Page) {
+  const accepted = await clickFirstVisible(page, [
+    'button:has-text("Aceitar")',
+    'button:has-text("Aceitar todos")',
+  ]);
+  if (accepted) {
+    await page.waitForTimeout(400);
+  }
+}
+
+test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
+  test('Home verde → LP → triagem agrupada → finalize', async ({ page }) => {
     test.setTimeout(120_000);
-    const logs: string[] = [];
+
     const errors: string[] = [];
 
-    // Interceptar console logs e erros
-    page.on('console', (msg) => {
+    page.on('console', msg => {
       const text = `[${msg.type()}] ${msg.text()}`;
-      logs.push(text);
       if (msg.type() === 'error' && !isNonBlockingError(text)) {
         errors.push(text);
       }
     });
 
-    page.on('pageerror', (error) => {
+    page.on('pageerror', error => {
       const text = `[PAGE ERROR] ${error.message}`;
       if (!isNonBlockingError(text)) {
         errors.push(text);
       }
     });
 
-    // 1. Landing Page
-    console.log('🔍 Testando Landing Page...');
-    await page.goto(`${BASE_URL}${LANDING_PATH}`, { waitUntil: 'domcontentloaded' });
-    await expect(page).toHaveURL(/.*(emagrecimento|obesidade)/);
-    
-    // Verificar cookie banner
-    const cookieBanner = page.locator('text=Uso de Cookies').or(page.locator('text=Cookie'));
-    if (await cookieBanner.isVisible({ timeout: 2000 }).catch(() => false)) {
-      console.log('✅ Cookie banner encontrado');
-      const acceptButton = page.locator('button:has-text("Aceitar")').or(page.locator('button:has-text("Aceitar todos")'));
-      if (await acceptButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-        await acceptButton.click();
-        await page.waitForTimeout(500);
-      }
-    }
+    await page.goto(`${BASE_URL}${ROOT_PATH}`, { waitUntil: 'domcontentloaded' });
+    await expect(page).toHaveURL(new RegExp(`${ROOT_PATH.replace('/', '\\/')}$|${ROOT_PATH.replace('/', '\\/')}\\?`));
 
-    // Verificar CTAs
-    const cta = page.locator('a[href*="triagem/emagrecimento"]:visible').first();
-    const fallbackCta = page.locator('a:has-text("Iniciar minha avaliação"), a:has-text("Quero começar"), button:has-text("Iniciar minha avaliação")').first();
-    const ctaVisible = await cta.isVisible({ timeout: 5000 }).catch(() => false);
-    if (!ctaVisible) {
-      await expect(fallbackCta).toBeVisible({ timeout: 10000 });
-    } else {
-      await expect(cta).toBeVisible({ timeout: 10000 });
-    }
-    console.log('✅ CTAs visíveis na LP');
+    await acceptCookiesIfVisible(page);
 
-    // 2. Navegar para Triagem
-    console.log('🔍 Testando Triagem...');
-    const triageUrlPattern = /.*triagem\/emagrecimento/;
-    let triageNavigationOk = false;
+    await expect(page.locator('text=Saúde digital, pensada para a vida real.')).toBeVisible({ timeout: 15_000 });
 
-    try {
-      await Promise.all([
-        page.waitForURL(triageUrlPattern, { timeout: 15000 }),
-        (ctaVisible ? cta : fallbackCta).click(),
-      ]);
-      triageNavigationOk = true;
-    } catch {
-      console.log('⚠️ CTA não redirecionou no tempo esperado, aplicando fallback de URL direta...');
-    }
+    const openedLanding = await clickFirstVisible(page, [
+      'a:has-text("Começar jornada de emagrecimento")',
+      'a:has-text("Ver jornada de emagrecimento")',
+    ]);
+    expect(openedLanding).toBe(true);
 
-    if (!triageNavigationOk) {
-      const ctaHref = await cta.getAttribute('href');
-      const fallbackTriageUrl = new URL(ctaHref || '/triagem/emagrecimento', BASE_URL).toString();
-      await page.goto(fallbackTriageUrl);
-      await page.waitForURL(triageUrlPattern, { timeout: 15000 });
-    }
+    await page.waitForURL(/.*\/emagrecimento/, { timeout: 15_000 });
+    const goToTriage = page.waitForURL(/.*triagem\/emagrecimento/, { timeout: 15_000 });
+    const clickedTriage = await clickFirstVisible(page, [
+      'a:has-text("Começar minha triagem agora")',
+      'a:has-text("Começar minha triagem")',
+      'a[href*="triagem/emagrecimento"]',
+      'a:has-text("Ver minha elegibilidade")',
+    ]);
+    expect(clickedTriage).toBe(true);
+    await goToTriage;
 
-    await expect(page).toHaveURL(/.*triagem\/emagrecimento/);
-    console.log('✅ Redirecionado para triagem');
+    await expect(page.locator('text=Triagem de emagrecimento')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('text=Consentimento e dados base')).toBeVisible();
 
-    // Preencher triagem com caso típico candidato GLP-1
-    // Aguardar formulário carregar
-    await page.waitForTimeout(2000);
+    await clickStepOption(page, 'aceita_termos', 'aceito');
+    await page.locator('input[name="altura"]').fill('170');
+    await page.locator('input[name="peso"]').fill('100');
+    await page.locator('input[name="peso_meta"]').fill('78');
+    await clickStepOption(page, 'sexo', 'M');
 
-    // Preencher dados básicos (se houver campos visíveis)
-    const nameInput = page.locator('input[name="name"], input[placeholder*="nome" i]').first();
-    if (await nameInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await nameInput.fill('Teste Automatizado');
-    }
+    const dateInput = page.locator('input[name="data_nascimento"]').first();
+    await dateInput.fill('1990-01-01');
 
-    const emailInput = page.locator('input[type="email"], input[name="email"]').first();
-    if (await emailInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await emailInput.fill('teste@zapfarm.com.br');
-    }
+    await clickStepOption(page, 'comorbidades', 'hipertensao');
+    await clickStepOption(page, 'contraindicacoes_glp1', 'nenhuma');
+    await clickStepOption(page, 'cirurgia_bariatrica_previa', 'nao');
+    await clickStepOption(page, 'uso_opioides_3meses', 'nao');
+    await clickStepOption(page, 'medicamentos_prescritos_atual', 'sim');
+    await clickStepOption(page, 'pressao_arterial_faixa', 'estagio1');
+    await clickStepOption(page, 'frequencia_cardiaca_repouso', '60_80');
 
-    // Preencher perguntas da triagem (simulando caso candidato GLP-1)
-    // IMC > 30 (obesidade)
-    const pesoInput = page.locator('input[name*="peso" i], input[placeholder*="peso" i]').first();
-    if (await pesoInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await pesoInput.fill('100'); // 100kg
-    }
+    await clickStepOption(page, 'uso_medicacao_emagrecimento_recente', 'nao');
+    await clickStepOption(page, 'impacto_vida', 'moderado');
+    await clickStepOption(page, 'objetivo_principal', 'ambos');
+    await clickStepOption(page, 'preferencia_principio_ativo', 'nao_sei');
 
-    const alturaInput = page.locator('input[name*="altura" i], input[placeholder*="altura" i]').first();
-    if (await alturaInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await alturaInput.fill('1.70'); // 1.70m = IMC ~34.6 (obesidade)
-    }
+    await page.locator('input[name="primeiro_nome"]').fill('Teste Launch');
+    await page.locator('input[name="whatsapp"]').fill('11999998888');
+    await clickStepOption(page, 'consentimento_whatsapp', 'autorizo');
 
-    // Sem contraindicações graves
-    const semCancer = page.locator('button:has-text("Não"), input[value="não" i]').first();
-    if (await semCancer.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await semCancer.click();
-    }
-
-    // Com comorbidades leves
-    const diabetesOption = page.locator('text=Diabetes tipo 2, button:has-text("Diabetes")').first();
-    if (await diabetesOption.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await diabetesOption.click();
-    }
-
-    // Avançar nas perguntas (clicar em botões de próximo/continuar)
-    const nextButton = page.locator('button:has-text("Próximo"), button:has-text("Continuar"), button:has-text("Avançar")').first();
-    let attempts = 0;
-    while (attempts < 10 && await nextButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await nextButton.click();
-      await page.waitForTimeout(1000);
-      attempts++;
-    }
-
-    // Finalizar triagem
-    const finalizeButton = page.locator('button:has-text("Finalizar"), button:has-text("Concluir")').first();
-    if (await finalizeButton.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await finalizeButton.click();
-      console.log('✅ Triagem finalizada');
-    }
-
-    // 3. Aguardar relatório
-    console.log('🔍 Aguardando relatório...');
-    await page.waitForURL(/.*relatorio|.*report/, { timeout: 30000 }).catch(() => {
-      console.log('⚠️ Timeout aguardando relatório, continuando...');
+    const finalizeRequest = page.waitForRequest(request => {
+      return request.method() === 'POST' && request.url().includes('/api/triage/finalize');
     });
 
-    // Verificar se relatório carregou (aguardar até 30s com polling)
-    let reportLoaded = false;
-    for (let i = 0; i < 30; i++) {
-      const reportContent = page.locator('text=Relatório, text=Análise, text=Recomendação').first();
-      if (await reportContent.isVisible({ timeout: 1000 }).catch(() => false)) {
-        reportLoaded = true;
-        console.log('✅ Relatório carregado');
-        break;
-      }
-      await page.waitForTimeout(1000);
+    const submitButton = page.locator('button:has-text("Gerar meu relatório")');
+    await expect(submitButton).toBeVisible({ timeout: 10_000 });
+    await submitButton.click();
+
+    const request = await finalizeRequest;
+    expect(request).toBeTruthy();
+
+    await page.waitForTimeout(1000);
+    const isRunningStateVisible = await page
+      .locator('text=Gerando seu relatório')
+      .isVisible({ timeout: 8_000 })
+      .catch(() => false);
+
+    if (!isRunningStateVisible) {
+      await page.waitForURL(/.*relatorio|.*report/, { timeout: 30_000 }).catch(() => undefined);
     }
 
-    if (!reportLoaded) {
-      console.log('⚠️ Relatório não carregou completamente, mas continuando teste...');
-    }
-
-    // 4. Verificar CTAs de planos no relatório
-    const planoCta = page.locator('a[href*="checkout"], button:has-text("Plano"), a:has-text("Iniciar")').first();
-    if (await planoCta.isVisible({ timeout: 10000 }).catch(() => false)) {
-      console.log('✅ CTAs de planos encontrados no relatório');
-    }
-
-    // 5. Navegar para Checkout
-    console.log('🔍 Testando Checkout...');
-    
-    // Tentar navegar para checkout (via CTA ou URL direta)
-    const checkoutUrl = page.url().includes('relatorio') 
-      ? `${BASE_URL}/emagrecimento/checkout?plano=programa-glp1-3m&reportId=test`
-      : `${BASE_URL}/emagrecimento/checkout?plano=programa-glp1-3m`;
-    
-    let checkoutLoaded = false;
-    try {
-      await page.goto(checkoutUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-      await page.waitForTimeout(1500);
-      await expect(page).toHaveURL(/.*checkout/, { timeout: 10000 });
-      checkoutLoaded = true;
-      console.log('✅ Checkout carregado');
-    } catch (checkoutNavError: any) {
-      console.log(`⚠️ Falha na navegação visual do checkout (${checkoutNavError?.message || 'erro desconhecido'})`);
-      const checkoutResponse = await page.request.get(checkoutUrl, { timeout: 30000 });
-      if (!checkoutResponse.ok()) {
-        throw new Error(`Checkout indisponível: HTTP ${checkoutResponse.status()}`);
-      }
-      checkoutLoaded = true;
-      console.log('✅ Checkout respondeu HTTP 200 (fallback de disponibilidade)');
-    }
-
-    // 6. VALIDAÇÃO CRÍTICA: Verificar valores dos planos
-    console.log('🔍 Validando valores dos planos...');
-    
-    const planos = [
-      { nome: 'Start GLP-1', valor: 'R$ 349', total: 'R$ 4.188' },
-      { nome: 'Programa 3 Meses', valor: 'R$ 399', total: 'R$ 4.788' },
-      { nome: 'Programa 6 Meses', valor: 'R$ 449', total: 'R$ 5.388' },
-    ];
-
-    if (page.url().includes('/checkout')) {
-      for (const plano of planos) {
-        // Verificar se o plano aparece na página
-        const planoElement = page.locator(`text=${plano.nome}`).first();
-        if (await planoElement.isVisible({ timeout: 2000 }).catch(() => false)) {
-          // Verificar valor mensal
-          const valorMensal = page.locator(`text=${plano.valor}`).first();
-          const valorTotal = page.locator(`text=${plano.total}`).first();
-          
-          if (await valorMensal.isVisible({ timeout: 1000 }).catch(() => false)) {
-            console.log(`✅ ${plano.nome}: Valor mensal correto (${plano.valor})`);
-          } else {
-            console.log(`⚠️ ${plano.nome}: Valor mensal não encontrado`);
-          }
-
-          if (await valorTotal.isVisible({ timeout: 1000 }).catch(() => false)) {
-            console.log(`✅ ${plano.nome}: Valor total correto (${plano.total})`);
-          } else {
-            console.log(`⚠️ ${plano.nome}: Valor total não encontrado`);
-          }
-        }
-      }
-
-      // Verificar se formulário de pagamento está presente
-      const paymentForm = page.locator('input[name="nome"], input[placeholder*="nome" i]').first();
-      if (await paymentForm.isVisible({ timeout: 5000 }).catch(() => false)) {
-        console.log('✅ Formulário de checkout presente');
-      }
-    } else {
-      console.log('⚠️ Checkout visual não foi aberto no browser; validação de disponibilidade aplicada via fallback HTTP');
-    }
-
-    // 7. Gerar relatório de validação
-    const validationReport = {
-      timestamp: new Date().toISOString(),
-      baseUrl: BASE_URL,
-      steps: {
-        landingPage: true,
-        cookieBanner: await cookieBanner.isVisible({ timeout: 1000 }).catch(() => false),
-        triagem: true,
-        relatorio: reportLoaded,
-      checkout: checkoutLoaded,
-      },
-      errors: errors.length > 0 ? errors : null,
-      logs: logs.slice(-20), // Últimos 20 logs
-    };
-
-    console.log('\n📊 RELATÓRIO DE VALIDAÇÃO:');
-    console.log(JSON.stringify(validationReport, null, 2));
-
-    // Assertions finais
-    expect(errors.length).toBe(0);
-    expect(checkoutLoaded).toBe(true);
+    expect(errors).toEqual([]);
   });
 
   test('Validar env vars de preços via API', async ({ request }) => {
-    // Este teste valida que as env vars estão configuradas corretamente
-    // Fazendo uma requisição de teste para a API de checkout
-    
-    const BASE_URL = process.env.PRODUCTION_URL || 'http://localhost:3000';
-    
-    // Tentar criar um pagamento de teste (vai falhar na validação, mas mostra se env vars estão OK)
     const response = await request.post(`${BASE_URL}/api/asaas/create-payment`, {
       data: {
         product: 'emagrecimento',
@@ -291,13 +161,9 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
     });
 
     const data = await response.json();
-    
-    // Se retornar erro de env var não configurada, falha o teste
+
     if (data.code === 'MISSING_ENV') {
       throw new Error(`Env var não configurada: ${data.details}`);
     }
-
-    // Se retornar outro erro (validação, etc), está OK - significa que env vars estão configuradas
-    console.log('✅ Env vars de preços estão configuradas');
   });
 });

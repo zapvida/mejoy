@@ -106,6 +106,9 @@ const convertLegacyStep = (step: LegacyStep, index: number): StepDef[] => {
       key,
       type: "select_cards",
       label: step.label ?? step.name,
+      group: (step as any).group,
+      autoAdvance: (step as any).autoAdvance,
+      compact: (step as any).compact,
       helper,
       helperText: (step as any).helperText,
       evidenceNote: (step as any).evidenceNote,
@@ -128,6 +131,9 @@ const convertLegacyStep = (step: LegacyStep, index: number): StepDef[] => {
   const baseDef: Omit<StepDef, "type"> = {
     key,
     label: step.label ?? step.name,
+    group: (step as any).group,
+    autoAdvance: (step as any).autoAdvance,
+    compact: (step as any).compact,
     helper,
     helperText: (step as any).helperText,
     evidenceNote: (step as any).evidenceNote,
@@ -327,6 +333,8 @@ const buildFlow = (slug: string, form: Formulario): TriageFlow => {
     slug,
     title: form.titulo,
     intro: form.descricao,
+    flowVersion: form.flowVersion,
+    schemaVersion: form.schemaVersion,
     steps
   };
 };

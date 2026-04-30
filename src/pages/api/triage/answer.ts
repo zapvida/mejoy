@@ -7,6 +7,7 @@ import { withTriageMonitoring, captureTriageEvent } from "@/lib/monitoring/api-m
 import { setSentryTriageTag } from "@/lib/observability";
 import { coercePhoneLike } from "@/lib/phone/normalize";
 import { rateLimit } from "@/lib/rateLimit";
+import { flowsMap } from "@/lib/triage/flows";
 import { hasProfileData } from "@/lib/triage/schema";
 
 type AnswerPayload = {
@@ -23,6 +24,8 @@ const AnswerRequestSchema = z.object({
 });
 
 const PROFILE_KEYS = new Set(["name", "sex", "whatsapp", "dob", "weight", "height", "peso", "altura", "email"]);
+const FLOW_VERSION_KEY = "__flowVersion";
+const SCHEMA_VERSION_KEY = "__schemaVersion";
 
 // Rate limiting otimizado para triagem (permite fluxo normal)
 // Removed duplicate rate limiting system - using single rateLimit function below
@@ -150,7 +153,7 @@ export default withTriageMonitoring(async function handler(req: NextApiRequest, 
   // Verificar se a sessão pertence ao usuário (owner-only)
   const { data: session, error: sessionError } = await supabase
     .from("triage_sessions")
-    .select("answers, client_id, profile_id, profile_snapshot, progress_percent")
+    .select("answers, client_id, profile_id, profile_snapshot, progress_percent, triage_slug")
     .eq("triage_id", triageId)
     .single();
 
@@ -182,7 +185,13 @@ export default withTriageMonitoring(async function handler(req: NextApiRequest, 
     return res.status(500).json({ error: upsertError.message });
   }
 
-  const nextAnswers = { ...(session.answers ?? {}), [stepKey]: normalizedValue };
+  const flow = session.triage_slug ? flowsMap[session.triage_slug] : undefined;
+  const nextAnswers = {
+    ...(session.answers ?? {}),
+    ...(flow?.flowVersion ? { [FLOW_VERSION_KEY]: flow.flowVersion } : {}),
+    ...(flow?.schemaVersion ? { [SCHEMA_VERSION_KEY]: flow.schemaVersion } : {}),
+    [stepKey]: normalizedValue
+  };
   const nextProgress = Math.min(100, Math.max(progress ?? 0, session.progress_percent ?? 0));
 
   const profileSnapshot = extractProfileFromAnswers(nextAnswers);

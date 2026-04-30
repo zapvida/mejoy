@@ -1,7 +1,7 @@
 {
-  "name": "Me Joy Farma",
+  "name": "Me Joy",
   "short_name": "Me Joy",
-  "description": "Protocolos de saúde com curadoria médica. Produtos manipulados e suplementos.",
+  "description": "Saúde digital com avaliação médica, triagem online e acompanhamento humano.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

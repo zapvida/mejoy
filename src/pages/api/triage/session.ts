@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { setSentryTriageTag } from "@/lib/observability";
 import { coercePhoneLike } from "@/lib/phone/normalize";
+import { flowsMap } from "@/lib/triage/flows";
 import { hasProfileData } from "@/lib/triage/schema";
 
 type SessionPayload = {
@@ -14,7 +15,12 @@ type SessionPayload = {
   reportId?: string;
   triageSlug?: string;
   profile_snapshot?: Record<string, any> | null;
+  flowVersion?: string;
+  schemaVersion?: string;
 };
+
+const FLOW_VERSION_KEY = "__flowVersion";
+const SCHEMA_VERSION_KEY = "__schemaVersion";
 
 const mapSnapshotToAnswers = (snapshot: Record<string, any> | null | undefined) => {
   if (!snapshot) return {};
@@ -66,6 +72,8 @@ const normalizeAnswersPayload = (answers: Record<string, any> | null | undefined
   if (!answers) return {};
 
   const normalized = { ...answers };
+  delete normalized[FLOW_VERSION_KEY];
+  delete normalized[SCHEMA_VERSION_KEY];
   const whatsapp = coercePhoneLike(answers.whatsapp);
   if (whatsapp) normalized.whatsapp = whatsapp;
   else if ("whatsapp" in normalized && !answers.whatsapp) delete normalized.whatsapp;
@@ -99,6 +107,34 @@ const shouldAllowMockSession = (req: NextApiRequest) => {
   return isLocalHost(req.headers.host);
 };
 
+const resolveFlowMetadata = (triageSlug?: string) => {
+  const flow = triageSlug ? flowsMap[triageSlug] : undefined;
+  return {
+    flowVersion: flow?.flowVersion,
+    schemaVersion: flow?.schemaVersion,
+  };
+};
+
+const buildAnswersMetadata = (triageSlug?: string) => {
+  const { flowVersion, schemaVersion } = resolveFlowMetadata(triageSlug);
+  return {
+    ...(flowVersion ? { [FLOW_VERSION_KEY]: flowVersion } : {}),
+    ...(schemaVersion ? { [SCHEMA_VERSION_KEY]: schemaVersion } : {}),
+  };
+};
+
+const isSessionCompatibleWithFlow = (
+  triageSlug: string | undefined,
+  answers: Record<string, any> | null | undefined
+) => {
+  const { flowVersion, schemaVersion } = resolveFlowMetadata(triageSlug);
+  if (!flowVersion && !schemaVersion) return true;
+  return (
+    (!flowVersion || answers?.[FLOW_VERSION_KEY] === flowVersion) &&
+    (!schemaVersion || answers?.[SCHEMA_VERSION_KEY] === schemaVersion)
+  );
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SessionPayload | { error: string }>) {
   const requestId = Math.random().toString(36).substring(7);
   const startTime = Date.now();
@@ -115,6 +151,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       if (!supabaseUrl || !serviceKey) {
         if (shouldAllowMockSession(req)) {
+          const { flowVersion, schemaVersion } = resolveFlowMetadata("emagrecimento");
           return res.status(200).json({
             triageId,
             firstVisit: false,
@@ -122,7 +159,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             profile_snapshot: null,
             answers: {},
             progress: 0,
-            completed: false
+            completed: false,
+            flowVersion,
+            schemaVersion,
           });
         }
         return res.status(500).json({ error: "Serviço temporariamente indisponível. Tente novamente em alguns instantes." });
@@ -156,7 +195,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         answers,
         progress: sessionRow.progress_percent ?? 0,
         completed: !!sessionRow.completed_at,
-        reportId: resolveReportId(sessionRow.triage_id, sessionRow.triage_reports)
+        reportId: resolveReportId(sessionRow.triage_id, sessionRow.triage_reports),
+        ...resolveFlowMetadata(sessionRow.triage_slug),
       });
     }
 
@@ -190,7 +230,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           answers: {},
           progress: 0,
           completed: false,
-          reportId: undefined
+          reportId: undefined,
+          ...resolveFlowMetadata(triageSlug),
         });
       }
       
@@ -227,25 +268,58 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       }
 
       if (existing) {
-        console.log(`[${requestId}] Found existing session: ${existing.triage_id}`);
-        setSentryTriageTag(existing.triage_id);
-        const normalizedSnapshot = normalizeProfileSnapshot(existing.profile_snapshot);
-        const profileAnswers = mapSnapshotToAnswers(normalizedSnapshot);
-        const answers = {
-          ...profileAnswers,
-          ...normalizeAnswersPayload(existing.answers)
-        };
+        const isCompatible = isSessionCompatibleWithFlow(triageSlug, existing.answers);
+        if (!isCompatible && !existing.completed_at) {
+          console.log(`[${requestId}] Resetting legacy session ${existing.triage_id} due to schema mismatch`);
+          const { error: resetError } = await supabase
+            .from("triage_sessions")
+            .update({
+              answers: buildAnswersMetadata(triageSlug),
+              progress_percent: 0,
+              completed_at: null,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("triage_id", existing.triage_id);
 
-        return res.status(200).json({
-          triageId: existing.triage_id,
-          firstVisit: false, // Não coletamos mais dados pessoais no início
-          triageSlug,
-          profile_snapshot: normalizedSnapshot,
-          answers,
-          progress: existing.progress_percent ?? 0,
-          completed: !!existing.completed_at,
-          reportId: resolveReportId(existing.triage_id, existing.triage_reports)
-        });
+          if (!resetError) {
+            const normalizedSnapshot = normalizeProfileSnapshot(existing.profile_snapshot);
+            const profileAnswers = mapSnapshotToAnswers(normalizedSnapshot);
+            return res.status(200).json({
+              triageId: existing.triage_id,
+              firstVisit: false,
+              triageSlug,
+              profile_snapshot: normalizedSnapshot,
+              answers: profileAnswers,
+              progress: 0,
+              completed: false,
+              reportId: undefined,
+              ...resolveFlowMetadata(triageSlug),
+            });
+          }
+        }
+
+        if (isCompatible) {
+          console.log(`[${requestId}] Found existing session: ${existing.triage_id}`);
+          setSentryTriageTag(existing.triage_id);
+          const normalizedSnapshot = normalizeProfileSnapshot(existing.profile_snapshot);
+          const profileAnswers = mapSnapshotToAnswers(normalizedSnapshot);
+          const answers = {
+            ...profileAnswers,
+            ...normalizeAnswersPayload(existing.answers)
+          };
+
+          return res.status(200).json({
+            triageId: existing.triage_id,
+            firstVisit: false, // Não coletamos mais dados pessoais no início
+            triageSlug,
+            profile_snapshot: normalizedSnapshot,
+            answers,
+            progress: existing.progress_percent ?? 0,
+            completed: !!existing.completed_at,
+            reportId: resolveReportId(existing.triage_id, existing.triage_reports),
+            ...resolveFlowMetadata(triageSlug),
+          });
+        }
       }
     }
 
@@ -280,7 +354,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         client_id: clientId,
         profile_id: profile?.id ?? null,
         triage_slug: triageSlug,
-        profile_snapshot: snapshot
+        profile_snapshot: snapshot,
+        answers: buildAnswersMetadata(triageSlug),
       })
       .select()
       .single();
@@ -303,6 +378,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           .maybeSingle();
         
         if (existing) {
+          const isCompatible = isSessionCompatibleWithFlow(triageSlug, existing.answers);
           setSentryTriageTag(existing.triage_id);
           const normalizedSnapshot = normalizeProfileSnapshot(existing.profile_snapshot);
           const profileAnswers = mapSnapshotToAnswers(normalizedSnapshot);
@@ -310,17 +386,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             ...profileAnswers,
             ...normalizeAnswersPayload(existing.answers)
           };
-          
-          return res.status(200).json({
-            triageId: existing.triage_id,
-            firstVisit: false, // Não coletamos mais dados pessoais no início
-            triageSlug,
-            profile_snapshot: normalizedSnapshot,
-            answers,
-            progress: existing.progress_percent ?? 0,
-            completed: !!existing.completed_at,
-            reportId: resolveReportId(existing.triage_id, existing.triage_reports)
-          });
+
+          if (isCompatible) {
+            return res.status(200).json({
+              triageId: existing.triage_id,
+              firstVisit: false, // Não coletamos mais dados pessoais no início
+              triageSlug,
+              profile_snapshot: normalizedSnapshot,
+              answers,
+              progress: existing.progress_percent ?? 0,
+              completed: !!existing.completed_at,
+              reportId: resolveReportId(existing.triage_id, existing.triage_reports),
+              ...resolveFlowMetadata(triageSlug),
+            });
+          }
+
+          if (!existing.completed_at) {
+            const { error: resetError } = await supabase
+              .from("triage_sessions")
+              .update({
+                answers: buildAnswersMetadata(triageSlug),
+                progress_percent: 0,
+                completed_at: null,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("triage_id", existing.triage_id);
+
+            if (!resetError) {
+              return res.status(200).json({
+                triageId: existing.triage_id,
+                firstVisit: false,
+                triageSlug,
+                profile_snapshot: normalizedSnapshot,
+                answers: profileAnswers,
+                progress: 0,
+                completed: false,
+                reportId: undefined,
+                ...resolveFlowMetadata(triageSlug),
+              });
+            }
+          }
         }
       }
       
@@ -340,7 +445,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       answers: profileAnswers,
       progress: 0,
       completed: false,
-      reportId: undefined
+      reportId: undefined,
+      ...resolveFlowMetadata(triageSlug),
     });
   } catch (error) {
     console.error(`[${requestId}] Unexpected error:`, error);

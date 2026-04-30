@@ -23,6 +23,9 @@ export type FunnelEventName =
 export type MejoyConversionEventName =
   | "triage_start"
   | "triage_submit"
+  | "triage_submit_blocked"
+  | "triage_answer_persist_failed"
+  | "triage_finalize_failed"
   | "report_view"
   | "report_cta_click"
   | "medication_preference_select"
