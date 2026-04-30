@@ -1,0 +1,32 @@
+/**
+ * Avisos regulatórios para LP de emagrecimento (contexto BR — ANVISA / CFM).
+ * Texto informativo; revisão jurídica recomendada periodicamente.
+ */
+export function EmagrecimentoLegalDisclaimerSection() {
+  return (
+    <section
+      className="border-t border-gray-200 bg-zinc-50 py-10 sm:py-12"
+      aria-labelledby="legal-disclaimer-heading"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto prose prose-sm sm:prose-base prose-gray">
+          <h2 id="legal-disclaimer-heading" className="text-lg font-semibold text-gray-900">
+            Informações importantes sobre o programa
+          </h2>
+          <p className="text-gray-700 leading-relaxed">
+            A Me Joy não substitui consulta presencial quando indicada. O check-up e a triagem não criam, por si
+            sós, vínculo médico-paciente; a prescrição e a conduta clínica são de responsabilidade do médico
+            habilitado que avaliar seu caso. Medicamentos para obesidade só são utilizados quando indicados e
+            prescritos, com dispensação em farmácias regulares e acompanhamento conforme normas da ANVISA e do
+            CFM.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            Resultados variam conforme perfil clínico, aderência e orientação médica. Não prometemos resultado
+            rápido ou garantido. Em caso de dúvida sobre riscos e benefícios de qualquer medicação, converse com
+            o profissional que acompanha você.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

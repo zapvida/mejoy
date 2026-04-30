@@ -1,0 +1,232 @@
+============================================
+VARIÁVEIS DE AMBIENTE - PRODUÇÃO ZAPFARM
+COPIE E COLE NO VERCEL DASHBOARD
+============================================
+
+INSTRUÇÕES:
+1. Vercel Dashboard → Seu Projeto → Settings → Environment Variables
+2. Para cada variável abaixo, clique em "Add New"
+3. Cole o Name e Value exatamente como mostrado
+4. Marque os ambientes: Production, Preview, Development
+5. Substitua os valores com SUA_CHAVE_* pelos valores reais
+6. Clique em "Save"
+
+============================================
+1. SUPABASE (4 variáveis)
+============================================
+
+NEXT_PUBLIC_SUPABASE_URL
+https://SEU_PROJETO.supabase.co
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
+
+SUPABASE_SERVICE_ROLE_KEY
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
+
+DATABASE_URL
+postgresql://postgres:SUA_SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+
+============================================
+2. ASAAS - PAGAMENTOS (2 variáveis)
+============================================
+
+ASAAS_API_KEY
+aact_prod_SUA_CHAVE_ASAAS_AQUI
+
+ASAAS_ENVIRONMENT
+production
+
+============================================
+3. PREÇOS ASAAS - 10 PRODUTOS × 3 PLANOS (30 variáveis)
+============================================
+⚠️ IMPORTANTE: Valores estão em CENTAVOS (13900 = R$ 139,00)
+
+# Emagrecimento (MetaboSlim)
+ASAAS_PRICE_EMAGRECIMENTO_BASICO
+294900
+
+ASAAS_PRICE_EMAGRECIMENTO_COMPLETO
+442300
+
+ASAAS_PRICE_EMAGRECIMENTO_PREMIUM
+589800
+
+# Calvície (CapilMax)
+ASAAS_PRICE_CALVICIE_BASICO
+13900
+
+ASAAS_PRICE_CALVICIE_COMPLETO
+20900
+
+ASAAS_PRICE_CALVICIE_PREMIUM
+27800
+
+# Sono (SonoZen)
+ASAAS_PRICE_SONO_BASICO
+13900
+
+ASAAS_PRICE_SONO_COMPLETO
+20900
+
+ASAAS_PRICE_SONO_PREMIUM
+27800
+
+# Ansiedade (ZenDay)
+ASAAS_PRICE_ANSIEDADE_BASICO
+13900
+
+ASAAS_PRICE_ANSIEDADE_COMPLETO
+20900
+
+ASAAS_PRICE_ANSIEDADE_PREMIUM
+27800
+
+# Intestino (FloraBalance)
+ASAAS_PRICE_INTESTINO_BASICO
+13900
+
+ASAAS_PRICE_INTESTINO_COMPLETO
+20900
+
+ASAAS_PRICE_INTESTINO_PREMIUM
+27800
+
+# Fígado (HepaDetox)
+ASAAS_PRICE_FIGADO_BASICO
+13900
+
+ASAAS_PRICE_FIGADO_COMPLETO
+20900
+
+ASAAS_PRICE_FIGADO_PREMIUM
+27800
+
+# Libido Masculina (VigorMax)
+ASAAS_PRICE_LIBIDO_MASCULINA_BASICO
+13900
+
+ASAAS_PRICE_LIBIDO_MASCULINA_COMPLETO
+20900
+
+ASAAS_PRICE_LIBIDO_MASCULINA_PREMIUM
+27800
+
+# Menopausa (FemBalance 360)
+ASAAS_PRICE_MENOPAUSA_BASICO
+13900
+
+ASAAS_PRICE_MENOPAUSA_COMPLETO
+20900
+
+ASAAS_PRICE_MENOPAUSA_PREMIUM
+27800
+
+# Articulações (ArticFlex)
+ASAAS_PRICE_ARTICULACOES_BASICO
+13900
+
+ASAAS_PRICE_ARTICULACOES_COMPLETO
+20900
+
+ASAAS_PRICE_ARTICULACOES_PREMIUM
+27800
+
+# Imunidade (Imuno360)
+ASAAS_PRICE_IMUNIDADE_BASICO
+13900
+
+ASAAS_PRICE_IMUNIDADE_COMPLETO
+20900
+
+ASAAS_PRICE_IMUNIDADE_PREMIUM
+27800
+
+============================================
+4. OPENAI - GERAÇÃO DE RELATÓRIOS (1 variável)
+============================================
+
+OPENAI_API_KEY
+sk-proj-SUA_CHAVE_OPENAI_AQUI
+
+============================================
+5. CONFIGURAÇÃO BÁSICA (3 variáveis)
+============================================
+
+NEXT_PUBLIC_BASE_URL
+https://www.zapfarm.com.br
+
+NEXT_PUBLIC_SITE_URL
+https://www.zapfarm.com.br
+
+NODE_ENV
+production
+
+============================================
+6. NEXTAUTH (2 variáveis)
+============================================
+
+NEXTAUTH_URL
+https://www.zapfarm.com.br
+
+NEXTAUTH_SECRET
+[GERAR COM: openssl rand -base64 32]
+
+============================================
+7. WEBHOOK ASAAS (1 variável)
+============================================
+
+WEBHOOK_ASAAS_URL
+https://www.zapfarm.com.br/api/asaas/webhook
+
+============================================
+TOTAL: 42 VARIÁVEIS
+============================================
+
+CHECKLIST:
+[ ] Supabase (4 variáveis)
+[ ] Asaas (2 variáveis)
+[ ] Preços Asaas (30 variáveis)
+[ ] OpenAI (1 variável)
+[ ] Configuração (3 variáveis)
+[ ] NextAuth (2 variáveis)
+[ ] Webhook (1 variável)
+
+============================================
+COMO OBTER OS VALORES:
+============================================
+
+SUPABASE:
+- NEXT_PUBLIC_SUPABASE_URL: Dashboard → Settings → API → Project URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY: Dashboard → Settings → API → anon public
+- SUPABASE_SERVICE_ROLE_KEY: Dashboard → Settings → API → Service Role (clique no olho)
+- DATABASE_URL: Dashboard → Settings → Database → Connection string → URI
+
+ASAAS:
+- ASAAS_API_KEY: Dashboard → Configurações → Integrações → API → Copiar chave de produção
+
+OPENAI:
+- OPENAI_API_KEY: https://platform.openai.com/api-keys → Criar nova chave
+
+NEXTAUTH_SECRET:
+- Execute no terminal: openssl rand -base64 32
+
+DOMÍNIO:
+- Substitua "www.zapfarm.com.br" pelo seu domínio real em:
+  - NEXT_PUBLIC_BASE_URL
+  - NEXT_PUBLIC_SITE_URL
+  - NEXTAUTH_URL
+  - WEBHOOK_ASAAS_URL
+
+============================================
+PRÓXIMOS PASSOS:
+============================================
+
+1. ✅ Adicionar todas as 42 variáveis no Vercel
+2. ✅ Aplicar migrações SQL no Supabase (ver ACOES_MANUAIS_LANCAMENTO.md)
+3. ✅ Configurar webhook no Asaas (ver ACOES_MANUAIS_LANCAMENTO.md)
+4. ✅ Testar fluxo completo
+5. ✅ Lançar!
+
+============================================
+

@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-01-13T10:00:00.000Z",
+  "test": "PDF claro e sem críticos de A11y",
+  "results": {
+    "pdf_generated": true,
+    "pdf_size_bytes": 17471,
+    "pdf_size_kb": 17.5,
+    "a11y_critical_violations": 0,
+    "a11y_total_violations": 0,
+    "browsers_tested": ["chromium", "Mobile Chrome"],
+    "browsers_skipped": ["firefox", "webkit", "Mobile Safari"],
+    "status": "PASSED"
+  },
+  "artifacts": {
+    "pdf_path": "test-results/print-PDF-claro-e-sem-críticos-de-A11y-chromium/relatorio-demo.pdf",
+    "axe_report": "test-results/print-PDF-claro-e-sem-críticos-de-A11y-chromium/axe-results.json"
+  },
+  "validation": {
+    "pdf_format": "A4",
+    "background_color": "white",
+    "text_color": "dark",
+    "gradients_removed": true,
+    "links_with_urls": true,
+    "chat_hidden": true,
+    "break_avoidance": true
+  }
+}

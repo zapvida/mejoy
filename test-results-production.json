@@ -1,0 +1,176 @@
+{
+  "timestamp": "2025-10-15T02:26:07.676Z",
+  "baseUrl": "https://www.alloehealth.com.br",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "warnings": 0,
+    "partial": 0,
+    "successRate": 100
+  },
+  "results": {
+    "homepage": {
+      "status": "passed",
+      "details": [
+        "Status: 200",
+        "Tempo: 139ms",
+        "Título: false",
+        "Link triagem: true",
+        "Meta tags: true",
+        "Tamanho: 7601 bytes"
+      ]
+    },
+    "triagemPage": {
+      "status": "passed",
+      "details": [
+        "Status: 200",
+        "Tempo: 72ms",
+        "Lista de triagens: true",
+        "Links de triagem: 0",
+        "Cards visíveis: true",
+        "Tamanho: 121684 bytes"
+      ]
+    },
+    "triages": {
+      "status": "passed",
+      "details": [
+        {
+          "triage": "cardiovascular",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 56ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "diabetes-metabolismo",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 48ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "dor-cronica",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 41ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "coluna",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 53ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "respiratoria",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 48ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "renal",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 44ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "hepatica",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 44ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        },
+        {
+          "triage": "mulher",
+          "status": "passed",
+          "details": [
+            "Status: 200",
+            "Tempo: 45ms",
+            "Formulário: true",
+            "Perguntas: false",
+            "Submit: false",
+            "Título: false",
+            "Tamanho: 4622 bytes"
+          ]
+        }
+      ]
+    },
+    "reports": {
+      "status": "passed",
+      "details": [
+        "Status: 200",
+        "Tempo: 1227ms",
+        "Relatório: true",
+        "Dados: false",
+        "CTAs: false",
+        "Tamanho: 6864 bytes"
+      ]
+    },
+    "mobile": {
+      "status": "passed",
+      "details": [
+        "Viewport meta: true",
+        "CSS mobile: true",
+        "Responsivo: true",
+        "Tamanho: 121684 bytes"
+      ]
+    },
+    "performance": {
+      "status": "passed",
+      "details": [
+        "Tempo total: 50ms",
+        "Tempo de resposta: 50ms",
+        "Rápido (<2s): true",
+        "Compressão: false",
+        "Cache: true",
+        "Tamanho: 7601 bytes"
+      ]
+    }
+  }
+}

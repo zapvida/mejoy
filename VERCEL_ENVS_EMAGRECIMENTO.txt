@@ -1,0 +1,59 @@
+# ============================================
+# VARIÁVEIS DE AMBIENTE - VERCEL
+# FLUXO EMAGRECIMENTO COMPLETO
+# ============================================
+# Copie e cole cada variável no Vercel Dashboard
+# Settings → Environment Variables → Add New
+# ============================================
+
+# ============================================
+# OBRIGATÓRIAS - FLUXO NÃO FUNCIONA SEM ELAS
+# ============================================
+
+# OpenAI - Geração de Relatórios pela IA
+OPENAI_API_KEY=sk-proj-SUA_CHAVE_OPENAI_AQUI
+
+# Stripe - Processamento de Pagamentos
+STRIPE_SECRET_KEY=sk_live_SUA_CHAVE_STRIPE_AQUI
+
+# Stripe Prices - ZapFarm Emagrecimento
+STRIPE_PRICE_ZAPFARM_MENSAL=price_SUA_PRICE_ID_MENSAL
+STRIPE_PRICE_ZAPFARM_TRIMESTRAL=price_SUA_PRICE_ID_TRIMESTRAL
+STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_SUA_PRICE_ID_SEMESTRAL
+
+# ============================================
+# OPCIONAIS MAS RECOMENDADAS
+# ============================================
+
+# Ativar geração de relatórios pela IA (padrão: 1)
+AI_REPORT_ENABLED=1
+
+# Supabase - Persistência de Sessões e Relatórios
+NEXT_PUBLIC_SUPABASE_URL=https://SEU_PROJETO.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
+
+# ============================================
+# CONFIGURAÇÃO BÁSICA
+# ============================================
+
+NODE_ENV=production
+NEXT_PUBLIC_BASE_URL=https://SEU_DOMINIO.com.br
+NEXT_PUBLIC_SITE_URL=https://SEU_DOMINIO.com.br
+
+# ============================================
+# FEATURE FLAGS (OPCIONAL)
+# ============================================
+
+NEXT_PUBLIC_TRIAGE_GI_ENHANCED=1
+NEXT_PUBLIC_SHOW_PARTNER_CTAS=1
+
+# ============================================
+# INSTRUÇÕES:
+# ============================================
+# 1. Substitua todos os valores com SUA_CHAVE_* pelos valores reais
+# 2. Para Stripe, use sk_live_... em produção (não sk_test_...)
+# 3. Para Stripe Prices, crie os produtos no Stripe Dashboard primeiro
+# 4. Para Supabase, obtenha as chaves em Settings → API
+# 5. Configure todas para os ambientes: Production, Preview, Development
+# ============================================
+

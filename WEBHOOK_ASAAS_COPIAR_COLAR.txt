@@ -1,0 +1,71 @@
+============================================
+WEBHOOK ASAAS - COPIE E COLE DIRETO
+============================================
+
+URL DO WEBHOOK (COPIE ESTA LINHA):
+https://www.zapfarm.com.br/api/asaas/webhook
+
+============================================
+FORMULÁRIO COMPLETO:
+============================================
+
+Nome do Webhook:
+ZapFarm - Pagamentos
+
+URL do Webhook:
+https://www.zapfarm.com.br/api/asaas/webhook
+
+E-mail:
+[COLE SEU EMAIL AQUI]
+
+Versão da API:
+v3
+
+Token de autenticação:
+[DEIXE VAZIO]
+
+Fila de sincronização ativada?:
+✅ SIM
+
+Tipo de envio:
+Sequencial
+
+Este Webhook ficará ativo?:
+✅ SIM
+
+============================================
+EVENTOS PARA SELECIONAR (6 eventos):
+============================================
+
+Na seção "Cobranças", selecione APENAS estes 6 eventos:
+
+✅ PAYMENT_CONFIRMED
+✅ PAYMENT_RECEIVED
+✅ PAYMENT_UPDATED
+✅ PAYMENT_OVERDUE
+✅ PAYMENT_DELETED
+✅ PAYMENT_REFUNDED
+
+============================================
+⚠️ VALIDAÇÃO IMPORTANTE:
+============================================
+
+✅ URL está correta: https://www.zapfarm.com.br/api/asaas/webhook
+✅ Use "www" no domínio (www.zapfarm.com.br)
+✅ Use "https://" (não http://)
+✅ Selecione APENAS os 6 eventos listados acima
+✅ Tipo de envio: Sequencial
+✅ Fila ativada: SIM
+
+============================================
+APÓS CRIAR:
+============================================
+
+1. ✅ Clique em "Salvar" ou "Adicionar Webhook"
+2. ✅ Aguarde confirmação
+3. ✅ Teste fazendo um pagamento de teste
+4. ✅ Verifique logs do Vercel: Dashboard → Functions → /api/asaas/webhook
+5. ✅ Verifique banco: Supabase → zapfarm_orders (deve ter o pedido)
+
+============================================
+

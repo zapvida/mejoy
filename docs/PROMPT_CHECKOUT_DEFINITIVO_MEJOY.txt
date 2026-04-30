@@ -1,0 +1,174 @@
+# MISSÃO: Checkout Me Joy — Layout Zapvida + Máxima Confiança
+
+Refatore o checkout do Me Joy para replicar fielmente o layout dos anexos Zapvida (assets/Captura_de_Tela_*.png), adaptando ao contexto e-commerce (carrinho, endereço, frete). Gateway Asaas (PIX + Cartão). Objetivo: layout lindo, confiante e responsivo ao máximo.
+
+---
+
+## REFERÊNCIA VISUAL (anexos)
+
+Consulte as imagens em assets/ para replicar:
+- Header: Logo + "Ambiente seguro" + cadeado
+- Barra de progresso: círculos numerados, linhas tracejadas
+- Banner verde de benefício
+- Cards brancos com sombra
+- PIX e Cartão como cards clicáveis lado a lado
+- Preview dinâmico do cartão
+- Footer: Termos, reCAPTCHA, badges SSL e PCI DSS
+
+---
+
+## PARTE 1 — ESTRUTURA (2 ETAPAS)
+
+### Etapa 1: "Dados e Entrega"
+- Dados do Cliente: Nome, E-mail, Celular (obrigatórios). CPF opcional.
+- Endereço: CEP (ViaCEP onBlur), Rua, Número, Complemento, Bairro, Cidade, UF.
+- Frete calculado em tempo real após CEP.
+- Resumo do Pedido sempre visível à direita (sticky no desktop).
+
+### Etapa 2: "Pagamento"
+- PIX (padrão) ou Cartão de Crédito.
+- CTA: "Gerar PIX do Pedido →" ou "Confirmar Pedido →".
+
+---
+
+## PARTE 2 — SEÇÃO PAGAMENTO (PIX + CARTÃO) — LAYOUT IDÊNTICO AOS ANEXOS
+
+### Header da seção
+- Título "Pagamento" + ícone CreditCard à esquerda.
+- Logos Visa, Mastercard, Amex, Elo à direita (pequenos, coloridos).
+
+### Seleção de método (2 cards lado a lado)
+- PIX (esquerda) e Cartão de Crédito (direita).
+- Selecionado: border-2 border-orange-500, bg-orange-50, text-orange-600.
+- Não selecionado: border border-gray-200, bg-white, text-gray-500.
+- Cada card: rounded-xl, p-4, ícone central, texto abaixo. Clicável.
+
+### Quando PIX selecionado
+- Bloco 1 "Como funciona?": ícone info, texto "Clique em 'Gerar PIX'. É simples e o processamento é instantâneo."
+- Bloco 2 "Finalize sua compra com facilidade": ícone QR, texto "Abra o app do seu banco, acesse o PIX e escaneie o QR code ou copie o código"
+- Estilo blocos: bg-gray-50 rounded-lg p-4 border border-gray-100
+- CTA: "Gerar PIX do Pedido →" — w-full py-4 rounded-xl bg-orange-500 text-white font-semibold
+
+### Quando Cartão selecionado
+- Layout: lg:grid-cols-2 — campos à esquerda, preview do cartão à direita.
+- Campos: Nome no cartão, Número do cartão (ícone à esquerda), Validade (MM/AA), CVV.
+- Preview do cartão: bg-gray-800 rounded-xl, chip dourado, número com pontos (••••), "TITULAR DO CARTÃO" + nome em maiúsculas, "VALIDADE" + MM/AA. Atualização em tempo real.
+- CTA: "Confirmar Pedido →"
+
+---
+
+## PARTE 3 — FOOTER (TRUST) — IDÊNTICO AOS ANEXOS
+
+- Texto centralizado: "Ao confirmar o pagamento, você concorda com nossos" + link azul "Termos de Uso e Política de Privacidade"
+- "Este site está protegido pelo Google reCAPTCHA. " + link azul "Política de Privacidade e Termos de Serviço."
+- Badges: "SITE SEGURO SSL 256 BITS" (verde/amarelo, cadeado) e "PCI DSS COMPLIANT" (verde/cinza)
+- flex justify-center gap-4 mt-4
+
+---
+
+## PARTE 4 — HEADER E PROGRESSO
+
+### Header
+- Logo Me Joy (link /) à esquerda.
+- Direita: Lock + "Ambiente seguro" (text-gray-600).
+- sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100.
+
+### Barra de progresso
+- 2 passos: "1 Dados e Entrega" | "2 Pagamento".
+- Círculos w-10 h-10 rounded-full. Atual: bg-orange-500 text-white. Concluído: bg-green-500 + Check. Pendente: bg-gray-200 text-gray-500.
+- Linhas tracejadas entre os passos.
+
+### Banner
+- bg-emerald-50 border-emerald-100 rounded-xl p-4.
+- Texto: "Frete grátis acima de R$ X" ou "Faltam R$ X para frete grátis" ou "Informe seu CEP para calcular o frete".
+
+---
+
+## PARTE 5 — CARDS DE FORMULÁRIO
+
+- bg-white rounded-xl shadow-sm border border-gray-100.
+- CardHeader: ícone (User, MapPin) + título + subtítulo.
+- CardContent: p-6 space-y-4.
+
+### Card Dados do Cliente
+- User + "Dados do Cliente" + "Preencha seus dados para continuar"
+- Campos: Nome completo, E-mail, Celular, CPF (opcional, tooltip "Opcional para PIX")
+
+### Card Endereço de Entrega
+- MapPin + "Endereço de Entrega"
+- CEP com ViaCEP. Sucesso: "✓ Endereço preenchido automaticamente" (text-green-600).
+- Campos: CEP, Rua, Número, Complemento, Bairro, Cidade, UF.
+
+### Card Resumo do Pedido
+- FileText + "Resumo do Pedido"
+- Lista itens (nome, qtd × preço), Subtotal, Frete, Total (destaque).
+- sticky top-24 no desktop. Mobile: colapsável no topo.
+
+---
+
+## PARTE 6 — LAYOUT E BACKGROUND
+
+- Background: bg-gray-100 (consistente com loja).
+- Desktop: grid lg:grid-cols-[1fr_400px] gap-8.
+- Mobile: coluna única, resumo colapsável.
+
+---
+
+## PARTE 7 — VALIDAÇÃO
+
+### Step 1 (bloquear avanço)
+- Nome ≥3, E-mail válido, Celular 11 dígitos, CEP 8 dígitos válido, Rua, Número, Bairro, Cidade, UF.
+
+### Backend (create-payment)
+- Validar CEP e endereço. Retornar 400 se inválido.
+- CEP ausente: frete R$ 29,90.
+
+### Persistência
+- localStorage/sessionStorage para dados do formulário (debounce 500ms).
+
+---
+
+## PARTE 8 — ARQUIVOS
+
+### Modificar
+- src/pages/checkout/index.tsx
+- src/pages/api/store-v2/create-payment.ts
+
+### Criar
+- src/components/store-v2/checkout/CheckoutHeader.tsx
+- src/components/store-v2/checkout/CheckoutSteps.tsx
+- src/components/store-v2/checkout/CheckoutBanner.tsx
+- src/components/store-v2/checkout/OrderSummaryCard.tsx
+- src/components/store-v2/checkout/CheckoutFooter.tsx
+- src/components/store-v2/checkout/AddressForm.tsx
+- src/components/store-v2/checkout/PaymentForm.tsx (PIX + Cartão com preview)
+- src/components/store-v2/checkout/CreditCardPreview.tsx
+
+---
+
+## PARTE 9 — ORDEM DE EXECUÇÃO
+
+1. Validação backend (CEP, endereço, frete padrão)
+2. CheckoutHeader + CheckoutSteps + CheckoutBanner
+3. Layout 2 colunas
+4. Card Dados do Cliente + Card Endereço (ViaCEP)
+5. OrderSummaryCard sticky
+6. PaymentForm: cards PIX/Cartão + blocos PIX + formulário Cartão + preview
+7. CheckoutFooter (Termos, badges)
+8. Validação Step 1
+9. Persistência
+10. Testes PIX e Cartão
+
+---
+
+## PARTE 10 — CRITÉRIOS DE ACEITAÇÃO
+
+- [ ] Layout idêntico aos anexos Zapvida (PIX e Cartão como cards, footer com badges)
+- [ ] PIX e Cartão funcionais (gateway Asaas)
+- [ ] Preview do cartão atualiza em tempo real
+- [ ] CEP preenche endereço via ViaCEP
+- [ ] Endereço obrigatório; não avança sem CEP válido
+- [ ] Frete consistente front/back
+- [ ] Trust badges SSL e PCI DSS visíveis
+- [ ] Responsivo (mobile: resumo colapsável)
+- [ ] Dados persistidos

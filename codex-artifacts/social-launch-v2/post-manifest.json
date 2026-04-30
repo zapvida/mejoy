@@ -1,0 +1,101 @@
+[
+  {
+    "post": 1,
+    "slug": "direcao-medica",
+    "category": "POSICIONAMENTO",
+    "title": "Emagrecer com direção médica",
+    "subtitle": "Clareza, plano individual e acompanhamento para construir resultado sustentável.",
+    "cta": "Começar minha triagem",
+    "source_image": "public/images/emagrecimento/medvi/hero-main.webp",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/01-direcao-medica.jpg",
+    "caption": "Se você já tentou recomeçar muitas vezes, talvez o que faltou não tenha sido esforço. Faltou direção.\n\nNa Me Joy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.\n\nSe fizer sentido para você, comece pela triagem.\n\n#EmagrecimentoComAcompanhamento #SaudeMetabolica #MeJoy"
+  },
+  {
+    "post": 2,
+    "slug": "seu-caso-primeiro",
+    "category": "TRIAGEM",
+    "title": "Seu caso vem antes da solução",
+    "subtitle": "A triagem organiza histórico, rotina e objetivos antes de qualquer decisão.",
+    "cta": "Entender meu caso",
+    "source_image": "public/images/emagrecimento/medvi/journey-triagem.avif",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/02-seu-caso-primeiro.jpg",
+    "caption": "Antes de pensar em solução, vale entender o seu caso.\n\nA triagem ajuda a organizar histórico, rotina e objetivos com mais clareza. Decisão boa começa com contexto.\n\nComeçar por aqui deixa o próximo passo mais seguro e mais inteligente.\n\n#TriagemOnline #EmagrecimentoComAcompanhamento #MeJoy"
+  },
+  {
+    "post": 3,
+    "slug": "criterio-clinico",
+    "category": "SEGURANÇA",
+    "title": "Toda conduta começa com critério",
+    "subtitle": "Avaliação clínica antes de qualquer ajuste, prescrição ou próximo passo.",
+    "cta": "Ver como funciona",
+    "source_image": "public/images/emagrecimento/medvi/journey-consulta.avif",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/03-criterio-clinico.jpg",
+    "caption": "Emagrecimento sério não é receita pronta.\n\nToda conduta precisa passar por avaliação clínica, com critério e responsabilidade. É assim que a jornada fica mais segura e mais clara.\n\nSegurança não atrasa o processo. Segurança protege o processo.\n\n#AvaliacaoMedica #TratamentoDaObesidade #MeJoy"
+  },
+  {
+    "post": 4,
+    "slug": "acompanhamento-real",
+    "category": "ACOMPANHAMENTO",
+    "title": "Você não precisa sustentar isso sozinho(a)",
+    "subtitle": "Com acompanhamento certo, a rotina pesa menos e a constância fica mais viável.",
+    "cta": "Conhecer o acompanhamento",
+    "source_image": "public/images/emagrecimento/medvi/reviews-06.webp",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/04-acompanhamento-real.jpg",
+    "caption": "Você não precisa carregar esse processo sozinho(a).\n\nQuando existe acompanhamento, fica mais fácil manter constância, ajustar rota e seguir com mais leveza.\n\nSuporte certo muda a jornada.\n\n#AcompanhamentoContinuo #SaudeMetabolica #MeJoy"
+  },
+  {
+    "post": 5,
+    "slug": "vida-real",
+    "category": "ROTINA",
+    "title": "Seu plano precisa\ncaber na rotina",
+    "subtitle": "Resultado sustentável nasce de adesão, ajustes e estratégia possível.",
+    "cta": "Buscar constância",
+    "source_image": "public/images/emagrecimento/medvi/metabolism-habits.avif",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/05-vida-real.jpg",
+    "caption": "O melhor plano não é o mais rígido. É o que você consegue sustentar na vida real.\n\nConstância, ajuste e rotina possível valem mais do que pressa.\n\nQuando a estratégia cabe na sua vida, o cuidado fica mais forte.\n\n#Constancia #EmagrecimentoComAcompanhamento #MeJoy"
+  },
+  {
+    "post": 6,
+    "slug": "historias-reais",
+    "category": "CONFIANÇA",
+    "title": "Histórias reais,\nsem exagero",
+    "subtitle": "Cada pessoa responde de um jeito. O que importa é cuidado com honestidade.",
+    "cta": "Ver histórias reais",
+    "source_image": "public/images/emagrecimento/medvi/reviews-01.webp",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/06-historias-reais.jpg",
+    "caption": "Aqui, a conversa não é sobre milagre. É sobre cuidado honesto, individual e possível.\n\nCada pessoa responde de um jeito. O importante é ter direção, acompanhamento e expectativa realista.\n\nConfiança se constrói com verdade.\n\n#HistoriasReais #TratamentoDaObesidade #MeJoy"
+  },
+  {
+    "post": 7,
+    "slug": "sustentabilidade",
+    "category": "SUSTENTABILIDADE",
+    "title": "Resultado bom é o que continua",
+    "subtitle": "Menos ansiedade por pressa. Mais consistência para manter progresso com responsabilidade.",
+    "cta": "Entender o processo",
+    "source_image": "public/images/emagrecimento/medvi/reviews-04.avif",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/07-sustentabilidade.jpg",
+    "caption": "Resultado bom não é só o que aparece rápido. É o que continua fazendo sentido ao longo do caminho.\n\nSustentabilidade vem antes de ansiedade. Consistência vem antes de impulso.\n\nÉ assim que o progresso se sustenta.\n\n#ResultadosSustentaveis #SaudeMetabolica #MeJoy"
+  },
+  {
+    "post": 8,
+    "slug": "clareza-e-leveza",
+    "category": "BEM-ESTAR",
+    "title": "Mais clareza. Menos culpa.",
+    "subtitle": "Quando o processo faz sentido, cuidar da saúde deixa de ser guerra diária.",
+    "cta": "Cuidar com clareza",
+    "source_image": "public/images/emagrecimento/medvi/reviews-03.avif",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/08-clareza-e-leveza.jpg",
+    "caption": "Quando você entende o processo, o cuidado fica mais leve.\n\nMenos culpa. Menos confusão. Mais clareza para continuar.\n\nIsso também é resultado.\n\n#BemEstar #SaudeMetabolica #MeJoy"
+  },
+  {
+    "post": 9,
+    "slug": "comecar-com-clareza",
+    "category": "PRÓXIMO PASSO",
+    "title": "Comece pelo que faz sentido para você",
+    "subtitle": "A triagem ajuda a entender seu momento com privacidade e direção inicial.",
+    "cta": "Fazer minha triagem",
+    "source_image": "public/images/emagrecimento/medvi/hero-secondary.webp",
+    "final_image": "codex-artifacts/social-launch-v2/final-posts/09-comecar-com-clareza.jpg",
+    "caption": "Nem todo mundo precisa da mesma estratégia. Por isso, o primeiro passo é entender o que faz sentido para você hoje.\n\nSe quiser começar com clareza, a triagem está aberta.\n\nDireção antes de decisão.\n\n#TriagemOnline #EmagrecimentoComAcompanhamento #MeJoy"
+  }
+]

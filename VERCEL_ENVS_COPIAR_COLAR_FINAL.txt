@@ -1,0 +1,66 @@
+============================================
+VARIÁVEIS DE AMBIENTE - VERCEL
+FLUXO EMAGRECIMENTO - COPIE E COLE
+============================================
+
+OBRIGATÓRIAS (5):
+
+1. OPENAI_API_KEY
+   Valor: sk-proj-SUA_CHAVE_OPENAI_AQUI
+
+2. STRIPE_SECRET_KEY
+   Valor: sk_live_SUA_CHAVE_STRIPE_AQUI
+   (Use sk_test_... para Preview/Development)
+
+3. STRIPE_PRICE_ZAPFARM_MENSAL
+   Valor: price_SUA_PRICE_ID_MENSAL
+
+4. STRIPE_PRICE_ZAPFARM_TRIMESTRAL
+   Valor: price_SUA_PRICE_ID_TRIMESTRAL
+
+5. STRIPE_PRICE_ZAPFARM_SEMESTRAL
+   Valor: price_SUA_PRICE_ID_SEMESTRAL
+
+OPCIONAIS MAS RECOMENDADAS (3):
+
+6. AI_REPORT_ENABLED
+   Valor: 1
+
+7. NEXT_PUBLIC_SUPABASE_URL
+   Valor: https://SEU_PROJETO.supabase.co
+
+8. SUPABASE_SERVICE_ROLE_KEY
+   Valor: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
+
+CONFIGURAÇÃO BÁSICA (3):
+
+9. NODE_ENV
+   Valor: production
+   (Para Preview/Development use: development)
+
+10. NEXT_PUBLIC_BASE_URL
+    Valor: https://SEU_DOMINIO.com.br
+
+11. NEXT_PUBLIC_SITE_URL
+    Valor: https://SEU_DOMINIO.com.br
+
+FEATURE FLAGS (2):
+
+12. NEXT_PUBLIC_TRIAGE_GI_ENHANCED
+    Valor: 1
+
+13. NEXT_PUBLIC_SHOW_PARTNER_CTAS
+    Valor: 1
+
+============================================
+INSTRUÇÕES:
+============================================
+1. Vercel Dashboard → Seu Projeto → Settings → Environment Variables
+2. Clique em "Add New" para cada variável acima
+3. Cole o Name e Value exatamente como mostrado
+4. Marque os ambientes: Production, Preview, Development
+5. Substitua SUA_CHAVE_* pelos valores reais
+6. Clique em "Save"
+
+============================================
+

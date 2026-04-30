@@ -1,0 +1,1 @@
+Due to lack of safe staging credentials and the risk of mutating production Supabase/Stripe data, automated browser-based validations (print-ready PDF capture, Lighthouse, axe, GA4 event sniffing) were not executed in this pass. See CODEX_REVIEW.md for remediation plan.

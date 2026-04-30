@@ -1,0 +1,375 @@
+/* Base "neutra" - Me Joy Farma: laranja forte */
+:root {
+  --brand: 24 95% 47%;        /* laranja forte #EA580C (HSL para Tailwind) */
+  --brand-contrast: #ffffff;  /* texto sobre primário */
+  --accent: 24 95% 53%;       /* realces (orange-500) */
+  --muted: 24 95% 98%;       /* bg suave (orange-50) */
+  --ink: #0f172a;             /* texto forte (slate-900) */
+  --subtle: #475569;          /* texto fraco (slate-600) */
+  --ring: rgba(234,88,12,.35);
+  
+  /* Tokens adicionais para LPAC */
+  --brand-600: var(--brand);
+  --brand-700: 24 95% 42%;
+  --accent-600: var(--accent);
+  --accent-700: 24 95% 47%;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --border: #e5e7eb;
+  --bg: #f7faf8;
+  --surface: #ffffff;
+  --text: var(--ink);
+  --text-soft: var(--subtle);
+  --ink-muted: #334155;
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow: rgba(2, 6, 23, 0.10);
+  --radius: 16px;
+}
+
+/* ====== TEMA A — Emerald Trust (moderno, confiável) ====== */
+.theme-emerald {
+  --brand: #0fbf71;           /* 600 */
+  --brand-contrast: #ffffff;
+  --accent: #34d399;          /* emerald/green clara */
+  --muted: #eefcf6;
+  --ink: #0b1220;
+  --subtle: #4b5563;
+  --ring: rgba(15,191,113,.35);
+}
+
+/* ====== TEMA B — Navy Teal (corporate premium) ====== */
+.theme-navyteal {
+  --brand: #0ea5a5;           /* teal 500 */
+  --brand-contrast: #ffffff;
+  --accent: #22d3ee;          /* cyan 400 */
+  --muted: #f0fdff;
+  --ink: #0b1220;
+  --subtle: #475569;
+  --ring: rgba(14,165,165,.35);
+}
+
+/* ====== TEMA C — Slate + Lime (tech performance) ====== */
+.theme-lime {
+  --brand: #84cc16;           /* lime 500 */
+  --brand-contrast: #0b1220;
+  --accent: #a3e635;          /* lime 400 */
+  --muted: #f7fee7;
+  --ink: #0b1220;
+  --subtle: #475569;
+  --ring: rgba(132,204,22,.35);
+}
+
+/* Utilidades mínimas para usar as variáveis sem mexer no tailwind.config */
+.btn-brand {
+  background: var(--brand);
+  color: var(--brand-contrast);
+  border-radius: 0.75rem;
+  padding: .875rem 1.125rem;
+  font-weight: 600;
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  transition: filter 0.2s;
+}
+.btn-brand:hover {
+  filter: brightness(0.95);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ring);
+  border-radius: 0.75rem;
+  padding: .875rem 1.125rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-ghost:hover {
+  background: var(--muted);
+}
+
+.badge-accent {
+  background: var(--muted);
+  color: var(--ink);
+  border: 1px solid var(--ring);
+  padding: .5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.text-ink {
+  color: var(--ink);
+}
+
+.text-ink-muted {
+  color: var(--ink-muted);
+}
+
+.text-subtle {
+  color: var(--subtle);
+}
+
+.bg-muted {
+  background: var(--muted);
+}
+
+.ring-brand {
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* ========== Compatibilidade: --brand-600 e --brand-700 (para JS applyBrandVars) ========== */
+:root {
+  --brand-600: var(--brand);
+  --brand-700: var(--brand);
+  --accent-600: var(--accent);
+  --accent-700: var(--accent);
+}
+
+/* JS sobrescreve via applyBrandVars() quando tenant tem cores personalizadas */
+
+/* Utilitários LPAC */
+.btn-gradient-brand {
+  background-image: linear-gradient(90deg, var(--brand-700), var(--brand-600));
+  color: white;
+  border: none;
+  border-radius: 18px;
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-gradient-brand:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-600) 65%, white);
+}
+
+/* Sticky CTA: respeitar safe-area */
+.sticky-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Padding-bottom para conteúdo não ser coberto pelo Sticky CTA (mobile) */
+.pb-safe {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .pb-safe {
+    padding-bottom: 0;
+  }
+}
+
+/* Scroll anchors */
+[id] { scroll-margin-top: 88px; }
+
+/* ====== LPAC VIBRANTE (scoped utilities - apply only inside [data-lpac="vibrant"]) ====== */
+[data-lpac="vibrant"] {
+  /* Aurora de fundo suave para HERO */
+  --lpac-aurora-1: radial-gradient(1200px 600px at 20% 10%, rgba(16,185,129,.20), transparent 60%);
+  --lpac-aurora-2: radial-gradient(1000px 500px at 80% 20%, rgba(14,165,233,.18), transparent 60%);
+  --lpac-aurora-3: radial-gradient(900px 450px at 50% 80%, rgba(245,158,11,.16), transparent 60%);
+  --lpac-noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.05'/></svg>");
+  
+  /* Gradients tokens (hex ok) */
+  --lpac-emerald-from: #34d399;
+  --lpac-emerald-to: #059669;
+  --lpac-teal-from: #2dd4bf;
+  --lpac-teal-to: #0d9488;
+  --lpac-blue-from: #60a5fa;
+  --lpac-blue-to: #2563eb;
+  --lpac-indigo-from: #818cf8;
+  --lpac-indigo-to: #4f46e5;
+  --lpac-violet-from: #a78bfa;
+  --lpac-violet-to: #7c3aed;
+  --lpac-fuchsia-from: #f0abfc;
+  --lpac-fuchsia-to: #c026d3;
+  --lpac-rose-from: #fb7185;
+  --lpac-rose-to: #e11d48;
+  --lpac-orange-from: #fb923c;
+  --lpac-orange-to: #ea580c;
+  --lpac-amber-from: #fbbf24;
+  --lpac-amber-to: #d97706;
+  --lpac-cyan-from: #22d3ee;
+  --lpac-cyan-to: #0891b2;
+}
+
+[data-lpac="vibrant"] .lpac-aurora {
+  background-image: var(--lpac-aurora-1), var(--lpac-aurora-2), var(--lpac-aurora-3);
+  background-blend-mode: screen;
+  position: relative;
+  isolation: isolate;
+}
+
+[data-lpac="vibrant"] .lpac-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--lpac-noise);
+  opacity: .35;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-lpac="vibrant"] .lpac-aurora {
+    animation: lpac-pan 18s ease-in-out infinite alternate;
+  }
+  @keyframes lpac-pan {
+    0% { background-position: 0% 0%, 100% 0%, 50% 100%; }
+    100% { background-position: 50% 20%, 80% 10%, 40% 80%; }
+  }
+}
+
+/* Gradient cards (Light only) */
+[data-lpac="vibrant"] .lpac-gcard {
+  color: #0b1220;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.20);
+  display: flex;
+  align-items: center;
+}
+
+[data-lpac="vibrant"] .lpac-gcard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,.25);
+}
+
+[data-lpac="vibrant"] .lpac-hover {
+  transition: transform .5s, box-shadow .5s;
+}
+
+[data-lpac="vibrant"] .lpac-gcard > * {
+  width: 100%;
+}
+
+/* Presets de gradientes vibrantes */
+[data-lpac="vibrant"] .lpac-gcard-emerald {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-blue {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-violet {
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #7c3aed 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-rose {
+  background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 50%, #db2777 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-amber {
+  background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-indigo {
+  background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #4f46e5 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-cyan {
+  background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 50%, #06b6d4 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard-orange {
+  background: linear-gradient(135deg, #fdba74 0%, #fb923c 50%, #f97316 100%);
+}
+
+[data-lpac="vibrant"] .lpac-gcard {
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-blend-mode: normal !important;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Contraste AA garantido */
+[data-lpac="vibrant"] section h1,
+[data-lpac="vibrant"] section h2,
+[data-lpac="vibrant"] section h3 {
+  color: #0b1220 !important;
+}
+
+[data-lpac="vibrant"] .text-ink-muted {
+  color: #24323a !important;
+}
+
+/* Textos brancos sobre cards */
+[data-lpac="vibrant"] .lpac-gcard .text-white,
+[data-lpac="vibrant"] .lpac-gcard .text-white\/90 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Chip vibrante para badges */
+[data-lpac="vibrant"] .lpac-chip {
+  background: rgba(255,255,255,.25);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.3);
+}
+
+/* Mobile-first */
+@media (max-width: 767px) {
+  [data-lpac="vibrant"] h1 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  [data-lpac="vibrant"] h2 {
+    font-size: 1.5rem !important;
+  }
+
+  [data-lpac="vibrant"] .lpac-gcard {
+    padding: 1rem !important;
+  }
+
+  [data-lpac="vibrant"] .hero-stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* Dark mode fallback */
+[data-theme="dark"][data-lpac="vibrant"] .lpac-gcard {
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--ink)) !important;
+}
+
+[data-theme="dark"][data-lpac="vibrant"] .lpac-gcard .text-white {
+  color: hsl(var(--ink)) !important;
+}
+
+[data-theme="dark"][data-lpac="vibrant"] .lpac-aurora {
+  background: none;
+}
+
+/* Sticky CTA — remover contorno duplo */
+[data-lpac="vibrant"] .sticky-bottom button,
+[data-lpac="vibrant"] .sticky-bottom a {
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
+  outline: none !important;
+  border: none !important;
+}
+
+/* Garantir espaçamentos consistentes entre seções */
+[data-lpac="vibrant"] section {
+  scroll-margin-top: 88px;
+}
+
+/* Hero - ajustes de espaçamento e tipografia */
+[data-lpac="vibrant"] section#hero {
+  scroll-margin-top: 80px;
+}
+
+[data-lpac="vibrant"] section#hero h1 {
+  line-height: 1.1;
+}

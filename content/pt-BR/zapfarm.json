@@ -1,0 +1,261 @@
+{
+  "brand": {
+    "name": "AlloeHealth",
+    "owner": "AlloeZil",
+    "tagline": "Triagens inteligentes. Relatórios claros. Ação certa.",
+    "disclaimer": "Este relatório não substitui consulta médica. Em caso de sinais de alerta, procure atendimento.",
+    "institutional_footer": "AlloeHealth é oferecido gratuitamente pela AlloeZil e pela ZapVida."
+  },
+  "palette": {
+    "brand": "#00D084",
+    "black": "#0A0A0A",
+    "white": "#FFFFFF"
+  },
+  "utm": {
+    "source": "alloehealth",
+    "default_mediums": ["landing", "triagem", "report", "pdf", "email", "whatsapp"],
+    "products": {
+      "base": "https://alloeoficial.com.br/",
+      "params": "utm_source=alloehealth&utm_medium={context}&utm_campaign=cta_produtos&utm_content={triagem}"
+    },
+    "doctor": {
+      "base": "https://zapvida.com/plantao",
+      "params": "utm_source=alloehealth&utm_medium={context}&utm_campaign=cta_plantao&utm_content={triagem}"
+    }
+  },
+  "cta": {
+    "order": ["pass", "gift", "products", "doctor"],
+    "pass": {
+      "label": "Liberar todas as triagens • R$ 49",
+      "sub": "Passe de 30 dias • Sem renovação automática",
+      "href": "/assinatura",
+      "kind": "internal"
+    },
+    "gift": {
+      "label": "Presentear acesso • R$ 89",
+      "sub": "Envie o relatório+triagens para alguém especial",
+      "href": "/presente",
+      "kind": "internal"
+    },
+    "products": {
+      "label": "Conhecer produtos Alloe",
+      "sub": "Soluções recomendadas para você",
+      "href": "https://alloeoficial.com.br/",
+      "kind": "external",
+      "utm": "{products.base}?{products.params}"
+    },
+    "doctor": {
+      "label": "Falar com médico agora",
+      "sub": "Atendimento em minutos via ZapVida",
+      "href": "https://zapvida.com/plantao",
+      "kind": "external",
+      "utm": "{doctor.base}?{doctor.params}"
+    }
+  },
+  "home": {
+    "h1_variants": [
+      "Seu check-up GI em minutos",
+      "Triagem GI gratuita. Relatório claro.",
+      "Entenda seus sintomas GI hoje",
+      "Seu plano GI, simples e confiável",
+      "Responda agora. Aja ainda hoje.",
+      "Triagem GI inteligente, 100% online",
+      "Menos dúvida. Mais direção GI."
+    ],
+    "sub_variants": [
+      "Responda perguntas simples e receba um plano prático baseado em evidências.",
+      "Relatório personalizado por idade, sexo e IMC. Não é diagnóstico.",
+      "Em 3–6 minutos você entende o que observar e como agir.",
+      "Sinais de alerta, próximos passos e opções de ação em um só lugar.",
+      "Sem cadastro obrigatório. Relatório imprimível para levar ao médico."
+    ],
+    "primary_cta": "Fazer triagem GI gratuita agora",
+    "proof_bullets": [
+      "+100 recomendações personalizadas",
+      "Relatório pronto em poucos minutos",
+      "Privacidade e segurança de dados"
+    ],
+    "how_it_works": [
+      "Responda a triagem GI",
+      "Receba relatório com sinais de alerta e plano",
+      "Aja: passe R$49, presente R$89, produtos Alloe, médico em minutos"
+    ],
+    "trust": "Baseado em evidências (OMS, Cochrane, Harvard). Não substitui consulta."
+  },
+  "triage_gastro": {
+    "title": "Triagem Gastrointestinal",
+    "sub_variants": [
+      "Leva 3–6 minutos. Quanto melhor você responde, mais útil fica o relatório.",
+      "Você pode parar e continuar depois — salvamos seu progresso.",
+      "Se não souber, selecione \"Não sei\"."
+    ],
+    "tips": [
+      "Seja fiel aos sintomas",
+      "Tenha peso/altura à mão",
+      "Se não souber, selecione 'Não sei'"
+    ],
+    "placeholders": {
+      "height": "Ex.: 1,75 m",
+      "weight": "Ex.: 72 kg"
+    },
+    "progress_copy": "Faltam {{remaining}} passos para o seu relatório",
+    "completion_copy": "Relatório pronto! Estamos organizando tudo pra você…",
+    "finish_cta": "Gerar meu relatório agora"
+  },
+  "report": {
+    "title": "Seu relatório personalizado",
+    "summary_title": "Resumo do que encontramos",
+    "sections": {
+      "hypotheses": "Principais hipóteses (sem diagnosticar)",
+      "whats_happening": "O que pode estar acontecendo",
+      "do_today": "O que fazer hoje",
+      "red_flags": "Sinais de alerta (procure atendimento)",
+      "tests": "Exames sugeridos (quando cabível)",
+      "refs": "Referências científicas"
+    },
+    "print_hint": "Você pode imprimir e levar ao seu médico.",
+    "pdf_button": "Baixar PDF",
+    "cta_deck_hint": "Transforme o plano em ação"
+  },
+  "paywall": {
+    "title": "Desbloqueie todas as triagens",
+    "body": "Relatórios completos por 30 dias por R$ 49. Sem renovação automática.",
+    "gift_hint": "Ou presenteie alguém por R$ 89."
+  },
+  "assinatura": {
+    "h1_variants": [
+      "Passe AlloeHealth — 30 dias por R$ 49",
+      "Todas as triagens, por 30 dias",
+      "Relatórios completos, sem renovação",
+      "Acesso total hoje — R$ 49",
+      "Evolua além da triagem GI"
+    ],
+    "sub_variants": [
+      "Passe de 30 dias. Sem renovação automática.",
+      "Relatórios imprimíveis e suporte por e-mail.",
+      "Ative agora; não recorrente."
+    ],
+    "bullets": [
+      "Acesso imediato",
+      "Todas as triagens liberadas",
+      "Relatórios \"nível médico\""
+    ],
+    "cta": "Ativar meu passe de 30 dias"
+  },
+  "presente": {
+    "h1_variants": [
+      "Presenteie saúde — 30 dias por R$ 89",
+      "Um presente útil de verdade",
+      "Envie acesso AlloeHealth para alguém",
+      "Relatórios e triagens para quem você ama",
+      "Presente digital. Resgate em 1 clique."
+    ],
+    "sub_variants": [
+      "Envio por e-mail/WhatsApp, com mensagem personalizada.",
+      "Código válido por 6 meses. Ativação imediata."
+    ],
+    "bullets": [
+      "Entrega por e-mail/WhatsApp",
+      "Mensagem personalizada",
+      "Resgate em 1 clique"
+    ],
+    "cta": "Presentear acesso • R$ 89"
+  },
+  "obrigado": {
+    "title": "Acesso ativado com sucesso",
+    "sub": "Explore as triagens e gere seus relatórios quando quiser.",
+    "cta": "Ir para as triagens",
+    "hint": "Dica: comece pela triagem GI gratuita."
+  },
+  "resgatar": {
+    "title": "Resgatar presente",
+    "sub": "Digite seu código para liberar 30 dias de acesso.",
+    "cta": "Resgatar agora",
+    "placeholder": "Código do presente"
+  },
+  "pdf": {
+    "header_title_variants": [
+      "Relatório AlloeHealth — pessoal e imprimível",
+      "Seu relatório GI — versão para impressão"
+    ],
+    "footer_disclaimer": "Este relatório não substitui consulta médica. Em caso de sinais de alerta, procure atendimento.",
+    "button": "Baixar PDF"
+  },
+  "seo": {
+    "home_title": "AlloeHealth — Triagem GI e relatório personalizado",
+    "home_desc": "Faça sua triagem gastrointestinal gratuita. Relatório claro e plano prático. Produtos Alloe e consulta via ZapVida.",
+    "triage_title": "Triagem GI gratuita — AlloeHealth",
+    "triage_desc": "Responda em minutos e receba um relatório confiável e imprimível.",
+    "report_title": "Seu relatório de saúde — AlloeHealth",
+    "report_desc": "Resumo, sinais de alerta e próximos passos baseados nas suas respostas."
+  },
+  "microcopy": {
+    "loader": "Preparando seu relatório…",
+    "error_generic": "Opa, algo não saiu como esperado. Tente novamente; seus dados estão salvos.",
+    "empty_state": "Nada por aqui ainda. Que tal começar pela triagem GI gratuita?",
+    "validation": {
+      "required": "Preencha este campo para personalizarmos o relatório.",
+      "email": "Digite um e-mail válido.",
+      "phone": "Digite um WhatsApp válido (apenas números).",
+      "height": "Altura em metros. Ex.: 1,75",
+      "weight": "Peso em kg. Ex.: 72"
+    },
+    "a11y": {
+      "theme_toggle": "Alternar tema claro/escuro",
+      "skip_to_content": "Ir para o conteúdo"
+    }
+  },
+  "legal": {
+    "footer_institutional": "AlloeHealth é oferecido gratuitamente pela AlloeZil e pela ZapVida.",
+    "refund": "Garantia: 7 dias para reembolso em caso de falhas ou indisponibilidade.",
+    "privacy_hint": "Tratamos seus dados conforme nossa Política de Privacidade."
+  },
+  "emails": {
+    "d0_report_ready": {
+      "subject": "Seu relatório AlloeHealth chegou 📄",
+      "preview": "Resumo do que observamos e o que fazer hoje.",
+      "body": [
+        "Olá, {{firstName}}!",
+        "Seu relatório personalizado está pronto. Veja o que observamos e os próximos passos práticos.",
+        "Você pode imprimir e levar ao seu médico.",
+        "Transforme o plano em ação:"
+      ],
+      "cta_deck": true
+    },
+    "d1_act_today": {
+      "subject": "3 passos práticos para hoje",
+      "preview": "Ações simples baseadas nas suas respostas.",
+      "body": [
+        "Selecionamos três ações simples para você começar agora:",
+        "• Sono: {{tip_sono}}",
+        "• Nutrição: {{tip_nutricao}}",
+        "• Rotina: {{tip_rotina}}"
+      ],
+      "cta_priority": "products_doctor"
+    },
+    "d3_pass_offer": {
+      "subject": "Desbloqueie todas as triagens por R$ 49",
+      "preview": "Acesso total por 30 dias — sem renovação automática.",
+      "body": [
+        "Amplie sua visão com acesso total por 30 dias.",
+        "Relatórios completos, imprimíveis e suporte por e-mail."
+      ],
+      "cta": "pass"
+    },
+    "d7_gift": {
+      "subject": "Um presente útil de verdade 🎁",
+      "preview": "30 dias de AlloeHealth para quem você ama.",
+      "body": [
+        "Surpreenda alguém com 30 dias de AlloeHealth.",
+        "Entrega por e-mail/WhatsApp, mensagem personalizada e resgate em 1 clique."
+      ],
+      "cta": "gift"
+    },
+    "footer_disclaimer": "Este e-mail tem caráter informativo e não substitui consulta médica. Para sinais de alerta, procure atendimento."
+  },
+  "whatsapp": {
+    "report_ready": "Olá! Seu relatório está pronto: {{link}}. Precisar, conte com a gente.",
+    "daily_tip": "Dica do dia: {{dica}}. Veja seu plano completo: {{link}}.",
+    "doctor_now": "Sintomas pioraram? Fale com um médico agora: {{zapvida_link}}."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "successRate": "100.0%",
+    "duration": "7.67s",
+    "timestamp": "2025-11-05T02:55:55.633Z",
+    "baseUrl": "https://www.aistotele.com"
+  },
+  "errors": []
+}

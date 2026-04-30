@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-10-19T00:47:53.253Z",
+  "results": {
+    "passed": 21,
+    "failed": 10,
+    "errors": [
+      {
+        "test": "Arquivo src/utils/health.ts",
+        "message": "não encontrado"
+      },
+      {
+        "test": "Arquivo src/hooks/useAutosaveTriage.ts",
+        "message": "não encontrado"
+      },
+      {
+        "test": "Arquivo src/pages/api/triage/start.ts",
+        "message": "não encontrado"
+      },
+      {
+        "test": "Arquivo src/pages/api/triage/autosave.ts",
+        "message": "não encontrado"
+      },
+      {
+        "test": "Arquivo src/pages/triagem/gastro.tsx",
+        "message": "não encontrado"
+      },
+      {
+        "test": "Parser de data implementado",
+        "message": ""
+      },
+      {
+        "test": "API start com UUID",
+        "message": ""
+      },
+      {
+        "test": "API autosave com PATCH",
+        "message": ""
+      },
+      {
+        "test": "Variáveis de ambiente documentadas",
+        "message": ""
+      },
+      {
+        "test": "TypeScript typecheck",
+        "message": "Command failed: npx tsc --noEmit"
+      }
+    ]
+  },
+  "summary": {
+    "total": 31,
+    "passed": 21,
+    "failed": 10,
+    "successRate": 68
+  }
+}

@@ -1,0 +1,142 @@
+import type { Step } from '@/types/triagem';
+import { stepAceitaTermos } from '../shared/consentimento';
+import { stepIdadeFaixa, stepSexo } from '../shared/dadosBasicos';
+
+export const perguntasFigado: Step[] = [
+  stepAceitaTermos,
+  stepIdadeFaixa,
+  stepSexo,
+  {
+    name: 'sintomas_principais',
+    type: 'multiselect',
+    label: 'Quais sintomas você apresenta?',
+    options: [
+      { value: 'Cansaço pós-refeição', label: 'Cansaço pós-refeição' },
+      { value: 'Inchaço abdominal', label: 'Inchaço abdominal' },
+      { value: 'Digestão lenta', label: 'Digestão lenta' },
+      { value: 'Náusea ocasional', label: 'Náusea ocasional' },
+      { value: 'Amarelamento da pele/olhos', label: 'Amarelamento da pele/olhos' },
+      { value: 'Não tenho sintomas, só quero prevenir', label: 'Não tenho sintomas, só quero prevenir' },
+    ],
+    required: true,
+    helperText: 'Escolha todos os sintomas que você sente.',
+    justification: 'Sintomas ajudam a identificar problemas hepáticos.',
+  },
+  {
+    name: 'consumo_alcool',
+    type: 'select',
+    label: 'Com que frequência você consome álcool?',
+    options: [
+      { value: 'Diariamente', label: 'Diariamente' },
+      { value: 'Várias vezes por semana', label: 'Várias vezes por semana' },
+      { value: 'Ocasionalmente', label: 'Ocasionalmente' },
+      { value: 'Não consumo', label: 'Não consumo' },
+    ],
+    required: true,
+    helperText: 'Álcool em excesso sobrecarrega o fígado.',
+    justification: 'Álcool é um dos principais fatores de risco hepático.',
+  },
+  {
+    name: 'historico_esteatose',
+    type: 'select',
+    label: 'Você já foi diagnosticado com fígado gorduroso (esteatose)?',
+    options: [
+      { value: 'Sim', label: 'Sim' },
+      { value: 'Não sei', label: 'Não sei' },
+      { value: 'Não', label: 'Não' },
+    ],
+    required: true,
+    helperText: 'Esteatose é comum e pode ser tratada.',
+    justification: 'Histórico de esteatose orienta tratamento.',
+  },
+  {
+    name: 'medicamentos_cronicos',
+    type: 'select',
+    label: 'Você toma medicamentos regularmente?',
+    options: [
+      { value: 'Sim, vários medicamentos', label: 'Sim, vários medicamentos' },
+      { value: 'Sim, um ou dois', label: 'Sim, um ou dois' },
+      { value: 'Não', label: 'Não' },
+    ],
+    required: true,
+    helperText: 'Alguns medicamentos podem sobrecarregar o fígado.',
+    justification: 'Medicamentos são fator importante para saúde hepática.',
+  },
+  {
+    name: 'info_contraindicacoes_figado',
+    type: 'info',
+    icon: '🛡️',
+    highlightTag: 'Segurança',
+    label: 'Algumas condições precisam de avaliação especial',
+    description: 'Vamos verificar se há algo que exija cuidado antes do tratamento:',
+    bullets: [
+      'Seu relatório será personalizado com base nas suas respostas.',
+      'Em caso de dúvida, o médico avaliará no momento da consulta.',
+    ],
+    justification: 'Educação e segurança antes de contraindicações.',
+  },
+  {
+    name: 'contraindicacoes_figado',
+    type: 'multiselect',
+    label: 'Você tem ou já teve alguma dessas condições?',
+    options: [
+      { value: 'hepatite_ativa', label: 'Hepatite viral ativa (B ou C)' },
+      { value: 'cirrose', label: 'Cirrose hepática' },
+      { value: 'ictericia', label: 'Icterícia (amarelão) atual' },
+      { value: 'alergia_silimarina', label: 'Alergia conhecida a silimarina ou alcachofra' },
+      { value: 'gestacao_amamentacao', label: 'Gestação ou amamentação' },
+      { value: 'nenhuma', label: 'Nenhuma dessas' },
+    ],
+    required: true,
+    helperText: 'Essas informações são essenciais para sua segurança.',
+    justification: 'Critério de segurança para tratamento hepático.',
+  },
+  {
+    name: 'preferencia_figado',
+    type: 'select_cards',
+    label: 'Se precisar de tratamento, qual abordagem te parece melhor?',
+    helperText: 'É só uma preferência inicial. A decisão final será sempre do médico.',
+    required: true,
+    justification: 'Usada pela IA para personalizar o relatório e recomendações.',
+    cardOptions: [
+      {
+        value: 'silimarina',
+        title: 'Silimarina (cardo-mariano)',
+        subtitle: 'Fitoterápico com evidência para proteção hepática.',
+        badge: '🌿 Evidência consolidada',
+      },
+      {
+        value: 'alcachofra',
+        title: 'Alcachofra',
+        subtitle: 'Estimula bile e auxilia digestão gordurosa.',
+        badge: '🫀 Drenagem biliar',
+      },
+      {
+        value: 'combinado',
+        title: 'Silimarina + alcachofra',
+        subtitle: 'Abordagem integrativa para melhores resultados.',
+        badge: '⚡ Potencial máximo',
+      },
+      {
+        value: 'nao_sei',
+        title: 'Prefiro que o médico escolha',
+        subtitle: 'Quero que o especialista indique a melhor opção.',
+        badge: '🩺 Decisão guiada',
+      },
+    ],
+  },
+  {
+    name: 'info_acompanhamento',
+    type: 'info',
+    icon: '🤝',
+    highlightTag: 'Segurança e apoio',
+    label: 'Você não faz esse caminho sozinho',
+    description:
+      'Tratamentos hepáticos funcionam melhor quando combinam fitoterápicos, alimentação adequada e acompanhamento médico.',
+    bullets: [
+      'Fitoterápicos como silimarina protegem e regeneram células hepáticas',
+      'Acompanhamento médico monitora função hepática e ajusta tratamento',
+    ],
+    justification: 'Reforça segurança e autoridade médica.',
+  },
+];

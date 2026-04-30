@@ -1,0 +1,104 @@
+{
+  "kpis": {
+    "mrr": 15000,
+    "revenueToday": 500,
+    "revenueThisMonth": 15000,
+    "revenueGrowth": 15.5,
+    "activeSubscriptions": 150,
+    "newSubscriptionsToday": 5,
+    "churnRate": 2.5,
+    "arpu": 100,
+    "ltv": 4000,
+    "totalUsers": 1000,
+    "newUsersToday": 20,
+    "activeUsersToday": 50,
+    "retentionRate": 85,
+    "totalTriages": 2000,
+    "triagesToday": 30,
+    "completionRate": 75,
+    "totalReports": 1800,
+    "reportsToday": 25,
+    "avgReportScore": 8.5
+  },
+  "funnel": {
+    "homepageViews": 1000,
+    "triageStarts": 300,
+    "triageCompletions": 225,
+    "reportViews": 200,
+    "pricingViews": 50,
+    "checkoutStarts": 30,
+    "subscriptions": 25,
+    "homepageToTriage": 30,
+    "triageToCompletion": 75,
+    "completionToReport": 89,
+    "reportToPricing": 25,
+    "pricingToCheckout": 60,
+    "checkoutToSubscription": 83,
+    "avgTimeToTriage": 2.5,
+    "avgTimeToCompletion": 15,
+    "avgTimeToSubscription": 45
+  },
+  "revenue": {
+    "revenueToday": 500,
+    "revenueThisWeek": 3500,
+    "revenueThisMonth": 15000,
+    "revenueThisYear": 180000,
+    "basicMonthly": 8000,
+    "plusMonthly": 7000,
+    "basicYearly": 2000,
+    "plusYearly": 1000,
+    "stripeRevenue": 15000,
+    "projectedMonthlyRevenue": 16000,
+    "projectedYearlyRevenue": 192000
+  },
+  "product": {
+    "triagesByType": [
+      {
+        "type": "gastro",
+        "count": 800,
+        "completionRate": 85,
+        "avgScore": 8.5
+      },
+      {
+        "type": "mental",
+        "count": 400,
+        "completionRate": 70,
+        "avgScore": 7.8
+      },
+      {
+        "type": "sono",
+        "count": 300,
+        "completionRate": 75,
+        "avgScore": 8.0
+      },
+      {
+        "type": "metabolico",
+        "count": 200,
+        "completionRate": 80,
+        "avgScore": 8.2
+      }
+    ],
+    "completionRate": 75,
+    "avgTriageTime": 12,
+    "reportsPerDay": 25,
+    "cohorts": {
+      "d7": 150,
+      "d30": 400
+    }
+  },
+  "tech": {
+    "apiUptime": 99.9,
+    "avgResponseTime": 250,
+    "errorRate": 0.1,
+    "dbConnections": 5,
+    "dbResponseTime": 50,
+    "dbSize": 104857600,
+    "openaiStatus": "healthy",
+    "stripeStatus": "healthy",
+    "supabaseStatus": "healthy",
+    "lighthouseScore": 92
+  },
+  "exportedAt": "2024-01-15T10:30:00.000Z",
+  "period": "30d",
+  "includePII": false
+}

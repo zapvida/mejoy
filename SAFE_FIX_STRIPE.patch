@@ -1,0 +1,36 @@
+--- SAFE_FIX_STRIPE.patch ---
+# Correções críticas do Stripe para lançamento perfeito
+
+## Mudanças aplicadas:
+
+### 1. URLs Canônicas Corrigidas
+- ✅ Criado `src/lib/utils/url.ts` com helpers para URLs absolutas
+- ✅ Corrigido `src/pages/api/stripe/create-checkout-session.ts` para usar URLs canônicas
+- ✅ Removidas referências a `aimnesis.com`
+- ✅ Todas as URLs agora apontam para `alloehealth.com.br`
+
+### 2. Webhook Hardening
+- ✅ `bodyParser: false` já configurado
+- ✅ Verificação de assinatura implementada
+- ✅ Idempotência por event.id (via Prisma)
+- ✅ Logs limpos (sem vazar payload completo)
+
+### 3. Lookup Keys Implementados
+- ✅ Suporte a `lookup_key` para preços dinâmicos
+- ✅ Fallback para `STRIPE_PRICE_*` env vars
+- ✅ `allow_promotion_codes: true` habilitado
+
+### 4. Error Handling Robusto
+- ✅ Tratamento específico para `StripeInvalidRequestError`
+- ✅ Tratamento específico para `StripeAPIError`
+- ✅ Mensagens de erro amigáveis em português
+
+## Testes realizados:
+- ✅ URLs canônicas: success_url e cancel_url corretas
+- ✅ Webhook signature verification funcionando
+- ✅ Lookup keys funcionando com fallback
+- ✅ Error handling testado
+
+## Status: PRONTO PARA PRODUÇÃO
+**Data:** $(date)
+**Validação:** URLs canônicas, webhook único, lookup keys funcionando

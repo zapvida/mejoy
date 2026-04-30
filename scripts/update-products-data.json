@@ -1,0 +1,53 @@
+{
+  "products": [
+    {
+      "slug": "sono",
+      "commercialName": "SonoZen",
+      "protocolTitle": "Sono Profundo & Ansiedade Noturna",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "ansiedade",
+      "commercialName": "ZenDay",
+      "protocolTitle": "Ansiedade & Estresse Diurno",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "intestino",
+      "commercialName": "FloraBalance",
+      "protocolTitle": "Intestino & Microbiota (constipação, inchaço, microbiota)",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "figado",
+      "commercialName": "HepaDetox",
+      "protocolTitle": "Fígado & Detox Metabólico",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "libido-masculina",
+      "commercialName": "VigorMax",
+      "protocolTitle": "Libido & Testosterona Masculina",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "menopausa",
+      "commercialName": "FemBalance 360",
+      "protocolTitle": "Menopausa & TPM 360",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "articulacoes",
+      "commercialName": "ArticFlex",
+      "protocolTitle": "Articulações & Coluna (dor crônica, mobilidade, inflamação)",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    },
+    {
+      "slug": "imunidade",
+      "commercialName": "Imuno360",
+      "protocolTitle": "Imunidade 360 & Fadiga Recorrente",
+      "prices": { "p1": 139, "p2": 209, "p3": 278 }
+    }
+  ]
+}
+

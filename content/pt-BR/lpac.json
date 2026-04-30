@@ -1,0 +1,78 @@
+{
+  "hero": {
+    "title": "Seu check-up de saúde completo — rápido e gratuito",
+    "subtitle": "Receba um relatório com hipóteses, sinais de alerta e orientações não medicamentosas — um plano de vida para viver mais e melhor — com curadoria das evidências mais atuais. Sem fake. Só fatos. E afinal: o ovo faz bem ou mal?",
+    "bullets": ["Recomendações personalizadas", "Sem cadastro complexo", "Plano prático para iniciar hoje"],
+    "cta": "Começar meu check-up",
+    "cta_microcopy": "Seguro. Relatório imediato. Proteção pela LGPD.",
+    "trustline": "Informação séria, útil e responsável — ciência e evidência aplicadas."
+  },
+  "steps": {
+    "title": "3 passos simples em minutos",
+    "items": [
+      { "title": "Responda à triagem rápida", "desc": "Perguntas diretas sobre saúde, rotina e objetivos." },
+      { "title": "Receba o relatório personalizado", "desc": "Conteúdo imprimível e pensado para discussão com seu médico. Plano de vida prático e monitorável." },
+      { "title": "Transforme em ação", "desc": "Sono, rotina, nutrição e, quando cabível, exames — com segurança." }
+    ]
+  },
+  "benefits": {
+    "title": "O que você ganha na prática",
+    "cards": [
+      { "title": "Informação que você entende", "desc": "Você entende o porquê e o o que fazer. Explicamos o que importa, do seu jeito." },
+      { "title": "Tempo é saúde", "desc": "Só o que traz impacto: sinais de alerta e ações objetivas. Nada de enrolação — priorizamos o que muda resultado. Você sai com um caminho claro." },
+      { "title": "Respeito à sua privacidade", "desc": "Proteção de dados e transparência. Você pode excluir seus dados quando quiser." }
+    ]
+  },
+  "why": {
+    "title": "Por que criamos o Alloe Health?",
+    "subtitle": "Nosso propósito — O problema que queremos resolver",
+    "mission": [
+      "Levar saúde preventiva e preditiva, baseada em ciência, a qualquer pessoa.",
+      "Ajudar você a entender o próprio corpo e agir com segurança.",
+      "Conectar sintomas, hábitos e riscos para escolhas melhores."
+    ],
+    "vision": [
+      "Tornar relatórios de saúde claros e úteis parte da rotina das pessoas.",
+      "Empoderar decisões com inteligência responsável e validação científica.",
+      "Unir tecnologia e acolhimento para impactar milhões."
+    ]
+  },
+  "social": {
+    "title": "Como isso ajudou outras pessoas",
+    "subtitle": "Relatórios que você entende — e que seu médico respeita.",
+    "quotes": [
+      "\"Em minutos, entendi o que fazer e por quê.\"",
+      "\"Levei ao meu médico e agilizei meu cuidado.\"",
+      "\"Clareza superior ao que tive em consultas.\""
+    ]
+  },
+  "authority": {
+    "title": "Nossas referências científicas",
+    "desc": "Evidências atuais, curadoria responsável e linguagem acessível. Referências como OMS, Cochrane, Harvard e CDC orientam nossas recomendações."
+  },
+  "security": {
+    "title": "Garantia de confiança total — sua privacidade é prioridade",
+    "lead": "Triagem gratuita, rápida e segura. Seguimos a LGPD; você controla seus dados."
+  },
+  "faq": [
+    { "q": "Tem custo para começar?", "a": "Não. Você recebe o relatório grátis. Só decide depois se quer explorar recursos adicionais. Queremos de fato ajudar pessoas com planos de vida em saúde." },
+    { "q": "Isso substitui consulta médica?", "a": "Não. É um apoio inicial baseado em evidências, para organizar próximos passos e orientações de como viver mais e melhor." },
+    { "q": "Em quanto tempo recebo o relatório?", "a": "Em geral, 3–6 minutos. O relatório sai na hora. É rápido e direto ao ponto." },
+    { "q": "Vocês cumprem a LGPD?", "a": "Sim. Usamos boas práticas de segurança e criptografia." }
+  ],
+  "cta_final": {
+    "title": "Comece sua mudança hoje",
+    "subtitle": "Rápido, gratuito e baseado em evidências. Informação que explica e orienta.",
+    "cta": "Começar agora — é grátis"
+  },
+  "footer": {
+    "value": "Ciência acessível para decisões melhores.",
+    "disclaimer": "Este relatório não substitui consulta médica. Em sinais de alerta, procure atendimento. Conteúdo educativo e informativo; decisões clínicas exigem avaliação profissional. Use como apoio inicial; confirme com um profissional de saúde."
+  },
+  "anchors": [
+    "Conhecimento científico para todos, em linguagem simples.",
+    "Relatório imprimível — leve consigo ou ao seu médico.",
+    "Promover saúde com evidência de qualidade.",
+    "Plano de vida em saúde, claro e acionável."
+  ]
+}

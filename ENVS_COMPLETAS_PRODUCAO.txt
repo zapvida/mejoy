@@ -1,0 +1,501 @@
+============================================
+VARIÁVEIS DE AMBIENTE COMPLETAS - PRODUÇÃO
+ZAPFARM.COM.BR - COPIE E COLE NO VERCEL
+============================================
+
+INSTRUÇÕES:
+1. Vercel Dashboard → Seu Projeto → Settings → Environment Variables
+2. Para cada variável abaixo, clique em "Add New"
+3. Cole o Name e Value exatamente como mostrado
+4. Marque os ambientes: ✅ Production ✅ Preview ✅ Development
+5. Substitua os valores com [OBTER] pelos valores reais (instruções abaixo)
+6. Clique em "Save"
+
+============================================
+1. SUPABASE - BANCO DE DADOS (4 variáveis)
+============================================
+
+NEXT_PUBLIC_SUPABASE_URL
+[OBTER] https://SEU_PROJETO.supabase.co
+→ Como obter: Supabase Dashboard → Settings → API → Project URL
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+[OBTER] eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+→ Como obter: Supabase Dashboard → Settings → API → anon public
+
+SUPABASE_SERVICE_ROLE_KEY
+[OBTER] eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+→ Como obter: Supabase Dashboard → Settings → API → Service Role (clique no olho 👁️)
+
+DATABASE_URL
+[OBTER] postgresql://postgres:SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+→ Como obter: Supabase Dashboard → Settings → Database → Connection string → URI
+
+============================================
+2. ASAAS - PAGAMENTOS (2 variáveis + 30 preços)
+============================================
+
+ASAAS_API_KEY
+[OBTER] aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+→ Como obter: Asaas Dashboard → Configurações → Integrações → API → Copiar chave de produção
+
+ASAAS_ENVIRONMENT
+production
+→ Valor fixo: production (para Preview/Development use: sandbox)
+
+============================================
+2.1 PREÇOS ASAAS - 10 PRODUTOS × 3 PLANOS (30 variáveis)
+============================================
+⚠️ IMPORTANTE: Valores estão em CENTAVOS (13900 = R$ 139,00)
+
+# Emagrecimento (MetaboSlim)
+ASAAS_PRICE_EMAGRECIMENTO_BASICO
+294900
+
+ASAAS_PRICE_EMAGRECIMENTO_COMPLETO
+442300
+
+ASAAS_PRICE_EMAGRECIMENTO_PREMIUM
+589800
+
+# Calvície (CapilMax)
+ASAAS_PRICE_CALVICIE_BASICO
+13900
+
+ASAAS_PRICE_CALVICIE_COMPLETO
+20900
+
+ASAAS_PRICE_CALVICIE_PREMIUM
+27800
+
+# Sono (SonoZen)
+ASAAS_PRICE_SONO_BASICO
+13900
+
+ASAAS_PRICE_SONO_COMPLETO
+20900
+
+ASAAS_PRICE_SONO_PREMIUM
+27800
+
+# Ansiedade (ZenDay)
+ASAAS_PRICE_ANSIEDADE_BASICO
+13900
+
+ASAAS_PRICE_ANSIEDADE_COMPLETO
+20900
+
+ASAAS_PRICE_ANSIEDADE_PREMIUM
+27800
+
+# Intestino (FloraBalance)
+ASAAS_PRICE_INTESTINO_BASICO
+13900
+
+ASAAS_PRICE_INTESTINO_COMPLETO
+20900
+
+ASAAS_PRICE_INTESTINO_PREMIUM
+27800
+
+# Fígado (HepaDetox)
+ASAAS_PRICE_FIGADO_BASICO
+13900
+
+ASAAS_PRICE_FIGADO_COMPLETO
+20900
+
+ASAAS_PRICE_FIGADO_PREMIUM
+27800
+
+# Libido Masculina (VigorMax)
+ASAAS_PRICE_LIBIDO_MASCULINA_BASICO
+13900
+
+ASAAS_PRICE_LIBIDO_MASCULINA_COMPLETO
+20900
+
+ASAAS_PRICE_LIBIDO_MASCULINA_PREMIUM
+27800
+
+# Menopausa (FemBalance 360)
+ASAAS_PRICE_MENOPAUSA_BASICO
+13900
+
+ASAAS_PRICE_MENOPAUSA_COMPLETO
+20900
+
+ASAAS_PRICE_MENOPAUSA_PREMIUM
+27800
+
+# Articulações (ArticFlex)
+ASAAS_PRICE_ARTICULACOES_BASICO
+13900
+
+ASAAS_PRICE_ARTICULACOES_COMPLETO
+20900
+
+ASAAS_PRICE_ARTICULACOES_PREMIUM
+27800
+
+# Imunidade (Imuno360)
+ASAAS_PRICE_IMUNIDADE_BASICO
+13900
+
+ASAAS_PRICE_IMUNIDADE_COMPLETO
+20900
+
+ASAAS_PRICE_IMUNIDADE_PREMIUM
+27800
+
+============================================
+3. OPENAI - GERAÇÃO DE RELATÓRIOS (1 variável)
+============================================
+
+OPENAI_API_KEY
+[OBTER] sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+→ Como obter: https://platform.openai.com/api-keys → Criar nova chave
+
+AI_REPORT_ENABLED
+1
+→ Valor fixo: 1 (ativa geração de relatórios pela IA)
+
+============================================
+4. EMAIL - RESEND (3 variáveis)
+============================================
+
+RESEND_API_KEY
+[OBTER] re_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+→ Como obter: https://resend.com → API Keys → Criar nova chave
+
+EMAIL_FROM
+ZapFarm <noreply@zapfarm.com.br>
+→ Valor fixo: ZapFarm <noreply@zapfarm.com.br>
+
+EMAIL_REPLY_TO
+contato@zapfarm.com.br
+→ Valor fixo: contato@zapfarm.com.br
+
+============================================
+5. CONFIGURAÇÃO BÁSICA (3 variáveis)
+============================================
+
+NEXT_PUBLIC_BASE_URL
+https://www.zapfarm.com.br
+→ Valor fixo: https://www.zapfarm.com.br
+
+NEXT_PUBLIC_SITE_URL
+https://www.zapfarm.com.br
+→ Valor fixo: https://www.zapfarm.com.br
+
+NODE_ENV
+production
+→ Valor fixo: production (para Preview/Development use: development)
+
+============================================
+6. NEXTAUTH - AUTENTICAÇÃO (2 variáveis)
+============================================
+
+NEXTAUTH_URL
+https://www.zapfarm.com.br
+→ Valor fixo: https://www.zapfarm.com.br
+
+NEXTAUTH_SECRET
+[GERAR] [GERAR COM: openssl rand -base64 32]
+→ Como gerar: Execute no terminal: openssl rand -base64 32
+
+============================================
+7. WEBHOOK ASAAS (1 variável)
+============================================
+
+WEBHOOK_ASAAS_URL
+https://www.zapfarm.com.br/api/asaas/webhook
+→ Valor fixo: https://www.zapfarm.com.br/api/asaas/webhook
+
+============================================
+8. ANALYTICS - GOOGLE ANALYTICS 4 (1 variável)
+============================================
+
+NEXT_PUBLIC_GA4_MEASUREMENT_ID
+[OBTER] G-XXXXXXXXXX
+→ Como obter: Google Analytics → Admin → Data Streams → Measurement ID
+
+============================================
+9. CRM - GO HIGH LEVEL (GHL) - OPCIONAL (6 variáveis)
+============================================
+⚠️ OPCIONAL: Configure apenas se usar integração com GHL
+
+GHL_API_KEY
+[OBTER] [OPCIONAL] Seu token GHL
+→ Como obter: GHL Dashboard → Settings → Integrations → API
+
+GHL_LOCATION_ID
+[OBTER] [OPCIONAL] ID da localização GHL
+→ Como obter: GHL Dashboard → Settings → Locations
+
+GHL_PIPELINE_ID
+[OBTER] [OPCIONAL] ID do pipeline GHL
+→ Como obter: GHL Dashboard → Pipelines → Copiar ID
+
+GHL_STAGE_VISIT
+[OBTER] [OPCIONAL] ID do estágio "Visit" no pipeline
+→ Como obter: GHL Dashboard → Pipelines → Estágios → Copiar ID
+
+GHL_STAGE_TRIAGE
+[OBTER] [OPCIONAL] ID do estágio "Triage" no pipeline
+→ Como obter: GHL Dashboard → Pipelines → Estágios → Copiar ID
+
+GHL_STAGE_CHECKOUT
+[OBTER] [OPCIONAL] ID do estágio "Checkout" no pipeline
+→ Como obter: GHL Dashboard → Pipelines → Estágios → Copiar ID
+
+GHL_STAGE_WON
+[OBTER] [OPCIONAL] ID do estágio "Won" no pipeline
+→ Como obter: GHL Dashboard → Pipelines → Estágios → Copiar ID
+
+============================================
+10. FEATURE FLAGS (7 variáveis)
+============================================
+
+NEXT_PUBLIC_BRAND_NAME
+ZapFarm
+→ Valor fixo: ZapFarm
+
+NEXT_PUBLIC_CUSTOMER_MODE
+b2c
+→ Valor fixo: b2c (modo B2C - cliente final)
+
+NEXT_PUBLIC_ROOT_B2B_DOMAINS
+zapfarm.com.br,www.zapfarm.com.br
+→ Valor fixo: zapfarm.com.br,www.zapfarm.com.br
+
+NEXT_PUBLIC_SHOW_SALES_ASSISTANT
+1
+→ Valor fixo: 1 (mostra assistente de vendas)
+
+NEXT_PUBLIC_TRIAGE_GI_ENHANCED
+1
+→ Valor fixo: 1 (ativa triagem GI melhorada)
+
+NEXT_PUBLIC_EMOJI_MODE
+smart
+→ Valor fixo: smart (modo smart de emojis)
+
+GIFT_ENABLED
+0
+→ Valor fixo: 0 (desativa gifts por enquanto, pode mudar para 1 depois)
+
+============================================
+11. LOGS E MONITORAMENTO (1 variável)
+============================================
+
+LOG_LEVEL
+info
+→ Valor fixo: info (para produção, use: info | debug | warn | error)
+
+============================================
+12. STRIPE - OPCIONAL (se ainda usar em algum lugar)
+============================================
+⚠️ OPCIONAL: Configure apenas se ainda usar Stripe em algum fluxo
+
+STRIPE_SECRET_KEY
+[OBTER] STRIPE_SECRET_KEY no Stripe Dashboard (não versionar chaves)
+→ Como obter: Stripe Dashboard → Developers → API keys → Secret key
+
+STRIPE_WEBHOOK_SECRET_ZAPFARM
+[OBTER] [OPCIONAL] whsec_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+→ Como obter: Stripe Dashboard → Developers → Webhooks → Signing secret
+
+============================================
+RESUMO - TOTAL DE VARIÁVEIS
+============================================
+
+OBRIGATÓRIAS (42):
+✅ Supabase: 4
+✅ Asaas: 2
+✅ Preços Asaas: 30
+✅ OpenAI: 1
+✅ Email/Resend: 3
+✅ Configuração: 3
+✅ NextAuth: 2
+✅ Webhook: 1
+✅ Analytics: 1
+✅ Feature Flags: 7
+✅ Logs: 1
+
+OPCIONAIS (8):
+⚠️ GHL/CRM: 7 (se usar integração)
+⚠️ Stripe: 2 (se ainda usar)
+
+TOTAL MÍNIMO: 42 variáveis
+TOTAL COMPLETO: 50 variáveis (se usar tudo)
+
+============================================
+CHECKLIST DE CONFIGURAÇÃO
+============================================
+
+[ ] 1. Supabase (4 variáveis)
+    [ ] NEXT_PUBLIC_SUPABASE_URL
+    [ ] NEXT_PUBLIC_SUPABASE_ANON_KEY
+    [ ] SUPABASE_SERVICE_ROLE_KEY
+    [ ] DATABASE_URL
+
+[ ] 2. Asaas (2 variáveis)
+    [ ] ASAAS_API_KEY
+    [ ] ASAAS_ENVIRONMENT
+
+[ ] 3. Preços Asaas (30 variáveis)
+    [ ] Todos os 10 produtos × 3 planos
+
+[ ] 4. OpenAI (1 variável)
+    [ ] OPENAI_API_KEY
+    [ ] AI_REPORT_ENABLED
+
+[ ] 5. Email/Resend (3 variáveis)
+    [ ] RESEND_API_KEY
+    [ ] EMAIL_FROM
+    [ ] EMAIL_REPLY_TO
+
+[ ] 6. Configuração (3 variáveis)
+    [ ] NEXT_PUBLIC_BASE_URL
+    [ ] NEXT_PUBLIC_SITE_URL
+    [ ] NODE_ENV
+
+[ ] 7. NextAuth (2 variáveis)
+    [ ] NEXTAUTH_URL
+    [ ] NEXTAUTH_SECRET
+
+[ ] 8. Webhook (1 variável)
+    [ ] WEBHOOK_ASAAS_URL
+
+[ ] 9. Analytics (1 variável)
+    [ ] NEXT_PUBLIC_GA4_MEASUREMENT_ID
+
+[ ] 10. Feature Flags (7 variáveis)
+    [ ] NEXT_PUBLIC_BRAND_NAME
+    [ ] NEXT_PUBLIC_CUSTOMER_MODE
+    [ ] NEXT_PUBLIC_ROOT_B2B_DOMAINS
+    [ ] NEXT_PUBLIC_SHOW_SALES_ASSISTANT
+    [ ] NEXT_PUBLIC_TRIAGE_GI_ENHANCED
+    [ ] NEXT_PUBLIC_EMOJI_MODE
+    [ ] GIFT_ENABLED
+
+[ ] 11. Logs (1 variável)
+    [ ] LOG_LEVEL
+
+[ ] 12. OPCIONAL - GHL/CRM (7 variáveis)
+    [ ] GHL_API_KEY
+    [ ] GHL_LOCATION_ID
+    [ ] GHL_PIPELINE_ID
+    [ ] GHL_STAGE_VISIT
+    [ ] GHL_STAGE_TRIAGE
+    [ ] GHL_STAGE_CHECKOUT
+    [ ] GHL_STAGE_WON
+
+[ ] 13. OPCIONAL - Stripe (2 variáveis)
+    [ ] STRIPE_SECRET_KEY
+    [ ] STRIPE_WEBHOOK_SECRET_ZAPFARM
+
+============================================
+COMO OBTER OS VALORES [OBTER]
+============================================
+
+SUPABASE:
+1. Acesse: https://supabase.com/dashboard
+2. Selecione seu projeto
+3. Settings → API:
+   - Project URL → NEXT_PUBLIC_SUPABASE_URL
+   - anon public → NEXT_PUBLIC_SUPABASE_ANON_KEY
+   - Service Role (clique no olho) → SUPABASE_SERVICE_ROLE_KEY
+4. Settings → Database:
+   - Connection string → URI → DATABASE_URL
+
+ASAAS:
+1. Acesse: https://www.asaas.com
+2. Faça login
+3. Configurações → Integrações → API
+4. Copie a chave de produção (aact_prod_...)
+
+OPENAI:
+1. Acesse: https://platform.openai.com/api-keys
+2. Clique em "Create new secret key"
+3. Copie a chave (ela só aparece uma vez!)
+
+RESEND (EMAIL):
+1. Acesse: https://resend.com
+2. Crie uma conta gratuita
+3. API Keys → Create API Key
+4. Copie a chave (re_...)
+
+GOOGLE ANALYTICS 4:
+1. Acesse: https://analytics.google.com
+2. Admin → Data Streams
+3. Clique no stream do seu site
+4. Copie o Measurement ID (G-...)
+
+NEXTAUTH_SECRET:
+Execute no terminal:
+openssl rand -base64 32
+Copie o resultado
+
+GO HIGH LEVEL (GHL) - OPCIONAL:
+1. Acesse: https://app.gohighlevel.com
+2. Settings → Integrations → API → Copiar token
+3. Settings → Locations → Copiar Location ID
+4. Pipelines → Selecionar pipeline → Copiar Pipeline ID
+5. Pipelines → Estágios → Copiar IDs dos estágios
+
+STRIPE - OPCIONAL:
+1. Acesse: https://dashboard.stripe.com
+2. Developers → API keys → Copiar Secret key
+3. Developers → Webhooks → Criar webhook → Copiar Signing secret
+
+============================================
+VALIDAÇÃO FINAL
+============================================
+
+Após configurar todas as variáveis:
+
+1. ✅ Verifique se todas as 42 obrigatórias estão configuradas
+2. ✅ Teste conexão Supabase: https://www.zapfarm.com.br/api/teste-env
+3. ✅ Teste checkout: Acesse um produto e tente fazer checkout
+4. ✅ Verifique logs do Vercel: Functions → Logs (não deve ter erros)
+5. ✅ Teste webhook Asaas: Faça um pagamento de teste e verifique se o pedido é criado
+
+============================================
+FLUXO COMPLETO VALIDADO
+============================================
+
+✅ Cliente acessa → Triagem funciona (Supabase)
+✅ Triagem completa → Relatório gerado (OpenAI)
+✅ Relatório exibido → Checkout funciona (Asaas)
+✅ Checkout → Pagamento processado (Asaas)
+✅ Pagamento confirmado → Webhook recebe evento (Asaas)
+✅ Webhook → Pedido criado no banco (Supabase)
+✅ Email de confirmação enviado (Resend)
+✅ Analytics tracking funcionando (GA4)
+✅ Notificações enviadas (se GHL configurado)
+
+============================================
+PRÓXIMOS PASSOS APÓS CONFIGURAR
+============================================
+
+1. ✅ Aplicar migrações SQL no Supabase (ver ACOES_MANUAIS_LANCAMENTO.md)
+2. ✅ Configurar webhook no Asaas (ver ACOES_MANUAIS_LANCAMENTO.md)
+3. ✅ Testar fluxo completo end-to-end
+4. ✅ Monitorar logs e métricas
+5. ✅ Lançar!
+
+============================================
+SUPORTE
+============================================
+
+Se encontrar problemas:
+- Verifique logs do Vercel: Dashboard → Functions → Logs
+- Teste cada endpoint: /api/teste-env
+- Verifique se todas as variáveis estão configuradas corretamente
+
+============================================
+🚀 BOA SORTE COM O LANÇAMENTO!
+============================================
+

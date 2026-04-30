@@ -1,0 +1,56 @@
+{
+  "description": "Lote âncora — 15-20 SKUs prioritários para rollout premium antes do catálogo inteiro",
+  "criteria": [
+    "Maior potencial comercial",
+    "Maior adequação a tráfego pago",
+    "Diversidade de objetivos",
+    "Maturidade de dados",
+    "Representatividade do catálogo"
+  ],
+  "skus": [
+    "MEJOY-0048",
+    "MEJOY-0001",
+    "MEJOY-0004",
+    "MEJOY-0010",
+    "MEJOY-0011",
+    "MEJOY-0006",
+    "MEJOY-0024",
+    "MEJOY-0025",
+    "MEJOY-0036",
+    "MEJOY-0049",
+    "MEJOY-0050",
+    "MEJOY-0067",
+    "MEJOY-0068",
+    "MEJOY-0085",
+    "MEJOY-0095",
+    "MEJOY-0105"
+  ],
+  "byObjective": {
+    "Emagrecimento & Metabolismo": ["MEJOY-0048", "MEJOY-0024", "MEJOY-0025", "MEJOY-0067", "MEJOY-0068"],
+    "Ansiedade & Humor": ["MEJOY-0001", "MEJOY-0004", "MEJOY-0010", "MEJOY-0011"],
+    "Sono": ["MEJOY-0006", "MEJOY-0011"],
+    "Cabelo": ["MEJOY-0036"],
+    "Intestino": ["MEJOY-0049", "MEJOY-0050"],
+    "Imunidade": ["MEJOY-0085"],
+    "Energia & Performance": ["MEJOY-0095"],
+    "Hormonal & Libido": ["MEJOY-0105"]
+  },
+  "rolloutOrder": [
+    "MEJOY-0048",
+    "MEJOY-0001",
+    "MEJOY-0010",
+    "MEJOY-0004",
+    "MEJOY-0024",
+    "MEJOY-0011",
+    "MEJOY-0006",
+    "MEJOY-0036",
+    "MEJOY-0049",
+    "MEJOY-0025",
+    "MEJOY-0067",
+    "MEJOY-0068",
+    "MEJOY-0050",
+    "MEJOY-0085",
+    "MEJOY-0095",
+    "MEJOY-0105"
+  ]
+}

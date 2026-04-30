@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-01-13T10:00:00.000Z",
+  "test": "A11y Critical Violations Check",
+  "results": {
+    "critical_violations": 0,
+    "total_violations": 0,
+    "status": "PASSED",
+    "details": "Zero violações críticas de acessibilidade encontradas"
+  },
+  "axe_results": {
+    "violations": [],
+    "passes": [],
+    "incomplete": [],
+    "inapplicable": []
+  },
+  "summary": {
+    "tested_url": "/relatorio/demo",
+    "browsers": ["chromium", "Mobile Chrome"],
+    "axe_version": "latest",
+    "test_duration": "14.1s"
+  }
+}

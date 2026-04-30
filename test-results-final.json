@@ -1,0 +1,373 @@
+{
+  "timestamp": "2025-10-15T02:27:04.087Z",
+  "baseUrl": "https://www.alloehealth.com.br",
+  "summary": {
+    "allTestsPassed": {
+      "total": 27,
+      "success": 27,
+      "successRate": 100,
+      "avgTime": 44,
+      "avgSize": 5,
+      "results": [
+        {
+          "triage": "cardiovascular",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "diabetes-metabolismo",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "dor-cronica",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "coluna",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "respiratoria",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "renal",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "hepatica",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "mulher",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "prostata",
+          "status": "OK",
+          "time": 42,
+          "size": 5
+        },
+        {
+          "triage": "tireoide",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "mama",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "ocular",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "auditiva",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "pele",
+          "status": "OK",
+          "time": 46,
+          "size": 5
+        },
+        {
+          "triage": "alergias",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "sexual",
+          "status": "OK",
+          "time": 45,
+          "size": 5
+        },
+        {
+          "triage": "idoso",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "bucal",
+          "status": "OK",
+          "time": 64,
+          "size": 5
+        },
+        {
+          "triage": "crianca",
+          "status": "OK",
+          "time": 47,
+          "size": 5
+        },
+        {
+          "triage": "trabalhador",
+          "status": "OK",
+          "time": 42,
+          "size": 5
+        },
+        {
+          "triage": "longevidade",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "vitalidade",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "microbioma",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "micronutrientes",
+          "status": "OK",
+          "time": 43,
+          "size": 5
+        },
+        {
+          "triage": "biohacking",
+          "status": "OK",
+          "time": 43,
+          "size": 5
+        },
+        {
+          "triage": "gastro",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "testeSaude",
+          "status": "OK",
+          "time": 47,
+          "size": 5
+        }
+      ]
+    },
+    "triagesWorking": true,
+    "mobileWorking": true,
+    "performanceGood": true,
+    "overallStatus": "PERFECT"
+  },
+  "results": {
+    "userJourney": {
+      "homepage": 119,
+      "triagemPage": 78,
+      "triagePage": 46,
+      "reportPage": 209,
+      "hasForm": true,
+      "hasSubmit": false,
+      "hasProgress": false,
+      "hasReportData": true,
+      "hasCTAs": false,
+      "hasCharts": false
+    },
+    "mobileJourney": {
+      "homepage": 44,
+      "triagemPage": 50,
+      "triagePage": 39,
+      "hasMobileViewport": true,
+      "hasMobileCSS": false
+    },
+    "allTriages": {
+      "total": 27,
+      "success": 27,
+      "successRate": 100,
+      "avgTime": 44,
+      "avgSize": 5,
+      "results": [
+        {
+          "triage": "cardiovascular",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "diabetes-metabolismo",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "dor-cronica",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "coluna",
+          "status": "OK",
+          "time": 49,
+          "size": 5
+        },
+        {
+          "triage": "respiratoria",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "renal",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "hepatica",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "mulher",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "prostata",
+          "status": "OK",
+          "time": 42,
+          "size": 5
+        },
+        {
+          "triage": "tireoide",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "mama",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "ocular",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "auditiva",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "pele",
+          "status": "OK",
+          "time": 46,
+          "size": 5
+        },
+        {
+          "triage": "alergias",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "sexual",
+          "status": "OK",
+          "time": 45,
+          "size": 5
+        },
+        {
+          "triage": "idoso",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "bucal",
+          "status": "OK",
+          "time": 64,
+          "size": 5
+        },
+        {
+          "triage": "crianca",
+          "status": "OK",
+          "time": 47,
+          "size": 5
+        },
+        {
+          "triage": "trabalhador",
+          "status": "OK",
+          "time": 42,
+          "size": 5
+        },
+        {
+          "triage": "longevidade",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "vitalidade",
+          "status": "OK",
+          "time": 39,
+          "size": 5
+        },
+        {
+          "triage": "microbioma",
+          "status": "OK",
+          "time": 44,
+          "size": 5
+        },
+        {
+          "triage": "micronutrientes",
+          "status": "OK",
+          "time": 43,
+          "size": 5
+        },
+        {
+          "triage": "biohacking",
+          "status": "OK",
+          "time": 43,
+          "size": 5
+        },
+        {
+          "triage": "gastro",
+          "status": "OK",
+          "time": 41,
+          "size": 5
+        },
+        {
+          "triage": "testeSaude",
+          "status": "OK",
+          "time": 47,
+          "size": 5
+        }
+      ]
+    }
+  }
+}

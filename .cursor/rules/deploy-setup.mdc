@@ -1,0 +1,143 @@
+---
+description: Contexto de deploy Vercel e Git - referência para sempre que falar em deploy
+alwaysApply: false
+globs: 
+---
+
+# Deploy - MeJoy / ZapFarm (Produção)
+
+**Parágrafo único (qualquer chat):** Depois de commitar, rode `pnpm run deploy` — faz push em `main`; com repo ligado na Vercel (`vercel git connect`), cada push dispara build no projeto **mejoy** do time **zapvida**. Deployments: https://vercel.com/zap-12b300bd/mejoy/deployments
+
+**Scripts úteis:** `scripts/deploy-vercel.sh` — push `main` | `pnpm deploy` / `pnpm deploy:prod` | `node scripts/sync-env-vercel-from-local.cjs` — envia `.env.local` para Production + Preview no projeto Vercel já linkado
+
+## Referência canônica
+
+- **Repositório Git:** `zapvida/mejoy`
+- **Remote:** `origin` (https://github.com/zapvida/mejoy.git)
+- **Branch produção:** `main`
+- **Vercel:** time `zapvida` (slug `zap-12b300bd`), projeto `mejoy`
+- **Domínio produção:** `mejoy.com.br` / `www.mejoy.com.br` (apontar no projeto `mejoy` quando migrar DNS/domínio)
+- **Link CLI:** `vercel link --yes --project mejoy --scope zap-12b300bd`
+- **Store V2:** Requer `STORE_V2=1` e `NEXT_PUBLIC_STORE_V2=1` nas envs
+- **Copy v2 piloto (Sono):** `NEXT_PUBLIC_COPY_V2_PILOT=1` para PDP e `/c/sono` usarem copy-blueprint-v2.csv
+
+## Fluxo de deploy
+
+1. **Push (com GITHUB_TOKEN se "Repository not found"):**
+   ```bash
+   export GITHUB_TOKEN=ghp_xxxx   # PAT com escopo repo
+   bash scripts/push-and-deploy.sh "feat: mensagem"
+   ```
+
+2. **Ou deploy legado:** `pnpm run deploy` ou `bash scripts/deploy-vercel.sh`
+
+3. **Fallback:** Redeploy manual em https://vercel.com/zap-12b300bd/mejoy/deployments
+
+4. **Store V2:** `bash scripts/deploy-store-v2.sh`
+
+**Deploy não aparece?** Confirmar em Vercel → Project → Git que `zapvida/mejoy` está conectado. Opcional: secret `VERCEL_DEPLOY_HOOK` no GitHub (workflow antigo); com Git integration nativa não é obrigatório.
+
+---
+
+## Envs em produção (validação)
+
+**Já configuradas na Vercel:** Supabase, Asaas, Resend, NextAuth, OpenAI, Site URL, etc.
+
+**Faltando para Admin + Magic Link via WhatsApp:**
+
+```bash
+# Cole no Vercel: Project → Settings → Environment Variables
+EVOLUTION_API_URL=https://sua-instancia.evolution-api.com
+EVOLUTION_INSTANCE=alloehealth
+EVOLUTION_API_KEY=sua_api_key
+EVOLUTION_MAGIC_LINK_ENABLED=false
+ADMIN_SECRET_KEY=gerar_token_seguro_64_chars
+NEXT_PUBLIC_ADMIN_SECRET_KEY=mesmo_valor_do_ADMIN_SECRET_KEY
+```
+
+- `EVOLUTION_MAGIC_LINK_ENABLED=false` → desativa envio WhatsApp até configurar Evolution.
+- Admin sem `ADMIN_SECRET_KEY` usa fallback `admin-secret-key` (inseguro).
+
+---
+
+## Próximos passos (copy-paste)
+
+### 1. Migrations Supabase
+```bash
+cd /Users/teobeckert/desenvolvimento/mejoy
+supabase db push
+```
+Ou executar SQL manualmente em `supabase/migrations/20250225000001_magic_links.sql` e `20250225000002_lead_funnel_steps.sql`.
+
+### 2. Envs Vercel
+Adicionar as 6 variáveis acima (em Production). Redeploy depois.
+
+### 3. Validação rápida
+1. `https://www.mejoy.com.br/admin` → KPIs, Funil, Receita, Produto, Leads
+2. Triagem completa → Relatório → (se Evolution ativado) Magic Link no WhatsApp
+3. Clicar Magic Link → login → `/dashboard`
+
+---
+
+## Envs em Produção (vercel env ls)
+
+**Críticas para relatório + triagem:** ✓ todas presentes
+- NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- OPENAI_API_KEY, AI_REPORT_ENABLED
+- NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_BASE_URL
+- ASAAS_*, EMAIL_*, RESEND_*, NEXTAUTH_*
+
+**Opcionais (checar se precisar):**
+- GHL_PIPELINE_ID, GHL_STAGE_VISIT, GHL_STAGE_TRIAGE, GHL_STAGE_CHECKOUT
+- NEXT_PUBLIC_GA4_MEASUREMENT_ID
+- EVOLUTION_MAGIC_LINK_ENABLED (WhatsApp magic link)
+
+---
+
+## Próximos Passos (copy-paste)
+
+```
+1. Validar em produção (mejoy.com.br):
+   - Triagem emagrecimento → finalizar → relatório
+   - CTA "Ver Produtos" → checkout com reportId
+   - Botão "Baixar PDF" abre PDF
+   - /admin responde
+
+2. Se erro em prod: Vercel → Logs / Runtime Logs
+
+3. Aviso "Configuration Settings differ":
+   Vercel → Settings → Build and Deployment → Node.js → Save
+```
+
+## Env vars – validação
+
+Todas as 59 envs em Produção cobrem:
+- **Core:** DATABASE_URL, SUPABASE_*, OPENAI_API_KEY, NEXTAUTH_*, NODE_ENV
+- **Asaas:** ASAAS_API_KEY, ASAAS_ENVIRONMENT, ASAAS_PRICE_* (todos produtos), WEBHOOK_ASAAS_URL
+- **Email:** RESEND_API_KEY, EMAIL_FROM, EMAIL_REPLY_TO
+- **App:** NEXT_PUBLIC_BASE_URL, NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_SUPABASE_*, NEXT_PUBLIC_CUSTOMER_MODE, etc.
+
+Opcionais (não bloqueiam fluxo Asaas): TTS_ENABLED, PDF_V2, STRIPE_*, GHL_*, NEXT_PUBLIC_ADMIN_SECRET_KEY.
+Para admin: `NEXT_PUBLIC_ADMIN_SECRET_KEY` deve estar configurada em produção (senão fallback fraco).
+
+## Próximos passos – validação pós-deploy (copy-paste)
+
+```bash
+# 1. Status deploy
+open https://vercel.com/zap-12b300bd/mejoy/deployments
+
+# 2. Envs (se CLI ok)
+vercel env ls
+
+# 3. URLs para testar
+echo "Triagem calvície: https://www.mejoy.com.br/calvicie"
+echo "Protocolos: https://www.mejoy.com.br/protocolos"
+echo "Checkout: fluxo triagem → relatório → plano"
+```
+
+**Checklist manual:**
+- [ ] Triagem calvície: consentimento → idade → sexo → contraindicações → preferência → relatório
+- [ ] Relatório IA aparece com contraindicações quando houver
+- [ ] Checkout Asaas/PIX funciona
+- [ ] Domínio mejoy.com.br resolve e SSL ok

@@ -1,0 +1,90 @@
+{
+  "report": {
+    "id": "demo-report-123",
+    "triage": "gastro",
+    "createdAt": "2025-01-12T10:00:00.000Z",
+    "patient": {
+      "id": "demo-patient-123",
+      "name": "João Silva",
+      "sex": "male",
+      "age": 35,
+      "birthDate": "1989-05-15",
+      "bmi": 24.5,
+      "whatsapp": "+5511999999999",
+      "weightKg": 75,
+      "heightCm": 175
+    },
+    "scores": {
+      "current": 7.2,
+      "potential": 8.5,
+      "level": "medium",
+      "summary": "Sua saúde está em bom estado geral, com potencial de melhoria através de ajustes específicos."
+    },
+    "narrative": {
+      "headline": "Sua saúde digestiva está equilibrada",
+      "heroSummary": "Análise completa mostra que seu sistema digestivo está funcionando bem, com algumas oportunidades de otimização.",
+      "healthStatement": "Com pequenos ajustes na alimentação e hábitos, você pode alcançar uma saúde digestiva ainda melhor."
+    },
+    "alerts": [
+      {
+        "id": "alert-1",
+        "title": "Consumo de fibras abaixo do ideal",
+        "severity": "medium",
+        "description": "Recomenda-se aumentar o consumo de fibras para melhorar a saúde intestinal."
+      }
+    ],
+    "roadmap": [
+      {
+        "id": "nutricao",
+        "title": "Nutrição",
+        "icon": "🥗",
+        "description": "Ajustes alimentares para otimizar a saúde digestiva",
+        "wins": [
+          {
+            "label": "Aumentar consumo de fibras",
+            "how": "Incluir 2 porções de vegetais folhosos por dia",
+            "evidence": "Estudos mostram melhoria na saúde intestinal"
+          }
+        ],
+        "goal": {
+          "label": "Consumir 25g de fibras diariamente",
+          "reminder": "Use um app para rastrear o consumo"
+        }
+      }
+    ],
+    "exams": [
+      {
+        "name": "Hemograma completo",
+        "when": "Nos próximos 30 dias",
+        "prep": "Jejum de 8 horas"
+      }
+    ],
+    "supplements": [
+      {
+        "name": "Probióticos",
+        "dose": "1 cápsula ao dia",
+        "note": "Tomar com o estômago vazio",
+        "evidence": "Melhora a microbiota intestinal"
+      }
+    ],
+    "timeline": [
+      {
+        "id": "timeline-1",
+        "label": "Primeira semana",
+        "details": "Começar com pequenos ajustes na alimentação",
+        "timeframe": "1-7 dias"
+      }
+    ],
+    "evidence": [
+      {
+        "title": "Estudo sobre fibras e saúde intestinal",
+        "url": "https://example.com/study"
+      }
+    ],
+    "features": {
+      "enableAudio": false,
+      "enableShare": true,
+      "enablePremiumUpsell": true
+    }
+  }
+}

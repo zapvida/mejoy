@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="discGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#18B5C7"/>
+      <stop offset="52%" stop-color="#109198"/>
+      <stop offset="100%" stop-color="#0C7068"/>
+    </linearGradient>
+    <radialGradient id="discHighlight" cx="28%" cy="20%" r="48%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="discWarm" cx="24%" cy="26%" r="40%">
+      <stop offset="0%" stop-color="#FFB157" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#FFB157" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#083838" flood-opacity="0.26"/>
+    </filter>
+    
+  </defs>
+  
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF8F0"/>
+      <stop offset="100%" stop-color="#F3E8D9"/>
+    </linearGradient>
+    <radialGradient id="warmGlow" cx="18%" cy="84%" r="42%">
+      <stop offset="0%" stop-color="#FFB157" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFB157" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="coolGlow" cx="84%" cy="12%" r="38%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.66"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#bgGrad)"/>
+  <rect x="62" y="62" width="900" height="900" rx="224" fill="rgba(255,252,246,0.58)" stroke="rgba(233,214,191,0.72)" stroke-width="2"/>
+  <circle cx="180" cy="860" r="260" fill="url(#warmGlow)"/>
+  <circle cx="860" cy="160" r="220" fill="url(#coolGlow)"/>
+
+  <g filter="url(#discShadow)">
+    <circle cx="512" cy="512" r="328" fill="url(#discGrad)" stroke="rgba(255,255,255,0.42)" stroke-width="6"/>
+    <circle cx="512" cy="512" r="328" fill="url(#discWarm)"/>
+    <circle cx="512" cy="512" r="328" fill="url(#discHighlight)"/>
+  </g>
+  <text x="512" y="580" text-anchor="middle" fill="#FFFDF8" font-size="322" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800" filter="url(#textShadow)">Me</text>
+</svg>

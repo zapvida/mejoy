@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-10-23T05:13:49.949Z",
+  "results": [
+    {
+      "test": "Health Endpoints",
+      "status": "PASS",
+      "latency": 76,
+      "details": {
+        "health": 200,
+        "healthcheck": 200
+      }
+    },
+    {
+      "test": "Triage Session",
+      "status": "PASS",
+      "latency": 7453,
+      "details": {
+        "sessionId": "mock-session"
+      }
+    },
+    {
+      "test": "Triage Answer",
+      "status": "FAIL",
+      "latency": 10,
+      "error": "Triage answer failed: 400"
+    },
+    {
+      "test": "PDF Generation",
+      "status": "FAIL",
+      "latency": 6,
+      "error": "PDF too small: 569 bytes"
+    },
+    {
+      "test": "WhatsApp Report",
+      "status": "FAIL",
+      "latency": 5,
+      "error": "WhatsApp report failed: 400"
+    },
+    {
+      "test": "Stripe Checkout",
+      "status": "FAIL",
+      "latency": 11,
+      "error": "Stripe checkout failed: 500"
+    },
+    {
+      "test": "Stripe Webhook",
+      "status": "FAIL",
+      "latency": 7,
+      "error": "Stripe webhook failed: 500"
+    },
+    {
+      "test": "GHL Integration",
+      "status": "FAIL",
+      "latency": 2,
+      "error": "GHL integration failed: 500"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 6,
+    "totalLatency": 7570
+  }
+}

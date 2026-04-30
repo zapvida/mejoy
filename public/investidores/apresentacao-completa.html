@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZapFarm - Apresentação Completa para Investidores | Anamnese, Fluxos e Cálculos</title>
+    <meta name="description" content="Documentação completa do sistema ZapFarm: anamnese detalhada, fluxos de triagem, indicações e contraindicações, cálculos de posologia e cenários clínicos">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        
+        .nav {
+            background: #f7fafc;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .nav a {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+        
+        .section-title {
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #667eea;
+        }
+        
+        .question-card {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .question-card h3 {
+            color: #2d3748;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .question-card .node-label {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .question-card .options {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .question-card .options li {
+            margin: 8px 0;
+            color: #4a5568;
+        }
+        
+        .calculation-box {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border-left: 6px solid #38b2ac;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .calculation-box h4 {
+            color: #2c7a7b;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .calculation-box code {
+            background: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #2c7a7b;
+            font-weight: 600;
+        }
+        
+        .indication-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .indication-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .indication-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .indication-card.approved {
+            border-left: 5px solid #48bb78;
+        }
+        
+        .indication-card.contraindicated {
+            border-left: 5px solid #f56565;
+        }
+        
+        .indication-card.not-indicated {
+            border-left: 5px solid #ed8936;
+        }
+        
+        .indication-card h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .posology-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .posology-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .posology-table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .posology-table tr:hover {
+            background: #f7fafc;
+        }
+        
+        .scenario-box {
+            background: #fff4e6;
+            border-left: 5px solid #ff9800;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .scenario-box h4 {
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+        
+        .highlight {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 ZapFarm Emagrecimento</h1>
+            <div class="subtitle">Anamnese Completa, Indicações, Contraindicações e Cálculos de Posologia</div>
+            <div style="margin-top: 20px; font-size: 1.1em; opacity: 0.9;">
+                Documentação Técnica Completa para Investidores | Janeiro 2025
+            </div>
+        </div>
+        
+        <nav class="nav">
+            <a href="#anamnese">📋 Anamnese Completa</a>
+            <a href="#indicacoes">✅ Indicações</a>
+            <a href="#contraindicacoes">❌ Contraindicações</a>
+            <a href="#calculos">🧮 Cálculos e Posologias</a>
+            <a href="#cenarios">🎯 Cenários Clínicos</a>
+            <a href="#fluxo">🔄 Fluxo Completo</a>
+        </nav>
+        
+        <div class="content">
+            <!-- ANAMNESE COMPLETA -->
+            <section id="anamnese" class="section">
+                <h2 class="section-title">📋 Anamnese Completa - Todas as Perguntas</h2>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 0</span>
+                    <h3>Consentimento e Elegibilidade</h3>
+                    <p><strong>Pergunta:</strong> Aceita termos e consentimentos?</p>
+                    <p><strong>Tipo:</strong> Select (obrigatório)</p>
+                    <p><strong>Justificativa:</strong> Conformidade LGPD e regulamentação de telemedicina</p>
+                    <ul class="options">
+                        <li><strong>aceito</strong> - "Li e concordo com os Termos de Uso, Política de Privacidade (LGPD), uso de IA e Telemedicina"</li>
+                    </ul>
+                    <p><strong>Resultado:</strong> ✅ Aceita → Continua | ❌ Não aceita → Bloqueado</p>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 1</span>
+                    <h3>Dados Básicos</h3>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">1.1 Faixa Etária</h4>
+                    <p><strong>Pergunta:</strong> Qual sua faixa etária?</p>
+                    <p><strong>Tipo:</strong> Select</p>
+                    <ul class="options">
+                        <li><strong>18-30</strong> - "18–30 anos"</li>
+                        <li><strong>31-45</strong> - "31–45 anos"</li>
+                        <li><strong>46-60</strong> - "46–60 anos"</li>
+                        <li><strong>61+</strong> - "61 anos ou mais"</li>
+                    </ul>
+                    <p><strong>Uso:</strong> Contextualiza riscos e personaliza recomendações. Idosos (≥65) têm titulação mais lenta.</p>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">1.2 Sexo</h4>
+                    <p><strong>Pergunta:</strong> Qual seu sexo?</p>
+                    <p><strong>Tipo:</strong> Select</p>
+                    <ul class="options">
+                        <li><strong>M</strong> - "Masculino"</li>
+                        <li><strong>F</strong> - "Feminino"</li>
+                        <li><strong>Outro</strong> - "Outro"</li>
+                        <li><strong>Prefiro não dizer</strong> - "Prefiro não dizer"</li>
+                    </ul>
+                    <p><strong>Uso:</strong> Necessário para cálculos de risco e adequação de tratamento</p>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">1.3 Gestação (CONDICIONAL - apenas se Sexo = Feminino)</h4>
+                    <p><strong>Pergunta:</strong> Você está grávida ou planejando engravidar nos próximos 6 meses?</p>
+                    <p><strong>Tipo:</strong> Select (condicional)</p>
+                    <ul class="options">
+                        <li><strong>nao</strong> - "Não"</li>
+                        <li><strong>sim</strong> - "Sim, estou grávida"</li>
+                        <li><strong>planejando</strong> - "Sim, estou planejando engravidar"</li>
+                    </ul>
+                    <p><strong>⚠️ DECISÃO CRÍTICA:</strong> Se <span class="highlight">sim</span> OU <span class="highlight">planejando</span> → <strong>❌ CONTRAINDICADO</strong> (fim da triagem para GLP-1)</p>
+                    <p><strong>Evidência:</strong> Medicações GLP-1 são contraindicadas durante gestação e planejamento.</p>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 2</span>
+                    <h3>Antropometria - Cálculo de IMC</h3>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">2.1 Altura</h4>
+                    <p><strong>Pergunta:</strong> Qual sua altura?</p>
+                    <p><strong>Tipo:</strong> Input numérico (centímetros)</p>
+                    <p><strong>Validação:</strong> Número positivo entre 100-250 cm</p>
+                    <p><strong>Exemplo:</strong> 170 (para 1,70m)</p>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">2.2 Peso</h4>
+                    <p><strong>Pergunta:</strong> Qual seu peso atual?</p>
+                    <p><strong>Tipo:</strong> Input numérico (quilogramas)</p>
+                    <p><strong>Validação:</strong> Número positivo entre 30-300 kg</p>
+                    <p><strong>Exemplo:</strong> 85 (para 85kg)</p>
+                    
+                    <div class="calculation-box">
+                        <h4>🧮 Cálculo Automático de IMC</h4>
+                        <p><strong>Fórmula:</strong> <code>IMC = Peso (kg) / [Altura (m)]²</code></p>
+                        <p><strong>Exemplo:</strong> Peso 85kg, Altura 170cm (1,70m)</p>
+                        <p><code>IMC = 85 / (1,70)² = 85 / 2,89 = 29,4 kg/m²</code></p>
+                        
+                        <h4 style="margin-top: 20px; color: #2c7a7b;">Classificação IMC:</h4>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li><strong>&lt; 18,5:</strong> Abaixo do peso</li>
+                            <li><strong>18,5 - 24,9:</strong> Normal</li>
+                            <li><strong>25,0 - 29,9:</strong> Sobrepeso</li>
+                            <li><strong>30,0 - 34,9:</strong> Obesidade Grau I</li>
+                            <li><strong>35,0 - 39,9:</strong> Obesidade Grau II</li>
+                            <li><strong>≥ 40,0:</strong> Obesidade Grau III (Mórbida)</li>
+                        </ul>
+                        
+                        <p style="margin-top: 15px;"><strong>Uso na Classificação:</strong> Critério principal para classificação GLP-1</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 3</span>
+                    <h3>Comorbidades e Risco Cardiometabólico</h3>
+                    <p><strong>Pergunta:</strong> Você tem alguma dessas condições?</p>
+                    <p><strong>Tipo:</strong> Multiselect (obrigatório)</p>
+                    <ul class="options">
+                        <li><strong>diabetes_tipo_2</strong> - "Diabetes tipo 2"</li>
+                        <li><strong>pre_diabetes</strong> - "Pré-diabetes"</li>
+                        <li><strong>hipertensao</strong> - "Hipertensão (pressão alta)"</li>
+                        <li><strong>dislipidemia</strong> - "Dislipidemia (colesterol/triglicerídeos altos)"</li>
+                        <li><strong>apneia_sono</strong> - "Apneia do sono"</li>
+                        <li><strong>artrose</strong> - "Artrose/artrite"</li>
+                        <li><strong>depressao</strong> - "Depressão ou ansiedade"</li>
+                        <li><strong>nenhuma</strong> - "Nenhuma dessas"</li>
+                    </ul>
+                    <p><strong>⚠️ DECISÃO CRÍTICA:</strong> Comorbidades são essenciais para classificação quando IMC está entre 27-29,9</p>
+                    <p><strong>Impacto:</strong> IMC ≥ 27 + ≥1 comorbidade → <strong>✅ CANDIDATO GLP-1</strong></p>
+                    <p><strong>Evidência:</strong> Obesidade associada a comorbidades aumenta muito o risco cardiovascular e pode indicar necessidade de tratamento medicamentoso.</p>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 4</span>
+                    <h3>Contraindicações GLP-1</h3>
+                    <p><strong>Pergunta:</strong> Você tem ou já teve alguma dessas condições?</p>
+                    <p><strong>Tipo:</strong> Multiselect (obrigatório)</p>
+                    <ul class="options">
+                        <li><strong>pancreatite</strong> - "Pancreatite (inflamação do pâncreas)"</li>
+                        <li><strong>neoplasia_endocrina</strong> - "Neoplasia endócrina múltipla tipo 2 (MEN2)"</li>
+                        <li><strong>cancer_tireoide</strong> - "Câncer de tireoide medular ou histórico familiar"</li>
+                        <li><strong>doenca_renal_grave</strong> - "Doença renal grave (insuficiência renal avançada)"</li>
+                        <li><strong>alergia_glp1</strong> - "Alergia conhecida a medicações GLP-1"</li>
+                        <li><strong>nenhuma</strong> - "Nenhuma dessas"</li>
+                    </ul>
+                    <p><strong>⚠️ DECISÃO CRÍTICA:</strong> Se <span class="highlight">QUALQUER</span> contraindicação presente → <strong>❌ CONTRAINDICADO</strong></p>
+                    <p><strong>Evidência:</strong> Medicações GLP-1 são contraindicadas em casos de pancreatite prévia, MEN2 e câncer de tireoide medular.</p>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 5</span>
+                    <h3>Histórico Terapêutico Prévio</h3>
+                    <p><strong>Pergunta:</strong> Você já usou algum medicamento para emagrecimento ou controle de diabetes?</p>
+                    <p><strong>Tipo:</strong> Multiselect</p>
+                    <ul class="options">
+                        <li><strong>injetaveis_semanais</strong> - "Já usei medicações injetáveis semanais para emagrecer/diabetes"</li>
+                        <li><strong>orais_emagrecimento</strong> - "Já usei remédios orais para emagrecer"</li>
+                        <li><strong>nunca_usei</strong> - "Nunca usei medicações desse tipo"</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">5.1 Efeitos Colaterais (CONDICIONAL)</h4>
+                    <p><strong>Pergunta:</strong> Você teve efeitos colaterais importantes que fizeram parar o tratamento?</p>
+                    <p><strong>Tipo:</strong> Select (condicional - apenas se já usou medicação)</p>
+                    <ul class="options">
+                        <li><strong>sim_parou</strong> - "Sim, tive que parar"</li>
+                        <li><strong>teve_mas_continuou</strong> - "Tive mas continuei"</li>
+                        <li><strong>nao_teve</strong> - "Não tive efeitos colaterais importantes"</li>
+                        <li><strong>nao_aplicavel</strong> - "Não se aplica (nunca usei)"</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">5.2 Descrição Opcional</h4>
+                    <p><strong>Pergunta:</strong> Se quiser, descreva rapidamente qual medicação usou e o que aconteceu</p>
+                    <p><strong>Tipo:</strong> Textarea (opcional)</p>
+                    <p><strong>Uso:</strong> Informação adicional valiosa para personalização do tratamento</p>
+                </div>
+                
+                <div class="question-card">
+                    <span class="node-label">NÓ 6</span>
+                    <h3>Impacto, Objetivo e Preferência</h3>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">6.1 Impacto na Vida</h4>
+                    <p><strong>Pergunta:</strong> O peso limita suas atividades do dia a dia?</p>
+                    <p><strong>Tipo:</strong> Select</p>
+                    <ul class="options">
+                        <li><strong>muito</strong> - "Muito - dificulta bastante"</li>
+                        <li><strong>moderado</strong> - "Moderado - dificulta um pouco"</li>
+                        <li><strong>pouco</strong> - "Pouco - dificulta ocasionalmente"</li>
+                        <li><strong>nenhum</strong> - "Nenhum - não dificulta"</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">6.2 Objetivo Principal</h4>
+                    <p><strong>Pergunta:</strong> Qual seu objetivo principal?</p>
+                    <p><strong>Tipo:</strong> Select</p>
+                    <ul class="options">
+                        <li><strong>perder_peso</strong> - "Perder peso"</li>
+                        <li><strong>melhorar_saude_metabolica</strong> - "Melhorar saúde metabólica (glicemia, pressão, colesterol)"</li>
+                        <li><strong>ambos</strong> - "Ambos - perder peso e melhorar saúde"</li>
+                        <li><strong>outro</strong> - "Outro objetivo"</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #4a5568;">6.3 Preferência Princípio Ativo</h4>
+                    <p><strong>Pergunta:</strong> Se precisar de medicação, qual opção te parece melhor?</p>
+                    <p><strong>Tipo:</strong> Select Cards</p>
+                    <ul class="options">
+                        <li><strong>tirzepatida</strong> - "Princípio ativo Tirzepatida - Maior potência em perda de peso"</li>
+                        <li><strong>semaglutida</strong> - "Princípio ativo Semaglutida - Opção consolidada e amplamente utilizada"</li>
+                        <li><strong>nao_sei</strong> - "Prefiro que o médico escolha"</li>
+                    </ul>
+                    <p><strong>Uso:</strong> Usada pela IA e pelo checkout para ajustar comunicação e precificação</p>
+                </div>
+            </section>
+            
+            <!-- INDICAÇÕES -->
+            <section id="indicacoes" class="section">
+                <h2 class="section-title">✅ Indicações para Tratamento com GLP-1</h2>
+                
+                <div class="indication-grid">
+                    <div class="indication-card approved">
+                        <h4>✅ CANDIDATO GLP-1</h4>
+                        <p><strong>Critério 1:</strong> IMC ≥ 30 (Obesidade)</p>
+                        <p><strong>OU</strong></p>
+                        <p><strong>Critério 2:</strong> IMC ≥ 27 + ≥1 comorbidade</p>
+                        
+                        <h4 style="margin-top: 20px; color: #2d3748;">Comorbidades que contam:</h4>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Diabetes tipo 2</li>
+                            <li>Pré-diabetes</li>
+                            <li>Hipertensão</li>
+                            <li>Dislipidemia</li>
+                            <li>Apneia do sono</li>
+                            <li>Artrose/artrite</li>
+                            <li>Depressão/ansiedade</li>
+                        </ul>
+                        
+                        <div class="calculation-box" style="margin-top: 20px;">
+                            <h4>Exemplos de Cálculo:</h4>
+                            <p><strong>Exemplo 1:</strong> IMC = 32, sem comorbidades</p>
+                            <p>✅ <strong>Candidato</strong> (IMC ≥ 30)</p>
+                            
+                            <p style="margin-top: 15px;"><strong>Exemplo 2:</strong> IMC = 28, com diabetes tipo 2</p>
+                            <p>✅ <strong>Candidato</strong> (IMC ≥ 27 + comorbidade)</p>
+                            
+                            <p style="margin-top: 15px;"><strong>Exemplo 3:</strong> IMC = 28, sem comorbidades</p>
+                            <p>⚠️ <strong>Não Indicado</strong> (IMC < 30 e sem comorbidade)</p>
+                        </div>
+                        
+                        <p style="margin-top: 20px;"><strong>Resultado:</strong> Relatório completo com pré-prescrição + Plano recomendado</p>
+                        <p><strong>Taxa de Conversão Esperada:</strong> 15-25%</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CONTRAINDICAÇÕES -->
+            <section id="contraindicacoes" class="section">
+                <h2 class="section-title">❌ Contraindicações Absolutas</h2>
+                
+                <div class="indication-grid">
+                    <div class="indication-card contraindicated">
+                        <h4>❌ CONTRAINDICADO</h4>
+                        <p><strong>Condições (qualquer uma):</strong></p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>✅ <strong>Gestão</strong> (grávida ou planejando)</li>
+                            <li>✅ <strong>Pancreatite</strong> (histórico)</li>
+                            <li>✅ <strong>MEN2</strong> (Neoplasia endócrina múltipla tipo 2)</li>
+                            <li>✅ <strong>Câncer de tireoide medular</strong> (ou histórico familiar)</li>
+                            <li>✅ <strong>Doença renal grave</strong> (insuficiência renal avançada)</li>
+                            <li>✅ <strong>Alergia conhecida</strong> a medicações GLP-1</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px;"><strong>Resultado:</strong> Relatório foca em abordagem não-medicamentosa</p>
+                        <p><strong>Pré-prescrição:</strong> ❌ Não mostrada</p>
+                        <p><strong>Taxa de Conversão Esperada:</strong> 5-10%</p>
+                    </div>
+                    
+                    <div class="indication-card not-indicated">
+                        <h4>⚠️ NÃO INDICADO</h4>
+                        <p><strong>Condições:</strong></p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>IMC < 27 (sem indicação medicamentosa)</li>
+                            <li>IMC 27-30 sem comorbidades</li>
+                            <li>Dados insuficientes para cálculo</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px;"><strong>Resultado:</strong> Relatório com recomendações não-medicamentosas</p>
+                        <p><strong>Foco:</strong> Estilo de vida, reavaliação em 3-6 meses</p>
+                        <p><strong>Taxa de Conversão Esperada:</strong> 3-8%</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CÁLCULOS E POSOLOGIAS -->
+            <section id="calculos" class="section">
+                <h2 class="section-title">🧮 Cálculos e Posologias Aplicadas</h2>
+                
+                <div class="calculation-box">
+                    <h4>📊 Seleção de Apresentação</h4>
+                    <p><strong>Critérios para Tirzepatida 40mg:</strong></p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>IMC 30-35 com poucas comorbidades</li>
+                        <li>Expectativa de dose máxima ≤ 10mg</li>
+                    </ul>
+                    
+                    <p style="margin-top: 15px;"><strong>Critérios para Tirzepatida 60mg:</strong></p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>IMC ≥ 35</li>
+                        <li>Múltiplas comorbidades (≥2)</li>
+                        <li>Expectativa de dose máxima ≥ 10mg</li>
+                    </ul>
+                    
+                    <p style="margin-top: 15px;"><strong>Fórmula:</strong></p>
+                    <code>Se (IMC ≥ 35 OU comorbidades.length ≥ 2) → 60mg<br>
+                    Senão → 40mg</code>
+                </div>
+                
+                <h3 style="margin-top: 40px; color: #2d3748;">💉 Esquema de Titulação Padrão</h3>
+                <table class="posology-table">
+                    <thead>
+                        <tr>
+                            <th>Fase</th>
+                            <th>Semanas</th>
+                            <th>Dose (mg)</th>
+                            <th>Volume (mL)</th>
+                            <th>Concentração</th>
+                            <th>Objetivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Início</strong></td>
+                            <td>1-4</td>
+                            <td>2,5</td>
+                            <td>0,125</td>
+                            <td>20mg/mL</td>
+                            <td>Minimizar efeitos colaterais</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Titulação</strong></td>
+                            <td>5-8</td>
+                            <td>5,0</td>
+                            <td>0,25</td>
+                            <td>20mg/mL</td>
+                            <td>Iniciar perda de peso efetiva</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manutenção Inicial</strong></td>
+                            <td>9-12</td>
+                            <td>7,5</td>
+                            <td>0,375</td>
+                            <td>20mg/mL</td>
+                            <td>Otimizar resposta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manutenção</strong></td>
+                            <td>13-24</td>
+                            <td>10,0</td>
+                            <td>0,5</td>
+                            <td>20mg/mL</td>
+                            <td>Manutenção e otimização</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="calculation-box" style="margin-top: 30px;">
+                    <h4>🧮 Cálculo de Volume por Dose</h4>
+                    <p><strong>Concentração padrão:</strong> 20mg/mL (após diluição)</p>
+                    <p><strong>Fórmula:</strong> <code>Volume (mL) = Dose (mg) / Concentração (mg/mL)</code></p>
+                    
+                    <h4 style="margin-top: 20px; color: #2c7a7b;">Exemplos:</h4>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li><strong>Dose 2,5mg:</strong> Volume = 2,5 / 20 = <strong>0,125mL</strong></li>
+                        <li><strong>Dose 5mg:</strong> Volume = 5 / 20 = <strong>0,25mL</strong></li>
+                        <li><strong>Dose 7,5mg:</strong> Volume = 7,5 / 20 = <strong>0,375mL</strong></li>
+                        <li><strong>Dose 10mg:</strong> Volume = 10 / 20 = <strong>0,5mL</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="calculation-box" style="margin-top: 30px; background: linear-gradient(135deg, #fff3cd 0%, #ffe0b2 100%); border-left-color: #ff9800;">
+                    <h4>👴 Ajuste para Idosos (≥65 anos)</h4>
+                    <p><strong>Titulação mais lenta:</strong> Manter cada fase por 6 semanas ao invés de 4</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Semanas 1-6: 2,5mg (ao invés de 1-4)</li>
+                        <li>Semanas 7-12: 5mg (ao invés de 5-8)</li>
+                        <li>Semanas 13-18: 7,5mg (ao invés de 9-12)</li>
+                        <li>Semanas 19-24: 10mg (ao invés de 13-24)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Resultados Esperados:</strong> 5-8% em 3 meses (vs 6-10% padrão)</p>
+                </div>
+                
+                <h3 style="margin-top: 40px; color: #2d3748;">📊 Resultados Esperados por Perfil</h3>
+                <table class="posology-table">
+                    <thead>
+                        <tr>
+                            <th>Perfil</th>
+                            <th>3 Meses</th>
+                            <th>6 Meses</th>
+                            <th>12 Meses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IMC ≥ 35 ou Diabetes</strong></td>
+                            <td>5-10% do peso inicial</td>
+                            <td>12-15% do peso inicial</td>
+                            <td>15-20% do peso inicial</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IMC 30-35 sem Diabetes</strong></td>
+                            <td>6-10% do peso inicial</td>
+                            <td>10-15% do peso inicial</td>
+                            <td>15-20% do peso inicial</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Idosos (≥65 anos)</strong></td>
+                            <td>5-8% do peso inicial</td>
+                            <td>10-12% do peso inicial</td>
+                            <td>12-15% do peso inicial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- CENÁRIOS CLÍNICOS -->
+            <section id="cenarios" class="section">
+                <h2 class="section-title">🎯 Cenários Clínicos e Cálculos Possíveis</h2>
+                
+                <div class="scenario-box">
+                    <h4>Cenário 1: Paciente com Obesidade Simples</h4>
+                    <p><strong>Dados:</strong> Homem, 35 anos, IMC 32, sem comorbidades, sem contraindicações</p>
+                    <p><strong>Cálculo IMC:</strong> 95kg / (1,72m)² = 32,1 kg/m²</p>
+                    <p><strong>Classificação:</strong> ✅ <strong>CANDIDATO GLP-1</strong> (IMC ≥ 30)</p>
+                    <p><strong>Apresentação:</strong> Tirzepatida 40mg (IMC 30-35, sem múltiplas comorbidades)</p>
+                    <p><strong>Posologia:</strong> Início 2,5mg → Titulação padrão até 10mg</p>
+                    <p><strong>Resultado Esperado:</strong> 6-10% em 3 meses, 10-15% em 6 meses</p>
+                </div>
+                
+                <div class="scenario-box">
+                    <h4>Cenário 2: Paciente com Sobrepeso + Comorbidades</h4>
+                    <p><strong>Dados:</strong> Mulher, 45 anos, IMC 28, diabetes tipo 2 + hipertensão, sem contraindicações</p>
+                    <p><strong>Cálculo IMC:</strong> 78kg / (1,67m)² = 28,0 kg/m²</p>
+                    <p><strong>Classificação:</strong> ✅ <strong>CANDIDATO GLP-1</strong> (IMC ≥ 27 + ≥1 comorbidade)</p>
+                    <p><strong>Apresentação:</strong> Tirzepatida 60mg (múltiplas comorbidades: diabetes + hipertensão)</p>
+                    <p><strong>Posologia:</strong> Início 2,5mg → Titulação padrão até 10mg (pode chegar a 12,5mg se necessário)</p>
+                    <p><strong>Resultado Esperado:</strong> 5-10% em 3 meses, 12-15% em 6 meses</p>
+                </div>
+                
+                <div class="scenario-box">
+                    <h4>Cenário 3: Paciente Contraindicado</h4>
+                    <p><strong>Dados:</strong> Mulher, 30 anos, IMC 35, grávida</p>
+                    <p><strong>Cálculo IMC:</strong> 98kg / (1,67m)² = 35,1 kg/m²</p>
+                    <p><strong>Classificação:</strong> ❌ <strong>CONTRAINDICADO</strong> (gestação)</p>
+                    <p><strong>Resultado:</strong> Relatório sem pré-prescrição, foco em recomendações não-medicamentosas seguras para gestação</p>
+                </div>
+                
+                <div class="scenario-box">
+                    <h4>Cenário 4: Paciente Idoso</h4>
+                    <p><strong>Dados:</strong> Homem, 68 anos, IMC 31, hipertensão, sem contraindicações</p>
+                    <p><strong>Cálculo IMC:</strong> 88kg / (1,68m)² = 31,2 kg/m²</p>
+                    <p><strong>Classificação:</strong> ✅ <strong>CANDIDATO GLP-1</strong> (IMC ≥ 30)</p>
+                    <p><strong>Apresentação:</strong> Tirzepatida 40mg</p>
+                    <p><strong>Posologia:</strong> <strong>Titulação mais lenta</strong> - 6 semanas por fase (ao invés de 4)</p>
+                    <p><strong>Resultado Esperado:</strong> 5-8% em 3 meses, 10-12% em 6 meses</p>
+                </div>
+                
+                <div class="scenario-box">
+                    <h4>Cenário 5: Paciente Não Indicado</h4>
+                    <p><strong>Dados:</strong> Mulher, 28 anos, IMC 26, sem comorbidades, sem contraindicações</p>
+                    <p><strong>Cálculo IMC:</strong> 72kg / (1,66m)² = 26,1 kg/m²</p>
+                    <p><strong>Classificação:</strong> ⚠️ <strong>NÃO INDICADO</strong> (IMC < 27 sem comorbidade)</p>
+                    <p><strong>Resultado:</strong> Relatório com recomendações de estilo de vida, reavaliação em 3-6 meses</p>
+                </div>
+            </section>
+            
+            <!-- FLUXO COMPLETO -->
+            <section id="fluxo" class="section">
+                <h2 class="section-title">🔄 Fluxo Completo do Sistema</h2>
+                
+                <div class="calculation-box">
+                    <h4>📋 Resumo do Fluxo</h4>
+                    <ol style="margin-top: 15px; padding-left: 20px; line-height: 2;">
+                        <li><strong>Landing Page</strong> → Usuário chega em zapfarm.com.br/obesidade</li>
+                        <li><strong>CTA</strong> → "Começar minha avaliação" → /triagem/emagrecimento</li>
+                        <li><strong>NÓ 0:</strong> Aceita Termos? → Se não, bloqueado</li>
+                        <li><strong>NÓ 1:</strong> Dados Básicos (Idade, Sexo, Gestação se feminino)</li>
+                        <li><strong>NÓ 2:</strong> Altura + Peso → <strong>Cálculo IMC automático</strong></li>
+                        <li><strong>NÓ 3:</strong> Comorbidades (multiselect)</li>
+                        <li><strong>NÓ 4:</strong> Contraindicações (multiselect) → <strong>Se qualquer → Contraindicado</strong></li>
+                        <li><strong>NÓ 5:</strong> Histórico Terapêutico</li>
+                        <li><strong>NÓ 6:</strong> Impacto, Objetivo, Preferência</li>
+                        <li><strong>CLASSIFICAÇÃO:</strong> 
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                <li>Se Gestação OU Contraindicação → ❌ CONTRAINDICADO</li>
+                                <li>Se IMC ≥ 30 OU (IMC ≥ 27 + Comorbidade) → ✅ CANDIDATO</li>
+                                <li>Caso contrário → ⚠️ NÃO INDICADO</li>
+                            </ul>
+                        </li>
+                        <li><strong>Relatório por IA</strong> → Personalizado conforme classificação</li>
+                        <li><strong>Checkout</strong> → 3 planos disponíveis</li>
+                        <li><strong>Validação Médica</strong> → Obrigatória antes de prescrição</li>
+                        <li><strong>Prescrição Final</strong> → Apenas após aprovação médica</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

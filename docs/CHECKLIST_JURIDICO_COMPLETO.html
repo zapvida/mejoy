@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Jurídico Completo - ZapFarm Emagrecimento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 2.2em;
+            color: #1e3c72;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1e3c72;
+        }
+        
+        .legal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .legal-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        
+        .legal-card:hover {
+            border-color: #1e3c72;
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .legal-card h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .status-badge.complete {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .status-badge.pending {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+        
+        .status-badge.partial {
+            background: #b3e5fc;
+            color: #0277bd;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #e2e8f0;
+        }
+        
+        .checklist-item.complete {
+            border-left-color: #48bb78;
+        }
+        
+        .checklist-item.pending {
+            border-left-color: #ed8936;
+        }
+        
+        .checklist-item .icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            min-width: 30px;
+        }
+        
+        .checklist-item .content {
+            flex: 1;
+        }
+        
+        .checklist-item .title {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+        
+        .checklist-item .description {
+            color: #718096;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fff4e6 0%, #ffe0b2 100%);
+            border-left: 6px solid #ff9800;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .warning-box h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 6px solid #4caf50;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .success-box h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #b3e5fc 100%);
+            border-left: 6px solid #2196f3;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .info-box h3 {
+            color: #0277bd;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .label {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ Checklist Jurídico Completo</h1>
+            <div class="subtitle">ZapFarm Emagrecimento - Conformidade Legal e Ética Médica</div>
+            <div style="margin-top: 20px; font-size: 1.1em; opacity: 0.9;">
+                Validação: Telemedicina | LGPD | CRM | Ética Médica | Prontuário
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- TELEMEDICINA -->
+            <section class="section">
+                <h2 class="section-title">📋 Telemedicina e CRM</h2>
+                
+                <div class="legal-grid">
+                    <div class="legal-card">
+                        <h3>📝 Termo de Consentimento</h3>
+                        <div class="status-badge complete">✅ Implementado</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Termo no Fluxo de Triagem (NÓ 0)</div>
+                                <div class="description">Paciente aceita termos antes de prosseguir</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Links para Políticas</div>
+                                <div class="description">Termos de Uso, LGPD, Telemedicina, Uso de IA</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Validação com Jurídico</div>
+                                <div class="description">Validar se termo atual atende CFM/CRM local</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>👨‍⚕️ CRM e Credenciamento</h3>
+                        <div class="status-badge pending">⚠️ Validar com Jurídico</div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">CRM Médicos Ativos</div>
+                                <div class="description">Validar que todos têm CRM ativo na jurisdição do paciente</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">CNES da Clínica</div>
+                                <div class="description">Verificar necessidade de registro CNES</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Credenciamento por Estado</div>
+                                <div class="description">Validar se há necessidade de credenciamento específico</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>🔄 Consulta Síncrona</h3>
+                        <div class="status-badge complete">✅ Implementado</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Consulta Obrigatória</div>
+                                <div class="description">Consulta síncrona obrigatória antes de prescrição GLP-1</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Protocolo Presencial</div>
+                                <div class="description">Documentar quando consulta presencial é necessária</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- PRONTUÁRIO ELETRÔNICO -->
+            <section class="section">
+                <h2 class="section-title">📝 Prontuário Eletrônico</h2>
+                
+                <div class="legal-grid">
+                    <div class="legal-card">
+                        <h3>📋 Registro de Dados</h3>
+                        <div class="status-badge pending">⚠️ Verificar</div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Data/Hora da Consulta</div>
+                                <div class="description">Garantir que prontuário registra timestamp completo</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Canal Utilizado</div>
+                                <div class="description">Registrar se foi vídeo, áudio ou texto</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Conteúdo Clínico</div>
+                                <div class="description">Registrar todas as informações clínicas relevantes</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Conduta Definida</div>
+                                <div class="description">Registrar conduta médica definida na consulta</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>✍️ Assinatura e Retenção</h3>
+                        <div class="status-badge pending">⚠️ Verificar</div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Assinatura Digital</div>
+                                <div class="description">Garantir assinatura digital do médico no prontuário</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Retenção 20 Anos</div>
+                                <div class="description">Validar período de retenção mínimo de 20 anos</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Backup e Segurança</div>
+                                <div class="description">Garantir backup seguro e recuperação de dados</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- LGPD -->
+            <section class="section">
+                <h2 class="section-title">🔒 LGPD e Proteção de Dados</h2>
+                
+                <div class="legal-grid">
+                    <div class="legal-card">
+                        <h3>🍪 Cookie Banner</h3>
+                        <div class="status-badge complete">✅ Implementado</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Banner Funcional</div>
+                                <div class="description">Componente criado e integrado no _app.tsx</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Preferências Salváveis</div>
+                                <div class="description">Essencial, Analytics, Marketing - salvos em cookies e Supabase</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">API de Consentimento</div>
+                                <div class="description">/api/lgpd/cookie-consent funcionando e salvando</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>📄 Políticas Legais</h3>
+                        <div class="status-badge complete">✅ Completo</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Política de Privacidade</div>
+                                <div class="description">/privacidade - Completa e atualizada</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Política LGPD</div>
+                                <div class="description">/politicas-lgpd - Conformidade completa</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Termos de Uso</div>
+                                <div class="description">/termos - Atualizados</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Política de Cookies</div>
+                                <div class="description">Seção 11 da política LGPD</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>👤 DPO e Direitos</h3>
+                        <div class="status-badge complete">✅ Configurado</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">DPO Definido</div>
+                                <div class="description">Configurado via env vars</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Email Publicado</div>
+                                <div class="description">privacidade@zapfarm.com</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Canal de Contato</div>
+                                <div class="description">Email + telefone disponíveis</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Processo de Atendimento</div>
+                                <div class="description">Criar processo para atender solicitações LGPD (acesso, retificação, exclusão)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>🏥 Dados Sensíveis de Saúde</h3>
+                        <div class="status-badge partial">⚠️ Validar</div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Base Legal Clara</div>
+                                <div class="description">Validar com jurídico base legal para processamento</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Consentimento Específico</div>
+                                <div class="description">Verificar necessidade de consentimento específico para dados sensíveis</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Criptografia</div>
+                                <div class="description">Dados criptografados em trânsito e repouso</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ÉTICA MÉDICA -->
+            <section class="section">
+                <h2 class="section-title">⚕️ Ética Médica e Responsabilidade</h2>
+                
+                <div class="legal-grid">
+                    <div class="legal-card">
+                        <h3>🤖 Uso de IA</h3>
+                        <div class="status-badge complete">✅ Transparente</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Termo de Uso de IA</div>
+                                <div class="description">Paciente consente explicitamente com uso de IA no fluxo</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Disclaimers no Relatório</div>
+                                <div class="description">"RASCUNHO gerado pela IA" - "Será sempre revisado por médico"</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">IA como Apoio</div>
+                                <div class="description">Texto claro: "IA como apoio, não substitui médico"</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Logs de Decisões</div>
+                                <div class="description">Implementar logs de todas as decisões da IA para auditoria</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>👨‍⚕️ Validação Médica</h3>
+                        <div class="status-badge complete">✅ Implementado</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Validação Obrigatória</div>
+                                <div class="description">Nenhuma prescrição sem validação médica</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Interface de Revisão</div>
+                                <div class="description">Médico pode aprovar, rejeitar ou ajustar</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Prescrição Apenas Após Aprovação</div>
+                                <div class="description">Fluxo garante que médico sempre valida antes</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Rastreabilidade</div>
+                                <div class="description">Garantir logs de quem validou cada prescrição</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-card">
+                        <h3>📢 Comunicação e Marketing</h3>
+                        <div class="status-badge complete">✅ Conforme</div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Sem Promessas de Resultado</div>
+                                <div class="description">Não promete "X kg em Y dias" ou resultados garantidos</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Foco em Evidência Científica</div>
+                                <div class="description">Apresenta estudos e evidências, não garantias</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item complete">
+                            <div class="icon">✅</div>
+                            <div class="content">
+                                <div class="title">Disclaimers ANVISA/CFM</div>
+                                <div class="description">Presentes em páginas sensíveis</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <div class="icon">⚠️</div>
+                            <div class="content">
+                                <div class="title">Revisão de Textos</div>
+                                <div class="description">Validar com jurídico se textos de marketing estão seguros</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- RESUMO -->
+            <section class="section">
+                <h2 class="section-title">📊 Resumo de Conformidade</h2>
+                
+                <div class="stats-summary">
+                    <div class="stat-card">
+                        <div class="number">90%</div>
+                        <div class="label">Implementado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">10%</div>
+                        <div class="label">Validar com Jurídico</div>
+                    </div>
+                </div>
+                
+                <div class="success-box">
+                    <h3>✅ Itens Completamente Implementados</h3>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 15px;">
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">✅</span>
+                            Cookie Banner e LGPD completo
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">✅</span>
+                            Termos de Telemedicina e Uso de IA no fluxo
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">✅</span>
+                            Validação médica obrigatória implementada
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">✅</span>
+                            Disclaimers e transparência sobre IA
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">✅</span>
+                            Políticas legais completas e publicadas
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <h3>⚠️ Itens que Requerem Validação Jurídica</h3>
+                    <p style="margin-bottom: 15px;">
+                        Estes itens <strong>não bloqueiam o lançamento inicial</strong>, mas devem ser validados com advogado especializado antes de escalar operações:
+                    </p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 15px;">
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">📋</span>
+                            <strong>CRM e CNES:</strong> Validar que todos os médicos têm CRM ativo e CNES registrado
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">📋</span>
+                            <strong>Prontuário Eletrônico:</strong> Verificar implementação completa e retenção de 20 anos
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">📋</span>
+                            <strong>Protocolo Presencial:</strong> Documentar quando consulta presencial é necessária
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">📋</span>
+                            <strong>Processo LGPD:</strong> Criar processo para atender solicitações de direitos LGPD
+                        </li>
+                        <li style="margin: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0;">📋</span>
+                            <strong>Logs e Auditoria:</strong> Implementar logs de decisões da IA e rastreabilidade médica
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>📝 Próximos Passos Recomendados</h3>
+                    <ol style="margin-left: 20px; margin-top: 15px;">
+                        <li style="margin: 10px 0;">
+                            <strong>Agendar reunião com advogado especializado</strong> em saúde digital e telemedicina
+                        </li>
+                        <li style="margin: 10px 0;">
+                            <strong>Apresentar este checklist</strong> e validar cada item pendente
+                        </li>
+                        <li style="margin: 10px 0;">
+                            <strong>Documentar decisões</strong> e ajustes necessários após validação
+                        </li>
+                        <li style="margin: 10px 0;">
+                            <strong>Implementar mudanças</strong> recomendadas pelo jurídico
+                        </li>
+                        <li style="margin: 10px 0;">
+                            <strong>Estabelecer revisão periódica</strong> (trimestral/semestral) do checklist
+                        </li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
+

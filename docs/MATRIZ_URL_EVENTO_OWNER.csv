@@ -1,0 +1,10 @@
+url,etapa,objetivo,owner,evento_principal,utm_source,dados_entrada,dados_saida,proximo_passo
+https://mejoy.com.br/emagrecimento,landing,captura_intencao,MeJoy,lp_view,mejoy,utm*,session_id,/triagem/emagrecimento
+https://mejoy.com.br/triagem/emagrecimento,triagem,qualificacao_inicial,MeJoy,triage_started;triage_completed,mejoy,triage_answers;consent,triage_id;report_id,/emagrecimento/relatorio?id={report_id}
+https://mejoy.com.br/emagrecimento/relatorio?id={report_id},relatorio,gerar_valor_e_contexto,MeJoy,report_viewed;cta_clinical_handoff,mejoy,triage_id;report_id,handoff_id;handoff_token,/api/handoff/create
+https://mejoy.com.br/api/handoff/create,handoff_create,encaminhar_contexto,TECMED,handoff_created,mejoy,triage_id;report_id;utm;consent,redirect_url;handoff_id;handoff_token,https://zapvida.com/quiz/emagrecimento?handoff={token}&handoff_id={id}
+https://zapvida.com/quiz/emagrecimento?handoff={token}&handoff_id={id},entrada_clinica,iniciar_avaliacao_medica,ZapVida,handoff_opened,mejoy,handoff_token;handoff_id,intake_context,/programas/checkout-bridge
+https://zapvida.com/pay/plantao,pagamento_clinico,converter_consulta,ZapVida,clinical_payment_started;clinical_payment_success,mejoy,patient_id;intake_context,order_id_clinico,/consulta
+https://zapvida.com/consulta,consulta,decisao_medica,ZapVida,consult_completed,zapvida,prontuario;intake,status_plano,followup_e_execucao
+https://zapfarm.com.br,execucao,dispensa_e_logistica,ZapFarm,pharmacy_order_started;pharmacy_order_created,zapvida,prescricao;order_id_clinico,pharmacy_order_id,acompanhamento
+https://zapvida.com/follow-up,followup,continuidade_clinica,ZapVida,followup_started,zapvida,patient_id,proxima_consulta,retencao

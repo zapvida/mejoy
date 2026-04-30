@@ -1,0 +1,1527 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+
+// import { useRouter } from "next/router";
+import BristolMatrix from "./BristolMatrix";
+import QuestionWhy from "./QuestionWhy";
+
+import { EnhancedInput, NumericInput } from "@/components/ui/EnhancedInput";
+import { toNumber, maskWeight, maskHeight } from "@/lib/format/number";
+import { StepDef, TriageFlow, firstVisitSteps, hasProfileData } from "@/lib/triage/schema";
+import { cn } from "@/lib/utils";
+import { appendUtmsToUrl } from '@/lib/utm';
+import { getBrandBySlug, BRAND_CONFIG } from "@/lib/brand/config";
+
+const localKey = (id: string) => `triage:${id}`;
+const pendingKey = (id: string) => `${localKey(id)}:pending`;
+const SEEN_VALUE = "__seen__";
+const SKIPPED_VALUE = "__skipped__";
+
+export type RunnerCompletionStatus = "completed" | "running" | "failed";
+
+export type RunnerCompletePayload = {
+  triageId: string;
+  status: RunnerCompletionStatus;
+  reportId?: string;
+  error?: string;
+};
+
+interface RunnerProps {
+  triageId: string;
+  flow: TriageFlow;
+  firstVisit: boolean;
+  initialAnswers?: Record<string, any>;
+  // eslint-disable-next-line no-unused-vars
+  onComplete?: (_payload: RunnerCompletePayload) => void | Promise<void>;
+}
+
+type PendingPayload = {
+  triageId: string;
+  stepKey: string;
+  value: any;
+  progress: number;
+  answeredAt: string;
+};
+
+const isBrowser = typeof window !== "undefined";
+
+// Type-guards e normalizador de resposta
+type MatrixAnswer = Record<string, number | string | boolean | null | undefined>;
+function isMatrixAnswer(v: unknown): v is MatrixAnswer {
+  return !!v && typeof v === 'object' && !Array.isArray(v);
+}
+function normalizeAnswerValue(v: unknown) {
+  if (v == null) return null;
+  if (typeof v === 'number' || typeof v === 'string' || typeof v === 'boolean') return v;
+  if (isMatrixAnswer(v)) return v;
+  return String(v);
+}
+
+const getStoredAnswers = (triageId: string, fallback: Record<string, any>) => {
+  if (!isBrowser) return fallback;
+  try {
+    const cached = window.localStorage.getItem(localKey(triageId));
+    if (!cached) return fallback;
+    const parsed = JSON.parse(cached);
+    return typeof parsed === "object" && parsed ? { ...fallback, ...parsed } : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const storeAnswers = (triageId: string, answers: Record<string, any>) => {
+  if (!isBrowser) return;
+  try {
+    // Limpar dados antigos (mais de 7 dias)
+    const keys = Object.keys(window.localStorage);
+    const weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+    keys.forEach(key => {
+      if (key.startsWith('triage:')) {
+        try {
+          const data = JSON.parse(window.localStorage.getItem(key) || '{}');
+          if (data._timestamp && data._timestamp < weekAgo) {
+            window.localStorage.removeItem(key);
+            window.localStorage.removeItem(key + ':pending');
+          }
+        } catch {
+          // Ignore corrupted data
+        }
+      }
+    });
+    
+    // Adicionar timestamp para limpeza futura
+    const dataWithTimestamp = { ...answers, _timestamp: Date.now() };
+    window.localStorage.setItem(localKey(triageId), JSON.stringify(dataWithTimestamp));
+  } catch {
+    /* ignore */
+  }
+};
+
+const enqueuePending = (triageId: string, payload: PendingPayload) => {
+  if (!isBrowser) return;
+  try {
+    const existing = window.localStorage.getItem(pendingKey(triageId));
+    const queue: PendingPayload[] = existing ? JSON.parse(existing) : [];
+    queue.push(payload);
+    window.localStorage.setItem(pendingKey(triageId), JSON.stringify(queue));
+  } catch {
+    /* ignore */
+  }
+};
+
+const readPending = (triageId: string): PendingPayload[] => {
+  if (!isBrowser) return [];
+  try {
+    const existing = window.localStorage.getItem(pendingKey(triageId));
+    return existing ? JSON.parse(existing) : [];
+  } catch {
+    return [];
+  }
+};
+
+const writePending = (triageId: string, queue: PendingPayload[]) => {
+  if (!isBrowser) return;
+  try {
+    if (queue.length === 0) {
+      window.localStorage.removeItem(pendingKey(triageId));
+    } else {
+      window.localStorage.setItem(pendingKey(triageId), JSON.stringify(queue));
+    }
+  } catch {
+    /* ignore */
+  }
+};
+
+const isArray = (value: unknown): value is any[] => Array.isArray(value);
+
+const isStepVisible = (step: StepDef, answers: Record<string, any>) => {
+  if (!step.dependsOn || step.dependsOn.length === 0) return true;
+  return step.dependsOn.every(condition => {
+    const current = answers?.[condition.key];
+    if (current === undefined || current === null) return false;
+    const acceptedValues = Array.isArray(condition.value) ? condition.value : [condition.value];
+    const result = isArray(current)
+      ? acceptedValues.some(v => current.includes(v))
+      : acceptedValues.includes(current);
+    return condition.not ? !result : result;
+  });
+};
+
+const isValueEmpty = (value: any) => {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string") return value.trim().length === 0;
+  if (isArray(value)) return value.length === 0;
+  return false;
+};
+
+const isStepAnswered = (step: StepDef, answers: Record<string, any>) => {
+  const value = answers?.[step.key];
+  if (step.type === "info") return value === SEEN_VALUE;
+  if (value === SKIPPED_VALUE && !step.required) return true;
+  if (isValueEmpty(value)) return false;
+  
+  // Validação específica para matrix
+  if (step.type === 'matrix') {
+    if (!isMatrixAnswer(value)) return false;
+    // regra mínima: ao menos 1 célula preenchida
+    if (!Object.values(value).some(x => x !== null && x !== undefined && x !== '')) return false;
+  }
+  
+  return true;
+};
+
+const totalVisibleQuestions = (steps: StepDef[], answers: Record<string, any>) =>
+  steps.filter(step => step.type !== "info" && isStepVisible(step, answers)).length;
+
+const completedQuestions = (steps: StepDef[], answers: Record<string, any>) =>
+  steps.filter(step => step.type !== "info" && isStepVisible(step, answers) && isStepAnswered(step, answers)).length;
+
+const computeProgress = (steps: StepDef[], answers: Record<string, any>) => {
+  const total = totalVisibleQuestions(steps, answers);
+  if (total === 0) return 0;
+  const completed = completedQuestions(steps, answers);
+  return Math.round((completed / total) * 100);
+};
+
+// const questionEmojiPool = ["🌿", "🌱", "🌸", "🧘", "💚", "🩺", "🌞", "🌈", "🍃", "🪴", "🌤️", "💖", "🌟", "🥗"];
+
+// const labelEmojiMatchers: Array<{ patterns: RegExp[]; emoji: string }> = [
+//   { patterns: [/masculin/], emoji: "🧔" },
+//   { patterns: [/femin/], emoji: "👩" },
+//   { patterns: [/sono|dorm/i], emoji: "😴" },
+//   { patterns: [/estresse|ansiedad/i], emoji: "😌" },
+//   { patterns: [/atividade|exerc/i], emoji: "🏃" },
+//   { patterns: [/aliment/i], emoji: "🥗" },
+//   { patterns: [/dor|desconfort/i], emoji: "🤕" },
+//   { patterns: [/tabag/i], emoji: "🚭" },
+//   { patterns: [/gesta/i], emoji: "🤰" },
+//   { patterns: [/mental|humor|emoç/i], emoji: "🧠" },
+//   { patterns: [/peso|obes/i], emoji: "⚖️" },
+//   { patterns: [/alcool|álcool|quím/i], emoji: "🍹" },
+//   { patterns: [/sono|descanso/i], emoji: "🛌" }
+// ];
+
+// const _getEmojiForStep = (step: StepDef | undefined, fallbackIndex: number) => {
+//   if (!step?.label) {
+//     return questionEmojiPool[fallbackIndex % questionEmojiPool.length];
+//   }
+//   const normalized = step.label.toLowerCase();
+//   const matcher = labelEmojiMatchers.find(({ patterns }) =>
+//     patterns.some(pattern => pattern.test(normalized))
+//   );
+//   return matcher?.emoji ?? questionEmojiPool[fallbackIndex % questionEmojiPool.length];
+// };
+
+// const getProgressEmoji = (value: number) => {
+//   if (value >= 90) return "🌳";
+//   if (value >= 60) return "🌿";
+//   if (value >= 30) return "🌱";
+//   return "🌼";
+// };
+
+const deriveInitialValue = (step: StepDef | undefined, answers: Record<string, any>) => {
+  if (!step) return "";
+  const answer = answers?.[step.key];
+  if (answer !== undefined) return answer;
+  if (step.type === "multiselect" || step.type === "checkbox") return [];
+  if (step.type === "scale" || step.type === "slider") return step.min ?? 0;
+  return "";
+};
+
+const findNextIndex = (
+  steps: StepDef[],
+  answers: Record<string, any>,
+  currentIndex: number
+): number | null => {
+  for (let i = currentIndex + 1; i < steps.length; i += 1) {
+    const step = steps[i];
+    if (step && isStepVisible(step, answers)) return i;
+  }
+  return null;
+};
+
+const findPrevIndex = (
+  steps: StepDef[],
+  answers: Record<string, any>,
+  currentIndex: number
+): number | null => {
+  for (let i = currentIndex - 1; i >= 0; i -= 1) {
+    const step = steps[i];
+    if (step && isStepVisible(step, answers)) return i;
+  }
+  return null;
+};
+
+const findInitialIndex = (steps: StepDef[], answers: Record<string, any>) => {
+  for (let i = 0; i < steps.length; i += 1) {
+    const step = steps[i];
+    if (!step || !isStepVisible(step, answers)) continue;
+    if (step.type === "info" && isStepAnswered(step, answers)) continue;
+    if (step.type === "info") return i;
+    if (!isStepAnswered(step, answers)) return i;
+  }
+  return 0;
+};
+
+export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComplete }: RunnerProps) {
+  // const _router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Determinar brand baseado no slug
+  const brand = useMemo(() => getBrandBySlug(flow.slug), [flow.slug]);
+  const brandConfig = useMemo(() => BRAND_CONFIG[brand], [brand]);
+  
+  // Helper functions para classes CSS baseadas no brand
+  const getBgGradient = () => {
+    if (brand === 'zapfarm') {
+      return 'bg-gradient-to-br from-purple-50 via-white to-orange-50';
+    }
+    return 'bg-gradient-to-br from-green-50 via-white to-emerald-50';
+  };
+  
+  const getProgressGradient = () => {
+    if (brand === 'zapfarm') {
+      return 'bg-gradient-to-r from-purple-500 via-purple-600 to-orange-500';
+    }
+    return 'bg-gradient-to-r from-green-400 via-green-500 to-emerald-600';
+  };
+  
+  const getButtonGradient = () => {
+    if (brand === 'zapfarm') {
+      return 'bg-gradient-to-r from-purple-600 via-purple-700 to-orange-600';
+    }
+    return 'bg-gradient-to-r from-green-500 via-green-600 to-emerald-600';
+  };
+  
+  const getBorderColor = () => {
+    if (brand === 'zapfarm') {
+      return 'border-purple-200/50';
+    }
+    return 'border-green-200/50';
+  };
+  
+  const getTextColor = () => {
+    if (brand === 'zapfarm') {
+      return 'text-purple-600';
+    }
+    return 'text-green-600';
+  };
+  
+  const getButtonClasses = () => {
+    if (brand === 'zapfarm') {
+      return 'bg-gradient-to-r from-purple-600 via-purple-700 to-orange-600';
+    }
+    return 'bg-gradient-to-r from-green-500 via-green-600 to-emerald-600';
+  };
+  
+  const getSelectedOptionClasses = () => {
+    if (brand === 'zapfarm') {
+      return 'border-purple-400 bg-gradient-to-r from-purple-100 to-orange-100 text-purple-800 shadow-xl ring-4 ring-purple-200';
+    }
+    return 'border-green-400 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 shadow-xl ring-4 ring-green-200';
+  };
+  
+  const getOptionHoverClasses = () => {
+    if (brand === 'zapfarm') {
+      return 'border-purple-200 bg-gradient-to-r from-white to-purple-50/50 text-gray-700 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-orange-50';
+    }
+    return 'border-green-200 bg-gradient-to-r from-white to-green-50/50 text-gray-700 hover:border-green-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50';
+  };
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const mergedInitial = useMemo(
+    () => getStoredAnswers(triageId, initialAnswers),
+    [triageId, initialAnswers]
+  );
+
+  const steps = useMemo<StepDef[]>(() => {
+    // firstVisitSteps agora está vazio - fluxo mais rápido e focado apenas nas perguntas essenciais
+    return flow.steps;
+  }, [flow.steps]);
+
+  const [answers, setAnswers] = useState<Record<string, any>>(mergedInitial);
+  const [index, setIndex] = useState(() => findInitialIndex(steps, mergedInitial));
+  const [localValue, setLocalValue] = useState<any>(() =>
+    deriveInitialValue(steps[index], mergedInitial)
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [progress, setProgress] = useState(() => computeProgress(steps, mergedInitial));
+  const [flowCompleted, setFlowCompleted] = useState(false);
+  const [finalizeStatus, setFinalizeStatus] = useState<RunnerCompletionStatus | "idle">("idle");
+  const [finalizeError, setFinalizeError] = useState<string | null>(null);
+  const pendingFlushRef = useRef(false);
+  const finalizeInFlightRef = useRef(false);
+
+  const retryWithBackoff = useCallback(
+    async <T,>(operation: () => Promise<T>, maxRetries = 2, baseDelayMs = 1000): Promise<T> => { // Reduced retries and increased delay
+      let lastError: unknown = null;
+      for (let attempt = 0; attempt < maxRetries; attempt += 1) {
+        try {
+          return await operation();
+        } catch (error) {
+          lastError = error;
+          if (attempt === maxRetries - 1) break;
+          const delay = baseDelayMs * 2 ** attempt;
+          console.log(`[Runner] Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms delay`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+      throw lastError instanceof Error ? lastError : new Error("Operação falhou após múltiplas tentativas.");
+    },
+    []
+  );
+
+  // const _redirectToReport = useCallback(
+  //   async (reportId: string) => {
+  //     const destination = `/relatorio/${reportId}`;
+  //     try {
+  //       await router.push(destination);
+  //       return;
+  //     } catch (error) {
+  //       console.warn("router.push falhou, tentando window.location.assign", error);
+  //     }
+  //     try {
+  //       window.location.assign(destination);
+  //       return;
+  //     } catch (error) {
+  //       console.warn("window.location.assign falhou, tentando window.location.replace", error);
+  //     }
+  //     try {
+  //       window.location.replace(destination);
+  //     } catch (error) {
+  //       console.warn("window.location.replace também falhou.", error);
+  //     }
+  //   },
+  //   [router]
+  // );
+
+  const current = steps[index];
+  const visibleQuestions = totalVisibleQuestions(steps, answers) || 1;
+  const questionPosition = useMemo(() => {
+    let count = 0;
+    for (let i = 0; i <= index; i += 1) {
+      const step = steps[i];
+      if (!step || step.type === "info") continue;
+      if (!isStepVisible(step, answers)) continue;
+      count += 1;
+    }
+    return count === 0 ? 1 : count;
+  }, [steps, index, answers]);
+
+  useEffect(() => {
+    storeAnswers(triageId, answers);
+  }, [triageId, answers]);
+
+  useEffect(() => {
+    setLocalValue(deriveInitialValue(steps[index], answers));
+    setErrorMessage(null);
+  }, [index, steps, answers]);
+
+  useEffect(() => {
+    setProgress(computeProgress(steps, answers));
+  }, [answers, steps]);
+
+  const clearCachedProgress = useCallback(() => {
+    if (!isBrowser) return;
+    try {
+      window.localStorage.removeItem(localKey(triageId));
+      window.localStorage.removeItem(pendingKey(triageId));
+    } catch {
+      /* ignore */
+    }
+  }, [triageId]);
+
+  const openSummary = useCallback(() => {
+    if (!isBrowser) return;
+    window.location.href = `/triagem/${flow.slug}/resumo?triageId=${triageId}`;
+  }, [flow.slug, triageId]);
+
+  useEffect(() => {
+    if (!isBrowser) return;
+    const handleOnline = () => {
+      if (!pendingFlushRef.current) {
+        void flushPendingQueue();
+      }
+    };
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triageId]);
+
+  const flushPendingQueue = useCallback(async () => {
+    if (!isBrowser) return;
+    const queue = readPending(triageId);
+    if (!queue.length) return;
+    pendingFlushRef.current = true;
+    const remaining: PendingPayload[] = [];
+     
+    for (const item of queue) {
+      try {
+        const response = await fetch("/api/triage/answer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item)
+        });
+        if (!response.ok) throw new Error("failed");
+      } catch {
+        remaining.push(item);
+      }
+    }
+    writePending(triageId, remaining);
+    pendingFlushRef.current = false;
+  }, [triageId]);
+
+  const finalizeTriage = useCallback(
+    async (options: { force?: boolean } = {}) => {
+      if (finalizeInFlightRef.current && !options.force) return;
+      finalizeInFlightRef.current = true;
+      setFinalizeStatus("running");
+      setFinalizeError(null);
+
+      try {
+        await flushPendingQueue();
+        
+        console.log(`[Runner] Finalizing triageId: ${triageId}`);
+        
+        const response = await retryWithBackoff(async () => {
+          const controller =
+            typeof AbortController !== "undefined" ? new AbortController() : undefined;
+          const timeoutId =
+            typeof setTimeout === "function" && controller
+              ? setTimeout(() => controller.abort(), 60_000)
+              : null;
+
+          try {
+            const requestInit: RequestInit = {
+              method: "POST",
+              headers: { 
+                "Content-Type": "application/json",
+                "X-Idempotency-Key": triageId
+              },
+              body: JSON.stringify({ triageId }),
+              ...(controller?.signal ? { signal: controller.signal } : {})
+            };
+            const result = await fetch("/api/triage/finalize", requestInit);
+            if (result.status >= 500) {
+              throw new Error(result.statusText || "Falha temporária ao finalizar triagem.");
+            }
+            return result;
+          } finally {
+            if (timeoutId) clearTimeout(timeoutId);
+          }
+        });
+
+        let payload: any = null;
+        try {
+          payload = await response.json();
+        } catch {
+          payload = null;
+        }
+
+        console.log("Runner: Resposta da API finalize:", { payload, responseOk: response.ok });
+
+        if (!response.ok) {
+          const message =
+            typeof payload?.error === "string" ? payload.error : "Falha ao finalizar triagem.";
+          throw new Error(message);
+        }
+
+        if (payload?.ok && payload?.redirect) {
+          setFinalizeStatus("completed");
+          clearCachedProgress();
+          
+          console.log(`[Runner] Redirecting to: ${payload.redirect}`);
+          
+          // Redireciona imediatamente, sem reset de estado
+          if (typeof window !== "undefined") {
+            window.location.href = payload.redirect;
+          }
+          
+          if (onComplete) {
+            await onComplete({
+              triageId,
+              status: "completed",
+              reportId: triageId // Use triageId as reportId for consistency
+            });
+          }
+        } else {
+          throw new Error("Resposta inválida da API de finalização");
+        }
+      } catch (error) {
+        const fallbackMessage = "Não foi possível finalizar a triagem automaticamente. Tente novamente em instantes.";
+        const message =
+          error instanceof Error && error.message && !/aborted/i.test(error.message)
+            ? error.message
+            : fallbackMessage;
+        setFinalizeStatus("failed");
+        setFinalizeError(message);
+        if (onComplete) {
+          await onComplete({ triageId, status: "failed", error: message });
+        }
+      } finally {
+        finalizeInFlightRef.current = false;
+      }
+    },
+    [clearCachedProgress, flushPendingQueue, onComplete, retryWithBackoff, triageId]
+  );
+
+  const retryFinalize = useCallback(() => {
+    void finalizeTriage({ force: true });
+  }, [finalizeTriage]);
+
+  useEffect(() => {
+    void flushPendingQueue();
+  }, [flushPendingQueue]);
+
+  const advanceTo = useCallback(
+    (nextIndex: number | null) => {
+      if (nextIndex === null) {
+        if (!flowCompleted) {
+          setFlowCompleted(true);
+          void finalizeTriage();
+        }
+        return;
+      }
+      // Atualiza índice para triggerar animação de transição
+      setIndex(nextIndex);
+    },
+    [finalizeTriage, flowCompleted]
+  );
+
+  const persistAnswer = useCallback(
+    async (step: StepDef, value: any) => {
+      const safe = normalizeAnswerValue(value);
+      const updatedAnswers = { ...answers, [step.key]: safe };
+      setAnswers(updatedAnswers);
+      storeAnswers(triageId, updatedAnswers);
+
+      const nextProgress = computeProgress(steps, updatedAnswers);
+      setProgress(nextProgress);
+
+      const payload: PendingPayload = {
+        triageId,
+        stepKey: step.key,
+        value: safe,
+        progress: nextProgress,
+        answeredAt: new Date().toISOString()
+      };
+
+      try {
+        const response = await fetch("/api/triage/answer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("Failed to persist");
+        await flushPendingQueue();
+      } catch {
+        enqueuePending(triageId, payload);
+      }
+    },
+    [answers, flushPendingQueue, steps, triageId]
+  );
+
+  const handleSubmit = useCallback(async () => {
+    if (!current) return;
+    if (!isStepVisible(current, answers)) {
+      advanceTo(findNextIndex(steps, answers, index));
+      return;
+    }
+
+    setSubmitting(true);
+    setErrorMessage(null);
+    try {
+      const rawValue = localValue;
+      const parsedValue = current.parse ? current.parse(rawValue) : rawValue;
+      const valueForValidation = parsedValue ?? rawValue;
+
+      if (current.required && isValueEmpty(valueForValidation)) {
+        throw new Error("Campo obrigatório.");
+      }
+
+      const validationError = current.validate?.(valueForValidation);
+      if (validationError) throw new Error(validationError);
+
+      const finalValue = isValueEmpty(valueForValidation) && !current.required ? SKIPPED_VALUE : valueForValidation;
+      await persistAnswer(current, finalValue ?? null);
+      const nextIndex = findNextIndex(steps, { ...answers, [current.key]: finalValue }, index);
+      
+      // Animação suave antes de avançar
+      await new Promise(resolve => setTimeout(resolve, 200));
+      advanceTo(nextIndex);
+    } catch (err) {
+      if (err instanceof Error) setErrorMessage(err.message);
+      else setErrorMessage("Não foi possível salvar esta resposta.");
+      setSubmitting(false);
+    }
+  }, [advanceTo, answers, current, index, localValue, persistAnswer, steps]);
+
+  const handleInfoContinue = useCallback(async () => {
+    if (!current) return;
+    await persistAnswer(current, SEEN_VALUE);
+    advanceTo(findNextIndex(steps, { ...answers, [current.key]: SEEN_VALUE }, index));
+  }, [advanceTo, answers, current, index, persistAnswer, steps]);
+
+  const handleSkip = useCallback(async () => {
+    if (!current || current.required) return;
+    await persistAnswer(current, SKIPPED_VALUE);
+    advanceTo(findNextIndex(steps, { ...answers, [current.key]: SKIPPED_VALUE }, index));
+  }, [advanceTo, answers, current, index, persistAnswer, steps]);
+
+  const handleBack = useCallback(() => {
+    const prevIndex = findPrevIndex(steps, answers, index);
+    if (prevIndex === null) return;
+    setIndex(prevIndex);
+  }, [answers, index, steps]);
+
+  const renderOptions = (step: StepDef) => {
+    if (!step.options) return null;
+    const isMulti = step.multi || step.type === "multiselect" || step.type === "checkbox";
+    const selected = isArray(localValue) ? localValue : [localValue];
+
+    const toggleValue = (val: string) => {
+      if (!isMulti) {
+        setLocalValue(val);
+        void (async () => {
+          setSubmitting(true);
+          setErrorMessage(null);
+          try {
+            await persistAnswer(step, val);
+            const nextIndex = findNextIndex(steps, { ...answers, [step.key]: val }, index);
+            advanceTo(nextIndex);
+          } catch (err) {
+            if (err instanceof Error) setErrorMessage(err.message);
+            else setErrorMessage("Não foi possível salvar esta resposta.");
+          } finally {
+            setSubmitting(false);
+          }
+        })();
+        return;
+      }
+
+      const normalized = isArray(localValue) ? [...localValue] : [];
+      if (normalized.includes(val)) {
+        setLocalValue(normalized.filter(item => item !== val));
+      } else {
+        normalized.push(val);
+        setLocalValue(normalized);
+      }
+    };
+
+    return (
+      <div className="mt-8 space-y-4">
+        {step.options.map((option, index) => {
+          const isSelected = selected.includes(option.value);
+          // Sistema inteligente de emojis baseado no contexto da pergunta
+          const getContextualEmoji = (option: any, step: any, index: number) => {
+            const label = option.label.toLowerCase();
+            const value = option.value.toLowerCase();
+            const stepLabel = step?.label?.toLowerCase() || '';
+            
+            // Emojis específicos para gênero (sempre presentes)
+            if (stepLabel.includes('gênero') || stepLabel.includes('sexo')) {
+              const genderMap: Record<string, string> = {
+                'masculino': '👨',
+                'feminino': '👩',
+                'outro': '🧑',
+                'nao binario': '🌈',
+                'não binário': '🌈',
+                'não-binário': '🌈',
+                'prefiro não dizer': '🤫',
+                'prefiro nao dizer': '🤫'
+              };
+              return genderMap[label] || genderMap[value] || '👤';
+            }
+            
+            // Emojis para frequência de exercícios
+            if (stepLabel.includes('exercício') || stepLabel.includes('atividade')) {
+              const exerciseMap: Record<string, string> = {
+                'diariamente': '🏃‍♂️',
+                'todos os dias': '🏃‍♂️',
+                'semanalmente': '🚶‍♀️',
+                'raramente': '😴',
+                'nunca': '🚫'
+              };
+              return exerciseMap[label] || exerciseMap[value] || '🏃';
+            }
+            
+            // Emojis para alimentação
+            if (stepLabel.includes('alimentação') || stepLabel.includes('dieta')) {
+              const foodMap: Record<string, string> = {
+                'muito saudável': '🥗',
+                'saudável': '🥕',
+                'regular': '🍽️',
+                'pouco saudável': '🍔',
+                'muito pouco saudável': '🍟'
+              };
+              return foodMap[label] || foodMap[value] || '🍎';
+            }
+            
+            // Emojis para estresse
+            if (stepLabel.includes('estresse') || stepLabel.includes('ansiedade')) {
+              const stressMap: Record<string, string> = {
+                'muito baixo': '😌',
+                'baixo': '😊',
+                'moderado': '😐',
+                'alto': '😰',
+                'muito alto': '😱'
+              };
+              return stressMap[label] || stressMap[value] || '🧘';
+            }
+            
+            // Emojis para dor/desconforto
+            if (stepLabel.includes('dor') || stepLabel.includes('desconforto')) {
+              const painMap: Record<string, string> = {
+                'nenhuma': '😌',
+                'leve': '😐',
+                'moderada': '😣',
+                'intensa': '😰',
+                'muito intensa': '😱'
+              };
+              return painMap[label] || painMap[value] || '🤕';
+            }
+            
+            // Emojis para saúde gastrointestinal
+            if (stepLabel.includes('gastrointestinal') || stepLabel.includes('digestivo') || stepLabel.includes('intestino')) {
+              const gastroMap: Record<string, string> = {
+                'menos de 2 semanas': '🕐',
+                '2 a 8 semanas': '📅',
+                '2 a 6 meses': '📆',
+                'mais de 6 meses': '🗓️',
+                'agudo': '⚡',
+                'crônico': '🔄',
+                'leve': '😌',
+                'moderado': '😐',
+                'intenso': '😰'
+              };
+              return gastroMap[label] || gastroMap[value] || '🩺';
+            }
+            
+            // Emojis para tempo/duração
+            if (stepLabel.includes('tempo') || stepLabel.includes('duração') || stepLabel.includes('quanto tempo')) {
+              const timeMap: Record<string, string> = {
+                'menos de': '🕐',
+                'mais de': '🗓️',
+                'semanas': '📅',
+                'meses': '📆',
+                'anos': '🗓️',
+                'dias': '📅'
+              };
+              return timeMap[label] || timeMap[value] || '⏰';
+            }
+            
+            // Emojis para intensidade/severidade
+            if (stepLabel.includes('intensidade') || stepLabel.includes('severidade') || stepLabel.includes('nível')) {
+              const intensityMap: Record<string, string> = {
+                'nenhuma': '😌',
+                'leve': '😊',
+                'moderada': '😐',
+                'intensa': '😰',
+                'muito intensa': '😱',
+                'baixa': '😊',
+                'alta': '😰'
+              };
+              return intensityMap[label] || intensityMap[value] || '📊';
+            }
+            
+            // Emojis para sono
+            if (stepLabel.includes('sono') || stepLabel.includes('dormir')) {
+              const sleepMap: Record<string, string> = {
+                'excelente': '😴',
+                'bom': '😊',
+                'regular': '😐',
+                'ruim': '😰',
+                'muito ruim': '😱'
+              };
+              return sleepMap[label] || sleepMap[value] || '🛌';
+            }
+            
+            // Sistema 50/50 inteligente: baseado no tipo de pergunta
+            const questionTypes = ['gênero', 'sexo', 'exercício', 'atividade', 'alimentação', 'dieta', 'estresse', 'ansiedade', 'dor', 'desconforto', 'sono', 'dormir', 'gastrointestinal', 'digestivo', 'tempo', 'duração', 'intensidade', 'severidade'];
+            const hasSpecificEmojis = questionTypes.some(type => stepLabel.includes(type));
+            
+            // Se não tem emojis específicos, usa sistema 50/50
+            if (!hasSpecificEmojis) {
+              const shouldHaveEmoji = (step?.key?.charCodeAt(0) || 0) % 2 === 0;
+              if (!shouldHaveEmoji) {
+                return null; // Sem emoji para esta pergunta
+              }
+            }
+            
+            // Emojis genéricos elegantes (não bolinhas)
+            const elegantEmojis = ['✨', '💫', '🌟', '⭐', '🔸', '🔹', '▪️', '▫️'];
+            return elegantEmojis[index % elegantEmojis.length];
+          };
+          
+          const emoji = getContextualEmoji(option, step, index);
+          
+          return (
+            <button
+              key={option.value}
+              type="button"
+              className={cn(
+                "w-full rounded-2xl border-2 px-6 py-4 text-left transition-all duration-300 transform hover:scale-105",
+                "flex items-center shadow-lg",
+                emoji ? "gap-4" : "gap-0",
+                isSelected
+                  ? getSelectedOptionClasses()
+                  : getOptionHoverClasses()
+              )}
+              onClick={() => toggleValue(option.value)}
+              disabled={submitting}
+            >
+              {emoji && <span className="text-2xl">{emoji}</span>}
+              <div className="flex-1">
+                <span className="text-lg font-semibold">{option.label}</span>
+                {option.helper && <span className="text-sm text-gray-500 mt-1">{option.helper}</span>}
+              </div>
+              {isSelected && (
+                <span className={cn("text-xl", brand === 'zapfarm' ? 'text-purple-600' : 'text-green-600')}>✓</span>
+              )}
+            </button>
+          );
+        })}
+        {isMulti && (
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className={cn("min-h-[44px] rounded-full px-6 py-2 text-sm font-bold text-white shadow-xl transition hover:shadow-2xl hover:scale-105 flex items-center gap-2", getButtonClasses())}
+              onClick={handleSubmit}
+              disabled={submitting || (step.required && isValueEmpty(localValue))}
+            >
+              {submitting ? "💾 Salvando..." : "➡️ Continuar"}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderInput = () => {
+    if (!current) return null;
+    if (!isStepVisible(current, answers)) return null;
+
+    if (current.type === "info") {
+      const infoGradient = brand === 'zapfarm' 
+        ? 'bg-gradient-to-br from-purple-50 via-white to-orange-50'
+        : 'bg-gradient-to-br from-green-50 to-emerald-50';
+      const infoBorder = brand === 'zapfarm'
+        ? 'border-purple-200'
+        : 'border-green-200';
+      const tagBg = brand === 'zapfarm'
+        ? 'bg-purple-100 text-purple-700'
+        : 'bg-green-100 text-green-700';
+      
+      return (
+        <div className="mt-10 space-y-10">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className={cn("rounded-3xl p-6 sm:p-8 border-2 shadow-xl", infoGradient, infoBorder)}
+          >
+            {current.highlightTag && (
+              <div className={cn("inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4", tagBg)}>
+                {current.highlightTag}
+              </div>
+            )}
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-4">
+              {current.icon && <span>{current.icon}</span>}
+              {current.label}
+            </h2>
+            {current.description && (
+              <p className="text-base sm:text-lg text-gray-700 mb-6 leading-relaxed">
+                {current.description}
+              </p>
+            )}
+            {current.bullets && current.bullets.length > 0 && (
+              <ul className="space-y-3 mb-6">
+                {current.bullets.map((bullet, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm sm:text-base text-gray-700">
+                    <span className={cn("mt-1 flex-shrink-0", getTextColor())}>✓</span>
+                    <span className="leading-relaxed">{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {current.helper && <p className="mt-4 text-sm text-gray-500">{current.helper}</p>}
+          </motion.div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className={cn("rounded-full px-8 py-3 text-base font-bold text-white shadow-xl transition hover:shadow-2xl hover:scale-105 flex items-center gap-2", getButtonClasses())}
+              onClick={handleInfoContinue}
+            >
+              ➡️ Continuar
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    if (current.type === "select_cards") {
+      const selectedValue = localValue as string | undefined;
+      
+      return (
+        <div className="mt-10 space-y-6">
+          {current.helperText && (
+            <p className="text-sm sm:text-base text-gray-600 mb-4">
+              {current.helperText}
+            </p>
+          )}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {current.cardOptions?.map((option) => {
+              const isSelected = selectedValue === option.value;
+              const isRecommended = option.badge?.includes('potência') || option.badge?.includes('Maior');
+              
+              return (
+                <motion.button
+                  key={option.value}
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setLocalValue(option.value);
+                    setErrorMessage(null);
+                  }}
+                  className={cn(
+                    "relative rounded-2xl p-5 sm:p-6 border-2 text-left transition-all duration-300",
+                    isSelected
+                      ? getSelectedOptionClasses()
+                      : isRecommended
+                      ? brand === 'zapfarm'
+                        ? "border-purple-300 bg-white hover:border-purple-400 hover:shadow-lg"
+                        : "border-green-300 bg-white hover:border-green-400 hover:shadow-lg"
+                      : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                  )}
+                >
+                  {option.badge && (
+                    <div className={cn(
+                      "inline-block px-2 py-1 rounded-full text-xs font-bold mb-3",
+                      isRecommended
+                        ? brand === 'zapfarm'
+                          ? "bg-purple-600 text-white"
+                          : "bg-green-600 text-white"
+                        : "bg-gray-100 text-gray-700"
+                    )}>
+                      {option.badge}
+                    </div>
+                  )}
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                    {option.title}
+                  </h3>
+                  {option.subtitle && (
+                    <p className="text-sm text-gray-600 mb-3">
+                      {option.subtitle}
+                    </p>
+                  )}
+                  {option.priceHint && (
+                    <p className="text-sm font-semibold text-gray-700 mt-3 pt-3 border-t border-gray-200">
+                      {option.priceHint}
+                    </p>
+                  )}
+                  {isSelected && (
+                    <div className="absolute top-4 right-4">
+                      <div className={cn(
+                        "w-6 h-6 rounded-full flex items-center justify-center",
+                        brand === 'zapfarm' ? "bg-purple-600" : "bg-green-600"
+                      )}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </motion.button>
+              );
+            })}
+          </div>
+          
+          {current.evidenceNote && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <span className="font-semibold">📌 Dica baseada em estudos:</span> {current.evidenceNote}
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    switch (current.type) {
+      case "text":
+      case "phone":
+      case "textarea":
+      case "number": {
+        const inputMode =
+          current.type === "phone" ? "tel" : current.type === "number" ? "decimal" : "text";
+        const phonePattern = current.type === "phone" ? "[0-9\\s()\\+\\-]+" : undefined;
+        const inputProps = {
+          value: typeof localValue === "string" ? localValue : localValue ?? "",
+          onChange: (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const safe = normalizeAnswerValue(evt.target.value);
+            setLocalValue(safe);
+          },
+          disabled: submitting,
+          placeholder: current.placeholder,
+          autoFocus: true
+        };
+
+        return (
+          <div className="mt-10 space-y-8">
+            {current.type === "textarea" ? (
+              <textarea
+                {...inputProps}
+                rows={4}
+                inputMode={inputMode}
+                className="w-full rounded-2xl bg-gradient-to-br from-white to-green-50/50 border-2 border-green-200 px-5 py-4 text-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-green-400 shadow-lg transition-all duration-300"
+              />
+            ) : current.type === "number" ? (
+              (() => {
+                const numericProps: any = {
+                  ...inputProps,
+                  step: current.step ?? 1,
+                  className: "w-full rounded-2xl bg-gradient-to-br from-white to-green-50/50 border-2 border-green-200 px-5 py-4 text-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-green-400 shadow-lg transition-all duration-300",
+                  onChange: (evt: ChangeEvent<HTMLInputElement>) => {
+                  const value = evt.target.value;
+                  // Aplicar máscara baseada no campo
+                  const maskedValue = current.key === 'peso' ? maskWeight(value) : 
+                                    current.key === 'altura' ? maskHeight(value) : value;
+                  const safe = normalizeAnswerValue(maskedValue);
+                  setLocalValue(safe);
+                },
+                onBlur: () => {
+                  // Normalizar valor ao sair do campo
+                  if (typeof localValue === 'string') {
+                    const normalized = toNumber(localValue);
+                    if (!isNaN(normalized)) {
+                      const safe = normalizeAnswerValue(normalized);
+                      setLocalValue(safe);
+                    }
+                  }
+                }
+                };
+                
+                if (current.min !== undefined) numericProps.min = current.min;
+                if (current.max !== undefined) numericProps.max = current.max;
+                if (current.placeholder) numericProps.placeholder = current.placeholder;
+                
+                return <NumericInput {...numericProps} />;
+              })()
+            ) : (
+              (() => {
+                const enhancedProps: any = {
+                  ...inputProps,
+                  inputMode: inputMode as "text" | "tel" | "decimal",
+                  className: "w-full rounded-2xl bg-gradient-to-br from-white to-green-50/50 border-2 border-green-200 px-5 py-4 text-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-green-400 shadow-lg transition-all duration-300"
+                };
+                
+                if (phonePattern) enhancedProps.pattern = phonePattern;
+                
+                return <EnhancedInput {...enhancedProps} />;
+              })()
+            )}
+
+            <div className="flex flex-col items-end gap-3 sm:flex-row sm:items-center sm:justify-between">
+              {!current.required && (
+                <button
+                  type="button"
+                  onClick={handleSkip}
+                  className="text-sm text-green-600 transition hover:text-green-800 font-medium flex items-center gap-1"
+                  disabled={submitting}
+                >
+                  ⏭️ Pular esta pergunta
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className={cn("min-h-[44px] rounded-full px-8 py-3 text-base font-bold text-white shadow-xl transition hover:shadow-2xl hover:scale-105 disabled:opacity-60 flex items-center gap-2", getButtonClasses())}
+                disabled={submitting || (current.required && isValueEmpty(localValue))}
+              >
+                {submitting ? "💾 Salvando..." : "➡️ Continuar"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      case "date": {
+        return (
+          <div className="mt-10 space-y-8">
+            <input
+              type="date"
+              className="w-full rounded-2xl bg-gradient-to-br from-white to-green-50/50 border-2 border-green-200 px-5 py-4 text-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-green-400 shadow-lg transition-all duration-300"
+              value={localValue ?? ""}
+              onChange={evt => {
+                const safe = normalizeAnswerValue(evt.target.value);
+                setLocalValue(safe);
+              }}
+              disabled={submitting}
+            />
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className={cn("min-h-[44px] rounded-full px-8 py-3 text-base font-bold text-white shadow-xl transition hover:shadow-2xl hover:scale-105 disabled:opacity-60 flex items-center gap-2", getButtonClasses())}
+                disabled={submitting || (current.required && isValueEmpty(localValue))}
+              >
+                {submitting ? "💾 Salvando..." : "➡️ Continuar"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      case "radio":
+      case "select":
+      case "multiselect":
+      case "checkbox":
+        return renderOptions(current);
+
+      case "matrix": {
+        if (current.key === "bristol") {
+          return (
+            <div className="mt-10 space-y-8">
+              <BristolMatrix
+                value={localValue}
+                onChange={(value) => {
+                  const safe = normalizeAnswerValue(value);
+                  setLocalValue(safe);
+                  void (async () => {
+                    setSubmitting(true);
+                    setErrorMessage(null);
+                    try {
+                      await persistAnswer(current, safe);
+                      const nextIndex = findNextIndex(steps, { ...answers, [current.key]: safe }, index);
+                      advanceTo(nextIndex);
+                    } catch (err) {
+                      if (err instanceof Error) setErrorMessage(err.message);
+                      else setErrorMessage("Não foi possível salvar esta resposta.");
+                    } finally {
+                      setSubmitting(false);
+                    }
+                  })();
+                }}
+                disabled={submitting}
+              />
+            </div>
+          );
+        }
+        // Fallback para outros tipos de matrix
+        return renderOptions(current);
+      }
+
+      case "scale":
+      case "slider": {
+        const min = current.min ?? 0;
+        const max = current.max ?? 10;
+        const step = current.step ?? 1;
+        const value = typeof localValue === "number" ? localValue : Number(localValue) || min;
+
+        return (
+          <div className="mt-10 space-y-10">
+            <div className="flex flex-col items-center gap-6">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-2xl font-semibold text-white">
+                {value}
+              </div>
+              <input
+                type="range"
+                min={min}
+                max={max}
+                step={step}
+                value={value}
+                onChange={evt => {
+                  const safe = normalizeAnswerValue(Number(evt.target.value));
+                  setLocalValue(safe);
+                }}
+                className="w-full accent-[#8d65ff]"
+              />
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="min-h-[44px] rounded-full bg-gradient-to-r from-[#7c4dff] to-[#38b6ff] px-8 py-3 text-base font-semibold text-white shadow-[0_10px_30px_rgba(60,40,140,0.45)] transition hover:shadow-[0_12px_40px_rgba(60,40,140,0.65)] disabled:opacity-60"
+                disabled={submitting}
+              >
+                {submitting ? "Salvando..." : "Continuar"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      default:
+        return null;
+    }
+  };
+
+  if (!isMounted) {
+    return (
+      <div className="flex min-h-[calc(100vh-120px)] items-center justify-center bg-gradient-to-br from-[#0f1629] via-[#121c34] to-[#020307] text-white">
+        <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/5 p-10 shadow-[0_20px_80px_rgba(22,12,64,0.45)] backdrop-blur">
+          <div className="flex items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isFinalizing = flowCompleted && (finalizeStatus === "running" || finalizeStatus === "idle");
+  const isFinalizeSuccess = flowCompleted && finalizeStatus === "completed";
+  const isFinalizeFailed = flowCompleted && finalizeStatus === "failed";
+
+  if (flowCompleted) {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050914] py-12 text-white">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(120,80,255,0.18),_transparent_55%)]" />
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_bottom,_rgba(46,209,255,0.12),_transparent_40%)]" />
+        
+        {/* Botão de voltar às triagens */}
+        <button
+          onClick={() => window.location.href = appendUtmsToUrl('/triagem')}
+          className="absolute top-6 left-6 group flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-200 backdrop-blur-sm"
+          title="Voltar às triagens"
+        >
+          <svg className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span className="text-sm font-medium text-white/80 group-hover:text-white hidden sm:inline">Triagens</span>
+        </button>
+        
+        <div className="relative w-full max-w-2xl rounded-[36px] border border-white/10 bg-white/10 p-10 text-center shadow-[0_40px_120px_rgba(10,14,40,0.6)] backdrop-blur-xl">
+          <span className="text-xs uppercase tracking-[0.4em] text-white/60">
+            {isFinalizeFailed ? "Tivemos um contratempo" : isFinalizeSuccess ? "Relatório pronto" : "Finalizando"}
+          </span>
+          <h1 className="mt-4 text-3xl font-semibold text-white">
+            {isFinalizeFailed
+              ? "Não conseguimos gerar seu relatório automaticamente."
+              : isFinalizeSuccess
+                ? "Seu relatório está pronto!"
+                : "Gerando seu relatório personalizado"}
+          </h1>
+
+          {isFinalizing && (
+            <>
+              <div className="mx-auto mt-8 h-12 w-12 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+              <p className="mt-6 text-white/75">
+                Estamos processando suas respostas e montando o relatório. Mantenha esta aba aberta por alguns segundos.
+              </p>
+            </>
+          )}
+
+          {isFinalizeSuccess && (
+            <>
+              <div className="mx-auto mt-8 flex h-16 w-16 items-center justify-center rounded-full border border-emerald-400/50 bg-emerald-500/10 text-3xl text-emerald-200">
+                ✓
+              </div>
+              <p className="mt-6 text-white/80">
+                Tudo certo! Você será redirecionado assim que confirmarmos o salvamento do relatório.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <button
+                  type="button"
+                  onClick={openSummary}
+                  className="rounded-full bg-gradient-to-r from-[#7c4dff] to-[#38b6ff] px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(60,40,140,0.45)] transition hover:shadow-[0_12px_40px_rgba(60,40,140,0.65)]"
+                >
+                  Abrir resumo agora
+                </button>
+              </div>
+            </>
+          )}
+
+          {isFinalizeFailed && (
+            <>
+              <div className="mx-auto mt-8 flex h-16 w-16 items-center justify-center rounded-full border border-red-400/50 bg-red-500/10 text-3xl text-red-200">
+                !
+              </div>
+              <p className="mt-6 text-white/75">
+                {finalizeError ?? "Não foi possível gerar o relatório neste momento. Seus dados continuam salvos."}
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <button
+                  type="button"
+                  onClick={retryFinalize}
+                  className="rounded-full bg-gradient-to-r from-brand-500 to-brand-400 px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,200,83,0.35)] transition hover:shadow-[0_12px_40px_rgba(0,200,83,0.45)]"
+                >
+                  Tentar novamente
+                </button>
+                <button
+                  type="button"
+                  onClick={openSummary}
+                  className="rounded-full border border-white/30 px-8 py-3 text-sm font-semibold text-white/80 hover:text-white"
+                >
+                  Ver respostas salvas
+                </button>
+              </div>
+            </>
+          )}
+
+          <p className="mt-8 text-xs uppercase tracking-[0.35em] text-white/35">
+            Sessão #{triageId.slice(0, 8)}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!current) return null;
+
+  // const _showProfileCallout = firstVisit && !hasProfileData(answers);
+
+  return (
+    <div className={cn("relative flex min-h-screen items-center justify-center overflow-hidden py-12 text-gray-900", getBgGradient())}>
+      {/* Efeitos de fundo decorativos */}
+      {brand === 'zapfarm' ? (
+        <>
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(124,29,149,0.1),_transparent_50%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_right,_rgba(249,115,22,0.08),_transparent_40%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_rgba(124,29,149,0.05),_transparent_70%)]" />
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(34,197,94,0.1),_transparent_50%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.08),_transparent_40%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.05),_transparent_70%)]" />
+        </>
+      )}
+      
+      <div className={cn("relative w-full max-w-3xl rounded-3xl border bg-gradient-to-br from-white p-10 shadow-2xl backdrop-blur-sm", getBorderColor(), brand === 'zapfarm' ? 'via-purple-50/30' : 'via-green-50/30')}>
+        <header className={cn("flex flex-col gap-4 border-b pb-6 sm:flex-row sm:items-center sm:justify-between", getBorderColor())}>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => window.location.href = brand === 'zapfarm' ? '/emagrecimento' : '/triagem'}
+              className={cn("group flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 hover:bg-white transition-all duration-200 shadow-sm hover:shadow-md", getBorderColor(), brand === 'zapfarm' ? 'border-purple-200/50 hover:border-purple-300' : 'border-green-200/50 hover:border-green-300')}
+              title={brand === 'zapfarm' ? 'Voltar' : 'Voltar às triagens'}
+            >
+              <svg className={cn("w-4 h-4 transition-colors", brand === 'zapfarm' ? 'text-purple-600 group-hover:text-purple-700' : 'text-green-600 group-hover:text-green-700')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className={cn("text-sm font-medium hidden sm:inline", brand === 'zapfarm' ? 'text-purple-700 group-hover:text-purple-800' : 'text-green-700 group-hover:text-green-800')}>
+                {brand === 'zapfarm' ? 'Voltar' : 'Triagens'}
+              </span>
+            </button>
+            <div>
+              <span className={cn("text-xs uppercase tracking-[0.4em] font-semibold", getTextColor())}>
+                {brand === 'zapfarm' ? '💊 Check-up Zapfarm' : '🌿 Triagem'}
+              </span>
+              <h1 className="mt-2 text-2xl font-bold text-gray-900">{flow.title}</h1>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className={cn("text-sm font-medium", getTextColor())}>📊 Progresso</span>
+            <p className="text-2xl font-bold text-gray-900">{progress}%</p>
+          </div>
+        </header>
+
+        <div className="mt-6 h-3 w-full rounded-full bg-gradient-to-r from-gray-100 to-gray-200 shadow-inner overflow-hidden">
+          <motion.div
+            className={cn("h-3 rounded-full shadow-lg relative", getProgressGradient())}
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ 
+              ease: [0.25, 0.1, 0.25, 1], 
+              duration: 0.6,
+              delay: 0.1
+            }}
+          >
+            {/* Efeito shimmer na barra de progresso */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              animate={{
+                x: ['-100%', '200%']
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          </motion.div>
+        </div>
+
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.key}
+            initial={{ opacity: 0, y: 30, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.96 }}
+            transition={{ 
+              duration: 0.4, 
+              ease: [0.25, 0.1, 0.25, 1],
+              opacity: { duration: 0.3 },
+              scale: { duration: 0.4 }
+            }}
+            className="mt-10"
+          >
+            {current.type !== "info" && current.type !== "select_cards" && (
+              <p className={cn("text-sm uppercase tracking-[0.3em] font-semibold flex items-center gap-2", getTextColor())}>
+                📝 Passo {questionPosition} de {visibleQuestions}
+              </p>
+            )}
+            <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">{current.label}</h2>
+            {current.helperText && current.type !== "info" && current.type !== "select_cards" && (
+              <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
+                {current.helperText}
+              </p>
+            )}
+            {current.helper && current.type !== "info" && current.type !== "select_cards" && !current.helperText && (
+              <p className="mt-4 text-base text-gray-600">{current.helper}</p>
+            )}
+            {current.why && current.type !== "info" && current.type !== "select_cards" && (
+              <QuestionWhy text={current.why} />
+            )}
+            {current.evidenceNote && current.type !== "info" && current.type !== "select_cards" && (
+              <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  <span className="font-semibold">📌 Dica baseada em estudos:</span> {current.evidenceNote}
+                </p>
+              </div>
+            )}
+
+            {errorMessage && (
+              <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-inner">
+                {errorMessage}
+              </div>
+            )}
+
+            {renderInput()}
+          </motion.div>
+        </AnimatePresence>
+
+        <footer className={cn("mt-12 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between", getBorderColor())}>
+          <button
+            type="button"
+            onClick={handleBack}
+            className={cn(
+              "w-full rounded-full border-2 px-6 py-3 text-sm font-bold uppercase tracking-[0.3em] transition sm:w-auto flex items-center justify-center gap-2",
+              brand === 'zapfarm' 
+                ? 'border-purple-300 text-purple-700 hover:border-purple-400 hover:text-purple-800 hover:bg-purple-50'
+                : 'border-green-300 text-green-700 hover:border-green-400 hover:text-green-800 hover:bg-green-50'
+            )}
+          >
+            ⬅️ Voltar
+          </button>
+          <span className={cn("text-xs uppercase tracking-[0.4em] font-medium", getTextColor())}>
+            🔐 Sessão #{triageId.slice(0, 8)}
+          </span>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+export function shouldAskFirstVisit(answers?: Record<string, any>) {
+  return !hasProfileData(answers);
+}

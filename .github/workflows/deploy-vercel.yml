@@ -1,0 +1,55 @@
+# Deploy na Vercel via Deploy Hook
+# Bypass "Git author must have access": cria commit com email autorizado quando necessário.
+# Requer: VERCEL_DEPLOY_HOOK + DEPLOYER_EMAIL (email de quem tem acesso no time Vercel)
+name: Deploy Vercel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy (dummy commit ou hook)
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+          DEPLOYER_EMAIL: ${{ secrets.DEPLOYER_EMAIL }}
+          DEPLOYER_NAME: ${{ secrets.DEPLOYER_NAME }}
+        run: |
+          AUTHOR=$(git log -1 --pretty=format:'%ae')
+          echo "Commit author: $AUTHOR"
+
+          if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
+            echo "::warning:: VERCEL_DEPLOY_HOOK não configurado"
+            exit 0
+          fi
+
+          # Se DEPLOYER_EMAIL está configurado e autor não é o deployer → dummy commit
+          if [ -n "$DEPLOYER_EMAIL" ] && [ "$AUTHOR" != "$DEPLOYER_EMAIL" ]; then
+            echo "Autor não é deployer. Criando dummy commit..."
+            git config user.email "$DEPLOYER_EMAIL"
+            git config user.name "${DEPLOYER_NAME:-Deploy Bot}"
+            git commit --allow-empty -m "chore: trigger deploy (bypass git author check)"
+            git push
+            echo "Push feito. Próxima run disparará o Deploy Hook."
+            exit 0
+          fi
+
+          # Autor é o deployer (ou DEPLOYER_EMAIL não configurado) → dispara hook
+          echo "Disparando Deploy Hook..."
+          resp=$(curl -sSf -X POST "$VERCEL_DEPLOY_HOOK" -w "\n%{http_code}")
+          code=$(echo "$resp" | tail -n1)
+          if [ "$code" = "200" ] || [ "$code" = "201" ]; then
+            echo "Deploy acionado (HTTP $code)"
+          else
+            echo "Resposta: $resp"
+            exit 1
+          fi

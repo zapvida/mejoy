@@ -1,0 +1,57 @@
+#!/bin/bash
+# SAFE_DELETE.patch - Remove completely unused files
+# This script removes files that are 100% confirmed as unused
+
+set -e
+
+echo "Removing unused scripts..."
+# Remove unused scripts
+rm -f apply-migration-final.js
+rm -f create-tables-direct.js
+rm -f execute-final-solution.js
+rm -f firebase.framework.config.js
+rm -f lighthouserc.js
+rm -f setup-direct-url.js
+rm -f test-complete-system.js
+rm -f test-complete-system.sh
+rm -f test-deployment.js
+
+echo "Removing unused utilities..."
+# Remove unused utilities
+rm -f src/utils/cache.ts
+rm -f src/utils/calcularScore.ts
+rm -f src/utils/convertTimestamp.ts
+rm -f src/utils/cookies.ts
+rm -f src/utils/formatCPF.ts
+rm -f src/utils/formatDate.ts
+rm -f src/utils/generateCharts.ts
+rm -f src/utils/health.ts
+rm -f src/utils/pdf.ts
+rm -f src/utils/pdfTemplate.ts
+rm -f src/utils/validation.ts
+
+echo "Removing unused UI components..."
+# Remove unused UI components (these are confirmed as not used)
+rm -f src/components/ui/CopyText.tsx
+rm -f src/components/ui/CtaDeck.tsx
+rm -f src/components/ui/DeleteDataButton.tsx
+rm -f src/components/ui/LazyLoading.tsx
+rm -f src/components/ui/LoadingScreen.tsx
+rm -f src/components/ui/OptimizedImage.tsx
+rm -f src/components/ui/ProgressBar.tsx
+rm -f src/components/ui/ProgressIndicator.tsx
+rm -f src/components/ui/StandardCTAs.tsx
+rm -f src/components/ui/Toast.tsx
+
+echo "Removing unused scripts directory files..."
+# Remove unused scripts
+rm -f scripts/check-pii-logs.js
+rm -f scripts/extract-brand-color.js
+rm -f scripts/optimize-final.js
+rm -f scripts/qa-final.js
+rm -f scripts/run-migrate-on-deploy.js
+rm -f scripts/test-accessibility.js
+rm -f scripts/test-complete-system.js
+
+echo "SAFE_DELETE.patch completed successfully!"
+echo "Files removed completely (not moved to quarantine)"

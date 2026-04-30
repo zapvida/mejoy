@@ -1,0 +1,563 @@
+// src/forms/triagemGeral.ts
+
+
+export const perguntasTriagemGeral = [
+  {
+    type: 'intro',
+    name: 'intro',
+    label: '🩺 Triagem Integrativa e Preditiva',
+    justification:
+      'Este formulário avalia sua saúde geral, hábitos de vida, riscos e sintomas. Ao final, você receberá um relatório personalizado com recomendações baseadas em evidência científica. Leva de 5 a 8 minutos.',
+  },
+
+  // 👤 Dados Pessoais
+  {
+    type: 'setor',
+    name: 'setor_dados_pessoais',
+    label: '👤 Dados Pessoais e Antropometria',
+    description:
+      'Esses dados ajudam na análise de riscos e são essenciais para personalização das recomendações de saúde.',
+  },
+  {
+    type: 'select',
+    name: 'sexo',
+    label: 'Qual seu sexo biológico?',
+    description: 'Importante para cálculos hormonais e metabólicos.',
+    justification: 'Fonte: Sociedade Brasileira de Endocrinologia, 2023',
+    options: [
+      { value: 'Masculino', label: 'Masculino' },
+      { value: 'Feminino', label: 'Feminino' },
+    ],
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'dataNascimento',
+    label: 'Data de nascimento',
+    placeholder: 'dd/mm/aaaa',
+    description: 'A idade impacta diretamente em fatores de risco e recomendações.',
+    justification: 'Fonte: Ministério da Saúde, 2022',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'altura',
+    label: 'Altura (em cm)',
+    placeholder: 'Ex: 170',
+    description: 'Importante para cálculo do IMC e avaliação de composição corporal.',
+    justification: 'Fonte: WHO, 2021',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'peso',
+    label: 'Peso (em kg)',
+    placeholder: 'Ex: 70',
+    description: 'Utilizado no cálculo do IMC e avaliação de saúde metabólica.',
+    justification: 'Fonte: WHO, 2021',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'circunferencia',
+    label: 'Circunferência abdominal (cm)',
+    description: 'Estima a gordura visceral, relacionada a maior risco cardiovascular.',
+    justification: 'Fonte: Diretriz Brasileira de Obesidade, 2019',
+    options: [
+      { value: 'Menor que 80 cm', label: 'Menor que 80 cm' },
+      { value: '80-94 cm', label: '80 a 94 cm' },
+      { value: '94-102 cm', label: '94 a 102 cm' },
+      { value: 'Maior que 102 cm', label: 'Maior que 102 cm' },
+    ],
+    required: true,
+  },
+
+  // 🧠 Saúde Mental e Emocional
+  {
+    type: 'setor',
+    name: 'setor_saude_mental',
+    label: '🧠 Saúde Mental e Emocional',
+    description:
+      'Seu estado emocional influencia diretamente sua saúde física, imunológica e metabólica. Aqui buscamos entender seu equilíbrio emocional atual.',
+  },
+  {
+    type: 'select',
+    name: 'estresse',
+    label: 'Como está seu nível de estresse hoje?',
+    options: [
+      { value: 'Muito baixo', label: 'Muito baixo' },
+      { value: 'Baixo', label: 'Baixo' },
+      { value: 'Moderado', label: 'Moderado' },
+      { value: 'Alto', label: 'Alto' },
+    ],
+    justification:
+      'Estresse crônico aumenta o risco de doenças autoimunes, metabólicas e cardiovasculares (Lancet, 2022).',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'humor',
+    label: 'Como você descreveria seu humor predominante?',
+    options: [
+      { value: 'Estável', label: 'Estável' },
+      { value: 'Ansioso', label: 'Ansioso' },
+      { value: 'Triste', label: 'Triste' },
+      { value: 'Irritado', label: 'Irritado' },
+    ],
+    justification:
+      'Mudanças de humor frequentes são indicadores precoces de transtornos emocionais (DSM-5, 2020).',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'emocao_frequente',
+    label: 'Com que frequência você sente tristeza, ansiedade ou falta de motivação?',
+    options: [
+      { value: 'Nunca', label: 'Nunca' },
+      { value: 'Raramente', label: 'Raramente' },
+      { value: 'Frequentemente', label: 'Frequentemente' },
+      { value: 'Quase sempre', label: 'Quase sempre' },
+    ],
+    justification:
+      'Sintomas emocionais persistentes impactam sono, imunidade e longevidade (JAMA, 2020).',
+    required: true,
+  },
+  {
+    type: 'setor',
+    name: 'setor_nutricao',
+    label: '🍽️ Nutrição e Suplementação',
+    description:
+      'A alimentação impacta diretamente sua saúde metabólica, imunológica e emocional. Queremos entender seus padrões alimentares e necessidades.',
+  },
+  {
+    type: 'select',
+    name: 'quantidade_refeicoes',
+    label: 'Quantas refeições você costuma fazer por dia?',
+    options: ['1', '2', '3', '4 ou mais'],
+    justification: 'A frequência das refeições influencia o metabolismo e o controle glicêmico (Endocrine Reviews, 2021).',
+    example: 'Exemplo: 3 refeições por dia – café, almoço e jantar.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'ultraprocessados',
+    label: 'Você consome alimentos ultraprocessados com frequência?',
+    options: ['Não', '1 a 2x por semana', '3 ou mais vezes por semana'],
+    justification:
+      'Alimentos ultraprocessados estão associados a maior risco de obesidade, diabetes e câncer (BMJ, 2019).',
+    example: 'Exemplo: Refrigerantes, salgadinhos, embutidos.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'alergia_alimentar',
+    label: 'Você possui alguma alergia alimentar conhecida?',
+    options: ['Não', 'Sim'],
+    justification: 'A identificação de alergias permite ajustar a conduta nutricional e terapêutica.',
+    example: 'Exemplo: Intolerância à lactose, alergia a frutos do mar.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'alimentos_alergia',
+    label: 'Se respondeu sim, quais alimentos causam alergia?',
+    placeholder: 'Ex.: Leite, ovo, amendoim...',
+    conditional: { field: 'alergia_alimentar', value: 'Sim' },
+    required: false,
+  },
+  {
+    type: 'select',
+    name: 'suplementos',
+    label: 'Você faz uso de suplementos ou vitaminas?',
+    options: ['Não', 'Sim, regularmente', 'Sim, eventualmente'],
+    justification: 'Vitaminas e suplementos interferem em exames e respostas clínicas.',
+    example: 'Exemplo: Ômega 3, vitamina D, whey protein.',
+    required: true,
+  },
+
+  // 😴 Sono
+  {
+    type: 'setor',
+    name: 'setor_sono',
+    label: '😴 Qualidade do Sono',
+    description:
+      'O sono regula funções hormonais, cognitivas e imunológicas. Avaliamos aqui seus padrões e qualidade do descanso.',
+  },
+  {
+    type: 'select',
+    name: 'qualidade_sono',
+    label: 'Como você avalia sua qualidade de sono?',
+    options: ['Excelente', 'Boa', 'Regular', 'Ruim'],
+    justification: 'Sono ruim está relacionado a alterações metabólicas, imunológicas e emocionais (Sleep Health, 2022).',
+    example: 'Exemplo: Dorme 8h por noite, com bom despertar.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'tempo_sono',
+    label: 'Quantas horas você dorme em media por noite?',
+    options: ['Menos de 5h', '5-6h', '7-8h', 'Mais de 8h'],
+    justification:
+      'Dormir pouco ou em excesso aumenta o risco de doenças cardiovasculares, diabetes e ansiedade (JAMA, 2018).',
+    example: 'Exemplo: 6h por noite durante a semana, 8h no fim de semana.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'insonia',
+    label: 'Você tem dificuldade para dormir ou acorda frequentemente à noite?',
+    options: ['Sim', 'Não'],
+    justification:
+      'Insônia está associada a distúrbios emocionais e risco aumentado de síndrome metabólica (Sleep Medicine, 2020).',
+    example: 'Exemplo: Demoro para pegar no sono e acordo 2x por noite.',
+    required: true,
+  },
+
+  // 🏃‍♀️ Atividade Física
+  {
+    type: 'setor',
+    name: 'setor_atividade_fisica',
+    label: '🏃‍♀️ Atividade Física e Movimento',
+    description:
+      'Movimentar o corpo regularmente é uma das principais ferramentas preventivas e terapêuticas em saúde.',
+  },
+  {
+    type: 'select',
+    name: 'atividade_fisica',
+    label: 'Qual seu nível atual de atividade física?',
+    options: [
+      'Sedentário',
+      'Leve (1-2x por semana)',
+      'Moderado (3-4x por semana)',
+      'Intenso (5x ou mais por semana)',
+    ],
+    justification:
+      'Exercícios regulares reduzem risco de morte precoce, melhoram disposição, humor e sono (CDC, 2022).',
+    example: 'Exemplo: Caminho 30 minutos 3x na semana.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'tipo_exercicio',
+    label: 'Quais tipos de exercício você pratica?',
+    options: [
+      'Caminhada',
+      'Musculação',
+      'Corrida',
+      'Dança',
+      'Yoga/Pilates',
+      'Esportes',
+      'Nenhum no momento',
+    ],
+    justification:
+      'Cada tipo de exercício estimula sistemas diferentes: cardiovascular, muscular, mental, etc.',
+    example: 'Exemplo: Alterno musculação com corrida.',
+    required: true,
+  },
+    // 🚬 Uso de Substâncias
+  {
+    type: 'setor',
+    name: 'setor_substancias',
+    label: '🚬 Substâncias e Hábitos de Saúde',
+    description:
+      'Alguns hábitos como tabagismo e uso de substâncias afetam diretamente o metabolismo, humor e risco cardiovascular.',
+  },
+  {
+    type: 'select',
+    name: 'fuma',
+    label: 'Você fuma atualmente?',
+    options: ['Não', 'Sim, ocasionalmente', 'Sim, diariamente'],
+    justification:
+      'O tabagismo é uma das principais causas evitáveis de morte e doenças como infarto, AVC e câncer (OMS, 2021).',
+    example: 'Exemplo: 5 cigarros por dia há 10 anos.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'fumou',
+    label: 'Você já fumou no passado?',
+    options: ['Não', 'Sim, parei há menos de 1 ano', 'Sim, parei há mais de 1 ano'],
+    justification:
+      'Histórico de tabagismo aumenta o risco de doenças pulmonares e cardiovasculares mesmo após cessação (NIH, 2020).',
+    example: 'Exemplo: Fumou dos 20 aos 35 anos.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'alcool',
+    label: 'Você consome bebidas alcoólicas?',
+    options: ['Não', 'Raramente', '1-3 doses por semana', 'Mais de 3 doses por semana'],
+    justification:
+      'O consumo de álcool está relacionado a alterações hepáticas, sono, metabolismo e saúde emocional (JAMA, 2018).',
+    example: 'Exemplo: 2 taças de vinho por semana.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'outras_substancias',
+    label: 'Você usa alguma substância recreativa (ilícita ou não prescrita)?',
+    options: ['Não', 'Sim, raramente', 'Sim, regularmente'],
+    justification:
+      'Drogas recreativas alteram a cognição, o sono e o humor, podendo afetar exames clínicos (APA, 2021).',
+    example: 'Exemplo: Uso ocasional de cannabis.',
+    required: true,
+  },
+
+  // 💊 Medicamentos e Alergias
+  {
+    type: 'setor',
+    name: 'setor_medicamentos',
+    label: '💊 Medicamentos em uso e Alergias',
+    description:
+      'Conhecer os medicamentos utilizados e possíveis alergias é essencial para evitar interações e orientar condutas seguras.',
+  },
+  {
+    type: 'select',
+    name: 'medicamentos',
+    label: 'Você utiliza algum medicamento atualmente?',
+    options: ['Não', 'Sim, uso contínuo', 'Sim, uso esporádico'],
+    justification:
+      'Medicamentos impactam metabolismo, sintomas e decisões terapêuticas (UpToDate, 2022).',
+    example: 'Exemplo: Uso diário de losartana e metformina.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'lista_medicamentos',
+    label: 'Se sim, quais medicamentos você utiliza?',
+    placeholder: 'Ex.: Losartana, metformina, levotiroxina...',
+    conditional: { field: 'medicamentos', value: ['Sim, uso contínuo', 'Sim, uso esporádico'] },
+    required: false,
+  },
+  {
+    type: 'select',
+    name: 'alergia_medicamentos',
+    label: 'Você possui alergia a algum medicamento?',
+    options: ['Não', 'Sim'],
+    justification:
+      'Alergias medicamentosas devem sempre ser registradas para prevenir reações adversas graves.',
+    example: 'Exemplo: Alergia à dipirona.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'quais_medicamentos_alergia',
+    label: 'Se sim, quais medicamentos causam alergia?',
+    placeholder: 'Ex.: Dipirona, amoxicilina...',
+    conditional: { field: 'alergia_medicamentos', value: 'Sim' },
+    required: false,
+  },
+
+  // ⚠️ Doenças Crônicas
+  {
+    type: 'setor',
+    name: 'setor_doencas',
+    label: '⚠️ Doenças Crônicas e Histórico Familiar',
+    description:
+      'Registrar doenças diagnosticadas permite traçar estratégias de controle, prevenção e rastreamento precoce.',
+  },
+  {
+    type: 'select',
+    name: 'doenca_cronica',
+    label: 'Você tem alguma doença crônica diagnosticada?',
+    options: ['Não', 'Sim, 1', 'Sim, 2 ou mais'],
+    justification:
+      'A presença de doenças crônicas modifica metas clínicas e necessidade de acompanhamento contínuo.',
+    example: 'Exemplo: Diabetes tipo 2 e hipertensão.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'quais_doencas',
+    label: 'Se sim, quais são essas doenças?',
+    placeholder: 'Ex.: Hipertensão, diabetes tipo 2...',
+    conditional: { field: 'doenca_cronica', value: ['Sim, 1', 'Sim, 2 ou mais'] },
+    required: false,
+  },
+  {
+    type: 'select',
+    name: 'historico_familiar',
+    label: 'Algum familiar possui doenças crônicas importantes?',
+    options: ['Não', 'Sim, 1 parente', 'Sim, mais de 1 parente'],
+    justification:
+      'Histórico familiar é um forte preditor de doenças como diabetes, hipertensão e câncer (Lancet, 2021).',
+    example: 'Exemplo: Mãe com hipertensão, pai com diabetes.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'quais_doencas_familia',
+    label: 'Se sim, quais doenças e em quais parentes?',
+    placeholder: 'Ex.: Diabetes no pai e avô; hipertensão na mãe.',
+    conditional: { field: 'historico_familiar', value: ['Sim, 1 parente', 'Sim, mais de 1 parente'] },
+    required: false,
+  },
+    // 🩺 Cirurgias Realizadas
+  {
+    type: 'setor',
+    name: 'setor_cirurgias',
+    label: '🩺 Cirurgias e Exames Preventivos',
+    description:
+      'Essas informações ajudam a entender seu histórico clínico e sua adesão à prevenção.',
+  },
+  {
+    type: 'select',
+    name: 'cirurgias',
+    label: 'Você já realizou alguma cirurgia?',
+    options: ['Não', 'Sim, 1', 'Sim, 2 ou mais'],
+    justification:
+      'Cirurgias passadas podem indicar risco anestésico, sequelas ou histórico de doenças prévias (SBH, 2021).',
+    example: 'Exemplo: Cirurgia de apendicite há 10 anos.',
+    required: true,
+  },
+  {
+    type: 'text',
+    name: 'quais_cirurgias',
+    label: 'Se sim, quais cirurgias e quando foram realizadas?',
+    placeholder: 'Ex.: Apendicite em 2012, hérnia em 2017...',
+    conditional: { field: 'cirurgias', value: ['Sim, 1', 'Sim, 2 ou mais'] },
+    required: false,
+  },
+
+  {
+    type: 'select',
+    name: 'checkup',
+    label: 'Você realiza exames médicos de rotina?',
+    options: ['Sim, anualmente', 'Sim, esporadicamente', 'Não realizo'],
+    justification:
+      'Checkups regulares são fundamentais para prevenir e diagnosticar precocemente doenças silenciosas (MS, 2022).',
+    example: 'Exemplo: Faço hemograma e colesterol anualmente.',
+    required: true,
+  },
+
+  // 🏠 Vida Social e Ambiente Familiar
+  {
+    type: 'setor',
+    name: 'setor_ambiente',
+    label: '🏠 Relações Familiares e Vida Social',
+    description:
+      'Relacionamentos e suporte social influenciam diretamente saúde mental, imunidade e adesão a tratamentos.',
+  },
+  {
+    type: 'select',
+    name: 'ambiente_familiar',
+    label: 'Você considera seu ambiente familiar positivo?',
+    options: ['Sim', 'Parcialmente', 'Não'],
+    justification:
+      'Ambientes tóxicos e estressantes estão associados a maior risco de ansiedade, depressão e inflamação (PNAS, 2020).',
+    example: 'Exemplo: Relação tranquila com filhos, mas conflito com cônjuge.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'vida_social',
+    label: 'Como você avalia sua vida social atualmente?',
+    options: ['Muito ativa', 'Moderada', 'Pouco ativa', 'Inexistente'],
+    justification:
+      'O suporte social está associado à longevidade e à redução de risco de doenças cardíacas e depressão (Harvard, 2022).',
+    example: 'Exemplo: Saio com amigos aos fins de semana.',
+    required: true,
+  },
+
+  // 💼 Trabalho e Estilo de Vida
+  {
+    type: 'setor',
+    name: 'setor_trabalho',
+    label: '💼 Trabalho, Rotina e Satisfação de Vida',
+    description:
+      'A forma como você vive sua rotina e trabalho influencia hábitos, saúde física e mental.',
+  },
+  {
+    type: 'select',
+    name: 'trabalho',
+    label: 'Você trabalha atualmente?',
+    options: ['Sim', 'Não'],
+    justification:
+      'O trabalho impacta na rotina, exposição ao estresse, nível de atividade e estrutura social (CDC, 2022).',
+    example: 'Exemplo: Trabalho remoto como analista de dados.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'tipo_trabalho',
+    label: 'Seu trabalho é fisicamente ativo?',
+    options: ['Fisicamente exigente', 'Moderadamente ativo', 'Predominantemente sedentário'],
+    conditional: { field: 'trabalho', value: 'Sim' },
+    justification:
+      'Trabalhos sedentários elevam o risco de doenças cardiovasculares e exigem compensações com atividade física (AHA, 2019).',
+    example: 'Exemplo: Escritório, 8h por dia sentado.',
+    required: false,
+  },
+  {
+    type: 'select',
+    name: 'satisfacao_vida',
+    label: 'Você sente satisfação com sua vida atualmente?',
+    options: ['Sim, totalmente', 'Parcialmente', 'Não muito', 'Nada satisfeito(a)'],
+    justification:
+      'A satisfação geral está relacionada ao bem-estar emocional e à saúde global (WHOQOL, 2021).',
+    example: 'Exemplo: Satisfeito com a carreira, mas insatisfeito com saúde.',
+    required: true,
+  },
+    // 🎯 Objetivos e Barreiras
+  {
+    type: 'setor',
+    name: 'setor_objetivos',
+    label: '🎯 Objetivos, Barreiras e Autopercepção',
+    description:
+      'Entender seus objetivos e obstáculos ajuda a criar estratégias mais eficazes, personalizadas e alcançáveis.',
+  },
+  {
+    type: 'select',
+    name: 'objetivo_saude',
+    label: 'Qual é seu principal objetivo de saúde neste momento?',
+    options: [
+      'Emagrecimento',
+      'Melhorar energia/disposição',
+      'Reduzir estresse/ansiedade',
+      'Ganhar massa muscular',
+      'Controlar doenças crônicas',
+      'Melhorar sono',
+      'Outro'
+    ],
+    justification:
+      'Objetivos direcionam condutas específicas e aumentam a adesão a intervenções (J Clin Psychol, 2021).',
+    example: 'Exemplo: Reduzir ansiedade e melhorar o sono.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'motivacao',
+    label: 'Qual seu nível de motivação para melhorar sua saúde?',
+    options: ['Muito motivado', 'Motivado', 'Pouco motivado', 'Desmotivado'],
+    justification:
+      'A motivação influencia diretamente o sucesso terapêutico e engajamento em mudanças de hábitos (BJHP, 2020).',
+    example: 'Exemplo: Estou muito motivado após sentir queda de energia.',
+    required: true,
+  },
+  {
+    type: 'select',
+    name: 'barreiras',
+    label: 'Qual sua principal dificuldade para alcançar seus objetivos de saúde?',
+    options: [
+      'Falta de tempo',
+      'Falta de motivação',
+      'Rotina estressante',
+      'Problemas financeiros',
+      'Falta de apoio',
+      'Outro'
+    ],
+    justification:
+      'Identificar barreiras permite criar planos mais realistas e sustentáveis (BMC Public Health, 2022).',
+    example: 'Exemplo: Falta de tempo devido à jornada dupla de trabalho.',
+    required: true,
+  },
+
+  // ✅ Encerramento
+  {
+    type: 'intro',
+    name: 'encerramento',
+    label: 'Triagem concluída! 🎉',
+    justification:
+      'Parabéns por dedicar esse tempo à sua saúde! Suas respostas agora serão analisadas por nossa IA e equipe médica para gerar um relatório completo e individualizado.',
+  },
+];

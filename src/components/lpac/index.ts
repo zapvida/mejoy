@@ -1,0 +1,15 @@
+export { default as Hero } from './Hero';
+export { default as PromoBanner } from './PromoBanner';
+export { default as Steps } from './Steps';
+export { default as Benefits } from './Benefits';
+export { default as SocialProof } from './SocialProof';
+export { default as Authority } from './Authority';
+export { default as Security } from './Security';
+export { default as FAQ } from './FAQ';
+export { default as FinalCTA } from './FinalCTA';
+export { default as Footer } from './Footer';
+export { default as TrustBadges } from './TrustBadges';
+export { default as StickyCTA } from './StickyCTA';
+export { default as ForWho } from './ForWho';
+export { default as SuccessCases } from './SuccessCases';
+export { default as Resources } from './Resources';

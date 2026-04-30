@@ -1,0 +1,43 @@
+============================================
+COMANDOS CLI - COPIE E COLE UM POR VEZ
+============================================
+
+# 1. RESEND_API_KEY
+vercel env add RESEND_API_KEY production
+
+# Quando solicitado, cole: re_SUA_CHAVE_AQUI
+
+
+# 2. EMAIL_FROM
+vercel env add EMAIL_FROM production
+
+# Quando solicitado, cole: ZapFarm <zapvidafarmx@gmail.com>
+
+
+# 3. EMAIL_REPLY_TO
+vercel env add EMAIL_REPLY_TO production
+
+# Quando solicitado, cole: zapvidafarmx@gmail.com
+
+
+============================================
+VALORES EXATOS PARA COLAR:
+============================================
+
+RESEND_API_KEY:
+re_SUA_CHAVE_AQUI
+
+EMAIL_FROM:
+ZapFarm <zapvidafarmx@gmail.com>
+
+EMAIL_REPLY_TO:
+zapvidafarmx@gmail.com
+
+============================================
+
+
+
+
+
+
+

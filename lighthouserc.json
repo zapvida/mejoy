@@ -1,0 +1,11 @@
+{
+  "ci": {
+    "collect": { "numberOfRuns": 1, "settings": { "preset": "mobile" } },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.9 }],
+        "first-contentful-paint": ["warn", { "maxNumericValue": 1800 }]
+      }
+    }
+  }
+}

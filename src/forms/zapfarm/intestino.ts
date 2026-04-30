@@ -1,0 +1,143 @@
+import type { Step } from '@/types/triagem';
+import { stepAceitaTermos } from '../shared/consentimento';
+import { stepIdadeFaixa, stepSexo } from '../shared/dadosBasicos';
+
+export const perguntasIntestino: Step[] = [
+  stepAceitaTermos,
+  stepIdadeFaixa,
+  stepSexo,
+  {
+    name: 'sintomas_principais',
+    type: 'multiselect',
+    label: 'Quais sintomas intestinais você apresenta?',
+    options: [
+      { value: 'Constipação', label: 'Constipação' },
+      { value: 'Inchaço abdominal', label: 'Inchaço abdominal' },
+      { value: 'Gases excessivos', label: 'Gases excessivos' },
+      { value: 'Dor abdominal', label: 'Dor abdominal' },
+      { value: 'Intestino irregular', label: 'Intestino irregular' },
+      { value: 'Sensação de evacuação incompleta', label: 'Sensação de evacuação incompleta' },
+    ],
+    required: true,
+    helperText: 'Escolha todos os sintomas que você sente.',
+    justification: 'Sintomas ajudam a identificar padrão e causas prováveis.',
+  },
+  {
+    name: 'frequencia_evacuacao',
+    type: 'select',
+    label: 'Com que frequência você evacua?',
+    options: [
+      { value: 'Mais de 1x por dia', label: 'Mais de 1x por dia' },
+      { value: '1x por dia', label: '1x por dia' },
+      { value: 'A cada 2 dias', label: 'A cada 2 dias' },
+      { value: 'A cada 3 dias ou mais', label: 'A cada 3 dias ou mais' },
+    ],
+    required: true,
+    helperText: 'Frequência normal varia de 3x por dia a 3x por semana.',
+    justification: 'Frequência é marcador importante de saúde intestinal.',
+  },
+  {
+    name: 'uso_antibioticos',
+    type: 'select',
+    label: 'Você usou antibióticos nos últimos 6 meses?',
+    options: [
+      { value: 'Sim, várias vezes', label: 'Sim, várias vezes' },
+      { value: 'Sim, uma vez', label: 'Sim, uma vez' },
+      { value: 'Não', label: 'Não' },
+    ],
+    required: true,
+    helperText: 'Antibióticos podem desequilibrar a microbiota.',
+    justification: 'Antibióticos são fator importante para saúde intestinal.',
+  },
+  {
+    name: 'consumo_fibras',
+    type: 'select',
+    label: 'Como você avalia seu consumo de fibras?',
+    options: [
+      { value: 'Muito alto', label: 'Muito alto (muitas frutas, verduras, grãos)' },
+      { value: 'Alto', label: 'Alto' },
+      { value: 'Moderado', label: 'Moderado' },
+      { value: 'Baixo', label: 'Baixo' },
+    ],
+    required: true,
+    helperText: 'Fibras são essenciais para saúde intestinal.',
+    justification: 'Fibras são fundamentais para microbiota equilibrada.',
+  },
+  {
+    name: 'info_contraindicacoes_intestino',
+    type: 'info',
+    icon: '🛡️',
+    highlightTag: 'Segurança',
+    label: 'Algumas condições precisam de avaliação especial',
+    description: 'Vamos verificar se há algo que exija cuidado antes do tratamento:',
+    bullets: [
+      'Seu relatório será personalizado com base nas suas respostas.',
+      'Em caso de dúvida, o médico avaliará no momento da consulta.',
+    ],
+    justification: 'Educação e segurança antes de contraindicações.',
+  },
+  {
+    name: 'contraindicacoes_intestino',
+    type: 'multiselect',
+    label: 'Você tem ou já teve alguma dessas condições?',
+    options: [
+      { value: 'dii', label: 'Doença inflamatória intestinal (Crohn, retocolite)' },
+      { value: 'sibo', label: 'SIBO ou supercrescimento bacteriano diagnosticado' },
+      { value: 'alergia_probioticos', label: 'Alergia conhecida a probióticos' },
+      { value: 'imunossupressao', label: 'Imunossupressão ou uso de corticoides em dose alta' },
+      { value: 'cancer_digestivo', label: 'Histórico de câncer digestivo' },
+      { value: 'nenhuma', label: 'Nenhuma dessas' },
+    ],
+    required: true,
+    helperText: 'Essas informações são essenciais para sua segurança.',
+    justification: 'Critério de segurança para tratamento intestinal.',
+  },
+  {
+    name: 'preferencia_intestino',
+    type: 'select_cards',
+    label: 'Se precisar de tratamento, qual abordagem te parece melhor?',
+    helperText: 'É só uma preferência inicial. A decisão final será sempre do médico.',
+    required: true,
+    justification: 'Usada pela IA para personalizar o relatório e recomendações.',
+    cardOptions: [
+      {
+        value: 'probioticos',
+        title: 'Probióticos',
+        subtitle: 'Repovoar bactérias benéficas no intestino.',
+        badge: '🦠 Microbiota',
+      },
+      {
+        value: 'fibras',
+        title: 'Fibras e prebióticos',
+        subtitle: 'Alimentar bactérias benéficas e regular trânsito.',
+        badge: '🌾 Fibras',
+      },
+      {
+        value: 'combinado',
+        title: 'Probióticos + fibras',
+        subtitle: 'Abordagem integrativa para melhores resultados.',
+        badge: '⚡ Potencial máximo',
+      },
+      {
+        value: 'nao_sei',
+        title: 'Prefiro que o médico escolha',
+        subtitle: 'Quero que o especialista indique a melhor opção.',
+        badge: '🩺 Decisão guiada',
+      },
+    ],
+  },
+  {
+    name: 'info_acompanhamento',
+    type: 'info',
+    icon: '🤝',
+    highlightTag: 'Segurança e apoio',
+    label: 'Você não faz esse caminho sozinho',
+    description:
+      'Tratamentos intestinais funcionam melhor quando combinam probióticos, fibras e acompanhamento médico.',
+    bullets: [
+      'Probióticos de alta qualidade repovoam bactérias benéficas',
+      'Acompanhamento médico identifica causas específicas e ajusta tratamento',
+    ],
+    justification: 'Reforça segurança e autoridade médica.',
+  },
+];

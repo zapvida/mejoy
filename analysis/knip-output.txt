@@ -1,0 +1,349 @@
+Unused files (89)
+apply-migration-final.js                          
+create-tables-direct.js                           
+execute-final-solution.js                         
+firebase.framework.config.js                      
+lighthouserc.js                                   
+scripts/check-pii-logs.js                         
+scripts/extract-brand-color.js                    
+scripts/optimize-final.js                         
+scripts/qa-final.js                               
+scripts/run-migrate-on-deploy.js                  
+scripts/test-accessibility.js                     
+scripts/test-complete-system.js                   
+setup-direct-url.js                               
+src/components/analytics/GoogleAnalytics.tsx      
+src/components/auth/index.ts                      
+src/components/landing/FeaturesSection.tsx        
+src/components/landing/Hero.tsx                   
+src/components/landing/index.ts                   
+src/components/lgpd/ConsentGate.tsx               
+src/components/lgpd/TriageConsentWrapper.tsx      
+src/components/lpac/Why.tsx                       
+src/components/patient/index.ts                   
+src/components/patient/PatientInfoForm.tsx        
+src/components/patient/PatientSummary.tsx         
+src/components/pdf/SecurePdfExport.tsx            
+src/components/relatorio/LinhaDoTempoSection.tsx  
+src/components/relatorio/ProdutosAlloeCTA.tsx     
+src/components/relatorio/Relatorio.tsx            
+src/components/relatorio/RelatorioChat.tsx        
+src/components/relatorio/ZapVidaCTA.tsx           
+src/components/report/PrintOnly.tsx               
+src/components/triagem/index.ts                   
+src/components/triagem/TriagemStepForm.tsx        
+src/components/ui/CopyText.tsx                    
+src/components/ui/CtaDeck.tsx                     
+src/components/ui/DeleteDataButton.tsx            
+src/components/ui/LazyLoading.tsx                 
+src/components/ui/LoadingScreen.tsx               
+src/components/ui/OptimizedImage.tsx              
+src/components/ui/ProgressBar.tsx                 
+src/components/ui/ProgressIndicator.tsx           
+src/components/ui/StandardCTAs.tsx                
+src/components/ui/Toast.tsx                       
+src/components/whatsapp/index.ts                  
+src/components/whatsapp/WhatsAppDoctorOption.tsx  
+src/env.client.ts                                 
+src/forms/perguntasComuns.ts                      
+src/hooks/useCPF.ts                               
+src/hooks/useIsMobile.ts                          
+src/hooks/usePaciente.ts                          
+src/hooks/usePerformance.ts                       
+src/hooks/useVoiceRecognition.ts                  
+src/lib/ai.ts                                     
+src/lib/copy.ts                                   
+src/lib/database-fix.ts                           
+src/lib/emailTemplates.ts                         
+src/lib/followUp.ts                               
+src/lib/medicalScales.ts                          
+src/lib/metrics.ts                                
+src/lib/paymentSecurity.ts                        
+src/lib/relatorio.ts                              
+src/lib/security.ts                               
+src/lib/supabase/middleware.ts                    
+src/lib/supabase/server.ts                        
+src/lib/triage/config.ts                          
+src/lib/whatsappTemplates.ts                      
+src/middleware/security.ts                        
+src/middleware/withCPF.ts                         
+src/types/lpac.ts                                 
+src/types/relatorio.ts                            
+src/types/RelatorioProps.ts                       
+src/utils/cache.ts                                
+src/utils/calcularScore.ts                        
+src/utils/convertTimestamp.ts                     
+src/utils/cookies.ts                              
+src/utils/formatCPF.ts                            
+src/utils/formatDate.ts                           
+src/utils/generateCharts.ts                       
+src/utils/pdf.ts                                  
+src/utils/pdfTemplate.ts                          
+src/utils/pdfTriagemGeral.ts                      
+src/utils/processarTriagemGeral.ts                
+src/utils/scales.ts                               
+src/utils/scores.ts                               
+src/utils/sendToHighLevel.ts                      
+src/utils/useLocalStorage.ts                      
+src/utils/usePersistentState.ts                   
+test-complete-system.js                           
+test-deployment.js                                
+Unused dependencies (18)
+@headlessui/react         package.json:46:6
+@types/multer             package.json:55:6
+@uploadcare/react-widget  package.json:56:6
+date-fns                  package.json:62:6
+dotenv                    package.json:63:6
+edge-tts                  package.json:64:6
+html2canvas               package.json:66:6
+html2pdf.js               package.json:67:6
+jspdf                     package.json:69:6
+micro                     package.json:71:6
+multer                    package.json:72:6
+next-connect              package.json:75:6
+react-datepicker          package.json:82:6
+react-hook-form           package.json:84:6
+react-markdown            package.json:86:6
+react-speech-recognition  package.json:87:6
+tailwind-merge            package.json:91:6
+uuid                      package.json:93:6
+Unused devDependencies (17)
+@testing-library/user-event      package.json:103:6
+@types/chart.js                  package.json:104:6
+@types/classnames                package.json:105:6
+@types/html2canvas               package.json:106:6
+@types/jspdf                     package.json:109:6
+@types/puppeteer                 package.json:111:6
+@types/react-icons               package.json:114:6
+@types/react-speech-recognition  package.json:115:6
+@types/stripe                    package.json:116:6
+@types/supertest                 package.json:117:6
+@types/uuid                      package.json:118:6
+axe-playwright                   package.json:119:6
+gitleaks                         package.json:122:6
+lighthouse                       package.json:125:6
+msw                              package.json:127:6
+supertest                        package.json:130:6
+tsx                              package.json:131:6
+Unlisted dependencies (11)
+playwright             scripts/test-e2e-basic.js:4:9               
+playwright             scripts/validate-performance.js:4:9         
+@supabase/supabase-js  src/pages/api/lgpd/consent.ts:2:10          
+@supabase/supabase-js  src/pages/api/triage/answer-insecure.ts:2:10
+@supabase/supabase-js  src/pages/api/triage/answer-secure.ts:2:10  
+@supabase/supabase-js  src/pages/api/triage/answer.ts:2:10         
+@supabase/supabase-js  src/pages/api/triage/session.ts:2:10        
+@supabase/supabase-js  src/pages/api/tts-insecure.ts:10:10         
+@supabase/supabase-js  src/pages/api/tts-secure.ts:3:10            
+@supabase/supabase-js  src/pages/api/tts.ts:3:10                   
+@supabase/supabase-js  src/pages/relatorio/[id].tsx:6:10           
+Unused exports (162)
+formatarRespostas         function  src/ai/prompt.ts:6:17                                  
+TrustBadges                         src/components/lpac/index.ts:10:20                     
+StickyCTA                           src/components/lpac/index.ts:11:20                     
+default                   function  src/components/lpac/TrustBadges.tsx:10:25              
+shouldAskFirstVisit       function  src/components/triage/Runner.tsx:988:17                
+Avatar                    function  src/components/ui/avatar/Avatar.tsx:8:17               
+default                   function  src/components/ui/cards/ActionCard.tsx:13:25           
+default                   function  src/components/ui/cards/AlertCard.tsx:7:25             
+default                   function  src/components/ui/cards/CardPlano.tsx:13:25            
+default                   function  src/components/ui/cards/CardTriagem.tsx:12:25          
+default                   function  src/components/ui/cards/HealthTimeline.tsx:28:25       
+default                   function  src/components/ui/cards/HealthTimelinePremium.tsx:34:25
+ActionCard                          src/components/ui/cards/index.ts:1:20                  
+AlertCard                           src/components/ui/cards/index.ts:2:20                  
+CardPlano                           src/components/ui/cards/index.ts:3:20                  
+CardTriagem                         src/components/ui/cards/index.ts:4:20                  
+HealthTimeline                      src/components/ui/cards/index.ts:5:20                  
+HealthTimelinePremium               src/components/ui/cards/index.ts:6:20                  
+LinhaDoTempo                        src/components/ui/cards/index.ts:7:20                  
+PacienteInfoCard                    src/components/ui/cards/index.ts:8:20                  
+PremiumButton                       src/components/ui/cards/index.ts:9:20                  
+RelatorioCard                       src/components/ui/cards/index.ts:10:20                 
+RelatorioGratuitoCard               src/components/ui/cards/index.ts:11:20                 
+RelatorioPremiumCard                src/components/ui/cards/index.ts:12:20                 
+ScoreAtualCard                      src/components/ui/cards/index.ts:13:20                 
+ScoreFuturoCard                     src/components/ui/cards/index.ts:14:20                 
+ScoreComparisonChart                src/components/ui/cards/index.ts:16:20                 
+SubSectionCard                      src/components/ui/cards/index.ts:17:20                 
+SummaryCard                         src/components/ui/cards/index.ts:18:20                 
+PlanoAcaoCard                       src/components/ui/cards/index.ts:19:20                 
+RelatorioContainer                  src/components/ui/cards/index.ts:20:20                 
+default                   function  src/components/ui/cards/LinhaDoTempo.tsx:10:25         
+default                   variable  src/components/ui/cards/PacienteInfoCard.tsx:78:8      
+default                   function  src/components/ui/cards/PlanoAcaoCard.tsx:12:25        
+default                   function  src/components/ui/cards/PremiumButton.tsx:5:25         
+default                   function  src/components/ui/cards/RelatorioCard.tsx:14:25        
+default                   function  src/components/ui/cards/RelatorioContainer.tsx:8:25    
+default                   function  src/components/ui/cards/RelatorioGratuitoCard.tsx:20:25
+default                   function  src/components/ui/cards/RelatorioPremiumCard.tsx:15:25 
+default                   function  src/components/ui/cards/ScoreAtualCard.tsx:9:25        
+default                   function  src/components/ui/cards/ScoreComparisonChart.tsx:14:25 
+default                   function  src/components/ui/cards/ScoreFuturoCard.tsx:9:25       
+default                   function  src/components/ui/cards/SubSectionCard.tsx:6:25        
+default                   function  src/components/ui/cards/SummaryCard.tsx:6:25           
+ScaleButton               function  src/components/ui/EnhancedInput.tsx:113:17             
+ScaleSelector             function  src/components/ui/EnhancedInput.tsx:143:17             
+default                             src/components/ui/ErrorBoundary.tsx:94:8               
+default                   function  src/components/ui/feedback/DialogConfirm.tsx:11:25     
+DialogConfirm                       src/components/ui/feedback/index.ts:1:20               
+Modal                               src/components/ui/feedback/index.ts:4:20               
+Toast                               src/components/ui/feedback/index.ts:6:20               
+Tooltip                             src/components/ui/feedback/index.ts:7:20               
+default                   function  src/components/ui/feedback/Modal.tsx:12:25             
+default                   function  src/components/ui/feedback/Tooltip.tsx:9:25            
+Avatar                              src/components/ui/index.ts:1:9                         
+ActionCard                          src/components/ui/index.ts:4:9                         
+AlertCard                           src/components/ui/index.ts:5:14                        
+CardTriagem                         src/components/ui/index.ts:6:13                        
+HealthTimeline                      src/components/ui/index.ts:7:15                        
+HealthTimelinePremium               src/components/ui/index.ts:8:18                        
+LinhaDoTempo                        src/components/ui/index.ts:9:25                        
+PacienteInfoCard                    src/components/ui/index.ts:10:16                       
+PremiumButton                       src/components/ui/index.ts:11:20                       
+RelatorioCard                       src/components/ui/index.ts:12:17                       
+RelatorioGratuitoCard               src/components/ui/index.ts:13:17                       
+RelatorioPremiumCard                src/components/ui/index.ts:14:25                       
+ScoreAtualCard                      src/components/ui/index.ts:15:24                       
+ScoreCard                           src/components/ui/index.ts:16:18                       
+SubSectionCard                      src/components/ui/index.ts:17:13                       
+SummaryCard                         src/components/ui/index.ts:18:18                       
+DialogConfirm                       src/components/ui/index.ts:22:9                        
+EmptyState                          src/components/ui/index.ts:23:17                       
+Modal                               src/components/ui/index.ts:25:11                       
+Toast                               src/components/ui/index.ts:27:12                       
+Tooltip                             src/components/ui/index.ts:28:9                        
+Badge                               src/components/ui/index.ts:32:9                        
+Input                               src/components/ui/index.ts:33:9                        
+ProgressBar                         src/components/ui/index.ts:34:9                        
+Select                              src/components/ui/index.ts:35:15                       
+Textarea                            src/components/ui/index.ts:39:9                        
+BottomMenu                          src/components/ui/index.ts:43:9                        
+Pagination                          src/components/ui/index.ts:44:14                       
+Tabs                                src/components/ui/index.ts:45:14                       
+RelatorioContainer                  src/components/ui/index.ts:49:20                       
+Timeline                            src/components/ui/index.ts:50:20                       
+Logo                                src/components/ui/index.ts:53:20                       
+LogoLarge                           src/components/ui/index.ts:54:20                       
+ThemeToggle                         src/components/ui/index.ts:55:9                        
+default                   function  src/components/ui/inputs/Badge.tsx:15:25               
+Badge                               src/components/ui/inputs/index.ts:1:20                 
+ProgressBar                         src/components/ui/inputs/index.ts:3:20                 
+Select                              src/components/ui/inputs/index.ts:4:20                 
+ProgressDonut                       src/components/ui/inputs/index.ts:5:20                 
+SelectCard                          src/components/ui/inputs/index.ts:6:20                 
+InputDate                           src/components/ui/inputs/index.ts:7:20                 
+default                   function  src/components/ui/inputs/InputDate.tsx:26:25           
+default                   function  src/components/ui/inputs/ProgressBar.tsx:11:25         
+default                   variable  src/components/ui/inputs/Select.tsx:56:8               
+default                   variable  src/components/ui/LogoLarge.tsx:36:8                   
+Modal                               src/components/ui/modals/index.ts:1:20                 
+default                   function  src/components/ui/modals/Modal.tsx:12:25               
+Pagination                          src/components/ui/navigation/index.ts:2:20             
+Tabs                                src/components/ui/navigation/index.ts:3:20             
+default                   function  src/components/ui/navigation/Pagination.tsx:8:25       
+default                   function  src/components/ui/navigation/Tabs.tsx:13:25            
+default                   function  src/components/ui/RelatorioContainer.tsx:6:25          
+Textarea                  function  src/components/ui/Textarea.tsx:8:17                    
+default                   function  src/components/ui/Timeline.tsx:10:25                   
+HAPTIC_CONFIG                       src/config/navigation.ts:34:14                         
+validateServerEnv         function  src/env.ts:45:17                                       
+serverEnv                           src/env.ts:66:14                                       
+default                             src/forms/gastro.ts:183:8                              
+triagemGeralRapidaSteps             src/forms/triagemGeralRapida.ts:130:14                 
+useTriageTracking         function  src/hooks/useGA4.ts:48:17                              
+useReportTracking         function  src/hooks/useGA4.ts:59:17                              
+useSmoothScroll           function  src/hooks/useHapticFeedback.ts:45:17                   
+useIsMobile               function  src/hooks/useResponsive.ts:91:17                       
+useOrientation            function  src/hooks/useResponsive.ts:110:17                      
+useIsPWA                  function  src/hooks/useResponsive.ts:129:17                      
+canViewReport             function  src/lib/accessGuard.ts:19:23                           
+getPaywallRedirectUrl     function  src/lib/accessGuard.ts:92:17                           
+shouldShowPaywall         function  src/lib/accessGuard.ts:98:17                           
+triggerHapticFeedback     function  src/lib/analytics/nav.ts:50:17                         
+trackPageView                       src/lib/ga4.ts:249:14                                  
+trackTriageComplete                 src/lib/ga4.ts:252:14                                  
+trackSubscribeClick                 src/lib/ga4.ts:253:14                                  
+trackUpgradeClick                   src/lib/ga4.ts:254:14                                  
+trackNavigationClick                src/lib/ga4.ts:255:14                                  
+initGA4                             src/lib/ga4.ts:267:14                                  
+useGA4PageTracking        function  src/lib/ga4.ts:270:17                                  
+default                   variable  src/lib/ga4.ts:286:8                                   
+default                             src/lib/i18n.ts:96:8                                   
+withApiMonitoring         function  src/lib/monitoring/api-middleware.ts:20:17             
+withPdfMonitoring         function  src/lib/monitoring/api-middleware.ts:137:17            
+withStripeMonitoring      function  src/lib/monitoring/api-middleware.ts:149:17            
+capturePaymentEvent       function  src/lib/monitoring/api-middleware.ts:168:17            
+initSentry                function  src/lib/monitoring/sentry.ts:7:17                      
+requestLoggingMiddleware  function  src/lib/monitoring/sentry.ts:114:17                    
+monitorApiPerformance     function  src/lib/monitoring/sentry.ts:174:17                    
+OptimizedReportPDF        function  src/lib/pdfOptimized.tsx:269:17                        
+cleanupOldData            function  src/lib/privacy.ts:218:23                              
+validateConsent           function  src/lib/privacy.ts:258:23                              
+recordConsent             function  src/lib/privacy.ts:277:23                              
+rateLimit                 function  src/lib/rateLimit.ts:4:17                              
+getAdminUser              function  src/lib/rbac.ts:33:17                                  
+hashIP                    function  src/lib/rbac.ts:127:17                                 
+referencesCatalog                   src/lib/referencesCatalog.ts:10:14                     
+getReferencesByType       function  src/lib/referencesCatalog.ts:293:17                    
+getPlanConfig             function  src/lib/stripe-config.ts:77:17                         
+triageFlows                         src/lib/triage/flows/index.ts:260:14                   
+firstVisitSchema                    src/lib/triage/schema.ts:136:14                        
+getCtaConfig              function  src/lib/utm.ts:54:17                                   
+default                             src/lib/utm.ts:102:8                                   
+Palette                             src/theme/palette.ts:6:14                              
+ChartPalette                        src/theme/palette.ts:20:14                             
+ALLOWED_COLORS                      src/theme/palette.ts:28:14                             
+isValidColor              function  src/theme/palette.ts:34:17                             
+getBrandColor             function  src/theme/palette.ts:38:17                             
+verificarPagamento                  src/utils/asaas.ts:100:14                              
+getIMCClassification      function  src/utils/health.ts:64:17                              
+formatIMC                 function  src/utils/health.ts:104:17                             
+formatAge                 function  src/utils/health.ts:109:17                             
+Unused exported types (37)
+ReportPdfData         type       src/components/pdf/ReportPDF.tsx:18:13   
+NavItem               type       src/config/navigation.ts:5:13            
+TOption               type       src/forms/gastro.ts:5:13                 
+TForm                 type       src/forms/gastro.ts:22:13                
+TipoTriagem           type       src/forms/index.ts:21:13                 
+HapticType            type       src/hooks/useHapticFeedback.ts:5:13      
+Breakpoint            type       src/hooks/useResponsive.ts:3:13          
+ResponsiveState       interface  src/hooks/useResponsive.ts:5:18          
+AccessInput           type       src/lib/accessGuard.ts:6:13              
+KPIData               interface  src/lib/admin-queries.ts:8:18            
+FunnelData            interface  src/lib/admin-queries.ts:235:18          
+RevenueData           interface  src/lib/admin-queries.ts:339:18          
+ProductData           interface  src/lib/admin-queries.ts:450:18          
+TechData              interface  src/lib/admin-queries.ts:546:18          
+AlertRule             interface  src/lib/alerts-engine.ts:7:18            
+Alert                 interface  src/lib/alerts-engine.ts:17:18           
+Env                   type       src/lib/env.ts:51:13                     
+ApiMonitoringOptions  interface  src/lib/monitoring/api-middleware.ts:7:18
+LogContext            interface  src/lib/monitoring/sentry.ts:26:18       
+AdminRole             type       src/lib/rbac.ts:7:13                     
+AdminUser             interface  src/lib/rbac.ts:9:18                     
+RedFlag               interface  src/lib/redFlags.ts:4:18                 
+Reference             interface  src/lib/referencesCatalog.ts:4:18        
+QuickWin              type       src/lib/report/types.ts:49:13            
+WeeklyGoal            type       src/lib/report/types.ts:55:13            
+RoadmapTabId          type       src/lib/report/types.ts:62:13            
+TimelineStatus        type       src/lib/report/types.ts:93:13            
+ReportMedia           type       src/lib/report/types.ts:110:13           
+ReportFeatureFlags    type       src/lib/report/types.ts:115:13           
+FallbackReportData    type       src/lib/reportSchema.ts:81:13            
+PlanType              type       src/lib/stripe-config.ts:73:13           
+PlanConfig            type       src/lib/stripe-config.ts:74:13           
+StepType              type       src/lib/triage/schema.ts:3:13            
+Conditional           type       src/types/triagem.ts:1:13                
+FormData              type       src/types/triagem.ts:54:13               
+TriagemKey            type       src/types/triagem.ts:58:13               
+ValidationRule        interface  src/utils/validation.ts:4:18             
+Duplicate exports (6)
+gerarPromptPersonalizado|gerarPromptPreditiva        src/ai/prompt.ts                   
+Avatar|default                                       src/components/ui/avatar/Avatar.tsx
+ErrorBoundary|default                                src/components/ui/ErrorBoundary.tsx
+gastro|default                                       src/forms/gastro.ts                
+perguntasTriagemGeralRapida|triagemGeralRapidaSteps  src/forms/triagemGeralRapida.ts    
+t|default                                            src/lib/i18n.ts                    
+Configuration hints (1)
+.      Create knip.json configuration file with workspaces["."] object (89 unused files)

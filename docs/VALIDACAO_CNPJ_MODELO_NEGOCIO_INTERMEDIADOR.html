@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação CNPJ e Modelo de Negócio Intermediador | ZapFarm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 4px solid #667eea;
+        }
+        
+        h1 {
+            color: #2d3748;
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-badge {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .model-section {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .model-section h2 {
+            color: #2d3748;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .model-section h3 {
+            color: #4a5568;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .comparison-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f7fafc;
+        }
+        
+        .status-check {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-yes {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .status-partial {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-no {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .checklist-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+        
+        .checklist-card.has {
+            border-top-color: #4caf50;
+        }
+        
+        .checklist-card.missing {
+            border-top-color: #ff9800;
+        }
+        
+        .checklist-card.need {
+            border-top-color: #f44336;
+        }
+        
+        .checklist-card h3 {
+            color: #2d3748;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checklist-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #f7fafc;
+            border-left: 4px solid #cbd5e0;
+            transition: all 0.3s;
+        }
+        
+        .checklist-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+        
+        .checklist-item.complete {
+            border-left-color: #4caf50;
+            background: #e8f5e9;
+        }
+        
+        .checklist-item.partial {
+            border-left-color: #ff9800;
+            background: #fff3e0;
+        }
+        
+        .checklist-item.pending {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .checklist-item strong {
+            color: #2d3748;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .checklist-item .description {
+            color: #718096;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        
+        .benefits-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        
+        .benefits-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .benefit-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .benefit-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .benefit-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefit-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .benefit-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .action-items {
+            background: #fff3cd;
+            border-left: 5px solid #ff9800;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .action-items h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .action-items ol {
+            margin-left: 20px;
+        }
+        
+        .action-items li {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+        
+        .cnpj-info {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .cnpj-info h3 {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+        
+        .cnpj-info table {
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .cnpj-info td {
+            padding: 10px;
+            border-bottom: 1px solid #bbdefb;
+        }
+        
+        .cnpj-info td:first-child {
+            font-weight: 600;
+            color: #1565c0;
+            width: 200px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-card.complete {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        }
+        
+        .stat-card.partial {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+        
+        .stat-card.pending {
+            background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+        }
+        
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        
+        .footer-note {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+            color: #718096;
+            border: 2px dashed #cbd5e0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .stat-card, .benefits-section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Validação CNPJ e Modelo de Negócio Intermediador</h1>
+            <p class="subtitle">Comparação com Voy Saúde e Teladoc Health</p>
+            <span class="comparison-badge">ZapFarm como Plataforma Intermediadora</span>
+        </div>
+
+        <!-- Estatísticas Gerais -->
+        <div class="stats">
+            <div class="stat-card complete">
+                <div class="number">45%</div>
+                <div class="label">Implementado</div>
+            </div>
+            <div class="stat-card partial">
+                <div class="number">30%</div>
+                <div class="label">Parcial</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="number">25%</div>
+                <div class="label">Pendente</div>
+            </div>
+        </div>
+
+        <!-- Modelo de Negócio -->
+        <div class="model-section">
+            <h2>📊 Modelo de Negócio Intermediador</h2>
+            
+            <h3>Como Funciona o CNPJ e Modelo Intermediador</h3>
+            <p style="margin-bottom: 20px; color: #4a5568; font-size: 1.1em;">
+                A ZapFarm atua como <strong>plataforma intermediadora</strong> (similar à Voy Saúde e Teladoc), conectando pacientes a clínicas médicas parceiras e farmácias credenciadas. Não somos uma farmácia nem uma clínica médica diretamente.
+            </p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Voy Saúde</th>
+                        <th>Teladoc</th>
+                        <th>ZapFarm (Atual)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Empresa Intermediadora</strong></td>
+                        <td>REVIA GESTAO DE NEGOCIOS LTDA<br>CNPJ: 61.734.648/0001-86</td>
+                        <td>Teladoc Health, Inc.<br>155 East 44th Street, NY</td>
+                        <td>ZapFarm Tecnologia em Saúde Ltda.<br>CNPJ: <span style="color: #f44336;">⚠️ CONFIGURAR</span></td>
+                        <td><span class="status-check status-no">PENDENTE</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clínicas Médicas</strong></td>
+                        <td>Clínicas terceiras e independentes</td>
+                        <td>Rede de médicos credenciados</td>
+                        <td>MonJoy (parceira)<br><span style="color: #ff9800;">⚠️ Validar CNES</span></td>
+                        <td><span class="status-check status-partial">PARCIAL</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Farmácias Credenciadas</strong></td>
+                        <td>3 farmácias listadas com CNPJ e CRF</td>
+                        <td>Não aplicável (EUA)</td>
+                        <td>Placeholder data<br><span style="color: #f44336;">⚠️ DADOS REAIS NECESSÁRIOS</span></td>
+                        <td><span class="status-check status-no">PENDENTE</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prescrições Médicas</strong></td>
+                        <td>Sob prescrição médica</td>
+                        <td>Sob prescrição médica</td>
+                        <td>Validação médica obrigatória ✅</td>
+                        <td><span class="status-check status-yes">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Disclaimers Legais</strong></td>
+                        <td>"A VOY não é uma farmácia"</td>
+                        <td>"Teladoc Health care providers"</td>
+                        <td>"A MonJoy não é uma farmácia" ✅</td>
+                        <td><span class="status-check status-yes">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conformidade ANVISA</strong></td>
+                        <td>Mencionado explicitamente</td>
+                        <td>FDA (EUA)</td>
+                        <td>Mencionado ✅</td>
+                        <td><span class="status-check status-yes">OK</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Informações CNPJ -->
+        <div class="cnpj-info">
+            <h3>📋 Informações CNPJ e Documentação Legal</h3>
+            <table>
+                <tr>
+                    <td>Razão Social</td>
+                    <td>ZapFarm Tecnologia em Saúde Ltda.</td>
+                </tr>
+                <tr>
+                    <td>CNPJ</td>
+                    <td><strong style="color: #f44336;">⚠️ CONFIGURAR em NEXT_PUBLIC_LEGAL_CNPJ</strong></td>
+                </tr>
+                <tr>
+                    <td>Endereço</td>
+                    <td><strong style="color: #f44336;">⚠️ CONFIGURAR em NEXT_PUBLIC_LEGAL_ADDRESS</strong></td>
+                </tr>
+                <tr>
+                    <td>DPO/Encarregado</td>
+                    <td><strong style="color: #ff9800;">⚠️ CONFIGURAR em NEXT_PUBLIC_DPO_NAME/EMAIL/PHONE</strong></td>
+                </tr>
+                <tr>
+                    <td>CNES Clínica MonJoy</td>
+                    <td><strong style="color: #f44336;">⚠️ VALIDAR COM JURÍDICO</strong></td>
+                </tr>
+                <tr>
+                    <td>Políticas LGPD</td>
+                    <td>✅ Implementadas em /politicas-lgpd</td>
+                </tr>
+                <tr>
+                    <td>Termos de Uso</td>
+                    <td>✅ Implementados em /termos</td>
+                </tr>
+                <tr>
+                    <td>Política de Privacidade</td>
+                    <td>✅ Implementada em /privacidade</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Checklist: O que TEMOS -->
+        <div class="checklist-grid">
+            <div class="checklist-card has">
+                <h3>✅ O QUE TEMOS</h3>
+                
+                <div class="checklist-item complete">
+                    <strong>1. Modelo Intermediador Definido</strong>
+                    <div class="description">Texto claro: "A MonJoy não é uma farmácia. Consultas por clínicas parceiras, medicamentos por farmácias credenciadas."</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>2. Validação Médica Obrigatória</strong>
+                    <div class="description">Sistema implementado para médico revisar e aprovar prescrições antes de envio.</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>3. Disclaimers Legais</strong>
+                    <div class="description">Disclaimers ANVISA/CFM presentes no relatório e páginas.</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>4. Políticas LGPD</strong>
+                    <div class="description">Página completa de políticas LGPD implementada (/politicas-lgpd).</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>5. Cookie Banner</strong>
+                    <div class="description">Banner de cookies implementado e funcional.</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>6. Seção Farmácias Credenciadas</strong>
+                    <div class="description">Componente PharmaciesSection.tsx criado (mas com dados placeholder).</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>7. Fluxo Completo Funcionando</strong>
+                    <div class="description">Triagem → Relatório → Checkout → Validação Médica.</div>
+                </div>
+
+                <div class="checklist-item complete">
+                    <strong>8. Integração Pagamento</strong>
+                    <div class="description">Asaas integrado e funcionando.</div>
+                </div>
+            </div>
+
+            <div class="checklist-card missing">
+                <h3>⚠️ O QUE FALTA</h3>
+                
+                <div class="checklist-item pending">
+                    <strong>1. CNPJ Real Configurado</strong>
+                    <div class="description">Variável NEXT_PUBLIC_LEGAL_CNPJ está com placeholder "00.000.000/0001-00". Precisa do CNPJ real da empresa.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>2. Endereço Legal Real</strong>
+                    <div class="description">NEXT_PUBLIC_LEGAL_ADDRESS com placeholder. Precisa endereço completo da sede.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>3. DPO Definido e Publicado</strong>
+                    <div class="description">Nome, email e telefone do DPO precisam ser configurados e publicados nas políticas.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>4. Farmácias Credenciadas Reais</strong>
+                    <div class="description">PharmaciesSection.tsx tem dados placeholder. Precisa lista real com CNPJ, CRF, responsável técnico.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>5. CNES da Clínica MonJoy</strong>
+                    <div class="description">Validar com jurídico se precisa CNES e se está registrado.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>6. CRM Médicos Validado</strong>
+                    <div class="description">Validar que todos os médicos têm CRM ativo na jurisdição correta.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>7. Prontuário Eletrônico Completo</strong>
+                    <div class="description">Garantir que registra data/hora, canal, conteúdo, assinatura digital, retenção 20 anos.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>8. Termo Consentimento Telemedicina</strong>
+                    <div class="description">Termo específico antes da consulta (validar com jurídico).</div>
+                </div>
+            </div>
+
+            <div class="checklist-card need">
+                <h3>🔗 O QUE PRECISAMOS PARA ENTREGAR BENEFÍCIOS</h3>
+                
+                <div class="checklist-item pending">
+                    <strong>1. Parcerias com Farmácias</strong>
+                    <div class="description">Contratos com farmácias credenciadas para dispensação de medicamentos prescritos.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>2. Integração com Farmácias</strong>
+                    <div class="description">Sistema para enviar prescrições validadas às farmácias parceiras.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>3. Logística de Entrega</strong>
+                    <div class="description">Parceria com transportadoras ou farmácias para entrega em domicílio.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>4. Equipe Médica Escalável</strong>
+                    <div class="description">Rede de médicos endocrinologistas para validar prescrições em tempo hábil.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>5. Suporte ao Cliente</strong>
+                    <div class="description">Canal de suporte (WhatsApp/email) para dúvidas sobre medicamentos e tratamento.</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>6. Acompanhamento Contínuo</strong>
+                    <div class="description">Sistema de check-ins semanais e retornos médicos conforme prometido nos planos.</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>7. Balança Inteligente</strong>
+                    <div class="description">Parceria para fornecimento de balanças inteligentes conectadas ao app (plano Start GLP-1).</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>8. Grupo VIP WhatsApp</strong>
+                    <div class="description">Infraestrutura para grupos VIP com pacientes e equipe médica (plano 3 Meses).</div>
+                </div>
+
+                <div class="checklist-item partial">
+                    <strong>9. Encontros Online</strong>
+                    <div class="description">Plataforma para encontros em grupo online com médico e nutricionista (plano 6 Meses).</div>
+                </div>
+
+                <div class="checklist-item pending">
+                    <strong>10. Plano de Manutenção</strong>
+                    <div class="description">Protocolo de manutenção para evitar reganho de peso (plano 6 Meses Premium).</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefícios Prometidos vs Entregáveis -->
+        <div class="benefits-section">
+            <h2>🎯 Benefícios Prometidos nos Planos</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h4>Start GLP-1 (R$ 4.188)</h4>
+                    <ul>
+                        <li>Consulta online com endocrino especialista</li>
+                        <li>Balança inteligente conectada ao app</li>
+                        <li>Primeiro ciclo ajustado ao seu caso</li>
+                        <li>Acompanhamento por WhatsApp em horário comercial</li>
+                        <li>Relatório claro pra entender seu corpo</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.9;">
+                        <strong>Status:</strong> <span style="color: #ffcdd2;">⚠️ Parcial - Falta balança inteligente</span>
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>Programa GLP-1 3 Meses (R$ 4.788)</h4>
+                    <ul>
+                        <li>Tudo do Start GLP-1 incluso</li>
+                        <li>2 consultas de retorno para ajustes finos</li>
+                        <li>Check-ins semanais da equipe pelo WhatsApp</li>
+                        <li>Grupo VIP com pacientes e equipe médica</li>
+                        <li>Mais aderência e acompanhamento próximo</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.9;">
+                        <strong>Status:</strong> <span style="color: #fff3cd;">⚠️ Parcial - Falta grupo VIP estruturado</span>
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>Programa GLP-1 6 Meses Premium (R$ 5.388)</h4>
+                    <ul>
+                        <li>Tudo do Programa 3 Meses incluso</li>
+                        <li>4–5 consultas ao longo de 6 meses</li>
+                        <li>Prioridade nas respostas da equipe</li>
+                        <li>Encontros em grupo online com médico e nutri</li>
+                        <li>Plano de manutenção pra evitar reganho de peso</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.9;">
+                        <strong>Status:</strong> <span style="color: #ffcdd2;">⚠️ Parcial - Falta encontros online e plano manutenção</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plano de Negócios -->
+        <div class="model-section">
+            <h2>💼 Plano de Negócios</h2>
+            
+            <h3>Modelo de Receita</h3>
+            <ul style="margin-left: 30px; color: #4a5568; line-height: 2;">
+                <li><strong>Receita Principal:</strong> Venda de planos de emagrecimento (R$ 4.188, R$ 4.788, R$ 5.388)</li>
+                <li><strong>Margem:</strong> Intermediação entre paciente, clínica médica e farmácia</li>
+                <li><strong>Custos:</strong> Médicos, farmácias, logística, tecnologia</li>
+                <li><strong>Diferencial:</strong> Acompanhamento contínuo e tecnologia (IA + médicos)</li>
+            </ul>
+
+            <h3>Comparação com Concorrentes</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Voy Saúde</th>
+                        <th>Teladoc</th>
+                        <th>ZapFarm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Preço Mensal</strong></td>
+                        <td>Variável (planos)</td>
+                        <td>Gratuito (empregador paga)</td>
+                        <td>12x sem juros (R$ 349-449/mês)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medicamentos</strong></td>
+                        <td>GLP-1 (Semaglutida, Tirzepatida)</td>
+                        <td>GLP-1 disponível</td>
+                        <td>Tirzepatida (foco)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acompanhamento</strong></td>
+                        <td>Médico + Nutrição</td>
+                        <td>Coaching + App</td>
+                        <td>Médico + WhatsApp + Grupo VIP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dispositivos</strong></td>
+                        <td>Não mencionado</td>
+                        <td>Smart scale incluída</td>
+                        <td>Balança inteligente (prometida)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Entrega</strong></td>
+                        <td>Em casa</td>
+                        <td>Em casa</td>
+                        <td>Em casa (a implementar)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Itens de Ação Críticos -->
+        <div class="action-items">
+            <h3>🚨 AÇÕES CRÍTICAS PARA COMPLETAR MODELO INTERMEDIADOR</h3>
+            <ol>
+                <li><strong>Configurar CNPJ Real:</strong> Atualizar NEXT_PUBLIC_LEGAL_CNPJ com CNPJ real da empresa</li>
+                <li><strong>Configurar Endereço:</strong> Atualizar NEXT_PUBLIC_LEGAL_ADDRESS com endereço completo</li>
+                <li><strong>Definir DPO:</strong> Configurar NEXT_PUBLIC_DPO_NAME, EMAIL e PHONE</li>
+                <li><strong>Validar CNES:</strong> Consultar jurídico sobre necessidade de CNES para clínica MonJoy</li>
+                <li><strong>Listar Farmácias Reais:</strong> Substituir dados placeholder em PharmaciesSection.tsx por farmácias reais credenciadas</li>
+                <li><strong>Contratos com Farmácias:</strong> Estabelecer parcerias formais com farmácias para dispensação</li>
+                <li><strong>Integração Farmácias:</strong> Desenvolver sistema para envio de prescrições validadas</li>
+                <li><strong>Parceria Balança:</strong> Contratar fornecedor de balanças inteligentes conectadas</li>
+                <li><strong>Infraestrutura Grupo VIP:</strong> Implementar sistema de grupos WhatsApp estruturados</li>
+                <li><strong>Plataforma Encontros:</strong> Configurar plataforma para encontros online em grupo</li>
+                <li><strong>Protocolo Manutenção:</strong> Desenvolver protocolo de manutenção de peso</li>
+                <li><strong>Validação Jurídica:</strong> Revisar todos os termos e disclaimers com advogado especializado</li>
+            </ol>
+        </div>
+
+        <!-- Checklist Final -->
+        <div class="model-section">
+            <h2>✅ Checklist Final de Validação</h2>
+            
+            <h3>Documentação Legal</h3>
+            <ul style="margin-left: 30px; color: #4a5568; line-height: 2;">
+                <li>✅ Políticas LGPD implementadas</li>
+                <li>✅ Termos de Uso implementados</li>
+                <li>✅ Política de Privacidade implementada</li>
+                <li>⚠️ CNPJ real configurado (PENDENTE)</li>
+                <li>⚠️ Endereço legal configurado (PENDENTE)</li>
+                <li>⚠️ DPO definido e publicado (PENDENTE)</li>
+            </ul>
+
+            <h3>Parcerias Operacionais</h3>
+            <ul style="margin-left: 30px; color: #4a5568; line-height: 2;">
+                <li>✅ Clínica MonJoy identificada</li>
+                <li>⚠️ CNES MonJoy validado (PENDENTE)</li>
+                <li>⚠️ Farmácias credenciadas listadas (PENDENTE)</li>
+                <li>⚠️ Contratos com farmácias assinados (PENDENTE)</li>
+                <li>⚠️ Integração com farmácias desenvolvida (PENDENTE)</li>
+            </ul>
+
+            <h3>Benefícios dos Planos</h3>
+            <ul style="margin-left: 30px; color: #4a5568; line-height: 2;">
+                <li>✅ Consulta médica online (implementado)</li>
+                <li>✅ Relatório personalizado (implementado)</li>
+                <li>⚠️ Balança inteligente (PENDENTE - parceria)</li>
+                <li>⚠️ Acompanhamento WhatsApp estruturado (PARCIAL)</li>
+                <li>⚠️ Grupo VIP WhatsApp (PENDENTE)</li>
+                <li>⚠️ Encontros online em grupo (PENDENTE)</li>
+                <li>⚠️ Plano de manutenção (PENDENTE)</li>
+            </ul>
+
+            <h3>Conformidade Regulatória</h3>
+            <ul style="margin-left: 30px; color: #4a5568; line-height: 2;">
+                <li>✅ Disclaimers ANVISA presentes</li>
+                <li>✅ Validação médica obrigatória</li>
+                <li>⚠️ Prontuário eletrônico completo (PARCIAL)</li>
+                <li>⚠️ Termo consentimento telemedicina (PARCIAL)</li>
+                <li>⚠️ CRM médicos validado (PENDENTE)</li>
+            </ul>
+        </div>
+
+        <!-- Nota Final -->
+        <div class="footer-note">
+            <p><strong>📌 Nota Importante:</strong></p>
+            <p style="margin-top: 10px;">
+                Este checklist foi criado comparando o modelo da ZapFarm com Voy Saúde e Teladoc Health. 
+                Todos os itens marcados como "PENDENTE" ou "PARCIAL" precisam ser resolvidos antes do lançamento oficial 
+                para garantir conformidade legal e entrega dos benefícios prometidos aos clientes.
+            </p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                <strong>Última atualização:</strong> Janeiro 2025<br>
+                <strong>Próxima revisão:</strong> Após validação jurídica completa
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

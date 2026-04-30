@@ -1,0 +1,178 @@
+{
+  "generatedAt": "2026-04-04T23:00:55.307Z",
+  "base": "http://localhost:3000",
+  "summary": {
+    "total": 15,
+    "non200": 0,
+    "overflow": 0,
+    "consoleErrorPages": 0,
+    "pageErrorPages": 0
+  },
+  "results": [
+    {
+      "page": "landing",
+      "viewport": "desktop",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 15960,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/landing-desktop.png"
+    },
+    {
+      "page": "triagem",
+      "viewport": "desktop",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/triagem/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 980,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/triagem-desktop.png"
+    },
+    {
+      "page": "checkout",
+      "viewport": "desktop",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/checkout",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1081,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/checkout-desktop.png"
+    },
+    {
+      "page": "obrigado",
+      "viewport": "desktop",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/obrigado",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 980,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/obrigado-desktop.png"
+    },
+    {
+      "page": "relatorio",
+      "viewport": "desktop",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/relatorio?id=smoke-report",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 980,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/relatorio-desktop.png"
+    },
+    {
+      "page": "landing",
+      "viewport": "tablet",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 16778,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/landing-tablet.png"
+    },
+    {
+      "page": "triagem",
+      "viewport": "tablet",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/triagem/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1366,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/triagem-tablet.png"
+    },
+    {
+      "page": "checkout",
+      "viewport": "tablet",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/checkout",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1366,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/checkout-tablet.png"
+    },
+    {
+      "page": "obrigado",
+      "viewport": "tablet",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/obrigado",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1366,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/obrigado-tablet.png"
+    },
+    {
+      "page": "relatorio",
+      "viewport": "tablet",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/relatorio?id=smoke-report",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1366,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/relatorio-tablet.png"
+    },
+    {
+      "page": "landing",
+      "viewport": "mobile",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 21967,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/landing-mobile.png"
+    },
+    {
+      "page": "triagem",
+      "viewport": "mobile",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/triagem/emagrecimento",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 924,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/triagem-mobile.png"
+    },
+    {
+      "page": "checkout",
+      "viewport": "mobile",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/checkout",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 1479,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/checkout-mobile.png"
+    },
+    {
+      "page": "obrigado",
+      "viewport": "mobile",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/obrigado",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 924,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/obrigado-mobile.png"
+    },
+    {
+      "page": "relatorio",
+      "viewport": "mobile",
+      "status": 200,
+      "urlFinal": "http://localhost:3000/emagrecimento/relatorio?id=smoke-report",
+      "hasHorizontalOverflow": false,
+      "bodyScrollHeight": 924,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/Users/teobeckert/desenvolvimento/mejoy/codex-artifacts/emagrecimento-launch-audit/relatorio-mobile.png"
+    }
+  ]
+}

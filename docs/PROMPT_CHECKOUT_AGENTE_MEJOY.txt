@@ -1,0 +1,164 @@
+# MISSÃO: Checkout Me Joy — Layout Zapvida + UX de Alta Conversão
+
+Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao) e implemente as práticas de UX abaixo para reduzir fricção, minimizar cliques e maximizar conversão.
+
+---
+
+## PARTE 1 — ESTRUTURA DO FLUXO (2 ETAPAS)
+
+### Etapa 1: "Dados e Entrega" (uma única tela com scroll)
+- **Dados do Cliente**: Nome completo, E-mail, Celular (obrigatórios). CPF opcional com tooltip: "Opcional para PIX. Necessário para nota fiscal."
+- **Endereço de Entrega**: CEP (obrigatório, ViaCEP no onBlur), Rua, Número, Complemento (opcional), Bairro, Cidade, UF. Após CEP válido: mensagem verde "✓ Endereço preenchido automaticamente."
+- **Frete**: Após CEP válido, exibir valor e prazo. Calcular em tempo real via `/api/store-v2/checkout/calculate-shipping`. Regras: Sudeste/Sul R$ 190 grátis, Centro-Oeste R$ 240, Norte/Nordeste R$ 349. Frete padrão R$ 29,90.
+- **Resumo**: Itens do carrinho, subtotal, frete, total — sempre visível na coluna direita (desktop) ou colapsável no topo (mobile).
+- **Guest checkout**: Já é o padrão (sessionId). Manter.
+
+### Etapa 2: "Pagamento"
+- PIX como opção padrão (selecionada ao entrar).
+- Cartão de Crédito como alternativa (backend create-payment já suporta).
+- CTA principal: "Pagar com PIX →" ou "Pagar com Cartão →".
+
+---
+
+## PARTE 2 — LAYOUT VISUAL (IDÊNTICO AO ZAPVIDA)
+
+### Header
+- Logo Me Joy à esquerda (link para home).
+- À direita: ícone de cadeado + "Ambiente seguro".
+- Sticky top-0, fundo branco com backdrop-blur.
+
+### Barra de Progresso
+- 2 passos: "1 Dados e Entrega" | "2 Pagamento".
+- Círculos numerados (1, 2). Atual: bg-orange-500 text-white. Concluído: check verde. Pendente: bg-gray-200.
+- Linhas tracejadas entre os passos.
+
+### Banner de Benefício (abaixo da barra)
+- Fundo verde claro (bg-emerald-50), borda emerald-100.
+- Texto dinâmico:
+  - Com CEP e frete grátis: "🚚 Frete grátis! Pedidos acima de R$ X para [região]"
+  - Com CEP e sem frete grátis: "Faltam R$ X para frete grátis" + barra de progresso visual
+  - Sem CEP: "📦 Informe seu CEP para calcular o frete"
+- Usar valores reais de src/lib/store-v2/shipping.ts: Sudeste R$ 190, Centro-Oeste R$ 240, Norte/Nordeste R$ 349.
+
+### Layout 2 Colunas (desktop)
+- Esquerda: formulário (dados + endereço + frete na Etapa 1; pagamento na Etapa 2).
+- Direita: **Resumo do Pedido** fixo/sticky com: lista de itens (nome, qtd, preço unit.), subtotal, frete, total. Sempre visível.
+- Mobile: resumo colapsável no topo (expandir com ChevronDown).
+
+### Cards
+- Card branco, shadow-sm, bordas arredondadas (rounded-xl).
+- CardHeader: ícone + título (ex.: User + "Dados do Cliente", MapPin + "Endereço de Entrega", CreditCard + "Pagamento").
+- CardContent: padding p-6, space-y-4.
+
+### Formulário de Pagamento
+- Seleção: 2 cards lado a lado — PIX (esquerda) e Cartão de Crédito (direita). PIX selecionado por padrão.
+- Logos: Visa, Mastercard, Amex, Elo no header do card de pagamento.
+- PIX: blocos "Como funciona?" e "Finalize com facilidade" (QR Code ou código copiável após submit).
+- Cartão: Nome, Número, Validade, CVV. Preview do cartão ao lado (desktop). Grid lg:grid-cols-2.
+
+### Footer do Checkout
+- "Ao confirmar, você concorda com nossos Termos de Uso e Política de Privacidade."
+- "Este site está protegido pelo Google reCAPTCHA. Política de Privacidade e Termos de Serviço."
+- Badges: SSL 256 bits + PCI DSS (imagens ou SVGs).
+
+---
+
+## PARTE 3 — VALIDAÇÃO E REGRAS DE NEGÓCIO
+
+### Obrigatórios no Step 1 (bloquear avanço)
+- Nome (mín. 3 caracteres)
+- E-mail (válido)
+- Celular (formato BR, 11 dígitos)
+- CEP (8 dígitos, válido no ViaCEP)
+- Rua, Número, Bairro, Cidade, UF (preenchidos automaticamente ou manualmente)
+
+### Frete
+- Sem CEP válido: não permitir avançar. Mensagem: "Informe seu CEP para calcular o frete."
+- Frontend e backend: usar a mesma lógica. Sem divergência. Se CEP ausente no backend, usar R$ 29,90 como padrão.
+- CEP inválido: "CEP não encontrado. Verifique ou preencha manualmente."
+
+### Backend (create-payment)
+- Validar CEP (8 dígitos) e endereço completo antes de criar cobrança.
+- Retornar 400 com mensagem clara se inválido.
+- Se CEP ausente: aplicar frete R$ 29,90 para evitar divergência com frontend.
+
+### Persistência
+- Salvar dados do formulário em localStorage/sessionStorage ao preencher (onBlur ou debounce 500ms).
+- Restaurar ao retornar à página (ex.: voltar do app do banco para PIX).
+
+---
+
+## PARTE 4 — RESPONSIVIDADE
+
+- Mobile-first. Campos em coluna única no mobile.
+- CTA: altura mínima 48px, largura total no mobile.
+- Resumo: colapsável no mobile, expandir com ChevronDown.
+- Touch targets: mínimo 44x44px.
+- Inputs: font-size 16px para evitar zoom no iOS.
+
+---
+
+## PARTE 5 — COPY E TEXTOS
+
+| Elemento | Texto |
+|----------|-------|
+| Step 1 | Dados e Entrega |
+| Step 2 | Pagamento |
+| Banner (frete grátis) | Frete grátis! Pedidos acima de R$ X para [região] |
+| Banner (progresso) | Faltam R$ X para frete grátis |
+| Banner (sem CEP) | Informe seu CEP para calcular o frete |
+| CEP sucesso | ✓ Endereço preenchido automaticamente |
+| CEP erro | CEP não encontrado. Verifique ou preencha manualmente. |
+| CTA PIX | Pagar com PIX → |
+| CTA Cartão | Pagar com Cartão → |
+
+---
+
+## PARTE 6 — ARQUIVOS ME JOY (CONTEXTO)
+
+### Modificar
+- src/pages/checkout/index.tsx — página principal
+- src/pages/api/store-v2/create-payment.ts — validação CEP/endereço, frete padrão
+
+### Criar (novos componentes)
+- src/components/store-v2/checkout/CheckoutHeader.tsx
+- src/components/store-v2/checkout/CheckoutSteps.tsx
+- src/components/store-v2/checkout/CheckoutBanner.tsx
+- src/components/store-v2/checkout/OrderSummaryCard.tsx
+- src/components/store-v2/checkout/CheckoutFooter.tsx
+- src/components/store-v2/checkout/AddressForm.tsx (com ViaCEP)
+- src/components/store-v2/checkout/PaymentForm.tsx (PIX + Cartão)
+
+### Referência Zapvida (estrutura visual, adaptar ao Me Joy)
+- checkout-header.tsx, checkout-steps.tsx, atendimento-rapido-banner.tsx
+- customer-form.tsx, payment-form.tsx, checkout-footer.tsx, checkout-summary-card.tsx
+
+---
+
+## PARTE 7 — ORDEM DE EXECUÇÃO
+
+1. Corrigir validação (endereço obrigatório, consistência frete, validação no backend)
+2. Implementar layout visual (header, steps, cards, footer)
+3. Unificar Step 1 (dados + endereço + frete em uma tela)
+4. Implementar OrderSummaryCard sticky
+5. Adicionar banner de benefício
+6. Implementar PaymentForm (PIX + Cartão)
+7. Adicionar persistência de dados
+8. Testes de responsividade e fluxo completo
+
+---
+
+## PARTE 8 — CRITÉRIOS DE ACEITAÇÃO FINAL
+
+- [ ] Guest checkout funciona
+- [ ] CEP preenche endereço via ViaCEP
+- [ ] Frete calculado em tempo real após CEP
+- [ ] Barra "Faltam R$ X para frete grátis" visível quando aplicável
+- [ ] PIX é opção padrão
+- [ ] Valores de frete idênticos no frontend e backend
+- [ ] Endereço obrigatório; não avança sem CEP válido
+- [ ] Backend valida endereço antes de criar cobrança
+- [ ] Layout 2 colunas no desktop, 1 coluna no mobile
+- [ ] Trust badges (SSL, PCI DSS) visíveis
+- [ ] Resumo do pedido sempre visível (sticky desktop, colapsável mobile)
+- [ ] Dados persistidos ao sair e voltar

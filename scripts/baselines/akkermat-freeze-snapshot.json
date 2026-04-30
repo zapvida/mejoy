@@ -1,0 +1,95 @@
+{
+  "generatedAt": "2026-03-18T04:00:36.153Z",
+  "sku": "MEJOY-0048",
+  "slug": "akkermat-150-mg-30-capsulas",
+  "url": "http://localhost:3000/p/akkermat-150-mg-30-capsulas",
+  "sectionOrder": [
+    "breadcrumb",
+    "galeria",
+    "titulo_h1",
+    "form_display",
+    "subtitulo_mechanism",
+    "rating",
+    "hero_bullets",
+    "trust_line",
+    "bloco_decisorio",
+    "calculadora_frete",
+    "trust_bar",
+    "o_que_e",
+    "video",
+    "como_funciona",
+    "para_que_serve",
+    "o_que_torna_diferente",
+    "para_quem_e_ideal",
+    "como_usar",
+    "composicao",
+    "advertencias",
+    "referencias",
+    "faq",
+    "como_funciona_compra",
+    "avaliacoes",
+    "quem_viu_viu_tambem",
+    "sticky_cta_desktop",
+    "sticky_cta_mobile"
+  ],
+  "firstFoldElements": [
+    "breadcrumb",
+    "galeria",
+    "titulo_h1",
+    "subtitulo_mechanism",
+    "rating",
+    "hero_bullets",
+    "trust_line",
+    "bloco_decisorio"
+  ],
+  "heroBullets": [
+    "🔥 Reduz o apetite e aumenta a saciedade naturalmente",
+    "⚡ Apoia o metabolismo e a queima de calorias",
+    "✨ Sensação de saciedade prolongada entre as refeições",
+    "💪 Apoio à redução de medidas de forma saudável",
+    "🌿 Dose eficaz de 150 mg por cápsula para resultados visíveis"
+  ],
+  "mechanismSummary": "Coma menos, queime mais. A fórmula que ajuda a controlar o apetite e a acelerar o metabolismo — resultados visíveis quando associada à dieta equilibrada.",
+  "fullOverrides": {
+    "paraQueServeCount": 6,
+    "paraQueServeTitles": [
+      "Redução do apetite",
+      "Apoio à compulsão alimentar",
+      "Gerenciamento de peso",
+      "Ação termogênica",
+      "Suporte à saúde intestinal",
+      "Fórmula microencapsulada"
+    ],
+    "faqCount": 5,
+    "faqQuestions": [
+      "O que é Akkermat 150 mg?",
+      "Como devo usar Akkermat 150 mg?",
+      "Akkermat 150 mg tem contraindicações?",
+      "Posso tomar Akkermat com outros suplementos?",
+      "Akkermat substitui alimentação equilibrada?"
+    ],
+    "hasWhatIsIt": true,
+    "hasBestFitProfile": true,
+    "hasWhatMakesDifferent": true,
+    "hasScienceSummary": true,
+    "hasAdvertenciasCompleto": true,
+    "hasActiveIngredients": true
+  },
+  "compareAtFallbackCents": 11070,
+  "textSignatures": {
+    "hero_bullets": [
+      "Reduz o apetite e aumenta a saciedade naturalmente",
+      "Apoia o metabolismo e a queima de calorias",
+      "Sensação de saciedade prolongada entre as refeições",
+      "Apoio à redução de medidas de forma saudável",
+      "Dose eficaz de 150 mg por cápsula para resultados visíveis"
+    ],
+    "mechanism_summary": "Coma menos, queime mais. A fórmula que ajuda a controlar o apetite e a acelerar o metabolismo — resultados visíveis quando associada à dieta equilibrada.",
+    "trust_line": "Troca em 7 dias · Frete grátis acima de R$ 190",
+    "faq_first_question": "O que é Akkermat 150 mg?",
+    "what_is_it_contains": "Akkermat 150 mg",
+    "best_fit_contains": "Ideal para quem busca apoio ao metabolismo"
+  },
+  "heroBulletsChecksum": 262,
+  "mechanismSummaryLength": 153
+}

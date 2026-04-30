@@ -1,0 +1,113 @@
+#!/bin/bash
+# SAFE_MOVE.patch - Move unused files to quarantine
+# This script moves files that are unused but might be needed later
+
+set -e
+
+QUARANTINE_DIR="legacy/_quarantine_20251013"
+echo "Creating quarantine directory: $QUARANTINE_DIR"
+mkdir -p "$QUARANTINE_DIR"
+
+echo "Moving legacy report pipeline files..."
+# Legacy report pipeline files
+[ -f "src/lib/relatorio.ts" ] && mv "src/lib/relatorio.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/ai.ts" ] && mv "src/lib/ai.ts" "$QUARANTINE_DIR/"
+[ -f "src/pages/api/gerarPrompt.ts" ] && mv "src/pages/api/gerarPrompt.ts" "$QUARANTINE_DIR/"
+[ -f "src/pages/api/listarRelatorios.ts" ] && mv "src/pages/api/listarRelatorios.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused components..."
+# Unused components
+[ -f "src/components/analytics/GoogleAnalytics.tsx" ] && mv "src/components/analytics/GoogleAnalytics.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/landing/FeaturesSection.tsx" ] && mv "src/components/landing/FeaturesSection.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/landing/Hero.tsx" ] && mv "src/components/landing/Hero.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/landing/index.ts" ] && mv "src/components/landing/index.ts" "$QUARANTINE_DIR/"
+[ -f "src/components/lgpd/ConsentGate.tsx" ] && mv "src/components/lgpd/ConsentGate.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/lgpd/TriageConsentWrapper.tsx" ] && mv "src/components/lgpd/TriageConsentWrapper.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/lpac/Why.tsx" ] && mv "src/components/lpac/Why.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/patient/index.ts" ] && mv "src/components/patient/index.ts" "$QUARANTINE_DIR/"
+[ -f "src/components/patient/PatientInfoForm.tsx" ] && mv "src/components/patient/PatientInfoForm.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/patient/PatientSummary.tsx" ] && mv "src/components/patient/PatientSummary.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/pdf/SecurePdfExport.tsx" ] && mv "src/components/pdf/SecurePdfExport.tsx" "$QUARANTINE_DIR/"
+
+echo "Moving unused relatorio components..."
+# Unused relatorio components
+[ -d "src/components/relatorio" ] && mv "src/components/relatorio" "$QUARANTINE_DIR/"
+[ -f "src/components/report/PrintOnly.tsx" ] && mv "src/components/report/PrintOnly.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/triagem/index.ts" ] && mv "src/components/triagem/index.ts" "$QUARANTINE_DIR/"
+[ -f "src/components/triagem/TriagemStepForm.tsx" ] && mv "src/components/triagem/TriagemStepForm.tsx" "$QUARANTINE_DIR/"
+
+echo "Moving unused UI components..."
+# Unused UI components
+[ -f "src/components/ui/CopyText.tsx" ] && mv "src/components/ui/CopyText.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/CtaDeck.tsx" ] && mv "src/components/ui/CtaDeck.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/DeleteDataButton.tsx" ] && mv "src/components/ui/DeleteDataButton.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/LazyLoading.tsx" ] && mv "src/components/ui/LazyLoading.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/LoadingScreen.tsx" ] && mv "src/components/ui/LoadingScreen.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/OptimizedImage.tsx" ] && mv "src/components/ui/OptimizedImage.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/ProgressBar.tsx" ] && mv "src/components/ui/ProgressBar.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/ProgressIndicator.tsx" ] && mv "src/components/ui/ProgressIndicator.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/StandardCTAs.tsx" ] && mv "src/components/ui/StandardCTAs.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/ui/Toast.tsx" ] && mv "src/components/ui/Toast.tsx" "$QUARANTINE_DIR/"
+[ -f "src/components/whatsapp/index.ts" ] && mv "src/components/whatsapp/index.ts" "$QUARANTINE_DIR/"
+[ -f "src/components/whatsapp/WhatsAppDoctorOption.tsx" ] && mv "src/components/whatsapp/WhatsAppDoctorOption.tsx" "$QUARANTINE_DIR/"
+
+echo "Moving unused hooks..."
+# Unused hooks
+[ -f "src/hooks/useCPF.ts" ] && mv "src/hooks/useCPF.ts" "$QUARANTINE_DIR/"
+[ -f "src/hooks/useIsMobile.ts" ] && mv "src/hooks/useIsMobile.ts" "$QUARANTINE_DIR/"
+[ -f "src/hooks/usePaciente.ts" ] && mv "src/hooks/usePaciente.ts" "$QUARANTINE_DIR/"
+[ -f "src/hooks/usePerformance.ts" ] && mv "src/hooks/usePerformance.ts" "$QUARANTINE_DIR/"
+[ -f "src/hooks/useVoiceRecognition.ts" ] && mv "src/hooks/useVoiceRecognition.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused lib files..."
+# Unused lib files
+[ -f "src/lib/copy.ts" ] && mv "src/lib/copy.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/database-fix.ts" ] && mv "src/lib/database-fix.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/emailTemplates.ts" ] && mv "src/lib/emailTemplates.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/followUp.ts" ] && mv "src/lib/followUp.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/medicalScales.ts" ] && mv "src/lib/medicalScales.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/metrics.ts" ] && mv "src/lib/metrics.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/paymentSecurity.ts" ] && mv "src/lib/paymentSecurity.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/security.ts" ] && mv "src/lib/security.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/supabase/middleware.ts" ] && mv "src/lib/supabase/middleware.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/supabase/server.ts" ] && mv "src/lib/supabase/server.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/triage/config.ts" ] && mv "src/lib/triage/config.ts" "$QUARANTINE_DIR/"
+[ -f "src/lib/whatsappTemplates.ts" ] && mv "src/lib/whatsappTemplates.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused middleware..."
+# Unused middleware
+[ -f "src/middleware/security.ts" ] && mv "src/middleware/security.ts" "$QUARANTINE_DIR/"
+[ -f "src/middleware/withCPF.ts" ] && mv "src/middleware/withCPF.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused types..."
+# Unused types
+[ -f "src/types/lpac.ts" ] && mv "src/types/lpac.ts" "$QUARANTINE_DIR/"
+[ -f "src/types/relatorio.ts" ] && mv "src/types/relatorio.ts" "$QUARANTINE_DIR/"
+[ -f "src/types/RelatorioProps.ts" ] && mv "src/types/RelatorioProps.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused utilities..."
+# Unused utilities
+[ -f "src/utils/pdfTriagemGeral.ts" ] && mv "src/utils/pdfTriagemGeral.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/processarTriagemGeral.ts" ] && mv "src/utils/processarTriagemGeral.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/scales.ts" ] && mv "src/utils/scales.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/scores.ts" ] && mv "src/utils/scores.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/sendToHighLevel.ts" ] && mv "src/utils/sendToHighLevel.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/useLocalStorage.ts" ] && mv "src/utils/useLocalStorage.ts" "$QUARANTINE_DIR/"
+[ -f "src/utils/usePersistentState.ts" ] && mv "src/utils/usePersistentState.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused forms..."
+# Unused forms
+[ -f "src/forms/perguntasComuns.ts" ] && mv "src/forms/perguntasComuns.ts" "$QUARANTINE_DIR/"
+[ -f "src/forms/teste.ts" ] && mv "src/forms/teste.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused env client..."
+# Unused env client
+[ -f "src/env.client.ts" ] && mv "src/env.client.ts" "$QUARANTINE_DIR/"
+
+echo "Moving unused auth components..."
+# Unused auth components
+[ -f "src/components/auth/index.ts" ] && mv "src/components/auth/index.ts" "$QUARANTINE_DIR/"
+
+echo "SAFE_MOVE.patch completed successfully!"
+echo "Files moved to: $QUARANTINE_DIR"
+echo "Total files moved: $(find $QUARANTINE_DIR -type f | wc -l)"

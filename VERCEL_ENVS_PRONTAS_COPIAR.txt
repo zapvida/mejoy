@@ -1,0 +1,64 @@
+# ============================================
+# VARIÁVEIS DE AMBIENTE - VERCEL PRODUCTION
+# ============================================
+# Copie e cole cada variável abaixo no Vercel Dashboard
+# Settings → Environment Variables → Add New
+# Data: 11 de janeiro de 2025
+# Projeto: qltixyfxxrbdnaldgtzr
+
+# ============================================
+# VARIÁVEL 1
+# ============================================
+Name: SUPABASE_URL
+Value: https://qltixyfxxrbdnaldgtzr.supabase.co
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 2
+# ============================================
+Name: NEXT_PUBLIC_SUPABASE_URL
+Value: https://qltixyfxxrbdnaldgtzr.supabase.co
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 3
+# ============================================
+Name: SUPABASE_SERVICE_ROLE_KEY
+Value: <REDACTED_SUPABASE_SERVICE_ROLE_JWT>
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 4
+# ============================================
+Name: NEXT_PUBLIC_SUPABASE_ANON_KEY
+Value: <REDACTED_SUPABASE_ANON_JWT>
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 5
+# ============================================
+Name: DATABASE_URL
+Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 6
+# ============================================
+Name: DIRECT_URL
+Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 7
+# ============================================
+Name: BRANDING_BUCKET
+Value: branding-logos
+Environment: ✅ Production ✅ Preview ✅ Development
+
+# ============================================
+# VARIÁVEL 8
+# ============================================
+Name: NEXT_PUBLIC_FREE_TRIAGE_SLUG
+Value: gastro
+Environment: ✅ Production ✅ Preview ✅ Development
+

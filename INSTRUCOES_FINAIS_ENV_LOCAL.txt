@@ -1,0 +1,20 @@
+# INSTRUÇÕES FINAIS - .env.local
+
+## AÇÃO IMEDIATA NECESSÁRIA
+
+Adicione ou corrija a linha DIRECT_URL no seu arquivo .env.local:
+
+DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+
+## IMPORTANTE:
+- Usuário: postgres.qltixyfxxrbdnaldgtzr (com prefixo)
+- Senha: DdVu8MWxAGTXUT3P
+- Host: db.qltixyfxxrbdnaldgtzr.supabase.co (NÃO pooler)
+- Porta: 5432 (NÃO 6543)
+- Sem ?pgbouncer=true
+
+## DEPOIS:
+1. Salve o arquivo
+2. Reinicie pnpm dev
+3. Teste novamente
+

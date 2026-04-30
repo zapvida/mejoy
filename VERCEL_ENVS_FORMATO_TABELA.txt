@@ -1,0 +1,16 @@
+Name                          | Value (preencha após o =)
+------------------------------|--------------------------
+OPENAI_API_KEY                | sk-proj-
+STRIPE_SECRET_KEY             | sk_live_
+STRIPE_PRICE_ZAPFARM_MENSAL   | price_
+STRIPE_PRICE_ZAPFARM_TRIMESTRAL | price_
+STRIPE_PRICE_ZAPFARM_SEMESTRAL  | price_
+AI_REPORT_ENABLED             | 1
+NEXT_PUBLIC_SUPABASE_URL      | https://.supabase.co
+SUPABASE_SERVICE_ROLE_KEY     | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+NODE_ENV                      | production
+NEXT_PUBLIC_BASE_URL          | https://
+NEXT_PUBLIC_SITE_URL          | https://
+NEXT_PUBLIC_TRIAGE_GI_ENHANCED | 1
+NEXT_PUBLIC_SHOW_PARTNER_CTAS | 1
+

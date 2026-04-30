@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFAA45"/>
+      <stop offset="100%" stop-color="#E85E00"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="28%" cy="20%" r="36%">
+      <stop offset="0%" stop-color="#ffddb0" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffddb0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <circle cx="512" cy="512" r="500" fill="url(#orangeGrad)" stroke="rgba(0,0,0,0.45)" stroke-width="8"/>
+    <circle cx="512" cy="512" r="500" fill="url(#shine)"/>
+  </g>
+  <text x="512" y="560" text-anchor="middle" fill="#111111" font-size="348" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me</text>
+</svg>

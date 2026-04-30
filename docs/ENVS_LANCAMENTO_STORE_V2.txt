@@ -1,0 +1,26 @@
+# ===========================================
+# ENVS para lançamento Store V2 — Vercel
+# Adicionar em: Settings → Environment Variables
+# Ambientes: Production, Preview, Development
+# ===========================================
+
+# --- OBRIGATÓRIAS (você já tem a maioria) ---
+STORE_V2=1
+NEXT_PUBLIC_STORE_V2=1
+DATABASE_URL=postgresql://...   # Supabase → Settings → Database (pooler 6543)
+ASAAS_API_KEY=...               # Asaas → Integrações
+ASAAS_WEBHOOK_TOKEN=...         # OPCIONAL: se definido, Asaas deve enviar no header x-asaas-webhook-token
+ADMIN_SECRET_KEY=...            # CRIAR: string forte 64 chars — protege /admin
+RESEND_API_KEY=re_...           # Resend.com
+ASAAS_ENVIRONMENT=production    # Para PIX real
+
+# --- JÁ EXISTEM NO SEU PROJETO ---
+# (conferir valores)
+# NEXT_PUBLIC_CONTACT_WHATSAPP
+# NEXT_PUBLIC_BASE_URL
+# etc.
+
+# --- OPCIONAIS: PDP + Carrinho premium (F1+F2) ---
+# Descomente para ativar trust bar ampliada, progress bar frete, upsell
+# STORE_V2_CONVERSION=1
+# NEXT_PUBLIC_STORE_V2_CONVERSION=1

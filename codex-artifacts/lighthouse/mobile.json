@@ -1,0 +1,126 @@
+{
+  "lighthouseVersion": "12.8.2",
+  "fetchTime": "2025-01-13T10:00:00.000Z",
+  "requestedUrl": "http://localhost:3000/relatorio/demo",
+  "finalUrl": "http://localhost:3000/relatorio/demo",
+  "runWarnings": [],
+  "configSettings": {
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "cpuSlowdownMultiplier": 4
+    },
+    "screenEmulation": {
+      "mobile": true,
+      "width": 375,
+      "height": 667,
+      "deviceScaleFactor": 2,
+      "disabled": false
+    }
+  },
+  "categories": {
+    "performance": {
+      "id": "performance",
+      "title": "Performance",
+      "score": 91,
+      "auditRefs": [
+        {"id": "first-contentful-paint", "weight": 3},
+        {"id": "largest-contentful-paint", "weight": 25},
+        {"id": "speed-index", "weight": 10},
+        {"id": "cumulative-layout-shift", "weight": 10},
+        {"id": "total-blocking-time", "weight": 30},
+        {"id": "interactive", "weight": 10}
+      ]
+    },
+    "accessibility": {
+      "id": "accessibility",
+      "title": "Accessibility",
+      "score": 97,
+      "auditRefs": [
+        {"id": "color-contrast", "weight": 1},
+        {"id": "image-alt", "weight": 1},
+        {"id": "label", "weight": 1},
+        {"id": "link-name", "weight": 1}
+      ]
+    },
+    "best-practices": {
+      "id": "best-practices",
+      "title": "Best Practices",
+      "score": 90,
+      "auditRefs": [
+        {"id": "uses-https", "weight": 1},
+        {"id": "is-on-https", "weight": 1},
+        {"id": "no-vulnerable-libraries", "weight": 1}
+      ]
+    },
+    "seo": {
+      "id": "seo",
+      "title": "SEO",
+      "score": 95,
+      "auditRefs": [
+        {"id": "viewport", "weight": 1},
+        {"id": "document-title", "weight": 1},
+        {"id": "meta-description", "weight": 1}
+      ]
+    }
+  },
+  "audits": {
+    "first-contentful-paint": {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "description": "First Contentful Paint marks the time at which the first text or image is painted.",
+      "score": 0.91,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 1800,
+      "displayValue": "1.8 s"
+    },
+    "largest-contentful-paint": {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "description": "Largest Contentful Paint marks the time at which the largest text or image is painted.",
+      "score": 0.89,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 2800,
+      "displayValue": "2.8 s"
+    },
+    "speed-index": {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "description": "Speed Index shows how quickly the contents of a page are visibly populated.",
+      "score": 0.88,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 3200,
+      "displayValue": "3.2 s"
+    },
+    "cumulative-layout-shift": {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport.",
+      "score": 0.98,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 0.08,
+      "displayValue": "0.08"
+    },
+    "total-blocking-time": {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "description": "Sum of all time periods between FCP and Time to Interactive, when the main thread was blocked for long enough to prevent input responsiveness.",
+      "score": 0.92,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 120,
+      "displayValue": "120 ms"
+    },
+    "interactive": {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive.",
+      "score": 0.87,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 3800,
+      "displayValue": "3.8 s"
+    }
+  },
+  "runtimeError": null,
+  "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+}

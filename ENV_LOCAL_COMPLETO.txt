@@ -1,0 +1,31 @@
+# ============================================
+# VARIÁVEIS DE AMBIENTE COMPLETAS - LOCAL
+# ============================================
+# Copie este conteúdo para .env.local
+# Data: 11 de janeiro de 2025
+# Projeto: qltixyfxxrbdnaldgtzr
+
+# ============================================
+# SUPABASE - CONFIGURAÇÃO
+# ============================================
+SUPABASE_URL=https://qltixyfxxrbdnaldgtzr.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://qltixyfxxrbdnaldgtzr.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=<OBTER_DO_DASHBOARD_SUPABASE>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<REDACTED_SUPABASE_ANON_JWT>
+
+# ============================================
+# DATABASE - CONFIGURAÇÃO
+# ============================================
+DATABASE_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+
+# ============================================
+# BRANDING - CONFIGURAÇÃO
+# ============================================
+BRANDING_BUCKET=branding-logos
+
+# ============================================
+# TRIAGEM - CONFIGURAÇÃO
+# ============================================
+NEXT_PUBLIC_FREE_TRIAGE_SLUG=gastro
+

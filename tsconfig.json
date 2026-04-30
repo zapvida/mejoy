@@ -1,0 +1,66 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "strict": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedIndexedAccess": false,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": false,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "incremental": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "legacy",
+    "legacy/**",
+    "src/features/triage/configs/**",
+    "src/lib/admin-queries.ts",
+    "src/lib/alerts-engine.ts",
+    "src/lib/analytics/**",
+    "src/lib/monitoring/**",
+    "src/lib/pdf/**",
+    "src/lib/privacy.ts",
+    "src/lib/report/**",
+    "src/lib/stripe/**",
+    "src/pages/api/_utils/**",
+    "src/pages/api/gerarRelatorio.ts",
+    "src/pages/api/gift/**",
+    "src/pages/api/pdf/**",
+    "src/pages/api/report/**",
+    "src/pages/api/stripe/**",
+    "src/pages/api/user/**",
+    "src/legacy/**",
+    "src/lib/analytics/**",
+    "src/lib/monitoring/**",
+    "src/lib/privacy.ts",
+    "src/lib/report/**",
+    "src/pages/api/_utils/**"
+  ]
+}

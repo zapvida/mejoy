@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-10-22T17:55:57.422Z",
+  "baseUrl": "http://localhost:3000",
+  "summary": {
+    "totalTests": 10,
+    "totalPassed": 0,
+    "totalFailed": 10,
+    "successRate": 0
+  },
+  "results": [
+    {
+      "name": "PDF Demo",
+      "status": "FAIL",
+      "responseTime": 11,
+      "error": "AggregateError"
+    },
+    {
+      "name": "PDF Demo Gastro",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "PDF Demo Geral",
+      "status": "FAIL",
+      "responseTime": 0,
+      "error": "AggregateError"
+    },
+    {
+      "name": "PDF com ID válido",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "PDF com ID inválido",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "Adapter [id]",
+      "status": "FAIL",
+      "responseTime": 0,
+      "error": "AggregateError"
+    },
+    {
+      "name": "Adapter optimized",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "Adapter demo",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "Adapter demo-gastro",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    },
+    {
+      "name": "Adapter demo-geral",
+      "status": "FAIL",
+      "responseTime": 1,
+      "error": "AggregateError"
+    }
+  ]
+}

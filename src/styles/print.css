@@ -1,0 +1,100 @@
+/* src/styles/print.css */
+/* Estilos otimizados para impressão e geração de PDF */
+
+@media print {
+  /* Esconde elementos de navegação e controles */
+  .print\:hidden { 
+    display: none !important; 
+  }
+
+  /* Reset de cores e fundos para impressão */
+  body { 
+    background: #fff !important; 
+    color: #000 !important; 
+    -webkit-print-color-adjust: exact; 
+    print-color-adjust: exact; 
+  }
+
+  /* Quebras de página previsíveis */
+  .page-break { 
+    break-after: page; 
+  }
+
+  /* Remover sombras e bordas que sujam a impressão */
+  * { 
+    box-shadow: none !important; 
+    text-shadow: none !important;
+  }
+
+  /* Otimizar espaçamentos para impressão */
+  .prose {
+    max-width: none !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Garantir que imagens não quebrem */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* Estilos para cabeçalho do relatório */
+  header {
+    border-bottom: 2px solid #000 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Estilos para seções importantes */
+  .prose h1, .prose h2, .prose h3 {
+    color: #000 !important;
+    page-break-after: avoid;
+    margin-top: 20px !important;
+  }
+
+  .prose p {
+    color: #000 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .prose ul, .prose ol {
+    color: #000 !important;
+    page-break-inside: avoid;
+  }
+
+  /* Estilos para alertas/red flags */
+  .bg-red-500\/10 {
+    background: #fef2f2 !important;
+    border: 1px solid #fca5a5 !important;
+    color: #000 !important;
+  }
+
+  .text-red-200, .text-red-100, .text-red-50 {
+    color: #000 !important;
+  }
+
+  /* Otimizar layout para impressão */
+  .grid {
+    display: block !important;
+  }
+
+  .lg\:grid-cols-\[2fr\,1fr\] {
+    display: block !important;
+  }
+
+  /* Garantir que áudio não apareça na impressão */
+  audio {
+    display: none !important;
+  }
+
+  /* Estilos para CTAs (se houver) */
+  .cta-section {
+    page-break-before: always;
+    margin-top: 30px !important;
+    padding: 20px !important;
+    border: 1px solid #000 !important;
+    background: #f9f9f9 !important;
+  }
+}

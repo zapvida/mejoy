@@ -1,0 +1,67 @@
+{
+  "timestamp": "2025-10-14T03:36:39.782Z",
+  "issues": [
+    {
+      "component": "globals.css",
+      "issue": "Cores não permitidas encontradas: hsl(, hsl(, rgba(, rgba(, rgba(, rgba(, rgba(, rgba(, hsl(, hsl(, hsl(",
+      "severity": "HIGH"
+    },
+    {
+      "component": "triagem/index.tsx",
+      "issue": "Alturas de cards não padronizadas",
+      "severity": "HIGH"
+    },
+    {
+      "component": "triagem/index.tsx",
+      "issue": "Proporção de cards não definida",
+      "severity": "MEDIUM"
+    },
+    {
+      "component": "src/pages/triagem/index.tsx",
+      "issue": "Acessibilidade: role= não encontrado",
+      "severity": "MEDIUM"
+    },
+    {
+      "component": "src/pages/triagem/index.tsx",
+      "issue": "Acessibilidade: tabIndex não encontrado",
+      "severity": "MEDIUM"
+    }
+  ],
+  "fixes": [
+    {
+      "component": "globals.css",
+      "fix": "Media queries implementadas"
+    },
+    {
+      "component": "triagem/index.tsx",
+      "fix": "Estrutura de cards analisada"
+    },
+    {
+      "component": "tailwind.config.js",
+      "fix": "Cores customizadas configuradas"
+    },
+    {
+      "component": "src/pages/triagem/index.tsx",
+      "fix": "Classes responsivas implementadas"
+    },
+    {
+      "component": "src/pages/relatorio/[id].tsx",
+      "fix": "Classes responsivas implementadas"
+    },
+    {
+      "component": "src/components/ui/cards/PacienteInfoCard.tsx",
+      "fix": "Classes responsivas implementadas"
+    },
+    {
+      "component": "src/pages/triagem/index.tsx",
+      "fix": "Acessibilidade: aria-label implementado"
+    }
+  ],
+  "summary": {
+    "totalIssues": 5,
+    "highIssues": 2,
+    "mediumIssues": 3,
+    "lowIssues": 0,
+    "fixesApplied": 7
+  }
+}

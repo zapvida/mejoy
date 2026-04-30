@@ -1,0 +1,601 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl desativado temporariamente - usando pooler com fallback PostgREST
+  // directUrl = env("DIRECT_URL")
+}
+
+model Patient {
+  id         String    @id @default(cuid())
+  email      String?   @unique // login sem senha (Supabase/OTP) e reentrada
+  name       String
+  whatsapp   String?
+  birthdate  DateTime?
+  sex        String? // "Masculino" | "Feminino"
+  height_cm  Int?
+  weight_kg  Decimal?  @db.Decimal(6, 2)
+  imc        Decimal?  @db.Decimal(4, 1)
+  sessionId  String?   @unique // identifica o lead antes do e-mail
+  deletedAt  DateTime? // para LGPD
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  triages            Triage[]
+  reports            Report[]
+  giftTokensIssued   GiftToken[]    @relation("GiftTokenIssuer")
+  giftTokensRedeemed GiftToken[]    @relation("GiftTokenRedeemer")
+  subscriptions      Subscription[]
+
+  @@index([email])
+  @@index([deletedAt])
+}
+
+// Novos modelos para o sistema Typeform
+model Profile {
+  id         String    @id @default(uuid())
+  client_id  String?   @unique
+  name       String?
+  email      String?
+  whatsapp   String?
+  sex        String? // 'male' | 'female' | 'undisclosed'
+  birth_date DateTime?
+  weight_kg  Decimal?  @db.Decimal(6, 2)
+  height_cm  Decimal?  @db.Decimal(6, 2)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  triage_sessions TriageSession[]
+
+  @@map("profiles")
+}
+
+model TriageSession {
+  triage_id        String    @id @default(uuid())
+  client_id        String?
+  profile_id       String?
+  triage_slug      String
+  answers          Json      @default("{}")
+  profile_snapshot Json?
+  progress_percent Int       @default(0)
+  completed_at     DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  profile_id_fk Profile?       @relation(fields: [profile_id], references: [id], onDelete: SetNull)
+  triage_steps  TriageStep[]
+  reports       TriageReport[]
+
+  @@index([client_id])
+  @@index([triage_slug])
+  @@map("triage_sessions")
+}
+
+model TriageStep {
+  triage_id  String
+  step_key   String
+  answer     Json?
+  updated_at DateTime @default(now())
+
+  triage_session TriageSession @relation(fields: [triage_id], references: [triage_id], onDelete: Cascade)
+
+  @@id([triage_id, step_key])
+  @@map("triage_steps")
+}
+
+model TriageReport {
+  id         String   @id @default(uuid())
+  triage_id  String   @unique
+  status     String   @default("pending") // 'pending' | 'running' | 'completed' | 'failed'
+  sections   Json?
+  summary    String?
+  audio_url  String?
+  error      String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  triage_session TriageSession @relation(fields: [triage_id], references: [triage_id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("reports")
+}
+
+model ReportRequest {
+  id        BigInt   @id @default(autoincrement())
+  key       String   @unique
+  payload   Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("report_requests")
+}
+
+model ApiQuota {
+  id         BigInt   @id @default(autoincrement())
+  clientId   String   @map("client_id")
+  route      String
+  occurredAt DateTime @default(now()) @map("occurred_at")
+
+  @@index([clientId, route, occurredAt(sort: Desc)], map: "api_quota_window_idx")
+  @@map("api_quota")
+}
+
+model Triage {
+  id         String    @id @default(cuid())
+  patientId  String?
+  type       String
+  formData   Json
+  status     String    @default("draft") // draft|submitted|deleted
+  nome       String? // Nome do paciente na triagem
+  userId     String? // ID do usuário (para compatibilidade)
+  deletedAt  DateTime? // Para LGPD
+  sessionId  String?   @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  patient Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  reports Report[]
+
+  @@index([patientId, type])
+  @@index([userId])
+  @@index([deletedAt])
+  @@index([sessionId])
+}
+
+model Report {
+  id          String    @id @default(cuid())
+  patientId   String?
+  triageId    String?
+  type        String
+  score       Int?
+  scoreFuture Int?
+  summary     Json?
+  plan        Json?
+  rawFree     String?
+  rawPremium  String?
+  timeline    Json?
+  status      String    @default("active") // active|deleted
+  userId      String? // ID do usuário (para compatibilidade)
+  deletedAt   DateTime? // Para LGPD
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  // Novos campos para pipeline de relatório integrativo
+  markdown        String?
+  audioScript     String?
+  summaryText     String?
+  redFlags        Json?
+  icd10Candidates Json?
+  kind            String? @default("gastro")
+
+  patient Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  triage  Triage?  @relation(fields: [triageId], references: [id])
+
+  @@unique([triageId])
+  @@index([patientId, created_at])
+  @@index([userId])
+  @@index([deletedAt])
+}
+
+model GiftToken {
+  id               String    @id @default(uuid())
+  issuerUserId     String
+  status           String    @default("issued") // issued|redeemed|expired
+  expiresAt        DateTime
+  redeemedByUserId String? // ID do usuário que resgatou
+  redeemedAt       DateTime?
+  asaasPaymentId   String? // ID do pagamento Asaas
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  issuer     Patient  @relation("GiftTokenIssuer", fields: [issuerUserId], references: [id], onDelete: Cascade)
+  redeemedBy Patient? @relation("GiftTokenRedeemer", fields: [redeemedByUserId], references: [id])
+
+  @@index([issuerUserId])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([redeemedAt])
+}
+
+model Subscription {
+  id                  String    @id @default(cuid())
+  userId              String
+  kind                String // 'self' | 'gift'
+  activeFrom          DateTime
+  activeUntil         DateTime
+  status              String // 'active' | 'expired' | 'cancelled'
+  asaasSubscriptionId String? // ID da assinatura no Asaas
+  asaasCustomerId     String? // ID do cliente no Asaas
+  amount              Decimal?  @db.Decimal(10, 2) // Valor da assinatura
+  cancelledAt         DateTime? // Data de cancelamento
+  planType            String? // 'monthly' | 'yearly'
+  planPrice           String? // '29' | '49'
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+
+  user Patient @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([activeUntil])
+  @@index([asaasSubscriptionId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // 'marketing', 'analytics', 'essential'
+  granted   Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([type])
+}
+
+// Admin Dashboard Tables
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  at          DateTime @default(now())
+  actorUserId String
+  ipHash      String?
+  action      String // e.g., "VIEW_PII", "EXPORT_CSV"
+  target      String? // e.g., "user:123", "report:abc"
+  metadata    Json?
+
+  @@index([actorUserId])
+  @@index([at])
+  @@index([action])
+}
+
+model AdminAlertRule {
+  id        String   @id @default(cuid())
+  name      String
+  key       String // e.g., "conversion_drop", "error_rate_spike"
+  threshold Float
+  windowMin Int // ex: 60
+  channel   String // "console" | "email" | "slack" | "whatsapp"
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  alerts AdminAlert[]
+
+  @@index([key])
+  @@index([enabled])
+}
+
+model AdminAlert {
+  id       String   @id @default(cuid())
+  ruleId   String
+  at       DateTime @default(now())
+  severity String // "P0" | "P1"
+  message  String
+  status   String // "open" | "acked" | "closed"
+  metadata Json?
+
+  rule AdminAlertRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@index([ruleId])
+  @@index([status])
+  @@index([at])
+}
+
+model KpiSnapshot {
+  id         String   @id @default(cuid())
+  day        DateTime
+  mrr        Float
+  activeSubs Int
+  churn30d   Float
+  arpu       Float
+  ltv        Float
+
+  @@unique([day])
+  @@index([day])
+}
+
+model BrandingDraft {
+  id            String   @id @default(uuid())
+  logoUrl       String?
+  brandColor    String?
+  accentColor   String?
+  fantasyName   String?
+  ctaText       String?
+  ctaUrl        String?
+  whatsapp      String?
+  desiredDomain String?
+  expiresAt     DateTime
+  createdAt     DateTime @default(now()) @map("createdAt")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updatedAt")
+
+  @@index([expiresAt])
+  @@index([createdAt])
+  @@map("BrandingDraft")
+}
+
+// ========== STORE V2 — E-commerce 200 SKUs (Me Joy) ==========
+
+model Product {
+  id                      String   @id @default(cuid())
+  sku                     String   @unique
+  slug                    String   @unique
+  name                    String
+  shortName               String?
+  description             String?
+  shortBenefit            String?
+  activeIngredients       String?
+  formDisplay             String?
+  formKey                 String?
+  packSizeDisplay         String?
+  objective               String
+  category                String?
+  requiresRx              Boolean  @default(false)
+  requiresValidation      Boolean  @default(false)
+  canSubscribe            Boolean  @default(true)
+  subscribeDiscountPct    Int?     @default(10)
+  subscriptionPlanDefault String?  @default("MENSAL")
+  leadTimeDays            Int      @default(2)
+  shippingClass           String?  @default("PADRAO")
+  seoTitle                String?
+  seoDescription          String?
+  tags                    String[] @default([])
+  whatsappFlow            String?  @default("none")
+  builderTemplateId       String?
+  upsellParametrizado     Boolean  @default(false)
+  priorityRank            Int      @default(0)
+  status                  String   @default("draft") // draft | active
+  active                  Boolean  @default(true)
+  images                  String[] @default([])
+  badges                  String[] @default([])
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  variants      ProductVariant[]
+  priceVersions PriceVersion[]
+  reviews       ProductReview[]
+
+  @@index([slug])
+  @@index([objective])
+  @@index([status])
+  @@map("store_v2_products")
+}
+
+model ProductVariant {
+  id         String  @id @default(cuid())
+  productId  String
+  sku        String  @unique
+  name       String?
+  priceCents Int? // null = usa PriceVersion
+  stock      Int?    @default(0)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("store_v2_product_variants")
+}
+
+model PriceVersion {
+  id             String    @id @default(cuid())
+  productId      String
+  priceCents     Int
+  compareAtCents Int?
+  validFrom      DateTime  @default(now())
+  validTo        DateTime?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([validFrom, validTo])
+  @@map("store_v2_price_versions")
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  profileId String?
+  rating    Int
+  body      String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("store_v2_product_reviews")
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  sessionId String?  @unique
+  profileId String?  @unique
+  updatedAt DateTime @updatedAt
+
+  items CartItem[]
+
+  @@map("store_v2_carts")
+}
+
+model CartItem {
+  id             String  @id @default(cuid())
+  cartId         String
+  productId      String
+  variantId      String?
+  quantity       Int     @default(1)
+  isSubscription Boolean @default(false)
+
+  cart Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  @@index([cartId])
+  @@map("store_v2_cart_items")
+}
+
+model Order {
+  id                   String    @id @default(cuid())
+  profileId            String?
+  customerEmail        String
+  customerName         String
+  customerPhone        String?
+  customerCpf          String?
+  status               String    @default("PENDING_PAYMENT")
+  paymentMethod        String?
+  pagarmePaymentId     String?   @unique
+  asaasPaymentId       String?   @unique
+  totalCents           Int
+  shippingCents        Int       @default(0)
+  shippingAddress      Json?
+  shippingCep          String?
+  shippingDays         Int?
+  shippingRegion       String?
+  requiresRxValidation Boolean   @default(false)
+  rxValidationStatus   String?   // pending | approved | rejected
+  snapshot             Json?     // preços e itens no momento do pedido
+  trackingCode         String?
+  trackingUrl          String?
+  shippedAt            DateTime?
+  deliveredAt          DateTime?
+  updatedByAdminId    String?
+  shippedNotificationSentAt  DateTime?  // idempotência email SHIPPED
+  deliveredNotificationSentAt DateTime? // idempotência email DELIVERED
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  items OrderItem[]
+
+  @@index([profileId])
+  @@index([status])
+  @@index([customerEmail])
+  @@index([pagarmePaymentId])
+  @@index([asaasPaymentId])
+  @@map("store_v2_orders")
+}
+
+model StoreV2AdminAuditLog {
+  id          String   @id @default(cuid())
+  orderId     String
+  action      String   // status_update | tracking_update
+  field       String?
+  oldValue    String?
+  newValue    String?
+  adminId     String?
+  createdAt   DateTime @default(now())
+
+  @@index([orderId])
+  @@map("store_v2_admin_audit_logs")
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  orderId        String
+  productId      String
+  variantId      String?
+  quantity       Int
+  priceCents     Int
+  isSubscription Boolean @default(false)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("store_v2_order_items")
+}
+
+model ProductSubscription {
+  id           String    @id @default(cuid())
+  profileId    String
+  productId    String
+  variantId    String?
+  quantity     Int       @default(1)
+  interval     String    @default("monthly")
+  discountPct  Int?
+  pagarmeSubId String?
+  status       String    @default("active")
+  nextChargeAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([profileId])
+  @@index([productId])
+  @@map("store_v2_product_subscriptions")
+}
+
+model WebhookEvent {
+  id        String   @id @default(cuid())
+  provider  String   // asaas, pagarme, etc.
+  eventId   String   @unique
+  createdAt DateTime @default(now())
+
+  @@index([provider, eventId])
+  @@map("store_v2_webhook_events")
+}
+
+model RxSubmission {
+  id            String   @id @default(cuid())
+  orderId       String
+  payloadJson   Json     // nome, cpf, sintoma, observações
+  uploadedFiles String[] @default([]) // URLs ou IDs dos arquivos
+  createdAt     DateTime @default(now())
+
+  @@index([orderId])
+  @@map("store_v2_rx_submissions")
+}
+
+// ========== FIM STORE V2 ==========
+
+// Pedidos ZapFarm - E-commerce de produtos de saúde
+model ZapfarmOrder {
+  id              String    @id @default(cuid())
+  productSlug     String // ex: "calvicie", "sono", "emagrecimento"
+  planSlug        String // "basico" | "completo" | "premium"
+  asaasPaymentId  String    @unique // ID do pagamento no Asaas
+  asaasCustomerId String? // ID do cliente no Asaas
+  status          String    @default("PENDING") // PENDING | PAID | CANCELED | FAILED | REFUNDED | OVERDUE
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  amount          Int // Valor em centavos (ex: 29900 = R$ 299,00)
+  currency        String    @default("BRL")
+  billingType     String? // PIX | CREDIT_CARD | BOLETO
+  // Metadata adicional
+  reportId        String? // ID do relatório (para emagrecimento)
+  triageId        String? // ID da triagem (para emagrecimento)
+  profileId       String? // ID do profile (Supabase) - vinculado ao usuário
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  utmContent      String?
+  utmTerm         String?
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  paidAt          DateTime? // Quando o pagamento foi confirmado
+
+  @@index([productSlug])
+  @@index([status])
+  @@index([asaasPaymentId])
+  @@index([customerEmail])
+  @@index([profileId])
+  @@index([createdAt])
+  @@map("zapfarm_orders")
+}

@@ -1,0 +1,518 @@
+playwright.config.ts:3 - default
+src/env.ts:45 - validateServerEnv (used in module)
+src/middleware.ts:3 - middleware
+src/middleware.ts:8 - config
+scripts/qa/complete-checkup.ts:611 - AlloeHealthChecker (used in module)
+scripts/qa/pdf.smoke.ts:141 - runQATests (used in module)
+scripts/qa/pdf.unified.smoke.ts:115 - runSmokeTests (used in module)
+scripts/qa/pdf.unified.smoke.ts:115 - testEndpoint (used in module)
+src/ai/prompt.ts:6 - formatarRespostas (used in module)
+src/ai/prompt.ts:60 - gerarPromptPersonalizado (used in module)
+src/ai/prompt.ts:117 - gerarPromptPreditiva
+src/ai/prompt.ts:119 - gerarPromptTriagem
+src/components/index.ts:5 - LoadingSpinner
+src/components/index.ts:5 - PageLoader
+src/components/index.ts:5 - ButtonLoader
+src/components/index.ts:6 - Toast
+src/components/index.ts:6 - useToast
+src/components/index.ts:6 - ToastContainer
+src/components/index.ts:7 - ProgressBar
+src/components/index.ts:7 - CircularProgress
+src/components/index.ts:7 - StepProgress
+src/components/index.ts:8 - Card
+src/components/index.ts:8 - TriageCard
+src/components/index.ts:8 - ResultCard
+src/components/index.ts:8 - StatCard
+src/components/index.ts:12 - InteractiveButton
+src/components/index.ts:13 - InteractiveInput
+src/components/index.ts:14 - InteractiveCard
+src/components/index.ts:15 - AnimatedProgress
+src/components/index.ts:16 - Confetti
+src/components/index.ts:17 - useFadeIn
+src/components/index.ts:22 - AchievementSystem
+src/components/index.ts:23 - AchievementNotification
+src/components/index.ts:24 - UserProfile (used in module)
+src/components/index.ts:29 - PersonalizationEngine
+src/components/index.ts:30 - PersonalizedDashboard
+src/components/index.ts:31 - usePersonalizedContent
+src/components/index.ts:36 - BMICalculator
+src/components/index.ts:37 - CalorieCalculator
+src/components/index.ts:38 - WaterCalculator
+src/components/index.ts:39 - HealthCalculators
+src/components/index.ts:44 - SmartNotifications
+src/components/index.ts:45 - NotificationList
+src/components/index.ts:46 - NotificationSettings
+src/components/index.ts:50 - Notification
+src/components/index.ts:51 - Achievement
+src/components/index.ts:52 - PersonalizationUserProfile
+src/config/navigation.ts:5 - BRAND_NAME
+src/config/navigation.ts:6 - MOBILE_TABS
+src/config/navigation.ts:7 - MOBILE_TAB_HIDE_PATHS
+src/config/navigation.ts:8 - MOBILE_TAB_HIDE_QUERY
+src/config/navigation.ts:9 - HAPTIC_CONFIG
+src/config/partners.ts:4 - PartnerConfig (used in module)
+src/config/partners.ts:14 - CTAContext
+src/config/partners.ts:27 - PARTNERS (used in module)
+src/config/partners.ts:57 - CONTEXT_CONFIGS (used in module)
+src/forms/gastro.ts:5 - TOption (used in module)
+src/forms/gastro.ts:24 - TForm (used in module)
+src/forms/gastro.ts:495 - default
+src/forms/index.ts:50 - TipoTriagem (used in module)
+src/forms/triagemGeralRapida.ts:130 - triagemGeralRapidaSteps
+src/hooks/useGA4.ts:48 - useTriageTracking
+src/hooks/useGA4.ts:59 - useReportTracking
+src/hooks/useHapticFeedback.ts:45 - useSmoothScroll
+src/hooks/useHapticFeedback.ts:5 - HapticType (used in module)
+src/hooks/useResponsive.ts:91 - useIsMobile
+src/hooks/useResponsive.ts:110 - useOrientation
+src/hooks/useResponsive.ts:129 - useIsPWA
+src/hooks/useResponsive.ts:3 - Breakpoint (used in module)
+src/hooks/useResponsive.ts:5 - ResponsiveState (used in module)
+src/lib/accessGuard.ts:28 - canViewReport
+src/lib/accessGuard.ts:96 - isFreeTriage (used in module)
+src/lib/accessGuard.ts:101 - getPaywallRedirectUrl
+src/lib/accessGuard.ts:107 - shouldShowPaywall
+src/lib/accessGuard.ts:6 - AccessInput (used in module)
+src/lib/admin-cache.ts:107 - adminCache
+src/lib/admin-queries.ts:359 - getRevenueData
+src/lib/admin-queries.ts:466 - getProductData
+src/lib/admin-queries.ts:8 - KPIData (used in module)
+src/lib/admin-queries.ts:235 - FunnelData (used in module)
+src/lib/admin-queries.ts:339 - RevenueData (used in module)
+src/lib/admin-queries.ts:450 - ProductData (used in module)
+src/lib/admin-queries.ts:546 - TechData (used in module)
+src/lib/alerts-engine.ts:63 - initializeDefaultRules
+src/lib/alerts-engine.ts:70 - evaluateAlerts
+src/lib/alerts-engine.ts:226 - getActiveAlerts
+src/lib/alerts-engine.ts:241 - acknowledgeAlert
+src/lib/alerts-engine.ts:246 - closeAlert
+src/lib/alerts-engine.ts:7 - AlertRule (used in module)
+src/lib/alerts-engine.ts:17 - Alert (used in module)
+src/lib/database.ts:3 - DatabaseService
+src/lib/env.ts:56 - asBool
+src/lib/env.ts:66 - Env
+src/lib/flags.ts:1 - flagOn (used in module)
+src/lib/flags.ts:4 - PARTNER_FOOTER
+src/lib/flags.ts:5 - SHOW_APP_CTA
+src/lib/ga4.ts:431 - useGA4PageTracking
+src/lib/ga4.ts:387 - trackPageView (used in module)
+src/lib/ga4.ts:390 - trackTriageComplete (used in module)
+src/lib/ga4.ts:391 - trackSubscribeClick (used in module)
+src/lib/ga4.ts:392 - trackUpgradeClick (used in module)
+src/lib/ga4.ts:393 - trackNavigationClick (used in module)
+src/lib/ga4.ts:396 - trackChatInteraction (used in module)
+src/lib/ga4.ts:397 - trackPDFDownload (used in module)
+src/lib/ga4.ts:398 - trackPassCheckout (used in module)
+src/lib/ga4.ts:399 - trackPassActivated (used in module)
+src/lib/ga4.ts:400 - trackGiftRedeemed (used in module)
+src/lib/ga4.ts:401 - trackProductClick (used in module)
+src/lib/ga4.ts:402 - trackConsultClick (used in module)
+src/lib/ga4.ts:404 - trackReportKPI (used in module)
+src/lib/ga4.ts:405 - trackPillarOpen (used in module)
+src/lib/ga4.ts:406 - trackEvidenceOpen (used in module)
+src/lib/ga4.ts:407 - trackExamCopy (used in module)
+src/lib/ga4.ts:408 - trackExamWhatsapp (used in module)
+src/lib/ga4.ts:409 - trackExamPdf (used in module)
+src/lib/ga4.ts:410 - trackGroceryCopy (used in module)
+src/lib/ga4.ts:411 - trackGroceryWhatsapp (used in module)
+src/lib/ga4.ts:412 - trackInlineCta (used in module)
+src/lib/ga4.ts:413 - trackStickyCta (used in module)
+src/lib/ga4.ts:414 - trackShareOpen (used in module)
+src/lib/ga4.ts:415 - trackShareConfirm (used in module)
+src/lib/ga4.ts:419 - initGA4 (used in module)
+src/lib/ga4.ts:422 - trackReportViewGastro (used in module)
+src/lib/ga4.ts:424 - trackCTAClickBrand (used in module)
+src/lib/ga4.ts:426 - trackPDFGenerated (used in module)
+src/lib/ga4.ts:447 - default
+src/lib/i18n.ts:111 - tExists
+src/lib/i18n.ts:120 - default
+src/lib/observability.ts:42 - captureException (used in module)
+src/lib/OpenAIStream.ts:8 - OpenAIStream
+src/lib/OpenAIStream.ts:3 - Message (used in module)
+src/lib/prisma.ts:32 - disconnectPrisma
+src/lib/privacy.ts:218 - cleanupOldData
+src/lib/privacy.ts:258 - validateConsent
+src/lib/privacy.ts:277 - recordConsent
+src/lib/rateLimit.ts:14 - assertRateLimit
+src/lib/rbac.ts:25 - checkAdminAccess
+src/lib/rbac.ts:52 - getAdminUser (used in module)
+src/lib/rbac.ts:83 - require2FA
+src/lib/rbac.ts:93 - checkIPAllowlist
+src/lib/rbac.ts:111 - maskPII (used in module)
+src/lib/rbac.ts:146 - hashIP
+src/lib/rbac.ts:7 - AdminRole (used in module)
+src/lib/rbac.ts:9 - AdminUser (used in module)
+src/lib/redFlags.ts:428 - getRedFlagsBySeverity
+src/lib/redFlags.ts:434 - getRelevantRedFlags
+src/lib/redFlags.ts:4 - RedFlag (used in module)
+src/lib/redFlags.ts:12 - redFlagsCatalog (used in module)
+src/lib/referencesCatalog.ts:293 - getReferencesByType (used in module)
+src/lib/referencesCatalog.ts:4 - Reference (used in module)
+src/lib/referencesCatalog.ts:10 - referencesCatalog (used in module)
+src/lib/reportSchema.ts:84 - validateReportResponse
+src/lib/reportSchema.ts:132 - detectHallucination (used in module)
+src/lib/reportSchema.ts:147 - sanitizeText
+src/lib/reportSchema.ts:7 - reportSchema (used in module)
+src/lib/reportSchema.ts:40 - ReportData (used in module)
+src/lib/reportSchema.ts:43 - fallbackReportSchema (used in module)
+src/lib/reportSchema.ts:81 - FallbackReportData
+src/lib/stripe-config.ts:77 - getPlanConfig
+src/lib/stripe-config.ts:73 - PlanType (used in module)
+src/lib/stripe-config.ts:74 - PlanConfig (used in module)
+src/lib/utm.ts:7 - buildUtmUrl (used in module)
+src/lib/utm.ts:30 - buildAlloeUrl
+src/lib/utm.ts:37 - buildZapVidaUrl
+src/pages/_app.tsx:35 - default
+src/pages/_document.tsx:3 - default
+src/pages/assinatura.tsx:11 - default
+src/pages/billing.tsx:325 - default
+src/pages/dashboard.tsx:7 - default
+src/pages/disclaimer.tsx:5 - default
+src/pages/faq.tsx:5 - default
+src/pages/index.tsx:117 - default
+src/pages/obrigado.tsx:13 - default
+src/pages/perfil.tsx:7 - default
+src/pages/politica.tsx:5 - default
+src/pages/presente.tsx:464 - default
+src/pages/pricing.tsx:333 - default
+src/pages/privacidade.tsx:10 - default
+src/pages/quem-somos.tsx:6 - default
+src/pages/reembolso.tsx:10 - default
+src/pages/relatorios.tsx:7 - default
+src/pages/resgatar.tsx:234 - default
+src/pages/sitemap.xml.ts:6 - default
+src/pages/sitemap.xml.ts:10 - getServerSideProps
+src/pages/termos.tsx:10 - default
+src/theme/palette.ts:34 - isValidColor
+src/theme/palette.ts:38 - getBrandColor
+src/theme/palette.ts:6 - Palette (used in module)
+src/theme/palette.ts:13 - PDFPalette
+src/theme/palette.ts:20 - ChartPalette
+src/theme/palette.ts:28 - ALLOWED_COLORS (used in module)
+src/types/triage-gastro.ts:4 - SuplementoDigestivo (used in module)
+src/types/triage-gastro.ts:5 - AcompanhamentoMedico (used in module)
+src/types/triage-gastro.ts:6 - JanelaConsultaGastro (used in module)
+src/types/triage-gastro.ts:7 - EndoscopiaFeita (used in module)
+src/types/triage-gastro.ts:8 - EndoscopiaUltima (used in module)
+src/types/triage-gastro.ts:9 - IbpFrequencia (used in module)
+src/types/triage-gastro.ts:11 - MedicamentoKey (used in module)
+src/types/triage-gastro.ts:14 - TriageGIAnswers (used in module)
+src/types/triagem.ts:1 - Conditional (used in module)
+src/types/triagem.ts:54 - FormData
+src/types/triagem.ts:58 - TriagemKey
+src/utils/asaas.ts:21 - buscarCliente
+src/utils/asaas.ts:41 - criarCliente
+src/utils/asaas.ts:70 - criarCobranca
+src/utils/asaas.ts:100 - verificarPagamento
+src/utils/calcularIdade.ts:1 - calcularIdade
+src/components/analytics/AnalyticsProvider.tsx:7 - AnalyticsProvider
+src/components/layout/index.ts:1 - Navbar
+src/components/layout/index.ts:2 - Sidebar
+src/components/layout/index.ts:3 - Footer
+src/components/layout/index.ts:4 - LoggedLayout
+src/components/layout/ResponsiveContainer.tsx:15 - default
+src/components/layout/ResponsiveGrid.tsx:23 - default
+src/components/lpac/index.ts:11 - TrustBadges
+src/components/lpac/index.ts:12 - StickyCTA
+src/components/patient/PatientBasicsForm.tsx:20 - PatientBasicsForm
+src/components/patient/PatientBasicsForm.tsx:182 - usePatientProfile
+src/components/report/ActionRoadmap.tsx:9 - ActionRoadmap
+src/components/report/AlertStack.tsx:20 - AlertStack
+src/components/report/AppDownloadCTAs.tsx:54 - AppDownloadCTAs
+src/components/report/DiagnosticsTable.tsx:10 - DiagnosticsTable
+src/components/report/GroceryList.tsx:15 - GroceryList
+src/components/report/HealthCalculators.tsx:38 - HealthCalculators
+src/components/report/HealthTimeline.tsx:14 - HealthTimeline
+src/components/report/InlineCTA.tsx:9 - InlineCTA
+src/components/report/MicroHabits.tsx:196 - MicroHabits
+src/components/report/PatientCard.tsx:26 - PatientCard
+src/components/report/PersonalizedExams.tsx:230 - PersonalizedExams
+src/components/report/PillarAccordion.tsx:17 - PillarAccordion
+src/components/report/PreventiveExams.tsx:20 - PreventiveExams
+src/components/report/PrimaryCTAs.tsx:110 - PrimaryCTAs
+src/components/report/ReferencesModal.tsx:12 - ReferencesModal
+src/components/report/ReportHeader.tsx:16 - ReportHeader
+src/components/report/ReportHero.tsx:12 - ReportHero
+src/components/report/ReportKPIBar.tsx:15 - ReportKPIBar
+src/components/report/ReportSummary.tsx:11 - ReportSummary
+src/components/report/ScientificFacts.tsx:126 - ScientificFacts
+src/components/report/Section.tsx:13 - Section
+src/components/report/ShoppingList.tsx:130 - ShoppingList
+src/components/report/StickyCTA.tsx:13 - StickyCTA
+src/components/triage/Runner.tsx:1240 - shouldAskFirstVisit
+src/components/ui/EnhancedInput.tsx:113 - ScaleButton (used in module)
+src/components/ui/EnhancedInput.tsx:143 - ScaleSelector
+src/components/ui/ErrorBoundary.tsx:94 - default
+src/components/ui/index.ts:1 - Avatar
+src/components/ui/index.ts:5 - ActionCard
+src/components/ui/index.ts:6 - AlertCard
+src/components/ui/index.ts:7 - CardTriagem
+src/components/ui/index.ts:8 - HealthTimeline
+src/components/ui/index.ts:9 - HealthTimelinePremium
+src/components/ui/index.ts:10 - LinhaDoTempo
+src/components/ui/index.ts:11 - PacienteInfoCard
+src/components/ui/index.ts:12 - PremiumButton
+src/components/ui/index.ts:13 - RelatorioGratuitoCard
+src/components/ui/index.ts:14 - RelatorioPremiumCard
+src/components/ui/index.ts:15 - ScoreAtualCard
+src/components/ui/index.ts:16 - ScoreCard
+src/components/ui/index.ts:17 - SubSectionCard
+src/components/ui/index.ts:18 - SummaryCard
+src/components/ui/index.ts:22 - DialogConfirm
+src/components/ui/index.ts:23 - EmptyState
+src/components/ui/index.ts:24 - Loading
+src/components/ui/index.ts:25 - Modal
+src/components/ui/index.ts:27 - Toast
+src/components/ui/index.ts:28 - Tooltip
+src/components/ui/index.ts:32 - Badge
+src/components/ui/index.ts:33 - Input
+src/components/ui/index.ts:34 - ProgressBar
+src/components/ui/index.ts:35 - Select
+src/components/ui/index.ts:38 - Textarea
+src/components/ui/index.ts:43 - BottomMenu
+src/components/ui/index.ts:44 - Pagination
+src/components/ui/index.ts:45 - Tabs
+src/components/ui/index.ts:48 - RelatorioContainer
+src/components/ui/index.ts:49 - Timeline
+src/components/ui/index.ts:52 - Logo
+src/components/ui/index.ts:53 - LogoLarge
+src/components/ui/ResponsiveButton.tsx:17 - default
+src/components/ui/ResponsiveCard.tsx:17 - default
+src/features/patient/profile.ts:127 - getPersistedPatientProfile
+src/features/patient/profile.ts:143 - clearPatientProfile
+src/features/patient/profile.ts:156 - formatBMI
+src/features/patient/profile.ts:163 - formatBMICategory
+src/features/patient/profile.ts:178 - getPediatricBMINote
+src/features/patient/profile.ts:11 - PatientProfile (used in module)
+src/features/triage/catalog.ts:381 - getTriagesByPriority (used in module)
+src/features/triage/catalog.ts:388 - getTriagesByPersona (used in module)
+src/features/triage/catalog.ts:395 - getTriagesByMotivator (used in module)
+src/features/triage/catalog.ts:402 - getTriageBySlug
+src/features/triage/catalog.ts:409 - getFreeTriages (used in module)
+src/features/triage/catalog.ts:416 - getPremiumTriages (used in module)
+src/features/triage/catalog.ts:423 - getCatalogStats
+src/features/triage/catalog.ts:4 - TriageMeta (used in module)
+src/features/triage/ctas.ts:77 - buildUTMParams (used in module)
+src/features/triage/ctas.ts:91 - buildCTAUrl (used in module)
+src/features/triage/ctas.ts:101 - determineCTAType (used in module)
+src/features/triage/ctas.ts:114 - getContextualCTA (used in module)
+src/features/triage/ctas.ts:147 - trackCTAClick
+src/features/triage/ctas.ts:162 - useContextualCTA
+src/features/triage/ctas.ts:190 - createCTAContext
+src/features/triage/ctas.ts:250 - applySlugSpecificConfig
+src/features/triage/ctas.ts:348 - getPartnerOrder
+src/features/triage/ctas.ts:8 - Motivator (used in module)
+src/features/triage/ctas.ts:10 - CTAType (used in module)
+src/features/triage/ctas.ts:12 - CTAConfig (used in module)
+src/features/triage/ctas.ts:22 - CTAContext (used in module)
+src/features/triage/ctas.ts:208 - SLUG_SPECIFIC_CTAS (used in module)
+src/features/triage/ctas.ts:264 - UTM (used in module)
+src/features/triage/ctas.ts:265 - BuildCTAsGIInput (used in module)
+src/features/triage/ctas.ts:266 - CTA (used in module)
+src/features/triage/ctas.ts:267 - BuildCTAsGIResult (used in module)
+src/features/triage/emojis.ts:81 - renderEmoji (used in module)
+src/features/triage/emojis.ts:141 - Emoji
+src/features/triage/emojis.ts:163 - useEmoji
+src/features/triage/emojis.ts:174 - detectDevice (used in module)
+src/features/triage/emojis.ts:183 - isPrintMode (used in module)
+src/features/triage/emojis.ts:212 - createEmojiContext
+src/features/triage/emojis.ts:6 - EmojiContext (used in module)
+src/features/triage/emojis.ts:16 - EmojiMode (used in module)
+src/features/triage/emojis.ts:192 - EMOJI_CONFIG
+src/legacy/api/tts-insecure.ts:14 - default
+src/legacy/api/tts-secure.ts:73 - default
+src/lib/ai/index.ts:9 - TriagePayload (used in module)
+src/lib/ai/index.ts:25 - GeneratedReport (used in module)
+src/lib/analytics/nav.ts:50 - triggerHapticFeedback
+src/lib/format/number.ts:24 - formatNumber (used in module)
+src/lib/format/number.ts:34 - formatWeight
+src/lib/format/number.ts:41 - formatHeight
+src/lib/http/parse.ts:7 - badRequest (used in module)
+src/lib/http/parse.ts:47 - apiBodyConfig
+src/lib/monitoring/api-middleware.ts:20 - withApiMonitoring (used in module)
+src/lib/monitoring/api-middleware.ts:137 - withPdfMonitoring
+src/lib/monitoring/api-middleware.ts:149 - withStripeMonitoring
+src/lib/monitoring/api-middleware.ts:168 - capturePaymentEvent
+src/lib/monitoring/api-middleware.ts:7 - ApiMonitoringOptions (used in module)
+src/lib/monitoring/sentry.ts:7 - initSentry
+src/lib/monitoring/sentry.ts:114 - requestLoggingMiddleware
+src/lib/monitoring/sentry.ts:174 - monitorApiPerformance
+src/lib/monitoring/sentry.ts:26 - LogContext (used in module)
+src/lib/monitoring/sentry.ts:37 - StructuredLogger (used in module)
+src/lib/nav/routes.ts:43 - isRouteActive
+src/lib/nav/routes.ts:5 - NavItem (used in module)
+src/lib/nav/routes.ts:14 - ROUTES (used in module)
+src/lib/pdf/qrcode.ts:4 - qrcodeDataUrl (used in module)
+src/lib/pdf/qrcode.ts:10 - generateQRCodeData
+src/lib/report/citations.ts:14 - defaultCitations (used in module)
+src/lib/report/citations.ts:59 - getCitationById
+src/lib/report/citations.ts:63 - formatCitation
+src/lib/report/citations.ts:4 - Citation (used in module)
+src/lib/report/deriveReport.ts:85 - estimateReadingTimeMin (used in module)
+src/lib/report/deriveReport.ts:90 - buildTopActions (used in module)
+src/lib/report/deriveReport.ts:209 - buildPreventiveExams (used in module)
+src/lib/report/deriveReport.ts:232 - buildGrocery (used in module)
+src/lib/report/personalize.ts:4 - TriageContext (used in module)
+src/lib/report/personalize.ts:17 - firstName (used in module)
+src/lib/report/score.ts:4 - ScorePalette (used in module)
+src/lib/report/score.ts:13 - ScoreContext (used in module)
+src/lib/report/types.ts:47 - QuickWin (used in module)
+src/lib/report/types.ts:60 - RoadmapTabId (used in module)
+src/lib/report/types.ts:91 - TimelineStatus (used in module)
+src/lib/report/types.ts:108 - ReportMedia (used in module)
+src/lib/report/types.ts:113 - ReportFeatureFlags (used in module)
+src/lib/search/intelligent-search.ts:4 - SearchResult (used in module)
+src/lib/search/intelligent-search.ts:12 - SEARCH_SYNONYMS (used in module)
+src/lib/triage/patientData.ts:23 - hasPatientBasics (used in module)
+src/lib/triage/patientData.ts:63 - deriveAge (used in module)
+src/lib/triage/patientData.ts:76 - deriveBMI (used in module)
+src/lib/triage/patientData.ts:118 - validatePatientBasics
+src/lib/triage/patientData.ts:152 - createPatientProfile
+src/lib/triage/patientData.ts:4 - PatientBasics (used in module)
+src/lib/triage/patientData.ts:14 - PatientProfile (used in module)
+src/lib/triage/schema.ts:3 - StepType (used in module)
+src/lib/triage/schema.ts:136 - firstVisitSchema
+src/lib/utils/url.ts:1 - siteUrl (used in module)
+src/lib/utils/url.ts:2 - abs (used in module)
+src/pages/admin/index.tsx:130 - default
+src/pages/api/chat-medico.ts:12 - default
+src/pages/api/chat-medico.ts:4 - config
+src/pages/api/gerarRelatorio.ts:45 - default
+src/pages/api/health.ts:4 - default
+src/pages/api/healthcheck.ts:3 - default
+src/pages/api/ia-medica.ts:9 - default
+src/pages/api/meta-lead.ts:7 - default
+src/pages/api/teste-env.ts:3 - default
+src/pages/api/tts.ts:74 - default
+src/pages/api/upload-logo.ts:11 - default
+src/pages/api/upload-logo.ts:5 - config
+src/pages/auth/callback.tsx:5 - default
+src/pages/b2b-disabled/academia.tsx:13 - default
+src/pages/b2b-disabled/clinicas.tsx:14 - default
+src/pages/b2b-disabled/configuracoes.tsx:9 - default
+src/pages/b2b-disabled/dashboard.tsx:8 - default
+src/pages/b2b-disabled/empresa.tsx:14 - default
+src/pages/b2b-disabled/farmacia.tsx:14 - default
+src/pages/b2b-disabled/laboratorio.tsx:14 - default
+src/pages/b2b-disabled/planos.tsx:10 - default
+src/pages/checkout/confirmacao.tsx:5 - default
+src/pages/checkout/sucesso.tsx:6 - default
+src/pages/paciente/[uid].tsx:91 - default
+src/pages/privacy/DeleteDataButton.tsx:13 - default
+src/pages/relatorio/[id]-new.tsx:24 - default
+src/pages/relatorio/[id]-new.tsx:93 - getServerSideProps
+src/pages/relatorio/[id].tsx:93 - getServerSideProps
+src/pages/relatorio/demo.tsx:84 - default
+src/pages/relatorio/demo.tsx:8 - getServerSideProps
+src/pages/settings/profile.tsx:385 - default
+src/pages/triagem/[slug].tsx:29 - default
+src/pages/triagem/index.tsx:11 - default
+src/components/pdf/lab/LabReportPDF.tsx:58 - default
+src/components/report/skeletons/index.ts:1 - ReportHeroSkeleton
+src/components/report/skeletons/index.ts:2 - PillarSkeleton
+src/components/ui/avatar/Avatar.tsx:8 - Avatar (used in module)
+src/components/ui/cards/index.ts:3 - CardPlano
+src/components/ui/cards/index.ts:13 - ScoreFuturoCard
+src/components/ui/cards/index.ts:15 - ScoreComparisonChart
+src/components/ui/cards/index.ts:18 - PlanoAcaoCard
+src/components/ui/cards/index.ts:19 - RelatorioContainer
+src/components/ui/inputs/index.ts:5 - ProgressDonut
+src/components/ui/inputs/index.ts:6 - SelectCard
+src/components/ui/inputs/index.ts:7 - InputDate
+src/features/triage/components/BristolGrid.tsx:5 - default
+src/features/triage/components/WhyAsk.tsx:3 - default
+src/features/triage/configs/alergias.ts:6 - toReportData
+src/features/triage/configs/auditiva.ts:6 - toReportData
+src/features/triage/configs/biohacking.ts:6 - toReportData
+src/features/triage/configs/bucal.ts:6 - toReportData
+src/features/triage/configs/cardiovascular.ts:6 - toReportData
+src/features/triage/configs/coluna.ts:6 - toReportData
+src/features/triage/configs/crianca.ts:6 - toReportData
+src/features/triage/configs/diabetes-metabolismo.ts:6 - toReportData
+src/features/triage/configs/dor-cronica.ts:6 - toReportData
+src/features/triage/configs/gastro.ts:214 - toReportData
+src/features/triage/configs/gastro.ts:102 - derive (used in module)
+src/features/triage/configs/geral.ts:177 - derive
+src/features/triage/configs/geralRapida.ts:190 - derive
+src/features/triage/configs/hepatica.ts:6 - toReportData
+src/features/triage/configs/idoso.ts:6 - toReportData
+src/features/triage/configs/longevidade.ts:6 - toReportData
+src/features/triage/configs/mama.ts:6 - toReportData
+src/features/triage/configs/metabolico.ts:100 - derive
+src/features/triage/configs/microbioma.ts:6 - toReportData
+src/features/triage/configs/micronutrientes.ts:6 - toReportData
+src/features/triage/configs/mulher.ts:6 - toReportData
+src/features/triage/configs/ocular.ts:6 - toReportData
+src/features/triage/configs/pele.ts:6 - toReportData
+src/features/triage/configs/prostata.ts:6 - toReportData
+src/features/triage/configs/renal.ts:6 - toReportData
+src/features/triage/configs/respiratoria.ts:6 - toReportData
+src/features/triage/configs/sexual.ts:6 - toReportData
+src/features/triage/configs/sono.ts:101 - derive
+src/features/triage/configs/tireoide.ts:6 - toReportData
+src/features/triage/configs/trabalhador.ts:6 - toReportData
+src/features/triage/configs/vitalidade.ts:6 - toReportData
+src/features/triage/dicts/common.ts:4 - INTENSITY_SCALE
+src/features/triage/dicts/common.ts:13 - FREQUENCY_OPTIONS
+src/features/triage/dicts/common.ts:22 - DURATION_OPTIONS
+src/features/triage/dicts/common.ts:31 - YES_NO_OPTIONS
+src/features/triage/dicts/common.ts:37 - FAMILY_HISTORY_OPTIONS
+src/features/triage/dicts/common.ts:47 - EXERCISE_FREQUENCY
+src/features/triage/dicts/common.ts:55 - SLEEP_QUALITY
+src/features/triage/dicts/common.ts:63 - STRESS_LEVEL
+src/features/triage/dicts/common.ts:71 - ALCOHOL_CONSUMPTION
+src/features/triage/dicts/common.ts:79 - SMOKING_STATUS
+src/features/triage/dicts/common.ts:87 - DIET_PATTERN
+src/features/triage/dicts/common.ts:95 - IMPACT_SCALE
+src/features/triage/dicts/common.ts:103 - PAIN_LOCATIONS
+src/features/triage/dicts/common.ts:118 - SYMPTOM_TRIGGERS
+src/features/triage/dicts/redflags.ts:142 - getRedFlagsForDomain (used in module)
+src/features/triage/dicts/redflags.ts:146 - checkRedFlags
+src/features/triage/dicts/redflags.ts:4 - RedFlag (used in module)
+src/features/triage/dicts/redflags.ts:12 - RED_FLAGS_BY_DOMAIN (used in module)
+src/features/triage/dicts/symptoms.ts:136 - getSymptomsForDomain
+src/features/triage/dicts/symptoms.ts:4 - SYMPTOMS_BY_DOMAIN (used in module)
+src/legacy/api/pdf/[id]-secure.ts:50 - default (used in module)
+src/legacy/api/triage/answer-insecure.ts:31 - default
+src/legacy/api/triage/answer-secure.ts:80 - default
+src/lib/pdf/lab/types.ts:2 - RefRange (used in module)
+src/lib/pdf/lab/types.ts:5 - Analyte (used in module)
+src/lib/triage/flows/index.ts:260 - triageFlows
+src/pages/api/admin/alerts.ts:7 - default
+src/pages/api/admin/export.ts:7 - default
+src/pages/api/admin/funnel.ts:7 - default
+src/pages/api/admin/kpis.ts:7 - default
+src/pages/api/admin/product.ts:7 - default
+src/pages/api/admin/revenue.ts:7 - default
+src/pages/api/admin/stats.ts:7 - default
+src/pages/api/admin/tech.ts:7 - default
+src/pages/api/admin/vercel-analytics.ts:7 - default
+src/pages/api/crm/sink.ts:3 - default
+src/pages/api/gift/[code].ts:5 - default
+src/pages/api/gift/create.ts:29 - default
+src/pages/api/gift/redeem.ts:9 - default
+src/pages/api/lgpd/consent.ts:17 - default
+src/pages/api/pdf/[...rest].ts:3 - default
+src/pages/api/pdf/demo-gastro.ts:3 - default
+src/pages/api/pdf/demo-geral.ts:3 - default
+src/pages/api/pdf/demo.ts:1 - default
+src/pages/api/pdf/optimized.ts:1 - default
+src/pages/api/pdf/report.ts:194 - default
+src/pages/api/pdf/report.ts:10 - config
+src/pages/api/pdf/test.ts:6 - default
+src/pages/api/privacy/delete-data.ts:7 - default
+src/pages/api/privacy/export-data.ts:7 - default
+src/pages/api/report/share.ts:14 - default
+src/pages/api/report/whatsapp.ts:21 - default
+src/pages/api/stripe/checkout.ts:20 - default
+src/pages/api/stripe/create-checkout-session.ts:14 - default
+src/pages/api/stripe/create-portal-session.ts:10 - default
+src/pages/api/stripe/webhook.ts:17 - default
+src/pages/api/stripe/webhook.ts:6 - config
+src/pages/api/triage/answer.ts:62 - default
+src/pages/api/triage/finalize.ts:11 - default
+src/pages/api/triage/session.ts:34 - default
+src/pages/api/user/access-status.ts:4 - default
+src/pages/api/user/delete-data.ts:7 - default
+src/pages/triagem/[slug]/resumo.tsx:13 - default
+src/pages/api/gift/[code]/redeem.ts:5 - default

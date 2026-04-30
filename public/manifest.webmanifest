@@ -1,0 +1,10 @@
+{
+  "name": "Me Joy Farma",
+  "short_name": "Me Joy",
+  "description": "Protocolos de saúde com curadoria médica. Produtos manipulados e suplementos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00b894",
+  "lang": "pt-BR"
+}

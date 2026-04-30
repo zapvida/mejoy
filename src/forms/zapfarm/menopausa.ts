@@ -1,0 +1,143 @@
+import type { Step } from '@/types/triagem';
+import { stepAceitaTermos } from '../shared/consentimento';
+import { stepIdadeFaixa, stepSexo } from '../shared/dadosBasicos';
+
+export const perguntasMenopausa: Step[] = [
+  stepAceitaTermos,
+  stepIdadeFaixa,
+  stepSexo,
+  {
+    name: 'sintomas_principais',
+    type: 'multiselect',
+    label: 'Quais sintomas você apresenta?',
+    options: [
+      { value: 'Fogachos (calorões)', label: 'Fogachos (calorões)' },
+      { value: 'Suores noturnos', label: 'Suores noturnos' },
+      { value: 'Alterações de humor', label: 'Alterações de humor' },
+      { value: 'Insônia', label: 'Insônia' },
+      { value: 'Diminuição de libido', label: 'Diminuição de libido' },
+      { value: 'TPM intensa', label: 'TPM intensa' },
+      { value: 'Ciclo menstrual irregular', label: 'Ciclo menstrual irregular' },
+    ],
+    required: true,
+    helperText: 'Escolha todos os sintomas que você sente.',
+    justification: 'Sintomas ajudam a identificar padrão e fase da menopausa.',
+  },
+  {
+    name: 'fase_menopausa',
+    type: 'select',
+    label: 'Em qual fase você está?',
+    options: [
+      { value: 'Ainda menstruando normalmente', label: 'Ainda menstruando normalmente' },
+      { value: 'Ciclo irregular (perimenopausa)', label: 'Ciclo irregular (perimenopausa)' },
+      { value: 'Sem menstruar há menos de 1 ano', label: 'Sem menstruar há menos de 1 ano' },
+      { value: 'Sem menstruar há mais de 1 ano (menopausa)', label: 'Sem menstruar há mais de 1 ano (menopausa)' },
+    ],
+    required: true,
+    helperText: 'Isso ajuda a entender em qual fase você está.',
+    justification: 'Fase da menopausa orienta tipo de tratamento.',
+  },
+  {
+    name: 'historico_cancer_mama',
+    type: 'select',
+    label: 'Você tem histórico de câncer de mama hormônio-dependente?',
+    options: [
+      { value: 'Sim', label: 'Sim' },
+      { value: 'Não', label: 'Não' },
+      { value: 'Não sei', label: 'Não sei' },
+    ],
+    required: true,
+    helperText: 'Isso é importante para segurança do tratamento.',
+    justification: 'Histórico de câncer é fator de segurança importante.',
+  },
+  {
+    name: 'historico_trombose',
+    type: 'select',
+    label: 'Você tem histórico de trombose venosa?',
+    options: [
+      { value: 'Sim', label: 'Sim' },
+      { value: 'Não', label: 'Não' },
+      { value: 'Não sei', label: 'Não sei' },
+    ],
+    required: true,
+    helperText: 'Trombose pode influenciar tratamento hormonal.',
+    justification: 'Trombose é fator de segurança importante.',
+  },
+  {
+    name: 'info_contraindicacoes_menopausa',
+    type: 'info',
+    icon: '🛡️',
+    highlightTag: 'Segurança',
+    label: 'Algumas condições precisam de avaliação especial',
+    description: 'Vamos verificar se há algo que exija cuidado antes do tratamento:',
+    bullets: [
+      'Seu relatório será personalizado com base nas suas respostas.',
+      'Em caso de dúvida, o médico avaliará no momento da consulta.',
+    ],
+    justification: 'Educação e segurança antes de contraindicações.',
+  },
+  {
+    name: 'contraindicacoes_menopausa',
+    type: 'multiselect',
+    label: 'Você tem ou já teve alguma dessas condições?',
+    options: [
+      { value: 'cancer_mama', label: 'Câncer de mama ativo ou recente' },
+      { value: 'trombose', label: 'Trombose venosa profunda ou embolia pulmonar' },
+      { value: 'doenca_hepatica', label: 'Doença hepática grave' },
+      { value: 'sangramento_vaginal', label: 'Sangramento vaginal sem explicação' },
+      { value: 'alergia_isoflavonas', label: 'Alergia a isoflavonas ou cimicífuga' },
+      { value: 'nenhuma', label: 'Nenhuma dessas' },
+    ],
+    required: true,
+    helperText: 'Essas informações são essenciais para sua segurança.',
+    justification: 'Critério de segurança para tratamento hormonal.',
+  },
+  {
+    name: 'preferencia_menopausa',
+    type: 'select_cards',
+    label: 'Se precisar de tratamento, qual abordagem te parece melhor?',
+    helperText: 'É só uma preferência inicial. A decisão final será sempre do médico.',
+    required: true,
+    justification: 'Usada pela IA para personalizar o relatório e recomendações.',
+    cardOptions: [
+      {
+        value: 'isoflavonas',
+        title: 'Isoflavonas de soja',
+        subtitle: 'Fitormônio com evidência para fogachos e saúde óssea.',
+        badge: '🌸 Evidência consolidada',
+      },
+      {
+        value: 'cimicifuga',
+        title: 'Cimicífuga (black cohosh)',
+        subtitle: 'Fitoterápico para sintomas vasomotores.',
+        badge: '🌿 Sintomas vasomotores',
+      },
+      {
+        value: 'combinado',
+        title: 'Isoflavonas + cimicífuga + vitamina D',
+        subtitle: 'Abordagem integrativa para melhores resultados.',
+        badge: '⚡ Potencial máximo',
+      },
+      {
+        value: 'nao_sei',
+        title: 'Prefiro que o médico escolha',
+        subtitle: 'Quero que o especialista indique a melhor opção.',
+        badge: '🩺 Decisão guiada',
+      },
+    ],
+  },
+  {
+    name: 'info_acompanhamento',
+    type: 'info',
+    icon: '🤝',
+    highlightTag: 'Segurança e apoio',
+    label: 'Você não faz esse caminho sozinho',
+    description:
+      'Tratamentos para menopausa funcionam melhor quando combinam fitormônios, estilo de vida e acompanhamento médico.',
+    bullets: [
+      'Fitormônios como isoflavonas ajudam a aliviar sintomas naturalmente',
+      'Acompanhamento ginecológico garante segurança e monitora tratamento',
+    ],
+    justification: 'Reforça segurança e autoridade médica.',
+  },
+];

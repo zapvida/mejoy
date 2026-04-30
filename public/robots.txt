@@ -1,0 +1,23 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /auth/
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /auth/
+
+# Host
+Host: https://www.mejoy.com.br
+
+# Sitemaps
+Sitemap: https://www.mejoy.com.br/sitemap.xml

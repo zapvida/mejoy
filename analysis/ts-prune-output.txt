@@ -1,0 +1,413 @@
+playwright.config.ts:3 - default
+src/env.client.ts:38 - validateClientEnv (used in module)
+src/env.client.ts:50 - clientEnv
+src/env.ts:45 - validateServerEnv (used in module)
+src/middleware.ts:3 - middleware
+src/middleware.ts:8 - config
+src/config/navigation.ts:5 - NavItem (used in module)
+src/config/navigation.ts:34 - HAPTIC_CONFIG
+src/forms/gastro.ts:5 - TOption (used in module)
+src/forms/gastro.ts:22 - TForm (used in module)
+src/forms/gastro.ts:183 - default
+src/forms/index.ts:21 - TipoTriagem (used in module)
+src/forms/perguntasComuns.ts:4 - getPerguntasComuns
+src/forms/triagemGeralRapida.ts:130 - triagemGeralRapidaSteps
+src/hooks/useCPF.ts:7 - useCPF
+src/hooks/useGA4.ts:48 - useTriageTracking
+src/hooks/useGA4.ts:59 - useReportTracking
+src/hooks/useHapticFeedback.ts:45 - useSmoothScroll
+src/hooks/useHapticFeedback.ts:5 - HapticType (used in module)
+src/hooks/useIsMobile.ts:3 - useIsMobile
+src/hooks/useIsMobile.ts:17 - useIsPWA
+src/hooks/useIsMobile.ts:41 - usePrefersReducedMotion
+src/hooks/usePaciente.ts:4 - usePaciente
+src/hooks/usePerformance.ts:6 - usePerformanceMonitor
+src/hooks/usePerformance.ts:34 - useDebounce
+src/hooks/usePerformance.ts:52 - useThrottle
+src/hooks/usePerformance.ts:67 - useIntersectionObserver
+src/hooks/usePerformance.ts:98 - useLazyImage
+src/hooks/useResponsive.ts:91 - useIsMobile
+src/hooks/useResponsive.ts:110 - useOrientation
+src/hooks/useResponsive.ts:129 - useIsPWA
+src/hooks/useResponsive.ts:3 - Breakpoint (used in module)
+src/hooks/useResponsive.ts:5 - ResponsiveState (used in module)
+src/hooks/useVoiceRecognition.ts:3 - useVoiceRecognition
+src/lib/accessGuard.ts:19 - canViewReport
+src/lib/accessGuard.ts:92 - getPaywallRedirectUrl
+src/lib/accessGuard.ts:98 - shouldShowPaywall
+src/lib/accessGuard.ts:6 - AccessInput (used in module)
+src/lib/admin-queries.ts:8 - KPIData (used in module)
+src/lib/admin-queries.ts:235 - FunnelData (used in module)
+src/lib/admin-queries.ts:339 - RevenueData (used in module)
+src/lib/admin-queries.ts:450 - ProductData (used in module)
+src/lib/admin-queries.ts:546 - TechData (used in module)
+src/lib/ai.ts:36 - generateReportArtifacts
+src/lib/ai.ts:8 - GeneratedReport (used in module)
+src/lib/alerts-engine.ts:7 - AlertRule (used in module)
+src/lib/alerts-engine.ts:17 - Alert (used in module)
+src/lib/copy.ts:5 - HERO_COPY (used in module)
+src/lib/copy.ts:12 - CTA_COPY (used in module)
+src/lib/copy.ts:20 - LEGAL_COPY (used in module)
+src/lib/copy.ts:26 - FEEDBACK_COPY (used in module)
+src/lib/copy.ts:39 - TRIAGE_COPY (used in module)
+src/lib/copy.ts:49 - REPORT_COPY (used in module)
+src/lib/copy.ts:58 - PAYMENT_COPY (used in module)
+src/lib/copy.ts:69 - GIFT_COPY (used in module)
+src/lib/copy.ts:81 - REDEEM_COPY (used in module)
+src/lib/copy.ts:92 - ERROR_COPY (used in module)
+src/lib/copy.ts:103 - SUCCESS_COPY (used in module)
+src/lib/copy.ts:113 - VALIDATION_COPY (used in module)
+src/lib/copy.ts:126 - ACCESSIBILITY_COPY (used in module)
+src/lib/copy.ts:140 - LOADING_COPY (used in module)
+src/lib/database-fix.ts:7 - DatabaseServiceFixed
+src/lib/emailTemplates.ts:53 - renderEmailCtas (used in module)
+src/lib/emailTemplates.ts:64 - generateEmailHTML (used in module)
+src/lib/emailTemplates.ts:105 - default
+src/lib/env.ts:51 - Env
+src/lib/followUp.ts:4 - FOLLOW_UP_SEQUENCE
+src/lib/followUp.ts:21 - FollowUpManager (used in module)
+src/lib/followUp.ts:204 - followUpManager
+src/lib/ga4.ts:270 - useGA4PageTracking
+src/lib/ga4.ts:249 - trackPageView (used in module)
+src/lib/ga4.ts:252 - trackTriageComplete (used in module)
+src/lib/ga4.ts:253 - trackSubscribeClick (used in module)
+src/lib/ga4.ts:254 - trackUpgradeClick (used in module)
+src/lib/ga4.ts:255 - trackNavigationClick (used in module)
+src/lib/ga4.ts:286 - default
+src/lib/i18n.ts:96 - default
+src/lib/medicalScales.ts:179 - getScalesByTriage
+src/lib/medicalScales.ts:184 - interpretScaleScore
+src/lib/medicalScales.ts:193 - calculateScaleScore
+src/lib/medicalScales.ts:4 - ScaleItem (used in module)
+src/lib/medicalScales.ts:10 - MedicalScale (used in module)
+src/lib/medicalScales.ts:26 - PHQ9_SCALE (used in module)
+src/lib/medicalScales.ts:49 - GAD7_SCALE (used in module)
+src/lib/medicalScales.ts:71 - EPWORTH_SCALE (used in module)
+src/lib/medicalScales.ts:93 - PAIN_SCALE (used in module)
+src/lib/medicalScales.ts:121 - FREQUENCY_SCALE (used in module)
+src/lib/medicalScales.ts:143 - SATISFACTION_SCALE (used in module)
+src/lib/medicalScales.ts:165 - SCALES_BY_TRIAGE (used in module)
+src/lib/metrics.ts:194 - useMetrics
+src/lib/metrics.ts:15 - MetricEvent (used in module)
+src/lib/metrics.ts:191 - metrics (used in module)
+src/lib/paymentSecurity.ts:24 - isEventProcessed (used in module)
+src/lib/paymentSecurity.ts:29 - markEventProcessed (used in module)
+src/lib/paymentSecurity.ts:34 - processWebhookIdempotent
+src/lib/paymentSecurity.ts:214 - validateWebhookSignature
+src/lib/paymentSecurity.ts:227 - redeemGiftCode
+src/lib/paymentSecurity.ts:272 - hasActiveAccess
+src/lib/paymentSecurity.ts:285 - getActiveSubscription
+src/lib/pdfOptimized.tsx:269 - OptimizedReportPDF (used in module)
+src/lib/prisma.ts:32 - disconnectPrisma
+src/lib/privacy.ts:218 - cleanupOldData
+src/lib/privacy.ts:258 - validateConsent
+src/lib/privacy.ts:277 - recordConsent
+src/lib/rateLimit.ts:4 - rateLimit (used in module)
+src/lib/rbac.ts:33 - getAdminUser (used in module)
+src/lib/rbac.ts:127 - hashIP
+src/lib/rbac.ts:7 - AdminRole (used in module)
+src/lib/rbac.ts:9 - AdminUser (used in module)
+src/lib/redFlags.ts:4 - RedFlag (used in module)
+src/lib/referencesCatalog.ts:293 - getReferencesByType (used in module)
+src/lib/referencesCatalog.ts:4 - Reference (used in module)
+src/lib/referencesCatalog.ts:10 - referencesCatalog (used in module)
+src/lib/relatorio.ts:86 - gerarRelatorio
+src/lib/reportSchema.ts:81 - FallbackReportData
+src/lib/security.ts:79 - sanitizeInput
+src/lib/security.ts:88 - isValidEmail
+src/lib/security.ts:94 - isValidBrazilianPhone
+src/lib/security.ts:100 - isValidCPF
+src/lib/security.ts:127 - generateCSRFToken
+src/lib/security.ts:137 - validateCSRFToken
+src/lib/security.ts:7 - CSP_POLICY (used in module)
+src/lib/stripe-config.ts:77 - getPlanConfig
+src/lib/stripe-config.ts:73 - PlanType (used in module)
+src/lib/stripe-config.ts:74 - PlanConfig (used in module)
+src/lib/utm.ts:54 - getCtaConfig (used in module)
+src/lib/utm.ts:102 - default
+src/lib/whatsappTemplates.ts:5 - getWhatsAppTemplate (used in module)
+src/lib/whatsappTemplates.ts:30 - sendWhatsAppMessage (used in module)
+src/lib/whatsappTemplates.ts:38 - getWhatsAppSequence (used in module)
+src/lib/whatsappTemplates.ts:73 - formatWhatsAppMessage (used in module)
+src/lib/whatsappTemplates.ts:92 - default
+src/middleware/security.ts:10 - withSecurity
+src/middleware/security.ts:60 - withPaymentSecurity
+src/middleware/security.ts:93 - withPrivacySecurity
+src/middleware/withCPF.ts:10 - withCPF
+src/pages/_app.tsx:36 - default
+src/pages/_document.tsx:3 - default
+src/pages/assinatura.tsx:11 - default
+src/pages/billing.tsx:325 - default
+src/pages/disclaimer.tsx:5 - default
+src/pages/faq.tsx:5 - default
+src/pages/index.tsx:105 - default
+src/pages/meu-plano.tsx:6 - default
+src/pages/obrigado.tsx:13 - default
+src/pages/politica.tsx:5 - default
+src/pages/presente.tsx:464 - default
+src/pages/pricing.tsx:333 - default
+src/pages/privacidade.tsx:10 - default
+src/pages/quem-somos.tsx:6 - default
+src/pages/reembolso.tsx:10 - default
+src/pages/resgatar.tsx:234 - default
+src/pages/sitemap.xml.ts:6 - default
+src/pages/sitemap.xml.ts:10 - getServerSideProps
+src/pages/termos.tsx:10 - default
+src/theme/palette.ts:34 - isValidColor
+src/theme/palette.ts:38 - getBrandColor
+src/theme/palette.ts:6 - Palette (used in module)
+src/theme/palette.ts:20 - ChartPalette
+src/theme/palette.ts:28 - ALLOWED_COLORS (used in module)
+src/types/lpac.ts:1 - LPACContent
+src/types/relatorio.ts:7 - LinhaDoTempoSectionProps
+src/types/RelatorioProps.ts:1 - RelatorioProps
+src/types/triagem.ts:1 - Conditional (used in module)
+src/types/triagem.ts:58 - TriagemKey
+src/utils/asaas.ts:100 - verificarPagamento
+src/utils/cache.ts:70 - withCache
+src/utils/cache.ts:91 - memoizeComponent
+src/utils/cache.ts:101 - memoizeFunction
+src/utils/cache.ts:67 - cache (used in module)
+src/utils/cache.ts:123 - reportCache
+src/utils/cache.ts:131 - triageCache
+src/utils/calcularScore.ts:1 - calcularScore
+src/utils/convertTimestamp.ts:1 - convertTimestamp
+src/utils/cookies.ts:7 - getCPF (used in module)
+src/utils/cookies.ts:15 - setCPF (used in module)
+src/utils/cookies.ts:22 - removeCPF (used in module)
+src/utils/formatCPF.ts:6 - formatCPF
+src/utils/formatDate.ts:1 - formatDate
+src/utils/generateCharts.ts:31 - generateChartImageURL (used in module)
+src/utils/generateCharts.ts:74 - generateDefaultCharts (used in module)
+src/utils/generateCharts.ts:9 - ChartData (used in module)
+src/utils/generateCharts.ts:19 - GeneratedChart (used in module)
+src/utils/generateCharts.ts:109 - default
+src/utils/health.ts:64 - getIMCClassification
+src/utils/health.ts:104 - formatIMC
+src/utils/health.ts:109 - formatAge
+src/utils/pdf.ts:4 - exportarParaPDF
+src/utils/pdfTemplate.ts:15 - generatePDFHtmlTemplate
+src/utils/pdfTriagemGeral.ts:19 - gerarPdfTriagemGeral
+src/utils/processarTriagemGeral.ts:14 - processarTriagemGeral
+src/utils/processarTriagemGeral.ts:6 - DadosProcessados (used in module)
+src/utils/scales.ts:270 - calculateScaleResult
+src/utils/scales.ts:4 - ScaleQuestion (used in module)
+src/utils/scales.ts:10 - ScaleResult (used in module)
+src/utils/scales.ts:18 - PHQ9_SCALE (used in module)
+src/utils/scales.ts:112 - GAD7_SCALE (used in module)
+src/utils/scales.ts:186 - EPWORTH_SCALE (used in module)
+src/utils/scores.ts:11 - calcHealthScores
+src/utils/scores.ts:122 - getScoreInterpretation
+src/utils/scores.ts:156 - getRedFlags
+src/utils/scores.ts:183 - getRedFlagsByType
+src/utils/scores.ts:4 - ScoreFactors (used in module)
+src/utils/sendToHighLevel.ts:1 - sendToHighLevel
+src/utils/useLocalStorage.ts:3 - useLocalStorage
+src/utils/validation.ts:4 - ValidationRule (used in module)
+src/components/analytics/GoogleAnalytics.tsx:7 - default
+src/components/auth/index.ts:1 - withAuth
+src/components/landing/index.ts:1 - Hero
+src/components/landing/index.ts:2 - FeaturesSection
+src/components/landing/index.ts:3 - Particles
+src/components/lgpd/TriageConsentWrapper.tsx:11 - default
+src/components/lpac/index.ts:10 - TrustBadges
+src/components/lpac/index.ts:11 - StickyCTA
+src/components/lpac/Why.tsx:15 - default
+src/components/patient/index.ts:1 - PatientInfoForm
+src/components/patient/index.ts:2 - PatientSummary
+src/components/pdf/ReportPDF.tsx:18 - ReportPdfData (used in module)
+src/components/pdf/SecurePdfExport.tsx:14 - default
+src/components/pdf/SecurePdfExport.tsx:135 - usePdfV2Status
+src/components/relatorio/LinhaDoTempoSection.tsx:10 - LinhaDoTempoSection
+src/components/relatorio/ProdutosAlloeCTA.tsx:12 - default
+src/components/relatorio/Relatorio.tsx:88 - default
+src/components/relatorio/RelatorioChat.tsx:13 - RelatorioChat
+src/components/relatorio/ZapVidaCTA.tsx:12 - default
+src/components/report/PrintOnly.tsx:8 - PrintOnly
+src/components/triage/Runner.tsx:988 - shouldAskFirstVisit
+src/components/triagem/index.ts:1 - TriagemStepForm
+src/components/ui/CopyText.tsx:23 - CopyText (used in module)
+src/components/ui/CopyText.tsx:42 - HeroText
+src/components/ui/CopyText.tsx:51 - CTAText
+src/components/ui/CopyText.tsx:61 - LegalDisclaimer
+src/components/ui/CopyText.tsx:72 - FooterText
+src/components/ui/CopyText.tsx:83 - ErrorText
+src/components/ui/CopyText.tsx:98 - ValidationText
+src/components/ui/CopyText.tsx:115 - FeedbackText
+src/components/ui/CopyText.tsx:130 - LoadingText
+src/components/ui/CopyText.tsx:146 - TriageProgress
+src/components/ui/CopyText.tsx:170 - SuccessText
+src/components/ui/CopyText.tsx:186 - useCopy
+src/components/ui/CtaDeck.tsx:14 - CtaDeck (used in module)
+src/components/ui/CtaDeck.tsx:104 - default
+src/components/ui/DeleteDataButton.tsx:16 - DeleteDataButton
+src/components/ui/EnhancedInput.tsx:113 - ScaleButton (used in module)
+src/components/ui/EnhancedInput.tsx:143 - ScaleSelector
+src/components/ui/ErrorBoundary.tsx:94 - default
+src/components/ui/index.ts:1 - Avatar
+src/components/ui/index.ts:5 - ActionCard
+src/components/ui/index.ts:6 - AlertCard
+src/components/ui/index.ts:7 - CardTriagem
+src/components/ui/index.ts:8 - HealthTimeline
+src/components/ui/index.ts:9 - HealthTimelinePremium
+src/components/ui/index.ts:10 - LinhaDoTempo
+src/components/ui/index.ts:11 - PacienteInfoCard
+src/components/ui/index.ts:12 - PremiumButton
+src/components/ui/index.ts:13 - RelatorioCard
+src/components/ui/index.ts:14 - RelatorioGratuitoCard
+src/components/ui/index.ts:15 - RelatorioPremiumCard
+src/components/ui/index.ts:16 - ScoreAtualCard
+src/components/ui/index.ts:17 - ScoreCard
+src/components/ui/index.ts:18 - SubSectionCard
+src/components/ui/index.ts:19 - SummaryCard
+src/components/ui/index.ts:23 - DialogConfirm
+src/components/ui/index.ts:24 - EmptyState
+src/components/ui/index.ts:26 - Modal
+src/components/ui/index.ts:28 - Toast
+src/components/ui/index.ts:29 - Tooltip
+src/components/ui/index.ts:33 - Badge
+src/components/ui/index.ts:34 - Input
+src/components/ui/index.ts:35 - ProgressBar
+src/components/ui/index.ts:36 - Select
+src/components/ui/index.ts:39 - Textarea
+src/components/ui/index.ts:44 - BottomMenu
+src/components/ui/index.ts:45 - Pagination
+src/components/ui/index.ts:46 - Tabs
+src/components/ui/index.ts:49 - RelatorioContainer
+src/components/ui/index.ts:50 - Timeline
+src/components/ui/index.ts:53 - Logo
+src/components/ui/index.ts:54 - LogoLarge
+src/components/ui/index.ts:55 - ThemeToggle
+src/components/ui/LazyLoading.tsx:6 - withLazyLoading (used in module)
+src/components/ui/LazyLoading.tsx:22 - LazyMedicalChat
+src/components/ui/LoadingScreen.tsx:5 - default
+src/components/ui/OptimizedImage.tsx:18 - OptimizedImage (used in module)
+src/components/ui/OptimizedImage.tsx:84 - AuthorityLogo
+src/components/ui/OptimizedImage.tsx:99 - TriageImage
+src/components/ui/ProgressBar.tsx:14 - ProgressBar (used in module)
+src/components/ui/ProgressBar.tsx:43 - default
+src/components/ui/ProgressIndicator.tsx:14 - ProgressIndicator
+src/components/ui/ProgressIndicator.tsx:56 - CircularProgress
+src/components/ui/StandardCTAs.tsx:17 - StandardCTAs (used in module)
+src/components/ui/StandardCTAs.tsx:103 - ReportCTAs
+src/components/ui/StandardCTAs.tsx:123 - PDFCTAs
+src/components/ui/Toast.tsx:27 - ToastProvider
+src/components/ui/Toast.tsx:55 - useToast
+src/components/ui/Toast.tsx:137 - useAutosaveToast
+src/components/whatsapp/index.ts:1 - WhatsAppDoctorOption
+src/lib/analytics/nav.ts:50 - triggerHapticFeedback
+src/lib/monitoring/api-middleware.ts:20 - withApiMonitoring (used in module)
+src/lib/monitoring/api-middleware.ts:137 - withPdfMonitoring
+src/lib/monitoring/api-middleware.ts:149 - withStripeMonitoring
+src/lib/monitoring/api-middleware.ts:168 - capturePaymentEvent
+src/lib/monitoring/api-middleware.ts:7 - ApiMonitoringOptions (used in module)
+src/lib/monitoring/sentry.ts:7 - initSentry
+src/lib/monitoring/sentry.ts:114 - requestLoggingMiddleware
+src/lib/monitoring/sentry.ts:174 - monitorApiPerformance
+src/lib/monitoring/sentry.ts:26 - LogContext (used in module)
+src/lib/monitoring/sentry.ts:37 - StructuredLogger (used in module)
+src/lib/report/types.ts:49 - QuickWin (used in module)
+src/lib/report/types.ts:55 - WeeklyGoal (used in module)
+src/lib/report/types.ts:62 - RoadmapTabId (used in module)
+src/lib/report/types.ts:93 - TimelineStatus (used in module)
+src/lib/report/types.ts:110 - ReportMedia (used in module)
+src/lib/report/types.ts:115 - ReportFeatureFlags (used in module)
+src/lib/supabase/middleware.ts:5 - updateSession
+src/lib/supabase/server.ts:4 - createClient (used in module)
+src/lib/supabase/server.ts:26 - getSupabaseServer
+src/lib/triage/config.ts:11 - isFreeTriage (used in module)
+src/lib/triage/config.ts:15 - shouldShowPaywall
+src/lib/triage/config.ts:7 - FREE_SLUGS (used in module)
+src/lib/triage/config.ts:20 - PRICING
+src/lib/triage/config.ts:34 - CHECKOUT_URLS
+src/lib/triage/schema.ts:3 - StepType (used in module)
+src/lib/triage/schema.ts:136 - firstVisitSchema
+src/pages/admin/index.tsx:129 - default
+src/pages/api/chat-medico.ts:8 - default
+src/pages/api/chat-medico.ts:4 - config
+src/pages/api/checkout.ts:5 - default
+src/pages/api/gerarPrompt.ts:27 - default
+src/pages/api/gerarRelatorio.ts:99 - default
+src/pages/api/health.ts:4 - default
+src/pages/api/healthcheck.ts:3 - default
+src/pages/api/ia-medica.ts:9 - default
+src/pages/api/listarRelatorios.ts:4 - default
+src/pages/api/meta-lead.ts:7 - default
+src/pages/api/pacientes.ts:4 - default
+src/pages/api/send-to-ghl.ts:91 - default
+src/pages/api/teste-env.ts:3 - default
+src/pages/api/tts-insecure.ts:14 - default
+src/pages/api/tts-secure.ts:73 - default
+src/pages/api/tts.ts:74 - default
+src/pages/api/upload-logo.ts:11 - default
+src/pages/api/upload-logo.ts:5 - config
+src/pages/auth/callback.tsx:5 - default
+src/pages/b2b/academia.tsx:13 - default
+src/pages/b2b/clinicas.tsx:14 - default
+src/pages/b2b/configuracoes.tsx:9 - default
+src/pages/b2b/dashboard.tsx:8 - default
+src/pages/b2b/empresa.tsx:14 - default
+src/pages/b2b/farmacia.tsx:14 - default
+src/pages/b2b/laboratorio.tsx:14 - default
+src/pages/b2b/planos.tsx:10 - default
+src/pages/checkout/confirmacao.tsx:5 - default
+src/pages/checkout/index.tsx:7 - default
+src/pages/checkout/sucesso.tsx:6 - default
+src/pages/dashboard/configuracoes.tsx:14 - default
+src/pages/dashboard/editar-perfil.tsx:25 - default
+src/pages/dashboard/index.tsx:14 - default
+src/pages/dashboard/perfil.tsx:21 - default
+src/pages/dashboard/relatorios.tsx:19 - default
+src/pages/paciente/[uid].tsx:91 - default
+src/pages/privacy/DeleteDataButton.tsx:13 - default
+src/pages/relatorio/[id].tsx:180 - getServerSideProps
+src/pages/relatorio/demo.tsx:30 - default
+src/pages/relatorio/demo.tsx:7 - getServerSideProps
+src/pages/settings/profile.tsx:385 - default
+src/pages/triagem/[slug].tsx:28 - default
+src/pages/triagem/index.tsx:11 - default
+src/components/ui/avatar/Avatar.tsx:8 - Avatar (used in module)
+src/components/ui/cards/index.ts:3 - CardPlano
+src/components/ui/cards/index.ts:14 - ScoreFuturoCard
+src/components/ui/cards/index.ts:16 - ScoreComparisonChart
+src/components/ui/cards/index.ts:19 - PlanoAcaoCard
+src/components/ui/cards/index.ts:20 - RelatorioContainer
+src/components/ui/inputs/index.ts:5 - ProgressDonut
+src/components/ui/inputs/index.ts:6 - SelectCard
+src/components/ui/inputs/index.ts:7 - InputDate
+src/features/triage/configs/geral.ts:177 - derive
+src/features/triage/configs/metabolico.ts:100 - derive
+src/lib/triage/flows/index.ts:260 - triageFlows
+src/pages/api/admin/alerts.ts:15 - default
+src/pages/api/admin/export.ts:9 - default
+src/pages/api/admin/funnel.ts:9 - default
+src/pages/api/admin/kpis.ts:9 - default
+src/pages/api/admin/product.ts:9 - default
+src/pages/api/admin/revenue.ts:9 - default
+src/pages/api/admin/stats.ts:7 - default
+src/pages/api/admin/tech.ts:9 - default
+src/pages/api/compras/[id].ts:4 - default
+src/pages/api/dashboard/metrics.ts:4 - default
+src/pages/api/gift/[code].ts:5 - default
+src/pages/api/gift/create.ts:29 - default
+src/pages/api/gift/redeem.ts:9 - default
+src/pages/api/lgpd/consent.ts:16 - default
+src/pages/api/pacientes/[cpf].ts:5 - default
+src/pages/api/pdf/[id]-secure.ts:50 - default (used in module)
+src/pages/api/pdf/[id].tsx:8 - default
+src/pages/api/pdf/optimized.ts:10 - default
+src/pages/api/privacy/delete-data.ts:7 - default
+src/pages/api/privacy/export-data.ts:7 - default
+src/pages/api/relatorios/index.ts:4 - default
+src/pages/api/stripe/checkout.ts:20 - default
+src/pages/api/stripe/create-checkout-session.ts:13 - default
+src/pages/api/stripe/create-portal-session.ts:10 - default
+src/pages/api/stripe/webhook.ts:6 - config
+src/pages/api/triage/answer-insecure.ts:31 - default
+src/pages/api/triage/answer-secure.ts:79 - default
+src/pages/api/triagens/index.ts:4 - default
+src/pages/api/user/access-status.ts:4 - default
+src/pages/api/user/delete-data.ts:7 - default
+src/pages/triagem/[slug]/resumo.tsx:13 - default
+src/pages/api/gift/[code]/redeem.ts:5 - default
+src/pages/api/relatorios/[id]/pdf.ts:7 - default

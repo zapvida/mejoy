@@ -1,0 +1,61 @@
+═══════════════════════════════════════════════════════════════
+  ENV VARS EMAGRECIMENTO - COMANDOS PRONTOS PARA COPIAR/COLAR
+═══════════════════════════════════════════════════════════════
+
+⚠️  IMPORTANTE: As 3 variáveis JÁ EXISTEM. Você vai ATUALIZAR (não criar).
+
+═══════════════════════════════════════════════════════════════
+  OPÇÃO 1: VIA VERCEL CLI (MAIS RÁPIDO)
+═══════════════════════════════════════════════════════════════
+
+Execute estes 3 comandos um por vez:
+
+1️⃣  BÁSICO:
+vercel env add ASAAS_PRICE_EMAGRECIMENTO_BASICO production preview development
+→ Quando pedir o valor: 418800
+→ Quando perguntar se quer sobrescrever: y
+
+2️⃣  COMPLETO:
+vercel env add ASAAS_PRICE_EMAGRECIMENTO_COMPLETO production preview development
+→ Quando pedir o valor: 478800
+→ Quando perguntar se quer sobrescrever: y
+
+3️⃣  PREMIUM:
+vercel env add ASAAS_PRICE_EMAGRECIMENTO_PREMIUM production preview development
+→ Quando pedir o valor: 538800
+→ Quando perguntar se quer sobrescrever: y
+
+═══════════════════════════════════════════════════════════════
+  OPÇÃO 2: VIA DASHBOARD VERCEL (MAIS VISUAL)
+═══════════════════════════════════════════════════════════════
+
+1. Acesse: https://vercel.com/dashboard
+2. Projeto: zapfarm
+3. Settings → Environment Variables
+4. Para cada uma das 3 variáveis:
+   - Clique nos 3 pontos (⋯) → Edit
+   - Altere o Value para o valor abaixo
+   - Salve
+
+   ASAAS_PRICE_EMAGRECIMENTO_BASICO    → 418800
+   ASAAS_PRICE_EMAGRECIMENTO_COMPLETO  → 478800
+   ASAAS_PRICE_EMAGRECIMENTO_PREMIUM   → 538800
+
+═══════════════════════════════════════════════════════════════
+  VALIDAÇÃO (APÓS ATUALIZAR)
+═══════════════════════════════════════════════════════════════
+
+vercel env ls | grep EMAGRECIMENTO
+
+Deve mostrar as 3 variáveis com os valores corretos.
+
+═══════════════════════════════════════════════════════════════
+  PRÓXIMO PASSO: REDEPLOY
+═══════════════════════════════════════════════════════════════
+
+git push origin main
+OU
+Vercel Dashboard → Deployments → Redeploy
+
+═══════════════════════════════════════════════════════════════
+
