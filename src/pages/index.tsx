@@ -1,13 +1,14 @@
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
 import { isRootB2BDomain, isStoreV2Enabled, isCopyV4Enabled } from '@/lib/flags';
 import { getHomeSections, getProductsByTag, getNewestProducts, getTopProducts } from '@/lib/store-v2/catalog';
 import { getCopyV4BySku } from '@/lib/store-v2/copy-v2';
+import { buildCanonical, SITE } from '@/lib/seo';
 import type { ProductCardData } from '@/lib/store-v2/catalog';
+import { MeJoyGreenHome } from '@/components/home/MeJoyGreenHome';
 
 const B2BLanding = dynamic(() => import('@/components/b2b/B2BLanding'));
-const B2CLanding = dynamic(() => import('@/components/home/B2CLanding'));
-const StoreV2Home = dynamic(() => import('@/components/store-v2/StoreV2Home'));
 
 /**
  * Homepage: mejoy.com.br = Loja (B2CLanding ou StoreV2Home). zapfarm.com.br = B2B white-label.
@@ -22,6 +23,8 @@ type HomeSection = { objectiveSlug: string; objectiveName: string; products: Pro
 
 const FEATURED_LIMIT = 8;
 const SUBTITLE_MAX_WORDS = 6;
+const ROOT_DESCRIPTION =
+  'Saúde digital com avaliação médica, triagem online e acompanhamento humano em uma jornada contínua da leitura inicial aos próximos passos.';
 const OBJECTIVE_HOME_FALLBACKS: Record<string, string[]> = {
   'Ansiedade & Humor': [
     'Equilíbrio emocional com foco diário.',
@@ -352,9 +355,6 @@ async function getFeaturedHomeSections(limit = FEATURED_LIMIT): Promise<HomeFeat
 
 export default function Home({
   showB2C,
-  storeV2,
-  sections,
-  featured,
 }: {
   showB2C: boolean;
   storeV2: boolean;
@@ -362,8 +362,30 @@ export default function Home({
   featured: HomeFeaturedSections;
 }) {
   if (!showB2C) return <B2BLanding />;
-  if (storeV2) return <StoreV2Home sections={sections} featured={featured} />;
-  return <B2CLanding />;
+
+  const canonical = buildCanonical('/');
+  const ogImage = `${SITE.baseUrl}/images/emagrecimento/medvi/hero-main.webp`;
+
+  return (
+    <>
+      <Head>
+        <title>Saúde digital para a vida real · Me Joy</title>
+        <meta name="description" content={ROOT_DESCRIPTION} />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:title" content="Saúde digital para a vida real · Me Joy" />
+        <meta property="og:description" content={ROOT_DESCRIPTION} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content={SITE.name} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Saúde digital para a vida real · Me Joy" />
+        <meta name="twitter:description" content={ROOT_DESCRIPTION} />
+        <meta name="twitter:image" content={ogImage} />
+      </Head>
+      <MeJoyGreenHome />
+    </>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

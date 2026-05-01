@@ -20,6 +20,9 @@ export interface StepDef {
   key: string;
   type: StepType;
   label: string;
+  group?: string;
+  autoAdvance?: boolean;
+  compact?: boolean;
   helper?: string;
   helperText?: string; // Texto curto abaixo do label (microcopy)
   evidenceNote?: string; // Micro-evidência científica em fonte menor
@@ -57,6 +60,8 @@ export interface TriageFlow {
   slug: string;
   title: string;
   intro?: string;
+  flowVersion?: string;
+  schemaVersion?: string;
   steps: StepDef[];
 }
 
