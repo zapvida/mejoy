@@ -6,13 +6,12 @@ import { deriveReport } from '@/lib/report/derive';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { ReportHeroEmagrecimentoEnhanced } from '@/components/zapfarm/report/ReportHeroEmagrecimentoEnhanced';
-import { ReportActionPlanGamified } from '@/components/zapfarm/report/ReportActionPlanGamified';
+import { ReportActionPlanStructured } from '@/components/zapfarm/report/ReportActionPlanStructured';
 import { ReportAnalysisEmagrecimento } from '@/components/zapfarm/report/ReportAnalysisEmagrecimento';
 import { ReportPlanSuggestion } from '@/components/zapfarm/report/ReportPlanSuggestion';
 import { ReportEvidenceEmagrecimento } from '@/components/zapfarm/report/ReportEvidenceEmagrecimento';
 import { ReportCtasEmagrecimento } from '@/components/zapfarm/report/ReportCtasEmagrecimento';
 import { ReportScientificFactsEmagrecimento } from '@/components/zapfarm/report/ReportScientificFactsEmagrecimento';
-import { ReportAIBadge } from '@/components/zapfarm/report/ReportAIBadge';
 import { ReportRedFlagsBanner } from '@/components/zapfarm/report/ReportRedFlagsBanner';
 import { ReportPrePrescription } from '@/components/zapfarm/report/ReportPrePrescription';
 import { ReportWhatsappBanner } from '@/components/zapfarm/emagrecimento/ReportWhatsappBanner';
@@ -100,13 +99,13 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
         <Head>
           <title>Relatório não encontrado | Me Joy</title>
         </Head>
-        <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 flex items-center justify-center text-white">
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold mb-4">Relatório não encontrado</h1>
-            <p className="text-emerald-50 mb-6">O relatório solicitado não foi encontrado.</p>
+        <div className="flex min-h-screen items-center justify-center bg-[#f7f6f2] px-4 text-slate-900">
+          <div className="max-w-lg rounded-[2rem] border border-slate-200 bg-white p-8 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+            <h1 className="text-3xl font-semibold tracking-[-0.04em] text-[#2f2925]">Relatório não encontrado</h1>
+            <p className="mt-3 text-base leading-7 text-slate-600">O relatório solicitado não foi encontrado.</p>
             <a
               href="/emagrecimento"
-              className="inline-block px-6 py-3 bg-white text-emerald-800 rounded-lg hover:bg-emerald-50 transition-colors font-semibold"
+              className="mt-6 inline-flex rounded-full bg-[#93b28d] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#7e9f79]"
             >
               Voltar para início
             </a>
@@ -123,14 +122,10 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
         <meta name="description" content={`Relatório personalizado de emagrecimento para ${vm.basics.firstName}`} />
       </Head>
 
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-slate-50">
-        {/* Header */}
+        <div className="min-h-screen bg-[#f7f6f2]">
         <div className="relative z-50">
-          <HeaderZapfarm />
+          <HeaderZapfarm mode="report" primaryCtaLabel="Ver programa sugerido" primaryCtaMobileLabel="Programa" />
         </div>
-
-        {/* Badge de Transparência IA */}
-        <ReportAIBadge />
 
         {reportId && (
           <ReportWhatsappBanner
@@ -150,7 +145,6 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
           />
         )}
 
-        {/* Sticky CTA bar for mobile - igual à LP */}
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/96 p-3.5 sm:p-4 shadow-[0_-12px_40px_rgba(15,23,42,0.16)] backdrop-blur md:hidden space-y-2 border-t border-emerald-100">
           <button
             type="button"
@@ -201,13 +195,11 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
           )}
         </div>
 
-        {/* Padding top para compensar header fixo e bottom para mobile sticky CTA */}
         <div className="pt-20 sm:pt-16 md:pt-20 pb-20 md:pb-0">
-          {/* Hero Section Melhorado */}
           <ReportHeroEmagrecimentoEnhanced vm={vm} reportId={reportId || undefined} />
           
-          <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-12 space-y-8 sm:space-y-10 md:space-y-12">
-            {/* 1. Análise Personalizada (5 blocos) */}
+          <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 md:py-12">
+            <div className="space-y-8 sm:space-y-10 md:space-y-12">
             {reportCompact ? (
               <details className="group rounded-2xl border border-emerald-100 bg-white/80 p-4 open:bg-white open:shadow-md">
                 <summary className="cursor-pointer list-none text-lg font-bold text-gray-900 after:ml-2 after:text-emerald-500 after:content-['+'] group-open:after:content-['−']">
@@ -221,13 +213,10 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
               <ReportAnalysisEmagrecimento vm={vm} />
             )}
             
-            {/* 2. Pré-Prescrição Médica Sugerida (segundo frame) */}
             <ReportPrePrescription vm={vm} />
             
-            {/* 3. Plano de Ações Gamificado (4 pilares) */}
-            <ReportActionPlanGamified vm={vm} reportId={reportId || ''} />
+            <ReportActionPlanStructured vm={vm} />
             
-            {/* 4. Evidências Científicas (dinâmico) */}
             {reportCompact ? (
               <details className="group rounded-2xl border border-emerald-100 bg-white/80 p-4 open:bg-white open:shadow-md">
                 <summary className="cursor-pointer list-none text-lg font-bold text-gray-900 after:ml-2 after:text-emerald-500 after:content-['+'] group-open:after:content-['−']">
@@ -245,10 +234,8 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
               </>
             )}
             
-            {/* 6. Sugestão de Plano (com justificativa) */}
             <ReportPlanSuggestion vm={vm} />
             
-            {/* 7. CTAs de Conversão */}
             <div id="cta-clinico">
               <ReportCtasEmagrecimento 
                 reportId={reportId || ''} 
@@ -256,35 +243,35 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                 vm={vm}
               />
             </div>
+            </div>
           </div>
 
-          {/* CTA Section igual à LP */}
-          <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white">
-            <div className="container mx-auto px-4 sm:px-6 text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white">
+          <section className="border-t border-slate-200 bg-white py-12 sm:py-16 md:py-20">
+            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Pronto para seguir</p>
+              <h2 className="mt-3 text-[clamp(2rem,5vw,3.7rem)] font-semibold tracking-[-0.05em] text-[#2f2925]">
                 Seu próximo passo está pronto
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-emerald-50 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
                 Escolha a trilha, confirme seus dados e siga com revisão médica obrigatória antes de qualquer prescrição.
               </p>
               <a
                 href="#cta-clinico"
-                className="inline-block rounded-full px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 text-sm sm:text-base md:text-lg font-bold text-emerald-800 bg-white shadow-2xl transition-all hover:scale-105 hover:shadow-white/50 w-full sm:w-auto max-w-xs sm:max-w-none"
+                className="mt-7 inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#93b28d] px-8 py-4 text-sm font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#7e9f79] sm:w-auto sm:max-w-none sm:text-base"
               >
                 Ir para as opções do programa →
               </a>
             </div>
           </section>
 
-          {/* Download PDF Button */}
-          <div className="container mx-auto px-4 sm:px-6 pb-8 sm:pb-10 md:pb-12 text-center">
+          <div className="mx-auto max-w-5xl px-4 pb-8 pt-8 text-center sm:px-6 sm:pb-10 md:pb-12">
             <a
               href={`/api/pdf/report?id=${reportId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 bg-emerald-600 text-white rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
+              className="inline-flex rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:text-base"
             >
-              ⬇️ Baixar relatório em PDF
+              Baixar relatório em PDF
             </a>
           </div>
         </div>

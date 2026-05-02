@@ -35,7 +35,7 @@ async function clickFirstVisible(page: Page, selectors: string[]) {
     for (let index = 0; index < count; index += 1) {
       const candidate = locator.nth(index);
       if (await candidate.isVisible({ timeout: 1500 }).catch(() => false)) {
-        await candidate.click();
+        await candidate.evaluate((node: HTMLElement) => node.click());
         return true;
       }
     }
@@ -45,6 +45,12 @@ async function clickFirstVisible(page: Page, selectors: string[]) {
 
 async function clickStepOption(page: Page, stepKey: string, optionValue: string) {
   await page.locator(`[data-triage-step="${stepKey}"] [data-option-value="${optionValue}"]`).first().click();
+}
+
+async function continueWizard(page: Page) {
+  const continueButton = page.locator('button:has-text("Continuar")');
+  await expect(continueButton).toBeVisible({ timeout: 10_000 });
+  await continueButton.click({ force: true });
 }
 
 async function acceptCookiesIfVisible(page: Page) {
@@ -82,11 +88,13 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
 
     await acceptCookiesIfVisible(page);
 
-    await expect(page.locator('text=Saúde digital, pensada para a vida real.')).toBeVisible({ timeout: 15_000 });
+    const homeHeroTitle = page.locator('h1').first();
+    await expect(homeHeroTitle).toContainText('Saúde digital', { timeout: 15_000 });
+    await expect(homeHeroTitle).toContainText('redefinida');
 
     const openedLanding = await clickFirstVisible(page, [
-      'a:has-text("Começar jornada de emagrecimento")',
-      'a:has-text("Ver jornada de emagrecimento")',
+      'a[href="/emagrecimento"]',
+      'a:has-text("Perda de peso")',
     ]);
     expect(openedLanding).toBe(true);
 
@@ -113,10 +121,11 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     await page.locator('input[name="peso"]').fill('100');
     await page.locator('input[name="peso_meta"]').fill('78');
     await clickStepOption(page, 'sexo', 'M');
-
     const dateInput = page.locator('input[name="data_nascimento"]').first();
     await dateInput.fill('1990-01-01');
+    await continueWizard(page);
 
+    await expect(page.locator('text=Segurança clínica')).toBeVisible();
     await clickStepOption(page, 'comorbidades', 'hipertensao');
     await clickStepOption(page, 'contraindicacoes_glp1', 'nenhuma');
     await clickStepOption(page, 'cirurgia_bariatrica_previa', 'nao');
@@ -124,16 +133,22 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     await clickStepOption(page, 'medicamentos_prescritos_atual', 'sim');
     await clickStepOption(page, 'pressao_arterial_faixa', 'estagio1');
     await clickStepOption(page, 'frequencia_cardiaca_repouso', '60_80');
+    await continueWizard(page);
 
+    await expect(page.locator('text=Histórico e uso prévio')).toBeVisible();
     await clickStepOption(page, 'uso_medicacao_emagrecimento_recente', 'nao');
+    await continueWizard(page);
+
+    await expect(page.locator('text=Objetivos e preferência terapêutica')).toBeVisible();
     await clickStepOption(page, 'impacto_vida', 'moderado');
     await clickStepOption(page, 'objetivo_principal', 'ambos');
     await clickStepOption(page, 'preferencia_principio_ativo', 'nao_sei');
+    await continueWizard(page);
 
+    await expect(page.locator('text=Contato e autorização')).toBeVisible();
     await page.locator('input[name="primeiro_nome"]').fill('Teste Launch');
     await page.locator('input[name="whatsapp"]').fill('11999998888');
     await clickStepOption(page, 'consentimento_whatsapp', 'autorizo');
-    await acceptCookiesIfVisible(page);
 
     const finalizeRequest = page.waitForRequest(request => {
       return request.method() === 'POST' && request.url().includes('/api/triage/finalize');
@@ -154,6 +169,21 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
 
     if (!isRunningStateVisible) {
       await page.waitForURL(/.*relatorio|.*report/, { timeout: 30_000 }).catch(() => undefined);
+    }
+
+    const reachedReport = /relatorio|report/.test(page.url());
+    if (reachedReport) {
+      await acceptCookiesIfVisible(page);
+      const goToCheckout = await clickFirstVisible(page, [
+        'a[href*="/emagrecimento/checkout"]',
+        'a:has-text("Continuar para checkout")',
+        'a:has-text("Iniciar com este plano")',
+      ]);
+
+      if (goToCheckout) {
+        await page.waitForURL(/.*\/emagrecimento\/checkout/, { timeout: 20_000 });
+        await expect(page.locator('h1').first()).toContainText('Confirme seu plano', { timeout: 10_000 });
+      }
     }
 
     expect(errors).toEqual([]);

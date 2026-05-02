@@ -169,12 +169,14 @@ export function EmagrecimentoOnePageIntake({
   const [submitting, setSubmitting] = useState(false);
   const [finalizeStatus, setFinalizeStatus] = useState<RunnerCompletionStatus | 'idle'>('idle');
   const [finalizeError, setFinalizeError] = useState<string | null>(null);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
   const pendingFlushRef = useRef(false);
   const finalizeInFlightRef = useRef(false);
   const pollingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const answersRef = useRef(answers);
   const stepRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const initializedSectionRef = useRef(false);
 
   useEffect(() => {
     answersRef.current = answers;
@@ -198,6 +200,24 @@ export function EmagrecimentoOnePageIntake({
       steps: visibleSteps.filter(step => step.group === groupKey),
     })).filter(section => section.steps.length > 0);
   }, [visibleSteps]);
+
+  useEffect(() => {
+    if (!groupedSections.length) return;
+    if (!initializedSectionRef.current) {
+      const firstPendingIndex = groupedSections.findIndex(section =>
+        section.steps.some(step => !isStepAnswered(step, answersRef.current))
+      );
+      setCurrentSectionIndex(firstPendingIndex >= 0 ? firstPendingIndex : 0);
+      initializedSectionRef.current = true;
+      return;
+    }
+
+    setCurrentSectionIndex(prev => Math.min(prev, groupedSections.length - 1));
+  }, [groupedSections]);
+
+  const currentSection = groupedSections[currentSectionIndex];
+  const currentSectionStepCount = groupedSections.length;
+  const isLastSection = currentSectionIndex === groupedSections.length - 1;
 
   const clearCachedProgress = useCallback(() => {
     if (!isBrowser) return;
@@ -560,6 +580,39 @@ export function EmagrecimentoOnePageIntake({
     return Object.keys(errors).length === 0;
   }, [answers, flow.slug, steps, triageId, validateStepValue]);
 
+  const validateCurrentSection = useCallback(() => {
+    if (!currentSection) return true;
+
+    const errors: Record<string, string> = {};
+    for (const step of currentSection.steps) {
+      if (!isStepVisible(step, answers)) continue;
+      const error = validateStepValue(step, answers[step.key], answers);
+      if (error) errors[step.key] = error;
+    }
+
+    setFieldErrors(prev => ({
+      ...prev,
+      ...errors,
+    }));
+
+    if (Object.keys(errors).length > 0) {
+      trackMejoyConversionEvent('triage_submit_blocked', {
+        triageId,
+        triageSlug: flow.slug,
+        stage: 'step_validation',
+        fields: Object.keys(errors),
+        stepGroup: currentSection.key,
+      });
+    }
+
+    return Object.keys(errors).length === 0;
+  }, [answers, currentSection, flow.slug, triageId, validateStepValue]);
+
+  const handlePrevSection = useCallback(() => {
+    setCurrentSectionIndex(prev => Math.max(prev - 1, 0));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleSubmit = useCallback(async () => {
     if (!validateAll()) {
       const firstError = document.querySelector('[data-triage-field-error="true"]');
@@ -584,6 +637,22 @@ export function EmagrecimentoOnePageIntake({
       setSubmitting(false);
     }
   }, [answers, finalizeTriage, flow.slug, persistAnswer, steps, triageId, validateAll]);
+
+  const handleNextSection = useCallback(() => {
+    if (!validateCurrentSection()) {
+      const firstError = document.querySelector('[data-triage-field-error="true"]');
+      firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (isLastSection) {
+      void handleSubmit();
+      return;
+    }
+
+    setCurrentSectionIndex(prev => Math.min(prev + 1, groupedSections.length - 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [groupedSections.length, handleSubmit, isLastSection, validateCurrentSection]);
 
   const renderStep = (step: StepDef) => {
     if (!isStepVisible(step, answers)) return null;
@@ -845,87 +914,106 @@ export function EmagrecimentoOnePageIntake({
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#eef6f1_0%,#f8fafc_24%,#f8fafc_100%)] pb-40">
-      <header className="sticky top-0 z-20 border-b border-emerald-100 bg-white/92 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-emerald-50 px-3 py-2 ring-1 ring-emerald-100">
-              <MeJoyBrand
-                iconClassName="h-8 w-8 rounded-xl"
-                titleClassName="text-[15px]"
-                subtitle="Me cuido. Me amo!"
-                subtitleClassName="mt-0.5 text-[10px] font-semibold tracking-[-0.01em] text-slate-500"
-              />
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Triagem de emagrecimento</p>
-              <p className="text-xs text-slate-500">Fluxo curto, seguro e com menos fricção</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#f7f6f2] pb-32">
+      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/92 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <MeJoyBrand
+            iconClassName="h-10 w-10 rounded-[1.2rem] ring-slate-200"
+            titleClassName="text-[1.7rem] font-black tracking-[-0.06em] text-[#2f2925]"
+            subtitle="Me cuido. Me amo!"
+            subtitleClassName="mt-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500"
+          />
 
           <div className="text-right">
-            <p className="text-xs font-semibold text-slate-500">Progresso</p>
-            <p className="text-sm font-bold text-slate-900">{progress}%</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Step</p>
+            <p className="text-sm font-bold text-slate-900">
+              {Math.min(currentSectionIndex + 1, currentSectionStepCount)} / {currentSectionStepCount}
+            </p>
           </div>
         </div>
-
-        <div className="mx-auto max-w-5xl px-4 pb-3 sm:px-6">
-          <div className="flex gap-1">
-            {Array.from({ length: SEGMENTS }).map((_, index) => (
+        <div className="mx-auto max-w-5xl px-4 pb-4 sm:px-6">
+          <div className="flex gap-2">
+            {groupedSections.map((section, index) => (
               <div
-                key={index}
-                className={cn('h-2 flex-1 rounded-full transition-colors', index < filledSegments ? 'bg-emerald-600' : 'bg-slate-200')}
+                key={section.key}
+                className={cn(
+                  'h-2 flex-1 rounded-full transition-colors',
+                  index <= currentSectionIndex ? 'bg-[#93b28d]' : 'bg-slate-200'
+                )}
               />
             ))}
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl space-y-5 px-4 py-6 sm:px-6">
-        <section className="rounded-[32px] bg-[#17392f] p-6 text-white shadow-[0_28px_90px_rgba(10,18,16,0.18)]">
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-200">Resumo da jornada</p>
-          <h1 className="mt-3 text-2xl font-semibold leading-tight sm:text-3xl">
-            Menos cliques, menos rolagem e mais clareza para gerar seu relatório.
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-50/84 sm:text-base">
-            Preencha os blocos abaixo. Quando houver avaliação médica indicada, você já segue no mesmo fluxo.
-          </p>
-        </section>
-
-        {groupedSections.map(section => (
-          <section
-            key={section.key}
-            className="rounded-[32px] border border-emerald-100 bg-white/88 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.05)] backdrop-blur sm:p-5"
-          >
-            <div className="mb-4 rounded-[26px] border border-emerald-100 bg-emerald-50/70 px-4 py-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-700">{section.meta.eyebrow}</p>
-              <h2 className="mt-2 text-xl font-semibold text-slate-900 sm:text-2xl">{section.meta.title}</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{section.meta.description}</p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {section.steps.map(step => renderStep(step))}
-            </div>
+      <main className="px-4 py-8 sm:px-6 sm:py-10">
+        <div className="mx-auto max-w-4xl">
+          <section className="mb-6 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Triagem MeJoy</p>
+            <h1 className="mt-4 text-[clamp(2rem,5vw,3.75rem)] font-semibold tracking-[-0.05em] text-[#2f2925]">
+              {currentSection?.meta.title}
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+              {currentSection?.meta.description}
+            </p>
           </section>
-        ))}
+
+          <section className="rounded-[2.2rem] border border-slate-200 bg-white p-4 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-6">
+            {currentSection ? (
+              <>
+                <div className="mb-5 flex items-center justify-between gap-3 rounded-[1.8rem] bg-[#f7f6f2] px-4 py-4">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#204b3d]">
+                      {currentSection.meta.eyebrow}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-600">
+                      Progresso total: <span className="font-semibold text-slate-900">{progress}%</span>
+                    </p>
+                  </div>
+                  <div className="hidden rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 sm:block">
+                    Menos cliques, mais clareza
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {currentSection.steps.map(step => renderStep(step))}
+                </div>
+              </>
+            ) : null}
+          </section>
+        </div>
       </main>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/96 px-4 py-4 shadow-[0_-10px_40px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:px-6 sm:pb-[max(16px,env(safe-area-inset-bottom))]">
-        <div className="mx-auto flex max-w-5xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-4xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="text-center md:text-left">
-            <p className="text-sm font-semibold text-slate-900">Tudo pronto para gerar seu relatório inicial.</p>
+            <p className="text-sm font-semibold text-slate-900">
+              {isLastSection ? 'Tudo pronto para gerar seu relatório inicial.' : 'Siga para o próximo bloco da triagem.'}
+            </p>
             <p className="text-xs text-slate-500">Prescrição somente quando indicada após avaliação médica.</p>
           </div>
-          <RefinedButton
-            type="button"
-            variant="primary"
-            className="w-full rounded-full bg-emerald-600 py-4 text-base font-bold hover:bg-emerald-700 md:w-auto md:min-w-[280px]"
-            loading={submitting}
-            disabled={submitting || pendingFlushRef.current}
-            onClick={() => void handleSubmit()}
-          >
-            Gerar meu relatório
-          </RefinedButton>
+          <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+            {currentSectionIndex > 0 ? (
+              <RefinedButton
+                type="button"
+                variant="ghost"
+                className="w-full rounded-full border border-slate-300 bg-white py-4 text-base font-semibold text-slate-700 hover:bg-slate-50 md:min-w-[180px]"
+                onClick={handlePrevSection}
+              >
+                Voltar
+              </RefinedButton>
+            ) : null}
+            <RefinedButton
+              type="button"
+              variant="primary"
+              className="w-full rounded-full bg-[#93b28d] py-4 text-base font-bold uppercase tracking-[0.08em] text-white hover:bg-[#7e9f79] md:min-w-[280px]"
+              loading={submitting}
+              disabled={submitting || pendingFlushRef.current}
+              onClick={() => void handleNextSection()}
+            >
+              {isLastSection ? 'Gerar meu relatório' : 'Continuar'}
+            </RefinedButton>
+          </div>
         </div>
       </div>
     </div>

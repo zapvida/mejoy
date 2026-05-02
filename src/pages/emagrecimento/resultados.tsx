@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { EmagrecimentoLayout } from '@/components/zapfarm/emagrecimento/EmagrecimentoLayout';
+import { EmagrecimentoEditorialHero } from '@/components/zapfarm/emagrecimento/EmagrecimentoEditorialHero';
 import { ImpactStatsSection } from '@/components/zapfarm/emagrecimento/ImpactStatsSection';
 import { ResultsTimelineSection } from '@/components/zapfarm/emagrecimento/ResultsTimelineSection';
 import { ResultsSection } from '@/components/zapfarm/emagrecimento/ResultsSection';
@@ -21,59 +21,24 @@ export default function ResultadosPage() {
       </Head>
 
       <EmagrecimentoLayout>
-        {/* Hero */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 text-white">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 lg:grid-cols-2">
-              <div className="text-center lg:text-left">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 px-2 lg:px-0">
-                  Pessoas reais, evolução real, com segurança
-                </h1>
-                <p className="text-base sm:text-lg md:text-xl text-slate-100 leading-relaxed px-2 lg:px-0 mb-6">
-                  Cada organismo responde de um jeito. Por isso o acompanhamento contínuo é essencial para manter
-                  progresso e ajustar estratégia com responsabilidade.
-                </p>
-                <ul className="text-left max-w-xl mx-auto lg:mx-0 mb-8 space-y-3 text-sm sm:text-base text-slate-100">
-                  <li className="flex items-start gap-3">
-                    <span className="text-emerald-300 mt-1">✓</span>
-                    <span>Depoimentos de pacientes com identidade preservada</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-emerald-300 mt-1">✓</span>
-                    <span>Estatísticas construídas com dados de acompanhamento</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-emerald-300 mt-1">✓</span>
-                    <span>Sem promessa de resultado garantido</span>
-                  </li>
-                </ul>
-                <a
-                  href="/triagem/emagrecimento"
-                  onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).analytics) {
-                      (window as any).analytics.track('triagem_emagrecimento_cta_resultados');
-                    }
-                  }}
-                  className="inline-block rounded-full bg-emerald-500 px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-slate-950 transition-all hover:scale-105 hover:shadow-2xl"
-                >
-                  Quero saber o que é possível no meu caso
-                </a>
-              </div>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {[
-                  '/images/emagrecimento/medvi/reviews-01.webp',
-                  '/images/emagrecimento/medvi/reviews-03.avif',
-                  '/images/emagrecimento/medvi/reviews-04.avif',
-                  '/images/emagrecimento/medvi/reviews-07.webp',
-                ].map((src) => (
-                  <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/20 bg-white/5">
-                    <Image src={src} alt="Resultados e acompanhamento de pacientes" fill className="object-cover" sizes="24vw" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        <EmagrecimentoEditorialHero
+          eyebrow="Resultados MeJoy"
+          title="Pessoas reais, evolução real e acompanhamento responsável."
+          description="Cada organismo responde de um jeito. Por isso a leitura clínica e o acompanhamento contínuo continuam centrais mesmo depois da primeira perda de peso."
+          bullets={[
+            'Depoimentos com identidade preservada e foco em contexto clínico.',
+            'Estatísticas organizadas com base em acompanhamento real.',
+            'Sem promessa automática de resultado ou prescrição.',
+          ]}
+          ctaText="Quero saber o que é possível no meu caso"
+          analyticsEvent="triagem_emagrecimento_cta_resultados"
+          images={[
+            '/images/emagrecimento/medvi/reviews-01.webp',
+            '/images/emagrecimento/medvi/reviews-03.avif',
+            '/images/emagrecimento/medvi/reviews-04.avif',
+            '/images/emagrecimento/medvi/reviews-07.webp',
+          ]}
+        />
 
         {/* Impacto em números */}
         <ImpactStatsSection />

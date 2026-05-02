@@ -8,6 +8,7 @@ interface MeJoyBrandProps {
   titleClassName?: string;
   subtitle?: string;
   subtitleClassName?: string;
+  hideText?: boolean;
 }
 
 export function MeJoyBrand({
@@ -17,27 +18,30 @@ export function MeJoyBrand({
   titleClassName,
   subtitle,
   subtitleClassName,
+  hideText = false,
 }: MeJoyBrandProps) {
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
       <span
         className={cn(
-          'relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.05rem] bg-transparent shadow-[0_12px_28px_rgba(16,24,40,0.10)] ring-1 ring-white/60',
+          'relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.15rem] bg-transparent shadow-[0_12px_28px_rgba(16,24,40,0.10)] ring-1 ring-white/70',
           iconClassName
         )}
       >
         <Image src="/logosmejoy/me-mark.svg" alt="" fill className="object-contain" sizes="40px" priority />
       </span>
-      <span className="flex min-w-0 flex-col leading-none">
-        <span className={cn('text-base font-semibold tracking-[-0.04em] text-slate-950', titleClassName)}>
-          {title}
-        </span>
-        {subtitle ? (
-          <span className={cn('mt-1 text-[11px] font-medium text-slate-500', subtitleClassName)}>
-            {subtitle}
+      {!hideText ? (
+        <span className="flex min-w-0 flex-col leading-none">
+          <span className={cn('text-base font-semibold tracking-[-0.04em] text-slate-950', titleClassName)}>
+            {title}
           </span>
-        ) : null}
-      </span>
+          {subtitle ? (
+            <span className={cn('mt-1 text-[11px] font-medium text-slate-500', subtitleClassName)}>
+              {subtitle}
+            </span>
+          ) : null}
+        </span>
+      ) : null}
     </span>
   );
 }

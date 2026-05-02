@@ -250,6 +250,10 @@ export default function CheckoutPage() {
           : undefined;
 
   const selectedPlanData = plans.find(p => p.id === selectedPlan) || plans[1];
+  const stepCardClass =
+    'rounded-[2rem] border border-slate-200 bg-white p-5 sm:p-7 md:p-9 shadow-[0_24px_70px_rgba(15,23,42,0.08)]';
+  const summaryCardClass =
+    'rounded-[2rem] border border-slate-200 bg-white p-5 sm:p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:sticky lg:top-28';
 
   const steps = [
     { number: 1, title: 'Seus dados', description: 'Confirme suas informações', icon: '👤' },
@@ -540,22 +544,27 @@ export default function CheckoutPage() {
   return (
     <>
       <Head>
-        <title>Checkout - Me Joy</title>
+        <title>Checkout do Programa | Me Joy</title>
         <meta name="description" content="Finalize sua compra e inicie seu tratamento de emagrecimento" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-slate-50">
+      <div className="min-h-screen bg-[#f7f6f2] text-[#2f2925]">
         {/* Header */}
         <div className="relative z-50">
-          <HeaderZapfarm />
+          <HeaderZapfarm
+            mode="report"
+            primaryCtaHref="/emagrecimento"
+            primaryCtaLabel="Ver programa"
+            primaryCtaMobileLabel="Programa"
+          />
         </div>
 
         {/* Padding top para compensar header fixo */}
         <div className="pt-20 sm:pt-16 md:pt-20">
-          <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-8 sm:py-10 md:py-12">
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 md:py-12">
             {/* Error Message */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl animate-fade-in">
+              <div className="mb-6 rounded-[1.75rem] border border-red-200 bg-red-50 p-4 animate-fade-in">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">⚠️</span>
                   <div className="flex-1">
@@ -573,10 +582,16 @@ export default function CheckoutPage() {
             )}
             
             {/* Progress Steps */}
-            <div className="mb-8 sm:mb-12">
-              <div className="text-center mb-4">
-                <p className="text-sm text-gray-600">
-                  Passo {currentStep} de 4 — menos de 2 minutos pra concluir
+            <div className="mb-8 sm:mb-12 rounded-[2rem] border border-slate-200 bg-white px-5 py-6 shadow-[0_16px_48px_rgba(15,23,42,0.06)] sm:px-7 sm:py-8">
+              <div className="mb-6 text-center">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">
+                  Finalização do programa
+                </p>
+                <h1 className="mt-3 text-[clamp(2rem,4vw,3.5rem)] font-semibold tracking-[-0.05em] text-[#2f2925]">
+                  Confirme seu plano em quatro passos
+                </h1>
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+                  Dados, endereço, escolha do programa e pagamento seguro no mesmo fluxo visual do seu relatório.
                 </p>
               </div>
               <div className="flex items-center justify-between max-w-3xl mx-auto">
@@ -584,27 +599,27 @@ export default function CheckoutPage() {
                   <div key={step.number} className="flex items-center flex-1">
                     <div className="flex flex-col items-center flex-1">
                       <div
-                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all ${
+                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all sm:h-12 sm:w-12 sm:text-base ${
                           currentStep >= step.number
-                            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
-                            : 'bg-gray-200 text-gray-500'
+                            ? 'bg-[#2f2925] text-white shadow-[0_12px_30px_rgba(47,41,37,0.18)]'
+                            : 'bg-[#eef2ea] text-slate-500'
                         }`}
                       >
                         {currentStep > step.number ? '✓' : step.number}
                       </div>
                       <div className="mt-2 text-center hidden sm:block">
                         <div className={`text-xs sm:text-sm font-semibold ${
-                          currentStep >= step.number ? 'text-emerald-700' : 'text-gray-500'
+                          currentStep >= step.number ? 'text-[#2f2925]' : 'text-slate-500'
                         }`}>
                           {step.title}
                         </div>
-                        <div className="text-xs text-gray-500 mt-0.5">{step.description}</div>
+                        <div className="mt-0.5 text-xs text-slate-500">{step.description}</div>
                       </div>
                     </div>
                     {index < steps.length - 1 && (
                       <div
-                        className={`h-1 flex-1 mx-2 sm:mx-4 transition-all ${
-                          currentStep > step.number ? 'bg-gradient-to-r from-emerald-600 to-teal-600' : 'bg-gray-200'
+                        className={`mx-2 h-1 flex-1 rounded-full transition-all sm:mx-4 ${
+                          currentStep > step.number ? 'bg-[#93b28d]' : 'bg-[#e4e7df]'
                         }`}
                       />
                     )}
@@ -618,16 +633,17 @@ export default function CheckoutPage() {
               <div className="lg:col-span-2">
                 {/* Step 1: Dados Pessoais */}
                 {currentStep === 1 && (
-                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
+                  <div className={stepCardClass}>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Step 1</p>
+                    <h2 className="mb-2 mt-3 text-2xl font-semibold tracking-[-0.04em] text-[#2f2925] sm:text-3xl">
                       Seus dados
                     </h2>
-                    <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
+                    <p className="mb-6 text-sm text-slate-600 sm:mb-8 sm:text-base">
                       Confirme suas informações
                     </p>
                     
                     {isLoadingTriageData && (
-                      <div className="mb-6 p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                      <div className="mb-6 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4">
                         <div className="flex items-center gap-3">
                           <div className="animate-spin rounded-full h-5 w-5 border-2 border-emerald-600 border-t-transparent"></div>
                           <p className="text-sm sm:text-base text-gray-700">
@@ -732,6 +748,7 @@ export default function CheckoutPage() {
                           variant="primary"
                           size="lg"
                           disabled={!validateDataStep()}
+                          className="rounded-full bg-[#2f2925] px-8 text-base text-white hover:bg-[#201b18] hover:translate-y-0"
                         >
                           Continuar →
                         </RefinedButton>
@@ -742,11 +759,12 @@ export default function CheckoutPage() {
 
                 {/* Step 2: Endereço */}
                 {currentStep === 2 && (
-                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
+                  <div className={stepCardClass}>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Step 2</p>
+                    <h2 className="mb-2 mt-3 text-2xl font-semibold tracking-[-0.04em] text-[#2f2925] sm:text-3xl">
                       Endereço
                     </h2>
-                    <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
+                    <p className="mb-6 text-sm text-slate-600 sm:mb-8 sm:text-base">
                       Para nota e contato
                     </p>
 
@@ -840,6 +858,7 @@ export default function CheckoutPage() {
                           variant="secondary"
                           size="lg"
                           onClick={handleBack}
+                          className="rounded-full border border-slate-300 bg-white px-8 text-base text-slate-700 hover:bg-slate-50 hover:translate-y-0"
                         >
                           ← Voltar
                         </RefinedButton>
@@ -848,6 +867,7 @@ export default function CheckoutPage() {
                           variant="primary"
                           size="lg"
                           disabled={!validateStep2()}
+                          className="rounded-full bg-[#2f2925] px-8 text-base text-white hover:bg-[#201b18] hover:translate-y-0"
                         >
                           Continuar →
                         </RefinedButton>
@@ -858,17 +878,18 @@ export default function CheckoutPage() {
 
                 {/* Step 3: Escolha do Plano */}
                 {currentStep === 3 && (
-                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
+                  <div className={stepCardClass}>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Step 3</p>
+                    <h2 className="mb-2 mt-3 text-2xl font-semibold tracking-[-0.04em] text-[#2f2925] sm:text-3xl">
                       Escolha do plano
                     </h2>
-                    <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
+                    <p className="mb-6 text-sm text-slate-600 sm:mb-8 sm:text-base">
                       Escolha a melhor forma de iniciar seu programa hoje
                     </p>
                     
                     {/* Microcopy de valor */}
-                    <div className="mb-6 p-4 bg-gradient-to-r from-emerald-100 to-teal-50 rounded-xl border-2 border-emerald-200">
-                      <p className="text-sm sm:text-base text-gray-900 font-semibold leading-relaxed text-center">
+                    <div className="mb-6 rounded-[1.5rem] border border-emerald-200 bg-[#eef4eb] p-4">
+                      <p className="text-center text-sm font-semibold leading-relaxed text-[#2f2925] sm:text-base">
                         💡 <strong>Programa completo:</strong> avaliação clínica, acompanhamento, retorno médico e trilha coordenada com prescrição quando indicada.
                       </p>
                     </div>
@@ -882,20 +903,20 @@ export default function CheckoutPage() {
                       </RefinedCard>
                     )}
                     
-                    <div className="mb-6 p-4 bg-teal-50 rounded-xl border border-teal-200">
-                      <p className="text-sm sm:text-base text-gray-800">
+                    <div className="mb-6 rounded-[1.5rem] border border-slate-200 bg-[#f8faf7] p-4">
+                      <p className="text-sm text-slate-800 sm:text-base">
                         <strong>Trilha escolhida:</strong> {TRILHA_CHECKOUT_LABEL[trilha]}
                       </p>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="mt-1 text-xs text-slate-600">
                         O valor abaixo é do programa (consultas e acompanhamento). Medicação, quando prescrita, segue regras da consulta e disponibilidade.
                       </p>
                     </div>
 
                     {preferenciaPrincipio && !loadingReport && (
-                      <div className="mb-6 p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-                        <p className="text-sm sm:text-base text-gray-700">
+                      <div className="mb-6 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4">
+                        <p className="text-sm text-slate-700 sm:text-base">
                           <strong>Preferência declarada na triagem:</strong> {preferenciaPrincipio}
-                          <span className="text-gray-500 text-xs sm:text-sm block mt-1">
+                          <span className="mt-1 block text-xs text-slate-500 sm:text-sm">
                             (o médico irá avaliar se essa é a melhor opção para o seu caso)
                           </span>
                         </p>
@@ -913,10 +934,10 @@ export default function CheckoutPage() {
                           variant={selectedPlan === plan.id ? "elevated" : "default"}
                           className={`relative text-left transition-all cursor-pointer ${
                             selectedPlan === plan.id
-                              ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-teal-50 shadow-xl scale-105 ring-4 ring-emerald-100'
+                              ? 'border-[#93b28d] bg-[#f3f7f1] shadow-[0_24px_50px_rgba(147,178,141,0.22)] scale-[1.02] ring-4 ring-[#eef4eb]'
                               : plan.recommended
-                              ? 'border-teal-300 bg-gradient-to-br from-teal-50 to-emerald-50 hover:border-teal-400'
-                              : 'border-gray-200 hover:border-emerald-300 bg-white'
+                              ? 'border-[#dfe8d8] bg-[#f9fbf8] hover:border-[#b9ccb0]'
+                              : 'border-gray-200 hover:border-[#b9ccb0] bg-white'
                           }`}
                         >
                           {/* Badge */}
@@ -927,7 +948,7 @@ export default function CheckoutPage() {
                             }>
                               <div className={`px-3 sm:px-4 py-1 rounded-full text-white text-xs font-bold shadow-lg ${
                                 plan.recommended
-                                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600'
+                                  ? 'bg-[#2f2925]'
                                   : 'bg-slate-900'
                               }`}>
                                 {plan.recommended ? '⭐ ' : ''}{plan.badge}
@@ -945,7 +966,7 @@ export default function CheckoutPage() {
                           
                           {/* Preço */}
                           <div className="mb-4">
-                            <div className="text-emerald-700 font-bold text-xl sm:text-2xl mb-1">
+                            <div className="mb-1 text-xl font-bold text-[#4d6d56] sm:text-2xl">
                               {plan.price}
                             </div>
                             {plan.priceDetail && (
@@ -979,8 +1000,8 @@ export default function CheckoutPage() {
                     </div>
 
                     {/* Nota Legal */}
-                    <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-xs sm:text-sm text-gray-700 text-center leading-relaxed">
+                    <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-[#fafaf8] p-4 sm:mt-8 sm:p-6">
+                      <p className="text-center text-xs leading-relaxed text-slate-700 sm:text-sm">
                         {emagrecimentoLegalNote}
                       </p>
                     </div>
@@ -989,7 +1010,7 @@ export default function CheckoutPage() {
                       <button
                         onClick={handleNext}
                         disabled={!validateStep1()}
-                        className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full font-bold text-sm sm:text-base hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="rounded-full bg-[#2f2925] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#201b18] disabled:cursor-not-allowed disabled:opacity-50 sm:px-8 sm:py-4 sm:text-base"
                       >
                         Continuar →
                       </button>
@@ -999,11 +1020,12 @@ export default function CheckoutPage() {
 
                 {/* Step 4: Pagamento */}
                 {currentStep === 4 && (
-                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
+                  <div className={stepCardClass}>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Step 4</p>
+                    <h2 className="mb-2 mt-3 text-2xl font-semibold tracking-[-0.04em] text-[#2f2925] sm:text-3xl">
                       Pagamento seguro
                     </h2>
-                    <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
+                    <p className="mb-6 text-sm text-slate-600 sm:mb-8 sm:text-base">
                       Finalize sua compra
                     </p>
 
@@ -1018,8 +1040,8 @@ export default function CheckoutPage() {
                             onClick={() => setPaymentMethod('PIX')}
                             className={`p-5 rounded-xl border-2 transition-all text-left ${
                               paymentMethod === 'PIX'
-                                ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-teal-50 shadow-lg scale-105'
-                                : 'border-gray-200 hover:border-emerald-300 bg-white'
+                                ? 'border-[#93b28d] bg-[#f3f7f1] shadow-lg scale-[1.02]'
+                                : 'border-gray-200 hover:border-[#b9ccb0] bg-white'
                             }`}
                           >
                             <div className="text-3xl mb-2">📱</div>
@@ -1034,8 +1056,8 @@ export default function CheckoutPage() {
                             onClick={() => setPaymentMethod('CREDIT_CARD')}
                             className={`p-5 rounded-xl border-2 transition-all text-left ${
                               paymentMethod === 'CREDIT_CARD'
-                                ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-teal-50 shadow-lg scale-105'
-                                : 'border-gray-200 hover:border-emerald-300 bg-white'
+                                ? 'border-[#93b28d] bg-[#f3f7f1] shadow-lg scale-[1.02]'
+                                : 'border-gray-200 hover:border-[#b9ccb0] bg-white'
                             }`}
                           >
                             <div className="text-3xl mb-2">💳</div>
@@ -1051,7 +1073,7 @@ export default function CheckoutPage() {
 
                     {/* QR Code PIX */}
                     {pixQrCode && (
-                      <div className="p-6 sm:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 mb-6">
+                      <div className="mb-6 rounded-[1.75rem] border border-emerald-200 bg-[#f3f7f1] p-6 sm:p-8">
                         <div className="text-center">
                           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                             Escaneie o QR Code ou copie o código PIX
@@ -1062,7 +1084,7 @@ export default function CheckoutPage() {
                           
                           {/* QR Code Image */}
                           <div className="flex justify-center mb-4">
-                            <div className="bg-white p-4 rounded-xl shadow-lg">
+                            <div className="rounded-[1.5rem] bg-white p-4 shadow-lg">
                               <img 
                                 src={`data:image/png;base64,${pixQrCode}`} 
                                 alt="QR Code PIX"
@@ -1108,13 +1130,13 @@ export default function CheckoutPage() {
                           
                           {/* Status do pagamento */}
                           {paymentConfirmed ? (
-                            <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                            <div className="rounded-[1.5rem] border border-green-200 bg-green-50 p-4">
                               <div className="text-2xl mb-2">✅</div>
                               <p className="font-bold text-green-900">Pagamento confirmado!</p>
                               <p className="text-sm text-green-700">Redirecionando...</p>
                             </div>
                           ) : (
-                            <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                            <div className="rounded-[1.5rem] border border-blue-200 bg-blue-50 p-4">
                               <div className="flex items-center gap-2 justify-center">
                                 <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
                                 <p className="text-sm text-blue-700">Aguardando confirmação do pagamento...</p>
@@ -1127,14 +1149,14 @@ export default function CheckoutPage() {
 
                     {!pixQrCode && (
                       <>
-                      <div className="p-6 sm:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 mb-6 sm:mb-8">
+                      <div className="mb-6 rounded-[1.75rem] border border-emerald-200 bg-[#f3f7f1] p-6 sm:mb-8 sm:p-8">
                         <div className="text-center">
                           <div className="text-3xl sm:text-4xl mb-4">🔒</div>
                           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Pagamento seguro</h3>
                           <p className="text-sm sm:text-base text-gray-600 mb-4">
                             Seus dados estão protegidos e o pagamento será processado de forma segura através do Asaas
                           </p>
-                          <div className="text-2xl sm:text-3xl font-bold text-emerald-700 mb-2">
+                          <div className="mb-2 text-2xl font-bold text-[#4d6d56] sm:text-3xl">
                             {selectedPlanData.price}
                           </div>
                           {selectedPlanData.priceDetail && (
@@ -1151,8 +1173,8 @@ export default function CheckoutPage() {
                       </div>
 
                         <div className="space-y-4 sm:space-y-6 mb-6">
-                        <div className="p-4 sm:p-6 bg-green-50 rounded-xl border border-green-200">
-                            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed text-center">
+                        <div className="rounded-[1.5rem] border border-green-200 bg-green-50 p-4 sm:p-6">
+                            <p className="text-center text-xs leading-relaxed text-gray-700 sm:text-sm">
                               🔒 <strong>Pagamento 100% seguro via Asaas</strong> • Você pode cancelar a assinatura a qualquer momento diretamente pelo painel.
                           </p>
                         </div>
@@ -1168,6 +1190,7 @@ export default function CheckoutPage() {
                           variant="secondary"
                           size="lg"
                           onClick={handleBack}
+                          className="rounded-full border border-slate-300 bg-white px-8 text-base text-slate-700 hover:bg-slate-50 hover:translate-y-0"
                         >
                           ← Voltar
                         </RefinedButton>
@@ -1177,6 +1200,7 @@ export default function CheckoutPage() {
                           size="lg"
                           loading={loading}
                           disabled={loading}
+                          className="rounded-full bg-[#2f2925] px-8 text-base text-white hover:bg-[#201b18] hover:translate-y-0"
                         >
                           {loading ? 'Processando pagamento…' : 'Finalizar pagamento →'}
                         </RefinedButton>
@@ -1189,20 +1213,21 @@ export default function CheckoutPage() {
 
               {/* Sidebar - Resumo */}
               <div className="lg:col-span-1">
-                <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 lg:sticky lg:top-4">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Resumo do programa</h2>
-                  <div className="mb-4 p-3 rounded-lg border border-teal-100 bg-teal-50/80">
-                    <p className="text-xs font-semibold text-teal-900 uppercase tracking-wide">Trilha</p>
-                    <p className="text-sm text-gray-800 mt-1 leading-snug">{TRILHA_CHECKOUT_LABEL[trilha]}</p>
+                <div className={summaryCardClass}>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4d6d56]">Resumo do pedido</p>
+                  <h2 className="mb-4 mt-3 text-lg font-semibold tracking-[-0.03em] text-[#2f2925] sm:mb-6 sm:text-xl">Seu programa MeJoy</h2>
+                  <div className="mb-4 rounded-[1.5rem] border border-[#dfe8d8] bg-[#f9fbf8] p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#4d6d56]">Trilha</p>
+                    <p className="mt-1 text-sm leading-snug text-slate-800">{TRILHA_CHECKOUT_LABEL[trilha]}</p>
                     {preferenciaPrincipio && (
-                      <p className="text-xs text-gray-600 mt-2">
-                        Preferência na triagem: <span className="font-medium text-gray-800">{preferenciaPrincipio}</span>
+                      <p className="mt-2 text-xs text-slate-600">
+                        Preferência na triagem: <span className="font-medium text-slate-800">{preferenciaPrincipio}</span>
                       </p>
                     )}
                   </div>
-                  <div className="border-b border-gray-200 pb-4 sm:pb-6 mb-4 sm:mb-6">
-                    <div className="font-semibold text-gray-900 text-base sm:text-lg mb-2">{selectedPlanData.name}</div>
-                    <div className="text-emerald-700 font-bold text-xl sm:text-2xl mb-1">
+                  <div className="mb-4 border-b border-slate-200 pb-4 sm:mb-6 sm:pb-6">
+                    <div className="mb-2 text-base font-semibold text-slate-900 sm:text-lg">{selectedPlanData.name}</div>
+                    <div className="mb-1 text-xl font-bold text-[#4d6d56] sm:text-2xl">
                       {selectedPlanData.price}
                     </div>
                     {selectedPlanData.priceDetail && (
@@ -1211,13 +1236,13 @@ export default function CheckoutPage() {
                       </div>
                     )}
                     {selectedPlanData.duration && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-slate-500">
                         Duração: {selectedPlanData.duration}
                       </div>
                     )}
                   </div>
                   <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                    <div className="text-xs sm:text-sm text-gray-600 font-semibold">Incluso no programa:</div>
+                    <div className="text-xs font-semibold text-slate-600 sm:text-sm">Incluso no programa:</div>
                     {selectedPlanData.features.slice(0, 5).map((feature, index) => (
                       <div key={index} className="text-xs sm:text-sm text-gray-700 flex items-start gap-2 leading-relaxed">
                         <span className="text-emerald-600 flex-shrink-0 mt-0.5">
@@ -1229,8 +1254,8 @@ export default function CheckoutPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200 mb-4">
-                    <p className="text-xs text-gray-600 leading-relaxed">
+                  <div className="mb-4 rounded-[1.5rem] border border-green-200 bg-green-50 p-3 sm:p-4">
+                    <p className="text-xs leading-relaxed text-slate-600">
                       ✓ Pagamento seguro via Asaas<br />
                       ✓ Acompanhamento médico contínuo<br />
                       ✓ Suporte por WhatsApp
@@ -1240,7 +1265,7 @@ export default function CheckoutPage() {
                     href={buildZapVidaPlantaoUrl('checkout_support')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center text-xs sm:text-sm text-emerald-700 hover:text-emerald-800 font-medium py-2"
+                    className="block py-2 text-center text-xs font-medium text-[#4d6d56] hover:text-[#35503b] sm:text-sm"
                   >
                     👨‍⚕️ Tirar dúvida clínica antes de pagar
                   </a>

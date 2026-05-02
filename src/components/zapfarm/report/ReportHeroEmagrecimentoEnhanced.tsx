@@ -1,226 +1,175 @@
-// src/components/zapfarm/report/ReportHeroEmagrecimentoEnhanced.tsx
-// Hero section melhorado para emagrecimento com score e métricas
-
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ScoreCard } from '@/components/report/interactive/ScoreCard';
+import { useEffect, useMemo, useState } from 'react';
+import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
 import { normalizeBMI } from '@/lib/health/bmi';
 import type { ReportViewModel } from '@/lib/report/derive';
-import { getScientificFactsForProfile } from '@/lib/emagrecimento/scientificFacts';
 
 interface Props {
   vm: ReportViewModel;
   reportId?: string;
 }
 
-export function ReportHeroEmagrecimentoEnhanced({ vm, reportId }: Props) {
-  const [isVisible, setIsVisible] = useState(false);
-  
+const PLAN_LABEL: Record<string, string> = {
+  mensal: 'mensal',
+  trimestral: 'trimestral',
+  semestral: 'semestral',
+};
+
+function formatCountdown(totalSeconds: number) {
+  const safeSeconds = Math.max(totalSeconds, 0);
+  const minutes = Math.floor(safeSeconds / 60);
+  const seconds = safeSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+export function ReportHeroEmagrecimentoEnhanced({ vm }: Props) {
+  const [secondsLeft, setSecondsLeft] = useState(4 * 60 + 16);
+  const bmi = normalizeBMI(vm.basics.bmi, vm.basics.age);
+  const answers = (vm as any).answers || {};
+  const classification = (vm as any).classification as
+    | 'candidato_glp1'
+    | 'nao_indicado'
+    | 'contraindicado'
+    | undefined;
+  const comorbidades = Array.isArray(answers.comorbidades)
+    ? answers.comorbidades.filter((item: string) => item !== 'nenhuma')
+    : [];
+  const recommendedPlan = getRecommendedPlan(classification || 'nao_indicado', answers.impacto_vida, comorbidades);
+  const goalWeight = Number(answers.peso_meta || answers.goal_weight || 0) || null;
+  const currentWeight = vm.basics.weightKg || null;
+  const goalText = goalWeight ? `${goalWeight} kg` : 'Meta definida';
+  const metabolismText = classification === 'candidato_glp1' ? 'Elegível' : classification === 'contraindicado' ? 'Revisão prioritária' : 'Avaliação médica';
+  const sexText = vm.basics.sex === 'M' ? 'Masculino' : vm.basics.sex === 'F' ? 'Feminino' : 'Perfil';
+
   useEffect(() => {
-    setIsVisible(true);
+    const interval = window.setInterval(() => {
+      setSecondsLeft(current => (current > 0 ? current - 1 : current));
+    }, 1000);
+    return () => window.clearInterval(interval);
   }, []);
 
-  const bmi = normalizeBMI(vm.basics.bmi, vm.basics.age);
-  const bmiValue = bmi?.bmi ?? null;
-  const bmiClass = bmi?.classification ?? 'Não calculado';
-  
-  // Obter comorbidades do vm
-  const answers = (vm as any).answers || {};
-  const comorbidades = Array.isArray(answers.comorbidades)
-    ? answers.comorbidades.filter((c: string) => c !== 'nenhuma')
-    : [];
-  
-  // Obter uma curiosidade científica (usando reportId como seed para consistência servidor/cliente)
-  const scientificFact = getScientificFactsForProfile(
-    { age: vm.basics.age, sex: vm.basics.sex },
-    comorbidades,
-    1,
-    reportId || vm.triageId
-  )[0];
-  
-  // Frase de síntese baseada no IMC
-  const getSynthesisPhrase = () => {
-    if (!bmiValue) return 'Vamos entender melhor seu quadro e criar um plano personalizado para você.';
-    
-    if (bmiValue >= 30) {
-      return 'Seu peso atual aumenta o risco de problemas metabólicos e cardiovasculares, mas há muito o que podemos fazer juntos para melhorar sua saúde.';
-    } else if (bmiValue >= 25) {
-      return 'Seu peso está acima do ideal e pode impactar sua saúde, mas com mudanças graduais e acompanhamento, é possível alcançar seus objetivos.';
+  const synthesis = useMemo(() => {
+    if (classification === 'contraindicado') {
+      return 'Seu relatório mostra pontos que pedem avaliação médica mais próxima antes de qualquer programa com medicação.';
     }
-    return 'Vamos trabalhar juntos para manter ou melhorar sua saúde e qualidade de vida.';
-  };
-
-  const getScoreColor = (score: number): 'green' | 'blue' | 'purple' | 'orange' | 'red' => {
-    if (score >= 80) return 'green';
-    if (score >= 60) return 'blue';
-    if (score >= 40) return 'purple';
-    if (score >= 20) return 'orange';
-    return 'red';
-  };
+    if (classification === 'candidato_glp1') {
+      return 'Você já pode seguir para avaliação clínica do programa com boa compatibilidade preliminar para linha medicamentosa, quando indicada.';
+    }
+    return 'Seu perfil merece uma leitura clínica cuidadosa para definir a melhor conduta e o ritmo mais seguro de acompanhamento.';
+  }, [classification]);
 
   return (
-    <section className={`
-      bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white py-10 sm:py-12 md:py-16
-      transition-all duration-1000 ease-out
-      ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
-    `}>
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Mobile Layout */}
-          <div className="md:hidden space-y-6">
-            <div className="text-center">
-              <p className="text-xs uppercase tracking-[0.25em] text-white/70 mb-2">
-                Relatório Personalizado
-              </p>
-              <h1 className="text-2xl sm:text-3xl font-bold mb-3 text-white">
-                Olá, {vm.basics.firstName}! 👋
-              </h1>
-              <p className="text-base sm:text-lg text-emerald-50 mb-2 leading-relaxed">
-                {vm.greeting}
-              </p>
-              <p className="text-sm sm:text-base text-emerald-100/90 mb-4 leading-relaxed italic">
-                {getSynthesisPhrase()}
-              </p>
-              
-              {/* Cards de métricas */}
-              <div className="grid grid-cols-3 gap-3 mt-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div className="text-2xl font-bold text-white">
-                    {bmiValue?.toFixed(1) ?? '—'}
-                  </div>
-                  <div className="text-xs text-white/80 mt-1">IMC</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div className="text-lg font-bold text-white leading-tight">
-                    {bmiClass}
-                  </div>
-                  <div className="text-xs text-white/80 mt-1">Classificação</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <div className="text-xl">⚠️</div>
-                  <div className="text-xs text-white/80 mt-1">Avaliação</div>
-                </div>
-              </div>
-            </div>
+    <section className="border-b border-slate-200 bg-white">
+      <div className="mx-auto max-w-5xl px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-12">
+        <div className="text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            Aprovação preliminar ativa por
+            <span className="ml-2 text-[#7da06f]">{formatCountdown(secondsLeft)}</span>
+          </p>
+          <h1 className="mx-auto mt-5 max-w-4xl text-[clamp(2rem,5vw,4rem)] font-semibold tracking-[-0.06em] text-[#2f2925]">
+            {vm.basics.firstName}, seu plano de acompanhamento para emagrecimento está em
+            <span className="text-[#4d6d56]"> aprovação preliminar.</span>
+          </h1>
+        </div>
 
-            {/* Score Card Mobile */}
-            <div className="px-2">
-              <ScoreCard
-                score={vm.score}
-                label="Seu Momento Atual"
-                icon={vm.icon}
-                color={getScoreColor(vm.score)}
-                interpretation={vm.interpretation}
-              />
-            </div>
-            
-            {/* Seu IMC no contexto + Curiosidade */}
-            <div className="px-2 space-y-4 mt-6">
-              {/* Seu IMC no contexto */}
-              {bmiValue && (
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                  <h3 className="text-sm font-semibold text-white mb-2">📊 Seu IMC no contexto</h3>
-                    <p className="text-xs sm:text-sm text-emerald-50/95 leading-relaxed">
-                    Seu IMC de <strong>{bmiValue.toFixed(1)}</strong> ({bmiClass.toLowerCase()}) está acima do ideal e aumenta o risco de problemas como diabetes tipo 2, pressão alta e doenças cardiovasculares. 
-                    Mas não se preocupe: perder cerca de 5-10% do peso já traz grandes benefícios para glicose, pressão e saúde do fígado.
-                  </p>
-                </div>
-              )}
-              
-              {/* Você sabia? */}
-              {scientificFact && (
-                <div className="bg-gradient-to-r from-emerald-400/10 to-teal-300/10 backdrop-blur-sm rounded-xl p-4 border border-emerald-200/30">
-                  <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-                    <span>💡</span> Você sabia que...
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white leading-relaxed font-medium mb-1">
-                    {scientificFact.title}
-                  </p>
-                  <p className="text-xs text-white/90 leading-relaxed">
-                    {scientificFact.description}
-                  </p>
-                </div>
-              )}
+        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-[1.7rem] border border-slate-200 bg-[#fbfaf7] px-5 py-4 text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Meta</p>
+            <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-slate-900">{goalText}</p>
+          </div>
+          <div className="rounded-[1.7rem] border border-slate-200 bg-[#fbfaf7] px-5 py-4 text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Leitura clínica</p>
+            <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-slate-900">{metabolismText}</p>
+          </div>
+          <div className="rounded-[1.7rem] border border-slate-200 bg-[#fbfaf7] px-5 py-4 text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Perfil</p>
+            <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-slate-900">{sexText}</p>
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p className="text-lg leading-8 text-slate-700">
+              Você recebe uma leitura inicial construída a partir da sua triagem, com
+              <strong className="text-slate-900"> avaliação clínica individual</strong>, direção terapêutica coerente
+              e continuidade organizada pelo canal oficial da MeJoy.
+            </p>
+            <p className="mt-4 text-xl font-semibold leading-8 tracking-[-0.03em] text-[#2f2925]">
+              {synthesis}
+            </p>
+            <div className="mt-6 rounded-[2rem] border border-[#d9e8d3] bg-[#f5faf3] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4d6d56]">Nossa recomendação inicial</p>
+              <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[#2f2925]">
+                Programa {PLAN_LABEL[recommendedPlan] || 'personalizado'}
+              </p>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                O plano sugerido considera IMC, impacto no dia a dia, histórico clínico e preferência terapêutica,
+                sempre com revisão obrigatória do médico antes de qualquer prescrição.
+              </p>
             </div>
           </div>
 
-          {/* Desktop Layout */}
-          <div className="hidden md:grid md:grid-cols-2 md:gap-8 lg:gap-12">
-            <div className="space-y-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-white/70 mb-2">
-                  Relatório Personalizado
+          <div className="rounded-[2.3rem] border border-slate-200 bg-[#fbfaf7] p-5 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="rounded-full border border-slate-200 bg-white px-4 py-2 text-center">
+                <p className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+                  {currentWeight ? `${currentWeight} kg` : 'Hoje'}
                 </p>
-                <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-white">
-                  Olá, {vm.basics.firstName}! 👋
-                </h1>
-                <p className="text-lg lg:text-xl text-emerald-50 mb-2 leading-relaxed">
-                  {vm.greeting}
-                </p>
-                <p className="text-base text-emerald-100/90 mb-6 leading-relaxed italic">
-                  {getSynthesisPhrase()}
-                </p>
-                
-                {/* Cards de métricas */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
-                    <div className="text-3xl font-bold text-white">
-                      {bmiValue?.toFixed(1) ?? '—'}
-                    </div>
-                    <div className="text-sm text-white/80 mt-1">IMC</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
-                    <div className="text-xl font-bold text-white leading-tight">
-                      {bmiClass}
-                    </div>
-                    <div className="text-sm text-white/80 mt-1">Classificação</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
-                    <div className="text-2xl">⚠️</div>
-                    <div className="text-sm text-white/80 mt-1">Avaliação</div>
-                  </div>
-                </div>
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Agora</p>
+              </div>
+              <div className="rounded-[1.5rem] border border-[#8cd11e] bg-white px-4 py-3 text-center shadow-sm">
+                <p className="text-2xl font-semibold tracking-[-0.04em] text-slate-900">{goalText}</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Objetivo</p>
               </div>
             </div>
 
-            <div className="space-y-6">
-              {/* Score Card Desktop */}
-              <ScoreCard
-                score={vm.score}
-                label="Seu Momento Atual"
-                icon={vm.icon}
-                color={getScoreColor(vm.score)}
-                interpretation={vm.interpretation}
-              />
-              
-              {/* Seu IMC no contexto + Curiosidade */}
-              <div className="space-y-4">
-                {/* Seu IMC no contexto */}
-                {bmiValue && (
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
-                    <h3 className="text-sm font-semibold text-white mb-2">📊 Seu IMC no contexto</h3>
-                    <p className="text-sm text-emerald-50/95 leading-relaxed">
-                      Seu IMC de <strong>{bmiValue.toFixed(1)}</strong> ({bmiClass.toLowerCase()}) está acima do ideal e aumenta o risco de problemas como diabetes tipo 2, pressão alta e doenças cardiovasculares. 
-                      Mas não se preocupe: perder cerca de 5-10% do peso já traz grandes benefícios para glicose, pressão e saúde do fígado.
-                    </p>
-                  </div>
-                )}
-                
-                {/* Você sabia? */}
-                {scientificFact && (
-                  <div className="bg-gradient-to-r from-emerald-400/10 to-teal-300/10 backdrop-blur-sm rounded-xl p-5 border border-emerald-200/30">
-                    <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-                      <span>💡</span> Você sabia que...
-                    </h3>
-                    <p className="text-sm text-white leading-relaxed font-medium mb-1">
-                      {scientificFact.title}
-                    </p>
-                    <p className="text-xs text-white/90 leading-relaxed">
-                      {scientificFact.description}
-                    </p>
-                  </div>
-                )}
+            <div className="mt-6 overflow-hidden rounded-[1.8rem] border border-slate-100 bg-white px-4 py-5">
+              <svg viewBox="0 0 360 180" className="h-auto w-full" aria-hidden="true">
+                <defs>
+                  <linearGradient id="mejoyReportFill" x1="0%" x2="0%" y1="0%" y2="100%">
+                    <stop offset="0%" stopColor="#c9ec8b" stopOpacity="0.55" />
+                    <stop offset="100%" stopColor="#c9ec8b" stopOpacity="0.05" />
+                  </linearGradient>
+                </defs>
+                <line x1="38" y1="28" x2="38" y2="150" stroke="#d8e0da" strokeDasharray="4 6" />
+                <line x1="180" y1="28" x2="180" y2="150" stroke="#d8e0da" strokeDasharray="4 6" />
+                <line x1="320" y1="28" x2="320" y2="150" stroke="#d8e0da" strokeDasharray="4 6" />
+                <line x1="38" y1="72" x2="340" y2="72" stroke="#eef2ef" />
+                <line x1="38" y1="124" x2="340" y2="124" stroke="#eef2ef" />
+                <path
+                  d="M38 36 C88 40 120 58 180 82 C220 98 268 110 320 118 L320 150 L38 150 Z"
+                  fill="url(#mejoyReportFill)"
+                />
+                <path
+                  d="M38 36 C88 40 120 58 180 82 C220 98 268 110 320 118"
+                  fill="none"
+                  stroke="#8cd11e"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+              </svg>
+
+              <div className="mt-1 grid grid-cols-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <span>Hoje</span>
+                <span>8 semanas</span>
+                <span>4 meses</span>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-[1.8rem] border border-slate-200 bg-white p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4d6d56]">Resumo biométrico</p>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-500">IMC</p>
+                  <p className="mt-1 text-lg font-semibold text-slate-900">
+                    {bmi?.bmi?.toFixed(1) || vm.basics.bmi.toFixed(1)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Classificação</p>
+                  <p className="mt-1 text-lg font-semibold text-slate-900">{bmi?.classification || vm.basics.bmiCategory}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -229,8 +178,3 @@ export function ReportHeroEmagrecimentoEnhanced({ vm, reportId }: Props) {
     </section>
   );
 }
-
-
-
-
-

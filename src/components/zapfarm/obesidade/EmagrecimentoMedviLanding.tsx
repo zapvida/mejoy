@@ -4,6 +4,7 @@ import { LandingPageViewTracker } from '@/components/zapfarm/obesidade/LandingPa
 import { EmagrecimentoStickyCta } from '@/components/zapfarm/obesidade/EmagrecimentoStickyCta';
 import { HeroSectionObesidade } from '@/components/zapfarm/obesidade/HeroSectionObesidade';
 import { TrustBarSectionObesidade } from '@/components/zapfarm/obesidade/TrustBarSectionObesidade';
+import { FlowShowcaseSectionObesidade } from '@/components/zapfarm/obesidade/FlowShowcaseSectionObesidade';
 import { ZeroCostSectionObesidade } from '@/components/zapfarm/obesidade/ZeroCostSectionObesidade';
 import { HowItWorksSectionObesidade } from '@/components/zapfarm/obesidade/HowItWorksSectionObesidade';
 import { BenefitsSectionObesidade } from '@/components/zapfarm/obesidade/BenefitsSectionObesidade';
@@ -24,12 +25,19 @@ export function EmagrecimentoMedviLanding() {
     <LandingAnalyticsProvider page="emagrecimento">
       <LandingPageViewTracker />
       <div className="min-h-screen bg-white">
-        <HeaderZapfarm />
+        <HeaderZapfarm
+          mode="landing"
+          primaryCtaLabel="Começar avaliação"
+          primaryCtaMobileLabel="Começar"
+          showMenuButton
+          showDesktopLinks={false}
+        />
         <EmagrecimentoStickyCta />
         <div className="pb-20 md:pb-0">
           <HeroSectionObesidade variant="emagrecimento" />
         </div>
         <TrustBarSectionObesidade />
+        <FlowShowcaseSectionObesidade />
         <ZeroCostSectionObesidade />
         <HowItWorksSectionObesidade />
         <BenefitsSectionObesidade />
