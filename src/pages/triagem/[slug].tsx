@@ -268,10 +268,10 @@ export default function TriageSlugPage() {
 
   if (!flow) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-6 text-center text-foreground">
-        <div>
+      <main data-testid="triage-shell" className="flex min-h-screen items-center justify-center bg-[#f7f6f2] px-6 text-center text-slate-900">
+        <div className="w-full max-w-xl rounded-[32px] border border-slate-200 bg-white px-8 py-10 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
           <h1 className="text-3xl font-semibold">Triagem não encontrada</h1>
-          <p className="mt-4 text-muted-foreground">
+          <p className="mt-4 text-slate-600">
             Não encontramos uma triagem ativa com o identificador fornecido. Volte para a página
             anterior e escolha novamente.
           </p>
@@ -291,24 +291,24 @@ export default function TriageSlugPage() {
       </Head>
 
       {state === "loading" && (
-        <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-4 text-white">
-          <div className="space-y-6 text-center">
+        <main data-testid="triage-shell" className="flex min-h-screen items-center justify-center bg-[#f7f6f2] px-4 text-slate-900">
+          <div className="w-full max-w-lg rounded-[32px] border border-slate-200 bg-white px-8 py-10 text-center shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
             {/* Spinner animado com gradiente */}
             <div className="mx-auto relative">
-              <div className="h-16 w-16 sm:h-20 sm:w-20 animate-spin rounded-full border-4 border-white/10 border-t-transparent">
+              <div className="h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-transparent sm:h-20 sm:w-20">
                 <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin" style={{ animationDuration: '1.5s' }} />
                 <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-amber-400 animate-spin" style={{ animationDuration: '1s', animationDirection: 'reverse' }} />
               </div>
             </div>
             
             {/* Texto de loading */}
-            <div className="space-y-2">
+            <div className="mt-6 space-y-2">
               <p className="text-lg font-semibold sm:text-xl">Preparando sua triagem...</p>
-              <p className="text-sm text-white/60 sm:text-base">Isso pode levar alguns instantes</p>
+              <p className="text-sm text-slate-500 sm:text-base">Isso pode levar alguns instantes</p>
             </div>
 
             {/* Barra de progresso animada */}
-            <div className="mx-auto w-48 sm:w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="mx-auto mt-6 h-1 w-48 overflow-hidden rounded-full bg-slate-100 sm:w-64">
               <div className="h-full bg-gradient-to-r from-emerald-500 to-amber-400 rounded-full animate-pulse" style={{ width: '60%' }} />
             </div>
           </div>
@@ -316,12 +316,12 @@ export default function TriageSlugPage() {
       )}
 
       {state === "error" && (
-        <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-4 sm:px-6 text-center text-white">
-          <div className="w-full max-w-lg space-y-6 sm:space-y-8">
+        <main data-testid="triage-shell" className="flex min-h-screen items-center justify-center bg-[#f7f6f2] px-4 text-center text-slate-900 sm:px-6">
+          <div className="w-full max-w-lg rounded-[32px] border border-slate-200 bg-white px-8 py-10 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
             {/* Ícone de erro animado */}
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-500/10 sm:h-24 sm:w-24">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-50 sm:h-24 sm:w-24">
               <svg 
-                className="h-10 w-10 text-red-400 sm:h-12 sm:w-12" 
+                className="h-10 w-10 text-red-500 sm:h-12 sm:w-12" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -336,15 +336,15 @@ export default function TriageSlugPage() {
             </div>
 
             {/* Título e mensagem */}
-            <div className="space-y-3">
+            <div className="mt-6 space-y-3">
               <h1 className="text-2xl font-bold sm:text-3xl">Não foi possível iniciar</h1>
-              <p className="text-base text-white/70 sm:text-lg">
+              <p className="text-base text-slate-600 sm:text-lg">
                 {error || "Ocorreu um erro ao carregar a triagem. Por favor, tente novamente."}
               </p>
             </div>
 
             {/* Botões de ação */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
               <button
                 type="button"
                 onClick={() => fetchSession()}
@@ -360,14 +360,14 @@ export default function TriageSlugPage() {
               <button
                 type="button"
                 onClick={() => router.push("/triagem")}
-                className="rounded-full border-2 border-white/30 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/50 hover:bg-white/10 hover:text-white hover:shadow-lg active:scale-95 sm:px-10 sm:py-4 sm:text-base"
+                className="rounded-full border-2 border-slate-200 bg-white px-8 py-3.5 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-slate-300 hover:text-slate-900 hover:shadow-lg active:scale-95 sm:px-10 sm:py-4 sm:text-base"
               >
                 Escolher outra triagem
               </button>
             </div>
 
             {/* Informação adicional */}
-            <div className="pt-4 text-xs text-white/50 sm:text-sm">
+            <div className="pt-4 text-xs text-slate-500 sm:text-sm">
               <p>Se o problema persistir, entre em contato com nosso suporte.</p>
             </div>
           </div>
@@ -375,13 +375,13 @@ export default function TriageSlugPage() {
       )}
 
       {state === "ready" && session && (
-        <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950">
+        <main data-testid="triage-shell" className="min-h-screen bg-[#f7f6f2]">
           {session.completed ? (
-            <div className="flex min-h-screen flex-col items-center justify-center px-6 text-white">
-              <div className="w-full max-w-2xl rounded-[32px] border border-white/10 bg-white/10 p-10 text-center backdrop-blur-xl shadow-[0_40px_120px_rgba(10,14,40,0.6)]">
-                <span className="text-xs uppercase tracking-[0.4em] text-white/60">Triagem concluída</span>
+            <div className="flex min-h-screen flex-col items-center justify-center px-6 text-slate-900">
+              <div className="w-full max-w-2xl rounded-[32px] border border-slate-200 bg-white p-10 text-center shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+                <span className="text-xs uppercase tracking-[0.4em] text-emerald-700/80">Triagem concluída</span>
                 <h1 className="mt-4 text-3xl font-semibold">{flow.title}</h1>
-                <p className="mt-4 text-white/80">
+                <p className="mt-4 text-slate-600">
                   Seu relatório está pronto e ficou salvo com segurança. Você pode acessá-lo quando quiser.
                 </p>
                 
@@ -408,7 +408,7 @@ export default function TriageSlugPage() {
                   <button
                     type="button"
                     onClick={handleRestart}
-                    className="rounded-full border border-white/30 px-8 py-3 text-sm font-semibold text-white/80 hover:text-white"
+                    className="rounded-full border border-slate-200 px-8 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
                   >
                     Iniciar nova triagem
                   </button>
@@ -418,17 +418,17 @@ export default function TriageSlugPage() {
           ) : (
             <>
               {hasProgress && !showRunner && (
-                <section className="flex min-h-screen items-center justify-center px-6 py-16 text-white">
-                  <div className="w-full max-w-2xl rounded-[32px] border border-white/10 bg-white/10 p-10 backdrop-blur-xl shadow-[0_40px_120px_rgba(10,14,40,0.6)]">
-                    <span className="text-xs uppercase tracking-[0.4em] text-white/60">
+                <section className="flex min-h-screen items-center justify-center px-6 py-16 text-slate-900">
+                  <div className="w-full max-w-2xl rounded-[32px] border border-slate-200 bg-white p-10 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+                    <span className="text-xs uppercase tracking-[0.4em] text-emerald-700/80">
                       Você parou por aqui
                     </span>
                     <h1 className="mt-4 text-3xl font-semibold">{flow.title}</h1>
-                    <p className="mt-4 text-white/75">
+                    <p className="mt-4 text-slate-600">
                       Podemos continuar de onde você parou ou reiniciar com dados em branco. Suas respostas anteriores ficaram salvas com segurança.
                     </p>
                     {finalizeState === "failed" && finalizeError && (
-                      <div className="mt-6 rounded-3xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">
+                      <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
                         {finalizeError}
                       </div>
                     )}
@@ -443,7 +443,7 @@ export default function TriageSlugPage() {
                       <button
                         type="button"
                         onClick={handleRestart}
-                        className="rounded-full border border-white/30 px-8 py-3 text-sm font-semibold text-white/80 hover:text-white"
+                        className="rounded-full border border-slate-200 px-8 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
                       >
                         Começar do zero
                       </button>

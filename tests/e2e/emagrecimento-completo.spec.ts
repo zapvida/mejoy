@@ -54,13 +54,36 @@ async function continueWizard(page: Page) {
 }
 
 async function acceptCookiesIfVisible(page: Page) {
-  const accepted = await clickFirstVisible(page, [
-    'button:has-text("Aceitar")',
-    'button:has-text("Aceitar todos")',
-  ]);
-  if (accepted) {
-    await page.waitForTimeout(400);
+  for (const delayMs of [0, 600]) {
+    if (delayMs) {
+      await page.waitForTimeout(delayMs);
+    }
+
+    for (const selector of ['button:has-text("Aceitar")', 'button:has-text("Aceitar todos")']) {
+      const locator = page.locator(selector);
+      const count = await locator.count().catch(() => 0);
+
+      for (let index = count - 1; index >= 0; index -= 1) {
+        const candidate = locator.nth(index);
+        if (await candidate.isVisible({ timeout: 800 }).catch(() => false)) {
+          await candidate.click({ force: true });
+          await page.waitForTimeout(400);
+          return;
+        }
+      }
+    }
   }
+}
+
+async function ensureFreshTriageStart(page: Page) {
+  const resumeState = page.locator('text=Você parou por aqui');
+  if (await resumeState.isVisible({ timeout: 4_000 }).catch(() => false)) {
+    await page.locator('button:has-text("Começar do zero")').click();
+  }
+
+  await expect(page.locator('text=Consentimento e dados base')).toBeVisible({ timeout: 15_000 });
+  await acceptCookiesIfVisible(page);
+  await expect(page.locator('[data-testid="triage-shell"]').first()).toHaveCSS('background-color', 'rgb(247, 246, 242)');
 }
 
 test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
@@ -98,23 +121,25 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     ]);
     expect(openedLanding).toBe(true);
 
-    await page.waitForURL(/.*\/emagrecimento/, { timeout: 15_000 });
+    await expect(page).toHaveURL(/.*\/emagrecimento(?:\?.*)?$/, { timeout: 15_000 });
     await acceptCookiesIfVisible(page);
 
-    const goToTriage = page.waitForURL(/.*triagem\/emagrecimento/, { timeout: 15_000 });
-    const clickedTriage = await clickFirstVisible(page, [
-      'header a:has-text("Começar")',
-      'a:has-text("Começar avaliação")',
-      'a:has-text("Começar minha triagem agora")',
-      'a:has-text("Começar minha triagem")',
-      'a[href*="triagem/emagrecimento"]',
-      'a:has-text("Ver minha elegibilidade")',
-    ]);
+    const triageLinks = page.locator('a[href*="triagem/emagrecimento"]');
+    await expect(triageLinks.first()).toBeVisible({ timeout: 15_000 });
+    let clickedTriage = false;
+    const triageLinkCount = await triageLinks.count();
+    for (let index = 0; index < triageLinkCount; index += 1) {
+      const candidate = triageLinks.nth(index);
+      if (await candidate.isVisible({ timeout: 1_500 }).catch(() => false)) {
+        await candidate.click({ force: true });
+        clickedTriage = true;
+        break;
+      }
+    }
     expect(clickedTriage).toBe(true);
-    await goToTriage;
+    await expect(page).toHaveURL(/.*triagem\/emagrecimento(?:\?.*)?$/, { timeout: 15_000 });
     await acceptCookiesIfVisible(page);
-
-    await expect(page.locator('text=Consentimento e dados base')).toBeVisible();
+    await ensureFreshTriageStart(page);
 
     await clickStepOption(page, 'aceita_termos', 'aceito');
     await page.locator('input[name="altura"]').fill('170');
@@ -122,10 +147,13 @@ test.describe('Fluxo Canônico Emagrecimento - Launch Smoke', () => {
     await page.locator('input[name="peso_meta"]').fill('78');
     await clickStepOption(page, 'sexo', 'M');
     const dateInput = page.locator('input[name="data_nascimento"]').first();
-    await dateInput.fill('1990-01-01');
+    await dateInput.fill('01/01/1990');
+    await expect(dateInput).toHaveValue('01/01/1990');
+    await dateInput.press('Tab');
+    await page.waitForTimeout(150);
     await continueWizard(page);
 
-    await expect(page.locator('text=Segurança clínica')).toBeVisible();
+    await expect(page.locator('text=Segurança clínica')).toBeVisible({ timeout: 10_000 });
     await clickStepOption(page, 'comorbidades', 'hipertensao');
     await clickStepOption(page, 'contraindicacoes_glp1', 'nenhuma');
     await clickStepOption(page, 'cirurgia_bariatrica_previa', 'nao');

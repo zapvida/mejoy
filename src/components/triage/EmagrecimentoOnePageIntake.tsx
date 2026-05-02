@@ -93,6 +93,47 @@ const normalizePhoneInputValue = (value: unknown) => {
   return withoutCountryCode.slice(0, 11);
 };
 
+const formatBirthDateDisplay = (value: unknown) => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const [year, month, day] = raw.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
+  const digits = raw.replace(/\D/g, '').slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+};
+
+const parseBirthDateToIso = (value: unknown) => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length !== 8) return null;
+
+  const day = Number(digits.slice(0, 2));
+  const month = Number(digits.slice(2, 4));
+  const year = Number(digits.slice(4, 8));
+
+  if (year < 1900 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+  const date = new Date(year, month - 1, day);
+  const isSameDate =
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day;
+
+  if (!isSameDate) return null;
+
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
+
 const readPending = (triageId: string): PendingPayload[] => {
   if (!isBrowser) return [];
   try {
@@ -166,6 +207,7 @@ export function EmagrecimentoOnePageIntake({
   const steps = useMemo(() => flow.steps.filter(step => step.type !== 'info'), [flow.steps]);
   const [answers, setAnswers] = useState<Record<string, any>>(() => ({ ...initialAnswers }));
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [birthDateDrafts, setBirthDateDrafts] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [finalizeStatus, setFinalizeStatus] = useState<RunnerCompletionStatus | 'idle'>('idle');
   const [finalizeError, setFinalizeError] = useState<string | null>(null);
@@ -239,7 +281,10 @@ export function EmagrecimentoOnePageIntake({
   }, []);
 
   const validateDate = useCallback((value: any) => {
-    const date = new Date(value);
+    const normalizedValue = parseBirthDateToIso(value);
+    if (!normalizedValue) return 'Digite uma data válida no formato DD/MM/AAAA.';
+
+    const date = new Date(`${normalizedValue}T00:00:00`);
     if (Number.isNaN(date.getTime())) return 'Data inválida.';
     const age = Math.floor((Date.now() - date.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
     if (age < 18) return 'Programa disponível apenas para maiores de 18 anos.';
@@ -731,13 +776,56 @@ export function EmagrecimentoOnePageIntake({
     }
 
     if (step.type === 'date') {
+      const displayValue = birthDateDrafts[step.key] ?? formatBirthDateDisplay(answers[step.key] ?? '');
+
       return baseWrap(
-        <input
+        <EnhancedInput
           name={step.key}
-          type="date"
-          className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-          value={answers[step.key] ?? ''}
-          onChange={event => setField(step, event.target.value)}
+          type="text"
+          inputMode="numeric"
+          autoComplete="bday"
+          placeholder="DD/MM/AAAA"
+          maxLength={10}
+          value={displayValue}
+          onChange={event => {
+            const nextDraft = formatBirthDateDisplay(event.target.value);
+            setBirthDateDrafts(prev => ({ ...prev, [step.key]: nextDraft }));
+
+            if (!nextDraft) {
+              setField(step, '');
+              setSingleFieldError(step.key, null);
+              return;
+            }
+
+            const normalizedValue = parseBirthDateToIso(nextDraft);
+            if (normalizedValue) {
+              setField(step, normalizedValue);
+              setSingleFieldError(step.key, validateDate(normalizedValue));
+              return;
+            }
+
+            const digitCount = nextDraft.replace(/\D/g, '').length;
+            if (digitCount === 8) {
+              setSingleFieldError(step.key, 'Digite uma data válida no formato DD/MM/AAAA.');
+            } else {
+              setSingleFieldError(step.key, null);
+            }
+          }}
+          onBlur={() => {
+            const draft = birthDateDrafts[step.key] ?? '';
+            if (!draft) return;
+
+            const normalizedValue = parseBirthDateToIso(draft);
+            if (normalizedValue) {
+              setField(step, normalizedValue);
+              setSingleFieldError(step.key, validateDate(normalizedValue));
+              return;
+            }
+
+            setSingleFieldError(step.key, 'Digite a data no formato DD/MM/AAAA.');
+          }}
+          helperText="Digite sua data sem abrir calendário."
+          className="rounded-2xl border border-slate-200 px-4 py-3 tracking-[0.08em] text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
         />
       );
     }
