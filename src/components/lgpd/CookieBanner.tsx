@@ -128,7 +128,7 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[max(10px,env(safe-area-inset-bottom))] sm:px-4">
+    <div className="fixed inset-x-0 bottom-0 z-[70] px-3 pb-[max(10px,env(safe-area-inset-bottom))] sm:px-4">
       <div className="mx-auto max-w-5xl rounded-[26px] border border-zinc-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
         <div className="px-3 py-3 sm:px-5 sm:py-5">
           {!showSettings ? (

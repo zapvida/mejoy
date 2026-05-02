@@ -53,19 +53,19 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
   };
 
   return (
-    <section className="bg-[#f7f6f2] px-4 pb-12 pt-24 sm:px-6 sm:pb-16 sm:pt-28 lg:px-8 lg:pt-32">
+    <section className="bg-[#f7f6f2] px-4 pb-10 pt-24 sm:px-6 sm:pb-16 sm:pt-28 lg:px-8 lg:pt-32">
       <div className="mx-auto max-w-7xl">
         <div className="border-b border-slate-200/80 pb-4 text-center text-sm text-[#345242]">
           <span className="font-semibold text-[#7c9d74]">Promoção de primavera!</span>{' '}
           <span className="font-medium">{getLpPriceHook()}</span>
         </div>
 
-        <div className="mx-auto max-w-5xl pt-8 text-center sm:pt-12">
+        <div className="mx-auto max-w-6xl pt-7 text-center sm:pt-12">
           <p className="text-sm text-slate-600 sm:text-lg">
             Junte-se a <span className="font-bold text-slate-900">mais de 500.000</span> pacientes da MeJoy
           </p>
 
-          <h1 className="mx-auto mt-5 max-w-5xl text-[clamp(2.3rem,7vw,5.2rem)] font-normal leading-[0.98] tracking-[-0.06em] text-[#2f2925]">
+          <h1 className="mx-auto mt-4 max-w-[1180px] text-[clamp(2rem,9vw,4.8rem)] font-normal leading-[0.96] tracking-[-0.06em] text-[#2f2925] sm:mt-5 sm:text-[clamp(2.3rem,5.2vw,4.4rem)] sm:leading-[0.94] lg:text-[4.65rem]">
             {variant === 'emagrecimento' ? (
               <>
                 Finalmente levando a sério a perda de peso? Nós também.
@@ -76,17 +76,17 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
             )}
           </h1>
 
-          <div className="mx-auto mt-7 max-w-xl space-y-2 text-sm text-slate-700 sm:text-base">
+          <div className="mx-auto mt-4 max-w-2xl space-y-1.5 text-sm text-slate-700 sm:mt-4 sm:space-y-1.5 sm:text-[15px] sm:leading-7">
             <p>Perca gordura toda semana</p>
-            <p>Garantia MeJoy</p>
             <p>
-              <strong>Sem taxa de adesão ou custos ocultos!</strong> Tudo o que você precisa está incluído.
+              <strong>Sem taxa de adesão ou custos ocultos.</strong> Tudo o que você precisa está incluído.
             </p>
-            <p>{copy.subheadline}</p>
-            <p>Aprovado para sua rotina, quando indicado em consulta.</p>
+            <p className="sm:hidden">Triagem rápida e continuidade clínica sem fricção.</p>
+            <p className="hidden sm:block">{copy.subheadline}</p>
+            <p className="hidden sm:block">Aprovado para sua rotina, quando indicado em consulta.</p>
           </div>
 
-          <div className="mt-7">
+          <div className="mt-4 sm:mt-5">
             <a
               href="/triagem/emagrecimento"
               onClick={handlePrimaryCta}
@@ -100,7 +100,7 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
           </div>
         </div>
 
-        <div className="mt-10 lg:hidden">
+        <div className="mt-6 lg:hidden">
           <div className="grid grid-cols-3 gap-3">
             {collageMobile.map(item => (
               <div key={item.src} className={cn('relative overflow-hidden bg-[#dfd7c9]', item.className)}>
@@ -117,7 +117,7 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
           </div>
         </div>
 
-        <div className="mt-12 hidden lg:block">
+        <div className="mt-5 hidden lg:block">
           <div className="grid grid-cols-[1.05fr_0.95fr_1fr_0.95fr_1.05fr] gap-3">
             <div className="space-y-3">
               <div className="relative h-[19rem] overflow-hidden rounded-[2.2rem] bg-[#dbd5cc]">
