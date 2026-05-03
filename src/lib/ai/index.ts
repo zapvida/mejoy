@@ -4,7 +4,7 @@
 import OpenAI from 'openai';
 import { z } from 'zod';
 
-import { serverEnv } from '@/env';
+import { serverEnv } from '@/lib/env';
 import { getPatientBasics } from '@/lib/triage/patientData';
 
 export interface TriagePayload {

@@ -2,7 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { deriveReport } from '@/lib/report/derive';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
@@ -424,6 +423,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     // Modo mock para desenvolvimento
     if (!supabaseUrl || !supabaseKey) {
       if (process.env.NODE_ENV === 'development') {
+        const { deriveReport } = await import('@/lib/report/derive');
         console.warn('[relatorio] Supabase não configurado, usando modo mock');
         
         // Em modo mock, os dados já foram processados no finalize
@@ -546,7 +546,8 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
       age,
       sex: patientSnapshot.sex || answers.sex
     });
-    
+
+    const { deriveReport } = await import('@/lib/report/derive');
     const vm = await deriveReport({
       triageId: resolvedId,
       sessionData: {
