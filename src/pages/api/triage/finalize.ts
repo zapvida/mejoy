@@ -6,6 +6,7 @@ import { advanceLead } from "@/lib/funnel/service";
 import { serverEnv } from "@/lib/env";
 import { coercePhoneLike } from "@/lib/phone/normalize";
 import { deriveReport } from "@/lib/report/derive";
+import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
 import { sendEvolutionMessage } from "@/lib/evolution/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -22,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(`[finalize] Processing triageId: ${triageId}, triageSlug: ${triageSlug || 'not provided'}`);
 
     // Verificar se Supabase está configurado
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const { url: supabaseUrl } = getSupabaseServerConfig();
     const supabaseKey = serverEnv.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {

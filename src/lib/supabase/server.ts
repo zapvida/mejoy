@@ -1,25 +1,24 @@
 import { NextApiRequest } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import { hasSupabaseAdminConfig, supabaseAdmin } from '../supabaseAdmin';
+import { getSupabaseServerConfig } from './runtime-config';
 
 /**
  * Helper para criar cliente Supabase no servidor usando request (API Routes)
  */
 export function createServerSupabaseClientFromRequest() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url: supabaseUrl, anonKey: supabaseAnonKey, serviceRoleKey } = getSupabaseServerConfig();
 
   if (!supabaseUrl || !supabaseAnonKey) {
     return null;
   }
 
   // Criar cliente com service role para operações server-side
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceKey) {
+  if (!serviceRoleKey) {
     console.warn('[createServerSupabaseClientFromRequest] SUPABASE_SERVICE_ROLE_KEY não configurado');
   }
 
-  return createClient(supabaseUrl, serviceKey || supabaseAnonKey, {
+  return createClient(supabaseUrl, serviceRoleKey || supabaseAnonKey, {
     auth: {
       persistSession: false,
     },

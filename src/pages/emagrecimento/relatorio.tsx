@@ -32,6 +32,7 @@ import {
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
 import { createClinicalHandoff } from '@/lib/handoff/client';
 import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
+import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
 interface RelatorioEmagrecimentoProps {
   vm: ReportViewModel | null;
@@ -417,9 +418,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
   }
 
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey =
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
 
     // Modo mock para desenvolvimento
     if (!supabaseUrl || !supabaseKey) {

@@ -11,6 +11,7 @@ import { vmToLabReportData } from '@/lib/pdf/lab/mappers';
 import { renderWithMinSize, MIN_PDF_BYTES } from '@/lib/pdf/lab/size';
 import { deriveReport } from '@/lib/report/derive';
 import type { ReportViewModel } from '@/lib/report/derive';
+import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
 function tinyFallback(): Buffer {
   const text = 'Me Joy - PDF fallback (emergencial).';
@@ -47,8 +48,7 @@ async function getVM(req: NextApiRequest): Promise<ReportViewModel & { answers?:
     return buildDemoVM();
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
 
   if (!supabaseUrl || !supabaseKey) {
     return buildDemoVM();

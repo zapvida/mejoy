@@ -1,3 +1,9 @@
+const DEFAULT_PUBLIC_SUPABASE_URL = 'https://ksmrownmfwcywhxtpshq.supabase.co';
+const DEFAULT_PUBLIC_SUPABASE_PUBLISHABLE_KEY =
+  'sb_publishable_zsyeTlTXL4jzYVpz5RyiKQ_xQdOGyQQ';
+const shouldUseManagedSupabaseFallback =
+  process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL_ENV);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // output: 'standalone' removido - causa ENOENT no build Next.js 15 (rename export/*.html)
@@ -6,6 +12,14 @@ const nextConfig = {
   // Variáveis de ambiente para PDF
   env: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.mejoy.com.br',
+    NEXT_PUBLIC_SUPABASE_URL:
+      process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      process.env.SUPABASE_URL ||
+      (shouldUseManagedSupabaseFallback ? DEFAULT_PUBLIC_SUPABASE_URL : ''),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY:
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      process.env.SUPABASE_ANON_KEY ||
+      (shouldUseManagedSupabaseFallback ? DEFAULT_PUBLIC_SUPABASE_PUBLISHABLE_KEY : ''),
   },
   
   // Configurações de segurança - FAIL FAST
