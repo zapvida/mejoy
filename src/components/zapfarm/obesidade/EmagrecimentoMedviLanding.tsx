@@ -3,12 +3,7 @@ import { FooterZapfarm } from '@/components/zapfarm/emagrecimento/FooterZapfarm'
 import { LandingPageViewTracker } from '@/components/zapfarm/obesidade/LandingPageViewTracker';
 import { EmagrecimentoStickyCta } from '@/components/zapfarm/obesidade/EmagrecimentoStickyCta';
 import { HeroSectionObesidade } from '@/components/zapfarm/obesidade/HeroSectionObesidade';
-import { TrustBarSectionObesidade } from '@/components/zapfarm/obesidade/TrustBarSectionObesidade';
-import { ZeroCostSectionObesidade } from '@/components/zapfarm/obesidade/ZeroCostSectionObesidade';
-import { HowItWorksSectionObesidade } from '@/components/zapfarm/obesidade/HowItWorksSectionObesidade';
 import { BenefitsSectionObesidade } from '@/components/zapfarm/obesidade/BenefitsSectionObesidade';
-import { TailoredSectionObesidade } from '@/components/zapfarm/obesidade/TailoredSectionObesidade';
-import { AppFeaturesSectionObesidade } from '@/components/zapfarm/obesidade/AppFeaturesSectionObesidade';
 import { PlansSectionObesidade } from '@/components/zapfarm/obesidade/PlansSectionObesidade';
 import { TestimonialsSectionObesidade } from '@/components/zapfarm/obesidade/TestimonialsSectionObesidade';
 import { DecisionSectionObesidade } from '@/components/zapfarm/obesidade/DecisionSectionObesidade';
@@ -29,14 +24,9 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
         <EmagrecimentoStickyCta />
         <main className="pb-24 md:pb-0">
           <HeroSectionObesidade variant="emagrecimento" />
-          <TrustBarSectionObesidade />
-          <ZeroCostSectionObesidade />
-          <HowItWorksSectionObesidade />
           <BenefitsSectionObesidade />
-          <TailoredSectionObesidade />
-          <AppFeaturesSectionObesidade />
-          <TestimonialsSectionObesidade />
           <PlansSectionObesidade />
+          <TestimonialsSectionObesidade />
           <DecisionSectionObesidade />
           <FaqSectionObesidade />
           <EmagrecimentoLegalDisclaimerSection />

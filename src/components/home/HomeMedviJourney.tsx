@@ -21,7 +21,7 @@ const manrope = Manrope({
 });
 
 export function HomeMedviJourney({
-  page = 'home',
+  page = 'emagrecimento',
   canonicalPath = '/',
 }: {
   page?: LandingPageKey;
