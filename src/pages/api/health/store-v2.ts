@@ -5,6 +5,8 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
+import { getFallbackCatalogStats } from '@/lib/store-v2/catalog-fallback';
+import { getRuntimeErrorMessage, isDataStoreUnavailable } from '@/lib/prisma/runtime-errors';
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   const started = Date.now();
@@ -41,11 +43,29 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       timeMs: Date.now() - started,
     });
   } catch (err) {
+    if (isDataStoreUnavailable(err)) {
+      const fallback = getFallbackCatalogStats();
+      const version = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || process.env.npm_package_version || 'unknown';
+      return res.status(200).json({
+        ok: true,
+        degraded: true,
+        storeV2Enabled: true,
+        db: 'degraded',
+        productCount: fallback.total,
+        lastOrder: null,
+        version,
+        source: 'fallback_catalog',
+        error: getRuntimeErrorMessage(err),
+        timestamp: new Date().toISOString(),
+        timeMs: Date.now() - started,
+      });
+    }
+
     return res.status(503).json({
       ok: false,
       storeV2Enabled: true,
       db: 'error',
-      error: err instanceof Error ? err.message : 'Unknown error',
+      error: getRuntimeErrorMessage(err),
       timestamp: new Date().toISOString(),
       timeMs: Date.now() - started,
     });

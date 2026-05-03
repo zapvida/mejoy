@@ -7,6 +7,7 @@ import { sendPaymentConfirmedEmail, sendStoreV2OrderConfirmedEmail, sendWelcomeE
 import { createMagicLink } from '@/lib/auth/magic-link';
 import { sendEvolutionMessage, sendEvolutionMessageStoreV2 } from '@/lib/evolution/client';
 import { prisma } from '@/lib/prisma';
+import { buildOrderAccessUrl } from '@/lib/store-v2/order-access';
 
 export const config = { api: { bodyParser: false } };
 
@@ -389,6 +390,10 @@ async function processStoreV2Payment(payment: AsaasPaymentResponse) {
           totalCents: order.totalCents,
           shippingCents: order.shippingCents,
           shippingDays: order.shippingDays ?? undefined,
+          orderUrl: buildOrderAccessUrl({
+            orderId: order.id,
+            customerEmail,
+          }),
         });
       } catch (emailErr) {
         storeLogger.error('Store V2 confirmation email failed', emailErr as Error, {

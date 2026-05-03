@@ -5,8 +5,8 @@
  * 
  * Configuração necessária:
  * - RESEND_API_KEY: API key do Resend
- * - EMAIL_FROM: Email remetente (padrão: Me Joy <noreply@zapfarm.com.br>)
- * - EMAIL_REPLY_TO: Email para respostas (padrão: contato@zapfarm.com.br)
+ * - EMAIL_FROM: Email remetente (padrão: MeJoy <noreply@mejoy.com.br>)
+ * - EMAIL_REPLY_TO: Email para respostas (padrão: suporte@mejoy.com.br)
  * - NEXT_PUBLIC_SITE_URL: URL base do site
  */
 
@@ -15,8 +15,9 @@ export type { EmailData, EmailResult, EmailTemplate, EmailTemplateData } from '.
 
 // Funções de conveniência para casos de uso comuns
 import { sendEmail } from './client';
+import { buildOrderAccessUrl } from '@/lib/store-v2/order-access';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zapfarm.com.br';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mejoy.com.br';
 
 /**
  * Envia email quando triagem é completada
@@ -217,6 +218,7 @@ export async function sendStoreV2OrderConfirmedEmail(
     shippingCents?: number;
     shippingDays?: number;
     address?: string;
+    orderUrl?: string;
   }
 ) {
   if (!email || !email.includes('@')) {
@@ -231,33 +233,51 @@ export async function sendStoreV2OrderConfirmedEmail(
     data: {
       ...data,
       email: email.trim().toLowerCase(),
+      orderUrl: data.orderUrl || buildOrderAccessUrl({
+        orderId: data.orderId,
+        customerEmail: email.trim().toLowerCase(),
+      }),
     },
   });
 }
 
 export async function sendStoreV2OrderShippedEmail(
   email: string,
-  data: { name?: string; firstName?: string; orderId: string; trackingCode?: string; trackingUrl?: string }
+  data: { name?: string; firstName?: string; orderId: string; trackingCode?: string; trackingUrl?: string; orderUrl?: string }
 ) {
   if (!email || !email.includes('@')) return { success: false, error: 'Email inválido' };
   return sendEmail({
     to: email.trim().toLowerCase(),
     subject: 'Seu pedido foi enviado! 🚚 Me Joy',
     template: 'store-v2-order-shipped',
-    data: { ...data, email: email.trim().toLowerCase() },
+    data: {
+      ...data,
+      email: email.trim().toLowerCase(),
+      orderUrl: data.orderUrl || buildOrderAccessUrl({
+        orderId: data.orderId,
+        customerEmail: email.trim().toLowerCase(),
+      }),
+    },
   });
 }
 
 export async function sendStoreV2OrderDeliveredEmail(
   email: string,
-  data: { name?: string; firstName?: string; orderId: string }
+  data: { name?: string; firstName?: string; orderId: string; orderUrl?: string }
 ) {
   if (!email || !email.includes('@')) return { success: false, error: 'Email inválido' };
   return sendEmail({
     to: email.trim().toLowerCase(),
     subject: 'Pedido entregue! 🏠 Me Joy',
     template: 'store-v2-order-delivered',
-    data: { ...data, email: email.trim().toLowerCase() },
+    data: {
+      ...data,
+      email: email.trim().toLowerCase(),
+      orderUrl: data.orderUrl || buildOrderAccessUrl({
+        orderId: data.orderId,
+        customerEmail: email.trim().toLowerCase(),
+      }),
+    },
   });
 }
 
@@ -278,4 +298,3 @@ export async function sendFollowUpD7Email(email: string, data: { name?: string; 
     },
   });
 }
-

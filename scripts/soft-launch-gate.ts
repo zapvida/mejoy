@@ -22,10 +22,12 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { config } from 'dotenv';
+import { launchTaskCommands, withEnv } from './lib/local-cli';
 config({ path: path.join(process.cwd(), '.env.local') });
 
 const BASE_URL = process.env.BASE_URL || '';
 const OUTPUT = path.join(process.cwd(), 'scripts', 'generated', 'soft-launch-gate-report.json');
+const commands = launchTaskCommands();
 
 interface StepResult {
   name: string;
@@ -60,43 +62,43 @@ async function main() {
   console.log('\n🚀 SOFT LAUNCH GATE\n');
 
   // 1. Lint
-  const lint = run('Lint', 'pnpm run lint');
+  const lint = run('Lint', commands.lint);
   results.push(lint);
   if (!lint.passed) allPassed = false;
   console.log(lint.passed ? '✅ Lint OK' : '❌ Lint FAILED');
 
   // 2. Typecheck
-  const tc = run('Typecheck', 'pnpm run typecheck');
+  const tc = run('Typecheck', commands.typecheck);
   results.push(tc);
   if (!tc.passed) allPassed = false;
   console.log(tc.passed ? '✅ Typecheck OK' : '❌ Typecheck FAILED');
 
   // 3. Build
-  const build = run('Build', 'pnpm run build');
+  const build = run('Build', commands.build);
   results.push(build);
   if (!build.passed) allPassed = false;
   console.log(build.passed ? '✅ Build OK' : '❌ Build FAILED');
 
   // 4. Validate Akkermat (contra baseline versionado)
-  const validate = run('Validate Akkermat', 'pnpm run validate:akkermat');
+  const validate = run('Validate Akkermat', commands.validateAkkermat);
   results.push(validate);
   if (!validate.passed) allPassed = false;
   console.log(validate.passed ? '✅ Validate Akkermat OK' : '❌ Validate Akkermat FAILED');
 
   // 5. Validate scientific references
-  const refs = run('Validate Scientific References', 'pnpm run copy:validate:references');
+  const refs = run('Validate Scientific References', commands.validateScientificReferences);
   results.push(refs);
   if (!refs.passed) allPassed = false;
   console.log(refs.passed ? '✅ Scientific References OK' : '❌ Scientific References FAILED');
 
   // 6. Validate PDP copy
-  const pdp = run('Validate PDP Copy', 'pnpm run copy:validate:pdp');
+  const pdp = run('Validate PDP Copy', commands.validatePdp);
   results.push(pdp);
   if (!pdp.passed) allPassed = false;
   console.log(pdp.passed ? '✅ Validate PDP Copy OK' : '❌ Validate PDP Copy FAILED');
 
   // 7. Launch gate lote âncora (strict)
-  const launch = run('Launch Gate Lote Âncora', 'pnpm run launch:gate');
+  const launch = run('Launch Gate Lote Âncora', commands.launchGate);
   results.push(launch);
   if (!launch.passed) allPassed = false;
   console.log(launch.passed ? '✅ Launch Gate OK' : '❌ Launch Gate FAILED');
@@ -104,7 +106,10 @@ async function main() {
   // 8. Smoke HTTP (se BASE_URL)
   let smokePassed = true;
   if (BASE_URL) {
-    const smoke = run('Smoke HTTP', `PDP_LIMIT=4 BASE_URL=${BASE_URL} pnpm tsx scripts/smoke-launch.ts`);
+    const smoke = run(
+      'Smoke HTTP',
+      withEnv(commands.smokeLaunch, { BASE_URL, PDP_LIMIT: '4' })
+    );
     results.push(smoke);
     if (!smoke.passed) {
       smokePassed = false;

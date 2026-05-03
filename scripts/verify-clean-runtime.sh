@@ -7,13 +7,25 @@
 # Ex:  ./scripts/verify-clean-runtime.sh
 #      BASE_URL=http://localhost:3000 ./scripts/verify-clean-runtime.sh
 #
-# Requer: pnpm, DATABASE_URL (para smoke com PDPs)
+# Requer: binários do projeto em node_modules/.bin, DATABASE_URL (para smoke com PDPs)
 
 set -euo pipefail
 
 BASE_URL="${BASE_URL:-http://localhost:3000}"
 [ -n "${1:-}" ] && BASE_URL="$1"
 PORT="${PORT:-3000}"
+
+resolve_bin() {
+  local name="$1"
+  if [ -x "./node_modules/.bin/$name" ]; then
+    printf './node_modules/.bin/%s' "$name"
+    return 0
+  fi
+  command -v "$name"
+}
+
+NEXT_BIN="$(resolve_bin next)"
+TSX_BIN="$(resolve_bin tsx)"
 
 echo "=============================================="
 echo "  VERIFY CLEAN RUNTIME — Me Joy"
@@ -30,7 +42,7 @@ echo ""
 
 # 2. Build limpo
 echo "🔨 2. Build limpo..."
-pnpm run build
+NEXT_TELEMETRY_DISABLED=1 "$NEXT_BIN" build
 echo "   ✅ Build OK"
 echo ""
 
@@ -42,8 +54,8 @@ if lsof -ti:$PORT >/dev/null 2>&1; then
 fi
 
 # 4. Start em background (produção)
-echo "🚀 4. Iniciando servidor (pnpm start)..."
-PORT=$PORT pnpm start &
+echo "🚀 4. Iniciando servidor (next start)..."
+PORT=$PORT "$NEXT_BIN" start &
 SERVER_PID=$!
 echo "   PID: $SERVER_PID"
 echo "   Aguardando servidor em http://localhost:$PORT..."
@@ -66,7 +78,7 @@ echo ""
 
 # 5. Smoke launch
 echo "🔍 5. Smoke launch..."
-if PDP_LIMIT=4 BASE_URL="$BASE_URL" pnpm tsx scripts/smoke-launch.ts; then
+if PDP_LIMIT=4 BASE_URL="$BASE_URL" "$TSX_BIN" scripts/smoke-launch.ts; then
   echo "   ✅ Smoke launch OK"
 else
   echo "   ❌ Smoke launch FAILED"
@@ -77,7 +89,7 @@ echo ""
 
 # 6. Validate Akkermat
 echo "🔐 6. Validate Akkermat..."
-if BASE_URL="$BASE_URL" pnpm tsx scripts/validate-akkermat-regression.ts; then
+if BASE_URL="$BASE_URL" "$TSX_BIN" scripts/validate-akkermat-regression.ts; then
   echo "   ✅ Akkermat intacto"
 else
   echo "   ❌ Akkermat REGRESSÃO"

@@ -2,23 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { searchProductsIntelligent } from '@/lib/store-v2/search-intelligent';
 import { getCopyV4BySku } from '@/lib/store-v2/copy-v2';
 import { isCopyV4Enabled } from '@/lib/flags';
-
-function getErrorMessage(err: unknown): string {
-  if (err instanceof Error) return err.message;
-  return String(err);
-}
-
-function isDataStoreUnavailable(err: unknown): boolean {
-  const msg = getErrorMessage(err).toLowerCase();
-  return (
-    msg.includes('denied access') ||
-    msg.includes("can't reach database") ||
-    msg.includes('prismaclientinitializationerror') ||
-    msg.includes('p1000') ||
-    msg.includes('p1001') ||
-    msg.includes('p1010')
-  );
-}
+import { getRuntimeErrorMessage, isDataStoreUnavailable } from '@/lib/prisma/runtime-errors';
+import { searchFallbackCatalog } from '@/lib/store-v2/catalog-fallback';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -43,8 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ results });
   } catch (err) {
     if (isDataStoreUnavailable(err)) {
-      return res.status(200).json({ results: [], degraded: true });
+      const fallbackResults = searchFallbackCatalog(q);
+      return res.status(200).json({
+        results: fallbackResults,
+        degraded: true,
+        code: 'DATASTORE_UNAVAILABLE',
+        error: 'Catalogo temporariamente indisponivel',
+      });
     }
-    return res.status(500).json({ results: [], error: getErrorMessage(err) });
+    return res.status(500).json({ results: [], error: getRuntimeErrorMessage(err) });
   }
 }

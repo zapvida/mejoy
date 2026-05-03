@@ -97,8 +97,8 @@ export default function Politica() {
               <h2 className="text-xl md:text-3xl font-semibold mb-4 text-white">8. Contato</h2>
               <p className="leading-relaxed text-muted-foreground">
                 Se tiver qualquer dúvida sobre esta Política de Privacidade ou desejar exercer seus direitos, entre em contato pelo e-mail:{' '}
-                <a href="mailto:contato@zapfarm.com.br" className="text-brand underline hover:text-green-300 transition-colors">
-                  contato@zapfarm.com.br
+                <a href="mailto:suporte@mejoy.com.br" className="text-brand underline hover:text-green-300 transition-colors">
+                  suporte@mejoy.com.br
                 </a>
               </p>
             </section>

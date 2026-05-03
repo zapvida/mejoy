@@ -48,7 +48,7 @@ const ALL: Tenant[] = [
     brand: {
       primary: '#10b981',
       secondary: '#059669',
-      logoPath: '/tenants/zapfarm/logo.svg'
+      logoPath: '/logosmejoy/logomejoy.png'
     },
     stripe: {
       prices: SHARED_PRICES

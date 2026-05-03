@@ -8,11 +8,18 @@ import useSWR from 'swr';
 import Link from 'next/link';
 
 import { AdminLayout } from '@/components/admin/AdminLayout';
+import { adminFetchJson, AdminClientError } from '@/lib/admin/client';
 
-const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key';
+const fetcher = adminFetchJson;
 
-const fetcher = (url: string) =>
-  fetch(url, { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } }).then((r) => r.json());
+type AdminStoreOrderListItem = {
+  id: string;
+  customerAccessUrl: string;
+  customerEmail: string;
+  customerName: string;
+  status: string;
+  totalCents: number;
+};
 
 const STATUS_OPTIONS = [
   { value: '', label: 'Todos' },
@@ -38,13 +45,13 @@ export default function AdminStoreV2OrdersPage() {
   if (statusFilter) params.set('status', statusFilter);
   if (debouncedSearch) params.set('search', debouncedSearch);
 
-  const { data: orders = [], error, mutate } = useSWR(
+  const { data: orders = [], error, mutate } = useSWR<AdminStoreOrderListItem[]>(
     `/api/admin/store-v2/orders?${params}`,
     fetcher,
     { refreshInterval: 30000 }
   );
 
-  const { data: orderDetail } = useSWR(
+  const { data: orderDetail, mutate: mutateOrderDetail } = useSWR<any>(
     selectedOrder ? `/api/admin/store-v2/orders/${selectedOrder}` : null,
     fetcher
   );
@@ -58,14 +65,14 @@ export default function AdminStoreV2OrdersPage() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${ADMIN_TOKEN}`,
         },
+        credentials: 'same-origin',
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Erro');
       mutate();
       if (selectedOrder === orderId) {
-        mutate(`/api/admin/store-v2/orders/${orderId}`);
+        mutateOrderDetail();
       }
     } catch (e) {
       alert(e instanceof Error ? e.message : 'Erro ao atualizar');
@@ -81,6 +88,15 @@ export default function AdminStoreV2OrdersPage() {
       </Head>
       <AdminLayout title="Pedidos Loja (Store V2)" subtitle="Gerencie status e rastreamento">
         <div className="space-y-6">
+          {error instanceof AdminClientError && error.status === 401 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+              Sessão admin necessária para carregar e editar pedidos.
+              <Link href="/admin/login" className="ml-2 font-semibold underline">
+                Entrar
+              </Link>
+            </div>
+          )}
+
           {/* Filtros */}
           <div className="flex flex-col sm:flex-row gap-4">
             <select
@@ -113,7 +129,9 @@ export default function AdminStoreV2OrdersPage() {
           </div>
 
           {error && (
-            <p className="text-red-600">Erro ao carregar pedidos. Verifique ADMIN_SECRET_KEY.</p>
+            <p className="text-red-600">
+              {error instanceof Error ? error.message : 'Erro ao carregar pedidos.'}
+            </p>
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -139,7 +157,7 @@ export default function AdminStoreV2OrdersPage() {
                         }`}
                       >
                         <td className="px-4 py-3">
-                          <Link href={`/pedidos/${o.id}`} target="_blank" className="text-blue-600 hover:underline">
+                          <Link href={o.customerAccessUrl} target="_blank" className="text-blue-600 hover:underline">
                             #{o.id.slice(-8).toUpperCase()}
                           </Link>
                         </td>

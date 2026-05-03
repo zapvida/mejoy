@@ -19,6 +19,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { config } from 'dotenv';
+import { launchTaskCommands } from './lib/local-cli';
 config({ path: path.join(process.cwd(), '.env.local') });
 import { parseCSV } from './lib/copy-utils';
 
@@ -40,6 +41,7 @@ const LOTE_PATH = path.join(process.cwd(), 'data', 'store-v2', 'lote-ancora-skus
 const COPY_V4_PATH = path.join(process.cwd(), 'data', 'store-v2', 'copy', 'copy-blueprint-v4.csv');
 const BASE_URL = process.env.BASE_URL || '';
 const OUTPUT = path.join(process.cwd(), 'scripts', 'generated', 'launch-gate-lote-ancora-report.json');
+const commands = launchTaskCommands();
 
 function hasContent(s: string | null | undefined, minLen = 20): boolean {
   return typeof s === 'string' && s.trim().length >= minLen;
@@ -314,7 +316,7 @@ async function main() {
   const { execSync } = await import('child_process');
   let akkermatOk = true;
   try {
-    execSync('pnpm tsx scripts/validate-akkermat-regression.ts', {
+    execSync(commands.validateAkkermat, {
       stdio: 'pipe',
       cwd: process.cwd(),
     });

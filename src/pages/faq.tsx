@@ -109,8 +109,8 @@ export default function FAQ() {
               <h2 id="faq12" className="text-2xl font-bold mb-4 text-white">❓ Ainda tenho dúvidas...</h2>
               <p className="text-muted-foreground">
                 Estamos aqui para ajudar! Envie um e-mail para{' '}
-                <a href="mailto:contato@zapfarm.com.br" className="text-brand underline hover:text-green-300 transition-colors">
-                  contato@zapfarm.com.br
+                <a href="mailto:suporte@mejoy.com.br" className="text-brand underline hover:text-green-300 transition-colors">
+                  suporte@mejoy.com.br
                 </a>{' '}
                 ou acesse o seu dashboard para falar com nosso suporte.
               </p>

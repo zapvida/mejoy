@@ -7,7 +7,7 @@ const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '55479778947
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20Me%20Joy%20Farma`;
 
 /** Páginas onde o botão NÃO aparece (PDP tem CTA integrado na barra fixa) */
-const HIDE_ON_PATHS = ['/admin', '/b2b', '/login', '/auth', '/dashboard', '/checkout', '/triagem', '/cart', '/p'];
+const HIDE_ON_PATHS = ['/admin', '/b2b', '/login', '/auth', '/dashboard', '/checkout', '/triagem', '/cart', '/p', '/emagrecimento'];
 
 /** Ícone oficial do WhatsApp (SVG) */
 function WhatsAppIcon({ className }: { className?: string }) {

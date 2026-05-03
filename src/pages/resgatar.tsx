@@ -96,7 +96,7 @@ const RedeemPage = () => {
         <meta name="description" content="Resgate seu presente Me Joy Plus usando o código fornecido." />
         <meta property="og:title" content="Resgatar Presente - Me Joy Plus" />
         <meta property="og:description" content="Resgate seu presente Me Joy Plus usando o código fornecido." />
-        <link rel="canonical" href="https://zapfarm.com.br/resgatar" />
+        <link rel="canonical" href="https://www.mejoy.com.br/resgatar" />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
@@ -105,8 +105,8 @@ const RedeemPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <img src="/logosmejoy/logomejoy.png" alt="Me Joy Farma" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">Me Joy</span>
+                <img src="/logosmejoy/logomejoy.png" alt="MeJoy" className="h-8 w-auto object-contain" />
+                <span className="text-xl font-bold text-white">MeJoy</span>
               </div>
               <button
                 onClick={() => router.push('/')}
@@ -220,10 +220,10 @@ const RedeemPage = () => {
               Problemas com o resgate?
             </p>
             <a
-              href="mailto:suporte@zapfarm.com.br"
+              href="mailto:suporte@mejoy.com.br"
               className="text-purple-400 hover:text-purple-300 transition-colors"
             >
-              suporte@zapfarm.com.br
+              suporte@mejoy.com.br
             </a>
           </div>
         </div>

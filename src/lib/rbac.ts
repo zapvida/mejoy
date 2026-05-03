@@ -2,6 +2,7 @@
 // Sistema de controle de acesso baseado em roles (RBAC)
 
 import { NextApiRequest } from 'next';
+import { allowLegacyAdminBearer, getAdminSessionUser, verifyAdminSecret } from '@/lib/admin/session';
 
 export type AdminRole = 'admin' | 'analyst';
 
@@ -49,17 +50,23 @@ const ADMIN_USERS: AdminUser[] = [
 ];
 
 export function getAdminUser(req: NextApiRequest): AdminUser | null {
-  // Verificação básica por header Authorization
+  const sessionUser = getAdminSessionUser(req);
+  if (sessionUser) {
+    return sessionUser;
+  }
+
+  if (!allowLegacyAdminBearer()) {
+    return null;
+  }
+
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }
 
   const token = authHeader.substring(7);
-  const secret = process.env.ADMIN_SECRET_KEY || process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key';
-
-  if (token === secret) {
-    return ADMIN_USERS[0]; // admin padrão
+  if (verifyAdminSecret(token)) {
+    return ADMIN_USERS[0];
   }
 
   return null;

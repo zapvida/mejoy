@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSampleProductSlug } from '@/lib/store-v2/catalog';
+import { getFallbackSampleSlug } from '@/lib/store-v2/catalog-fallback';
 
 /**
  * GET /api/store-v2/catalog/sample-slug
@@ -15,6 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const slug = await getSampleProductSlug();
     return res.status(200).json({ slug });
   } catch (err) {
-    return res.status(500).json({ slug: null, error: String(err) });
+    return res.status(200).json({
+      slug: getFallbackSampleSlug(),
+      degraded: true,
+      error: String(err),
+    });
   }
 }

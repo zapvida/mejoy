@@ -3,6 +3,7 @@
  */
 
 import Head from 'next/head';
+import Link from 'next/link';
 
 export async function getServerSideProps() {
   return { props: {} };
@@ -12,7 +13,16 @@ import useSWR from 'swr';
 import { FiDownload } from 'react-icons/fi';
 
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { getMockLeads } from '../../lib/admin-mocks';
+import { adminFetchJson, AdminClientError } from '@/lib/admin/client';
+
+type LeadsResponse = {
+  leads: Array<Record<string, any>>;
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  generatedAt: string;
+};
 
 const PRODUCTS = [
   { slug: '', label: 'Todos os produtos' },
@@ -38,27 +48,6 @@ const STEPS = [
   { slug: 'paid', label: 'Pago' },
 ];
 
-const token = () => process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key';
-
-const fetcherWithMocks = async (url: string) => {
-  try {
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token()}` },
-    });
-    if (res.ok) return res.json();
-  } catch { /* fetch failed, use mock */ }
-  const leads = getMockLeads(200);
-  return {
-    leads,
-    total: 5000,
-    page: 1,
-    pageSize: 20,
-    totalPages: 250,
-    generatedAt: new Date().toISOString(),
-    _mock: true,
-  };
-};
-
 export default function AdminLeadsPage() {
   const [productSlug, setProductSlug] = useState('');
   const [currentStep, setCurrentStep] = useState('');
@@ -70,7 +59,7 @@ export default function AdminLeadsPage() {
   params.set('page', String(page));
   params.set('pageSize', '20');
 
-  const { data, error } = useSWR(`/api/admin/leads?${params}`, fetcherWithMocks, {
+  const { data, error } = useSWR<LeadsResponse>(`/api/admin/leads?${params}`, adminFetchJson, {
     refreshInterval: 30000,
   });
 
@@ -81,9 +70,7 @@ export default function AdminLeadsPage() {
       if (currentStep) p.set('currentStep', currentStep);
       if (includePII) p.set('includePII', 'true');
       const res = await fetch(`/api/admin/leads/export?${p}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key'}`,
-        },
+        credentials: 'same-origin',
       });
       if (!res.ok) throw new Error('Erro na exportação');
       const blob = await res.blob();
@@ -105,6 +92,15 @@ export default function AdminLeadsPage() {
       </Head>
       <AdminLayout title="Leads Unificados" subtitle="Funil por produto e etapa em que cada pessoa parou">
         <div className="space-y-6">
+          {error instanceof AdminClientError && error.status === 401 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+              Sessão admin necessária para carregar os leads.
+              <Link href="/admin/login" className="ml-2 font-semibold underline">
+                Entrar
+              </Link>
+            </div>
+          )}
+
           <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
             <div className="flex flex-wrap gap-3">
               <select
@@ -147,13 +143,6 @@ export default function AdminLeadsPage() {
               </button>
             </div>
           </div>
-
-          {(data as any)?._mock && (
-            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-2">
-              <span className="text-amber-600 text-sm font-medium">Modo demonstração</span>
-              <span className="text-amber-600/80 text-xs">5000 leads simulados. Configure ADMIN_SECRET_KEY na Vercel para dados reais.</span>
-            </div>
-          )}
 
           {data && (
             <>

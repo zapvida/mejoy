@@ -10,7 +10,7 @@ const BRAND_COLORS = {
 };
 
 function getBaseTemplate(content: string, data: EmailTemplateData): string {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zapfarm.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mejoy.com.br';
   const unsubscribeUrl = data.unsubscribeUrl || `${siteUrl}/unsubscribe?email=${encodeURIComponent(data.email || '')}`;
 
   return `
@@ -83,7 +83,7 @@ function getButtonStyle(href: string, label: string): string {
 }
 
 export function renderTemplate(template: EmailTemplate, data: EmailTemplateData): { html: string; text: string } {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zapfarm.com.br';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mejoy.com.br';
   const firstName = data.firstName || data.name?.split(' ')[0] || 'Cliente';
 
   let html = '';
@@ -315,7 +315,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
       break;
 
     case 'store-v2-order-confirmed': {
-      const orderUrl = `${siteUrl}/pedidos/${data.orderId || ''}`;
+      const orderUrl = data.orderUrl || `${siteUrl}/pedidos/${data.orderId || ''}`;
       const itemsList = Array.isArray(data.items) ? data.items.map((i: any) =>
         `• ${i.name} × ${i.quantity} — R$ ${((i.priceCents * i.quantity) / 100).toFixed(2)}`
       ).join('<br>') : '';
@@ -350,7 +350,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
     }
 
     case 'store-v2-order-shipped': {
-      const orderUrl2 = `${siteUrl}/pedidos/${data.orderId || ''}`;
+      const orderUrl2 = data.orderUrl || `${siteUrl}/pedidos/${data.orderId || ''}`;
       const trackUrl = data.trackingUrl || orderUrl2;
       html = getBaseTemplate(`
         <h2 style="margin: 0 0 20px 0; color: ${BRAND_COLORS.secondary}; font-size: 24px;">
@@ -370,7 +370,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
     }
 
     case 'store-v2-order-delivered': {
-      const orderUrl3 = `${siteUrl}/pedidos/${data.orderId || ''}`;
+      const orderUrl3 = data.orderUrl || `${siteUrl}/pedidos/${data.orderId || ''}`;
       html = getBaseTemplate(`
         <h2 style="margin: 0 0 20px 0; color: ${BRAND_COLORS.secondary}; font-size: 24px;">
           Pedido entregue! 🏠
@@ -401,4 +401,3 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
 
   return { html, text };
 }
-

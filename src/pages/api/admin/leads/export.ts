@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           updated_at: s.updated_at,
         }));
       }
-    } catch (_) {
+    } catch {
       const { data: sessions } = await supabaseAdmin
         .from('triage_sessions')
         .select('profile_id, triage_slug, completed_at, updated_at')
@@ -121,7 +121,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             metadata: { includePII: true, count: rows.length },
           },
         });
-      } catch (_) {
+      } catch {
         // AdminAuditLog pode não existir
       }
     }

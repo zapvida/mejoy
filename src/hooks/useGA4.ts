@@ -46,10 +46,10 @@ export function useGA4() {
 }
 
 // Hook específico para triagens
-export function useTriageTracking(triageType: string, totalSteps: number) {
+export function useTriageTracking(triageType: string, _totalSteps: number) {
   const { trackTriageEvent } = useGA4();
 
-  const trackStep = (step: number, additionalData?: Record<string, any>) => {
+  const trackStep = (_step: number, _additionalData?: Record<string, any>) => {
     trackTriageEvent(triageType);
   };
 

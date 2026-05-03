@@ -346,14 +346,14 @@ export function ReportActionPlanGamified({ vm, reportId }: ReportActionPlanGamif
       {/* CTAs no rodapé */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <a
-          href={`/emagrecimento/checkout?reportId=${reportId}`}
+          href="#report-inline-checkout"
           className="flex items-center justify-center gap-3 px-6 py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
         >
           <span className="text-xl">💬</span>
           <span>Consulta médica já!</span>
         </a>
         <a
-          href={`/emagrecimento/checkout?reportId=${reportId}`}
+          href="#report-inline-checkout"
           className="flex items-center justify-center gap-3 px-6 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
         >
           <span className="text-xl">🌱</span>
@@ -363,7 +363,6 @@ export function ReportActionPlanGamified({ vm, reportId }: ReportActionPlanGamif
     </section>
   );
 }
-
 
 
 

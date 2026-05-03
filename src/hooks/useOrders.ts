@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { fetchWithUserSession } from '@/lib/api/client-auth';
 
 type Order = {
   id: string;
@@ -32,18 +33,11 @@ export function useOrders() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/api/orders', {
-          headers: {
-            'X-User-Email': user.email,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao buscar pedidos');
+        const response = await fetchWithUserSession<Order[]>('/api/orders');
+        if (response.ok === false) {
+          throw new Error(response.error || 'Erro ao buscar pedidos');
         }
-
-        const data = await response.json();
-        setOrders(data);
+        setOrders(response.data);
       } catch (err: any) {
         console.error('[useOrders] Error:', err);
         setError(err.message || 'Erro ao carregar pedidos');
@@ -58,4 +52,3 @@ export function useOrders() {
 
   return { orders, loading, error };
 }
-
