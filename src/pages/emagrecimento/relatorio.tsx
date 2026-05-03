@@ -476,7 +476,10 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     const resolvedId = await resolveTriageId(supabase, id);
     const { data: sessionRow, error: sessionError } = await supabase
       .from('triage_sessions')
-      .select('*')
+      .select(`
+        *,
+        triage_reports(status, sections)
+      `)
       .eq('triage_id', resolvedId)
       .single();
 
@@ -484,8 +487,20 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
       return { props: { vm: null, reportId: id, error: 'Sessão não encontrada' } };
     }
 
+    const reportRow = Array.isArray(sessionRow.triage_reports)
+      ? sessionRow.triage_reports[0]
+      : sessionRow.triage_reports;
     const patientSnapshot = sessionRow.profile_snapshot || {};
     const answers = sessionRow.answers || {};
+    const triageSlug = sessionRow.triage_slug || 'emagrecimento';
+
+    if (reportRow?.status === 'completed' && reportRow?.sections && typeof reportRow.sections === 'object') {
+      const cached = reportRow.sections as ReportViewModel;
+      if (cached?.id && cached?.basics && cached?.content) {
+        (cached as any).answers = answers;
+        return { props: { vm: cached, reportId: resolvedId } };
+      }
+    }
     
     // Extrair dados do snapshot e answers (priorizar snapshot)
     const weightKg = patientSnapshot.weight_kg ?? answers.peso ?? answers.weight ?? null;
@@ -547,7 +562,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
           weightKg: weightKg ? Number(weightKg) : null,
           heightCm: heightCm ? Number(heightCm) : null,
         },
-        triageSlug: sessionRow.triage_slug || 'emagrecimento',
+        triageSlug,
       },
       options: {
         includeAudio: false,
