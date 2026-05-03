@@ -1,364 +1,475 @@
-/**
- * Admin Dashboard - Estilo ZapVida: clean, sidebar, KPIs, funil, atividades
- */
-
-import { Analytics } from '@vercel/analytics/react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { FiRefreshCw, FiFilter, FiUsers, FiTrendingUp, FiDollarSign, FiActivity } from 'react-icons/fi';
+import { useEffect, useMemo, useState } from 'react';
+import { FiActivity, FiAlertTriangle, FiRefreshCw, FiShield, FiTrendingUp, FiTruck, FiUsers } from 'react-icons/fi';
 import useSWR from 'swr';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-import { AdminLayout } from '../../components/admin/AdminLayout';
-import { AlertsPanel } from '../../components/admin/AlertsPanel';
-import { ExportBar } from '../../components/admin/ExportBar';
-import { Funnel } from '../../components/admin/Funnel';
-import { ProductFunnels } from '../../components/admin/ProductFunnels';
-import { KPIBar } from '../../components/admin/KPIBar';
-import { ProductUsage } from '../../components/admin/ProductUsage';
-import { Revenue } from '../../components/admin/Revenue';
-import { TechHealth } from '../../components/admin/TechHealth';
-import {
-  getMockKPIs,
-  getMockFunnel,
-  getMockRevenue,
-  getMockProduct,
-  getMockTech,
-  getMockActivities,
-  getMockAlerts,
-  getMockFunnelsByProduct,
-} from '../../lib/admin-mocks';
+import { AdminLayout } from '@/components/admin/AdminLayout';
+import { adminFetchJson, AdminClientError } from '@/lib/admin/client';
+import type { AdminAlert, AdminDashboardResponse, AdminMetricValue, AdminQueueItem } from '@/lib/dashboard/types';
 
-export async function getServerSideProps() {
-  return { props: {} };
-}
-
-const token = () => process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key';
-
-const fetcherWithMocks = async (url: string): Promise<any> => {
-  try {
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token()}` },
-    });
-    if (res.ok) return res.json();
-  } catch { /* fetch failed, use mock */ }
-  const u = new URL(url, 'http://x');
-  const period = u.searchParams.get('period') || '30d';
-  const mock = (data: any) => ({ ...data, _mock: true });
-  if (url.includes('/kpis')) return mock(getMockKPIs(period));
-  if (url.includes('/funnel')) return mock(getMockFunnel(period));
-  if (url.includes('/revenue')) return mock(getMockRevenue(period));
-  if (url.includes('/product')) return mock(getMockProduct(period));
-  if (url.includes('/tech')) return mock(getMockTech());
-  if (url.includes('/activities')) return mock({ activities: getMockActivities(8) });
-  if (url.includes('/alerts')) return mock(getMockAlerts());
-  if (url.includes('/funnel-by-product')) return mock({ funnels: getMockFunnelsByProduct(period) });
-  throw new Error('Erro');
-};
-
-const HASH_TO_TAB: Record<string, 'visao' | 'funil' | 'produtos' | 'financeiro' | 'tech'> = {
+const HASH_TO_TAB: Record<string, 'visao' | 'operacao' | 'comercial' | 'clinico' | 'tech'> = {
   '': 'visao',
-  funil: 'funil',
-  financeiro: 'financeiro',
-  produtos: 'produtos',
+  operacao: 'operacao',
+  comercial: 'comercial',
+  clinico: 'clinico',
   tech: 'tech',
-  config: 'visao',
 };
 
 const TAB_TO_HASH: Record<string, string> = {
   visao: '',
-  funil: '#funil',
-  produtos: '#produtos',
-  financeiro: '#financeiro',
+  operacao: '#operacao',
+  comercial: '#comercial',
+  clinico: '#clinico',
   tech: '#tech',
 };
 
+const fetcher = (url: string) => adminFetchJson<AdminDashboardResponse>(url);
+
+function formatMetric(metric: AdminMetricValue) {
+  if (metric.value == null) return 'Indisponível';
+  if (metric.unit === 'brl') {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(metric.value);
+  }
+  if (metric.unit === 'percent') {
+    return `${metric.value}%`;
+  }
+  return new Intl.NumberFormat('pt-BR').format(metric.value);
+}
+
+function queueTone(status: string) {
+  if (status === 'PENDING_PAYMENT' || status === 'pending') return 'bg-amber-50 border-amber-200 text-amber-800';
+  if (status === 'failed' || status === 'expired' || status === 'rejected') return 'bg-rose-50 border-rose-200 text-rose-800';
+  if (status === 'SHIPPED' || status === 'opened') return 'bg-blue-50 border-blue-200 text-blue-800';
+  return 'bg-slate-50 border-slate-200 text-slate-800';
+}
+
+function alertTone(alert: AdminAlert) {
+  if (alert.level === 'critical') return 'border-rose-200 bg-rose-50';
+  if (alert.level === 'warning') return 'border-amber-200 bg-amber-50';
+  if (alert.level === 'success') return 'border-emerald-200 bg-emerald-50';
+  return 'border-slate-200 bg-slate-50';
+}
+
+function QueueList({ title, items, emptyLabel }: { title: string; items: AdminQueueItem[]; emptyLabel: string }) {
+  return (
+    <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+          {items.length}
+        </span>
+      </div>
+      <div className="mt-4 space-y-3">
+        {items.map((item) => (
+          <div key={item.id} className={`rounded-2xl border p-4 ${queueTone(item.status)}`}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold">{item.title}</p>
+                <p className="mt-1 text-sm">{item.subtitle}</p>
+              </div>
+              <div className="text-right text-xs">
+                <p className="font-semibold uppercase tracking-[0.12em]">{item.status}</p>
+                {item.ageHours != null && <p className="mt-1">{item.ageHours}h</p>}
+              </div>
+            </div>
+            {(item.href || item.meta) && (
+              <div className="mt-3 flex items-center justify-between gap-3 text-xs text-slate-600">
+                <span>{item.meta || 'Fila operacional'}</span>
+                {item.href && (
+                  <Link href={item.href} className="font-semibold text-emerald-700 hover:text-emerald-800">
+                    {item.ctaLabel || 'Abrir'} →
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+        {items.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+            {emptyLabel}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function AdminPage() {
   const router = useRouter();
-  const [period, setPeriod] = useState('30d');
-  const [activeTab, setActiveTab] = useState<'visao' | 'funil' | 'produtos' | 'financeiro' | 'tech'>('visao');
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const shouldEnableVercelAnalytics =
-    process.env.NEXT_PUBLIC_ENABLE_VERCEL_ANALYTICS === '1' ||
-    Boolean(process.env.NEXT_PUBLIC_VERCEL_ENV);
+  const [period, setPeriod] = useState<'today' | '7d' | '30d'>('30d');
+  const [activeTab, setActiveTab] = useState<'visao' | 'operacao' | 'comercial' | 'clinico' | 'tech'>('visao');
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const hash = (window.location.hash || '').replace(/^#/, '');
-    const tab = HASH_TO_TAB[hash] ?? 'visao';
-    setActiveTab(tab);
+    setActiveTab(HASH_TO_TAB[hash] || 'visao');
   }, [router.asPath]);
 
-  const { data: kpis, error: kpisError, mutate: mutateKPIs } = useSWR(
-    `/api/admin/kpis?period=${period}`,
-    fetcherWithMocks,
-    { refreshInterval: 30000 }
-  );
-  const { data: funnel, error: funnelError, mutate: mutateFunnel } = useSWR(
-    `/api/admin/funnel?period=${period}`,
-    fetcherWithMocks,
-    { refreshInterval: 30000 }
-  );
-  const { data: revenue, error: revenueError, mutate: mutateRevenue } = useSWR(
-    `/api/admin/revenue?period=${period}`,
-    fetcherWithMocks,
-    { refreshInterval: 30000 }
-  );
-  const { data: product, error: productError, mutate: mutateProduct } = useSWR(
-    `/api/admin/product?period=${period}`,
-    fetcherWithMocks,
-    { refreshInterval: 30000 }
-  );
-  const { data: tech, error: techError, mutate: mutateTech } = useSWR(
-    `/api/admin/tech?period=${period}`,
-    fetcherWithMocks,
-    { refreshInterval: 30000 }
-  );
-  const { data: alerts, mutate: mutateAlerts } = useSWR('/api/admin/alerts', fetcherWithMocks, {
-    refreshInterval: 10000,
-  });
-  const { data: activities } = useSWR('/api/admin/activities?limit=8', fetcherWithMocks, {
-    refreshInterval: 30000,
-  });
-  const { data: funnelByProduct } = useSWR(
-    `/api/admin/funnel-by-product?period=${period}`,
-    fetcherWithMocks,
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/admin/dashboard?period=${period}`,
+    fetcher,
     { refreshInterval: 30000 }
   );
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await Promise.all([mutateKPIs(), mutateFunnel(), mutateRevenue(), mutateProduct(), mutateTech(), mutateAlerts()]);
-    setIsRefreshing(false);
-  };
-
-  const hasError = kpisError || funnelError || revenueError || productError || techError;
-  const isLoading = !kpis && !hasError;
-  const useMocks = !!(kpis as any)?._mock || !!(funnel as any)?._mock;
+  const isUnauthorized = error instanceof AdminClientError && error.status === 401;
 
   const tabs = [
     { id: 'visao' as const, label: 'Visão Geral', icon: FiTrendingUp },
-    { id: 'funil' as const, label: 'Funil', icon: FiUsers },
-    { id: 'produtos' as const, label: 'Produtos', icon: FiActivity },
-    { id: 'financeiro' as const, label: 'Financeiro', icon: FiDollarSign },
-    { id: 'tech' as const, label: 'Saúde Técnica', icon: FiActivity },
+    { id: 'operacao' as const, label: 'Operação', icon: FiTruck },
+    { id: 'comercial' as const, label: 'Comercial', icon: FiUsers },
+    { id: 'clinico' as const, label: 'Clínico', icon: FiActivity },
+    { id: 'tech' as const, label: 'Saúde Técnica', icon: FiShield },
   ];
 
-  const funnelData = funnel || null;
-  const chartData = funnelData
-    ? [
-        { name: 'Homepage', value: funnelData.homepageViews },
-        { name: 'Triagem', value: funnelData.triageStarts },
-        { name: 'Concluída', value: funnelData.triageCompletions },
-        { name: 'Relatório', value: funnelData.reportViews },
-        { name: 'Pricing', value: funnelData.pricingViews },
-        { name: 'Checkout', value: funnelData.checkoutStarts },
-        { name: 'Assinatura', value: funnelData.subscriptions },
-      ]
-    : [];
+  const topAlerts = useMemo(() => data?.alerts.slice(0, 3) || [], [data?.alerts]);
+
+  const logout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch('/api/admin/auth/session', {
+        method: 'DELETE',
+        credentials: 'same-origin',
+      });
+      router.replace('/admin/login');
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   return (
     <>
       <Head>
         <title>Admin Dashboard | MeJoy</title>
         <meta name="robots" content="noindex,nofollow" />
-        <meta name="description" content="Dashboard administrativo MeJoy" />
+        <meta name="description" content="Cockpit operacional e executivo do lançamento MeJoy." />
       </Head>
-      {shouldEnableVercelAnalytics && <Analytics />}
 
       <AdminLayout
-        title="Dashboard Administrativo"
-        subtitle="Visão geral das métricas do sistema"
+        title="Cockpit MeJoy"
+        subtitle="Operação, comercial, clínico e saúde técnica em dados reais"
       >
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-4 sm:mb-6 border-b border-gray-200 pb-4 overflow-x-auto -mx-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id);
-                const h = TAB_TO_HASH[tab.id];
-                if (typeof window !== 'undefined') window.location.hash = h || '';
-              }}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors flex-shrink-0 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-              }`}
-            >
-              <tab.icon size={16} />
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="flex flex-wrap items-center gap-3">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    if (typeof window !== 'undefined') {
+                      window.location.hash = TAB_TO_HASH[tab.id] || '';
+                    }
+                  }}
+                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
+                    activeTab === tab.id
+                      ? 'bg-slate-950 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  <tab.icon size={16} />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-        {/* Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-2">
-            <FiFilter className="text-gray-500" size={16} />
-            <select
-              value={period}
-              onChange={(e) => setPeriod(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="today">Hoje</option>
-              <option value="7d">Últimos 7 dias</option>
-              <option value="30d">Últimos 30 dias</option>
-            </select>
-          </div>
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-          >
-            <FiRefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
-            Atualizar
-          </button>
-        </div>
-
-        {useMocks && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-xl flex items-center gap-3 shadow-sm">
-            <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-sm">i</div>
-            <div>
-              <span className="text-amber-800 text-sm font-semibold">Modo demonstração</span>
-              <p className="text-amber-700/90 text-xs mt-0.5">5.000 leads e 10.000 vendas simuladas. Configure ADMIN_SECRET_KEY na Vercel para dados reais.</p>
+            <div className="flex items-center gap-2">
+              <select
+                value={period}
+                onChange={(event) => setPeriod(event.target.value as 'today' | '7d' | '30d')}
+                className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700"
+              >
+                <option value="today">Hoje</option>
+                <option value="7d">Últimos 7 dias</option>
+                <option value="30d">Últimos 30 dias</option>
+              </select>
+              <button
+                onClick={() => mutate()}
+                className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <FiRefreshCw size={16} />
+                Atualizar
+              </button>
+              <button
+                onClick={logout}
+                disabled={loggingOut}
+                className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+              >
+                {loggingOut ? 'Saindo...' : 'Sair'}
+              </button>
             </div>
           </div>
-        )}
 
-        {isLoading ? (
-          <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-2 border-blue-600 border-t-transparent" />
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {(activeTab === 'visao' || activeTab === 'funil') && (
-              <>
-                <KPIBar data={kpis || null} loading={false} variant="light" />
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Funil de Conversão</h3>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                          <XAxis dataKey="name" stroke="#6b7280" fontSize={11} />
-                          <YAxis stroke="#6b7280" fontSize={11} />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: '#fff',
-                              border: '1px solid #e5e7eb',
-                              borderRadius: '8px',
-                            }}
-                          />
-                          <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={2} dot={{ r: 4 }} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
+          {isUnauthorized && (
+            <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 shadow-sm">
+              <p className="text-sm font-semibold text-amber-900">Sessão admin necessária</p>
+              <p className="mt-2 text-sm text-amber-800">
+                Este cockpit usa sessão server-only. Entre novamente para carregar os dados operacionais.
+              </p>
+              <Link href="/admin/login" className="mt-4 inline-flex text-sm font-semibold text-amber-900">
+                Ir para login →
+              </Link>
+            </div>
+          )}
+
+          {data?.degraded && (
+            <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <FiAlertTriangle className="mt-0.5 text-amber-700" />
+                <div>
+                  <p className="text-sm font-semibold text-amber-900">Dashboard degradado, sem dados inventados</p>
+                  <p className="mt-1 text-sm text-amber-800">
+                    Pelo menos uma fonte crítica está indisponível. Os números abaixo continuam reais, mas podem estar parciais.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                {data.degradedReasons.map((reason) => (
+                  <div key={`${reason.source}-${reason.message}`} className="rounded-2xl border border-amber-200 bg-white p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-amber-700">{reason.source}</p>
+                    <p className="mt-2 text-sm text-slate-700">{reason.message}</p>
                   </div>
-                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Atividades Recentes</h3>
-                    <p className="text-xs text-gray-500 mb-4">Últimas atividades na plataforma</p>
-                    <div className="space-y-3 max-h-64 overflow-y-auto">
-                      {(activities?.activities ?? []).length === 0 ? (
-                        <p className="text-gray-500 text-sm">Nenhuma atividade recente</p>
-                      ) : (
-                        (activities?.activities ?? []).map((a: any) => (
-                          <div
-                            key={a.id}
-                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                          >
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{a.title}</p>
-                              <p className="text-xs text-gray-500">
-                                {new Date(a.at).toLocaleString('pt-BR', {
-                                  day: '2-digit',
-                                  month: '2-digit',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                })}
-                              </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {topAlerts.length > 0 && (
+            <div className="grid gap-4 lg:grid-cols-3">
+              {topAlerts.map((alert) => (
+                <div key={alert.id} className={`rounded-[1.5rem] border p-5 shadow-sm ${alertTone(alert)}`}>
+                  <p className="text-sm font-semibold text-slate-900">{alert.title}</p>
+                  <p className="mt-2 text-sm text-slate-700">{alert.body}</p>
+                  {alert.href && (
+                    <Link href={alert.href} className="mt-4 inline-flex text-sm font-semibold text-slate-900">
+                      Abrir fila →
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="flex justify-center py-20">
+              <div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-900 border-t-transparent" />
+            </div>
+          )}
+
+          {data && (
+            <>
+              {activeTab === 'visao' && (
+                <div className="space-y-6">
+                  <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {data.overview.map((metric) => (
+                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                        <p className="text-sm text-slate-500">{metric.label}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                        {metric.detail && <p className="mt-2 text-xs text-slate-500">{metric.detail}</p>}
+                      </div>
+                    ))}
+                  </section>
+
+                  <section className="grid gap-6 lg:grid-cols-2">
+                    <QueueList
+                      title="Foco operacional imediato"
+                      items={[
+                        ...data.operation.queues.pendingPix.slice(0, 3),
+                        ...data.operation.queues.paidWithoutNextAction.slice(0, 3),
+                        ...data.operation.queues.handoffsStuck.slice(0, 2),
+                      ]}
+                      emptyLabel="Nenhuma fila crítica aberta neste momento."
+                    />
+                    <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <h3 className="text-lg font-semibold text-gray-900">Saúde do lançamento</h3>
+                      <div className="mt-4 space-y-3">
+                        {data.technical.checks.slice(0, 6).map((check) => (
+                          <div key={check.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <div className="flex items-center justify-between gap-3">
+                              <p className="text-sm font-semibold text-slate-900">{check.label}</p>
+                              <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                                {check.status}
+                              </span>
                             </div>
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-medium ${
-                                a.status === 'completed'
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-blue-100 text-blue-800'
-                              }`}
-                            >
-                              {a.statusLabel}
-                            </span>
+                            <p className="mt-2 text-sm text-slate-600">{check.detail}</p>
                           </div>
-                        ))
-                      )}
+                        ))}
+                      </div>
+                    </section>
+                  </section>
+                </div>
+              )}
+
+              {activeTab === 'operacao' && (
+                <div className="space-y-6">
+                  <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {data.operation.stats.map((metric) => (
+                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                        <p className="text-sm text-slate-500">{metric.label}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                      </div>
+                    ))}
+                  </section>
+
+                  <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                    <h3 className="text-lg font-semibold text-gray-900">SLAs operacionais</h3>
+                    <div className="mt-4 grid gap-4 md:grid-cols-3">
+                      {data.operation.slas.map((sla) => (
+                        <div key={sla.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                          <p className="text-sm font-semibold text-slate-900">{sla.label}</p>
+                          <p className="mt-3 text-2xl font-semibold text-slate-900">
+                            {sla.current == null ? 'Indisponível' : sla.current}
+                          </p>
+                          <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">
+                            status: {sla.status}
+                          </p>
+                        </div>
+                      ))}
                     </div>
+                  </section>
+
+                  <div className="grid gap-6 xl:grid-cols-2">
+                    <QueueList title="PIX pendente" items={data.operation.queues.pendingPix} emptyLabel="Nenhum PIX pendente no período." />
+                    <QueueList title="Pago sem próxima ação" items={data.operation.queues.paidWithoutNextAction} emptyLabel="Nenhum pedido pago aguardando ação." />
+                    <QueueList title="Receita / RX pendente" items={data.operation.queues.rxPending} emptyLabel="Nenhum pedido aguardando validação clínica." />
+                    <QueueList title="Handoff travado" items={data.operation.queues.handoffsStuck} emptyLabel="Nenhum handoff travado além do SLA." />
+                    <QueueList title="Envio / rastreamento" items={data.operation.queues.shipmentsAtRisk} emptyLabel="Nenhum envio em risco." />
+                    <QueueList title="Risco de suporte" items={data.operation.queues.supportRisk} emptyLabel="Nenhum caso com risco alto de suporte." />
                   </div>
                 </div>
-              </>
-            )}
+              )}
 
-            {activeTab === 'funil' && (
-              <>
-                <Funnel data={funnel || null} loading={false} variant="light" />
-                <ProductFunnels
-                  data={funnelByProduct?.funnels ?? null}
-                  loading={false}
-                  variant="light"
-                />
-              </>
-            )}
-            {activeTab === 'produtos' && <ProductUsage data={product || null} loading={false} variant="light" />}
-            {activeTab === 'financeiro' && <Revenue data={revenue || null} loading={false} variant="light" />}
-            {activeTab === 'tech' && <TechHealth data={tech || null} loading={false} variant="light" />}
+              {activeTab === 'comercial' && (
+                <div className="space-y-6">
+                  <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {data.commercial.metrics.map((metric) => (
+                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                        <p className="text-sm text-slate-500">{metric.label}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                        {metric.detail && <p className="mt-2 text-xs text-slate-500">{metric.detail}</p>}
+                      </div>
+                    ))}
+                  </section>
 
-            <AlertsPanel
-              data={Array.isArray(alerts) ? alerts : (alerts?.alerts ?? null)}
-              loading={false}
-              onRefresh={async () => mutateAlerts()}
-              onAcknowledge={async () => mutateAlerts()}
-              onClose={async () => mutateAlerts()}
-              variant="light"
-            />
+                  <section className="grid gap-6 lg:grid-cols-2">
+                    <div className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <h3 className="text-lg font-semibold text-gray-900">Receita por produto</h3>
+                      <div className="mt-4 space-y-3">
+                        {data.commercial.revenueByProduct.map((item) => (
+                          <div key={item.label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <span className="text-sm font-medium text-slate-900">{item.label}</span>
+                            <span className="text-sm font-semibold text-slate-900">
+                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.value / 100)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-            <ExportBar
-              period={period}
-              onExport={async (format, includePII) => {
-                const params = new URLSearchParams({
-                  format,
-                  period,
-                  includePII: String(includePII),
-                });
-                const res = await fetch(`/api/admin/export?${params}`, {
-                  headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key'}`,
-                  },
-                });
-                if (!res.ok) throw new Error('Erro');
-                if (format === 'csv') {
-                  const blob = await res.blob();
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `admin-${new Date().toISOString().split('T')[0]}.csv`;
-                  a.click();
-                  URL.revokeObjectURL(url);
-                } else if (format === 'json') {
-                  const data = await res.json();
-                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `admin-${new Date().toISOString().split('T')[0]}.json`;
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }
-              }}
-              loading={false}
-              variant="light"
-            />
-          </div>
-        )}
+                    <div className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <h3 className="text-lg font-semibold text-gray-900">Receita por origem</h3>
+                      <div className="mt-4 space-y-3">
+                        {data.commercial.revenueBySource.map((item) => (
+                          <div key={item.label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <span className="text-sm font-medium text-slate-900">{item.label}</span>
+                            <span className="text-sm font-semibold text-slate-900">
+                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.value / 100)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                    <h3 className="text-lg font-semibold text-gray-900">Cohort simples de pagamentos</h3>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                      {data.commercial.cohort.map((datum) => (
+                        <div key={datum.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                          <p className="text-xs uppercase tracking-[0.12em] text-slate-500">{datum.label}</p>
+                          <p className="mt-2 text-2xl font-semibold text-slate-900">{datum.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {activeTab === 'clinico' && (
+                <div className="space-y-6">
+                  <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {data.clinical.metrics.map((metric) => (
+                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                        <p className="text-sm text-slate-500">{metric.label}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                      </div>
+                    ))}
+                  </section>
+
+                  <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                    <h3 className="text-lg font-semibold text-gray-900">Pacientes / jornadas recentes</h3>
+                    <div className="mt-4 space-y-3">
+                      {data.clinical.recentPatients.map((patient) => (
+                        <div key={patient.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                              <p className="text-sm font-semibold text-slate-900">{patient.name}</p>
+                              <p className="mt-1 text-sm text-slate-600">{patient.latestStatus}</p>
+                            </div>
+                            <div className="text-xs text-slate-500">
+                              {patient.reference}
+                            </div>
+                          </div>
+                          <p className="mt-3 text-xs text-slate-500">Atualizado em {patient.updatedAt ? new Date(patient.updatedAt).toLocaleString('pt-BR') : 'sem data'}</p>
+                        </div>
+                      ))}
+                      {data.clinical.recentPatients.length === 0 && (
+                        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                          Nenhuma jornada clínica recente no período selecionado.
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {activeTab === 'tech' && (
+                <div className="space-y-6">
+                  <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">Health checks reais</h3>
+                        <p className="mt-1 text-sm text-slate-500">
+                          Build SHA: {data.technical.buildSha || 'não informado'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      {data.technical.checks.map((check) => (
+                        <div key={check.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-sm font-semibold text-slate-900">{check.label}</p>
+                            <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                              {check.status}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-sm text-slate-600">{check.detail}</p>
+                          {check.updatedAt && (
+                            <p className="mt-3 text-xs text-slate-500">
+                              Atualizado em {new Date(check.updatedAt).toLocaleString('pt-BR')}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </AdminLayout>
     </>
   );

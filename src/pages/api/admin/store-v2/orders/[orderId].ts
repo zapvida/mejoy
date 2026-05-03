@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/admin-auth';
 import { sendStoreV2OrderShippedEmail, sendStoreV2OrderDeliveredEmail } from '@/lib/email';
+import { buildOrderAccessUrl } from '@/lib/store-v2/order-access';
 
 const patchSchema = z.object({
   status: z.enum(['PENDING_PAYMENT', 'PAID', 'PREPARING', 'SHIPPED', 'DELIVERED']).optional(),
@@ -36,6 +37,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ...order,
         snapshot: order.snapshot,
         items: order.items,
+        customerAccessUrl: buildOrderAccessUrl({
+          orderId,
+          customerEmail: order.customerEmail,
+        }),
       });
     }
 
@@ -121,6 +126,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             orderId,
             trackingCode: (updated as any).trackingCode || undefined,
             trackingUrl: (updated as any).trackingUrl || undefined,
+            orderUrl: buildOrderAccessUrl({
+              orderId,
+              customerEmail: email,
+            }),
           });
           await prisma.order.update({
             where: { id: orderId },
@@ -136,6 +145,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             name: order.customerName,
             firstName: order.customerName?.split(' ')[0] || 'Cliente',
             orderId,
+            orderUrl: buildOrderAccessUrl({
+              orderId,
+              customerEmail: email,
+            }),
           });
           await prisma.order.update({
             where: { id: orderId },

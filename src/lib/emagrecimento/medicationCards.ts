@@ -22,7 +22,8 @@ const EFFICACY_RANGE_BY_TRACK: Partial<Record<EmagrecimentoTrilha, [number, numb
   alternativas_clinicas: [5, 10],
 };
 
-export const medicationTrackCards: MedicationTrackCard[] = TREATMENT_TRACKS.map(track => ({
+<<<<<<< HEAD
+export const medicationTrackCards: MedicationTrackCard[] = TREATMENT_TRACKS.map((track) => ({
   id: track.id,
   title: track.title,
   shortTitle: track.shortTitle,
@@ -37,10 +38,13 @@ export const medicationTrackCards: MedicationTrackCard[] = TREATMENT_TRACKS.map(
 }));
 
 export function getMedicationTrackCard(trilha: EmagrecimentoTrilha) {
-  return medicationTrackCards.find(card => card.id === trilha) || medicationTrackCards[3];
+  return medicationTrackCards.find((card) => card.id === trilha) || medicationTrackCards[3];
 }
 
-export function estimateWeightLossRangeKg(weightKg: number | undefined, rangePercent?: [number, number]) {
+export function estimateWeightLossRangeKg(
+  weightKg: number | undefined,
+  rangePercent?: [number, number]
+) {
   if (!weightKg || !rangePercent) return null;
 
   const [minPercent, maxPercent] = rangePercent;

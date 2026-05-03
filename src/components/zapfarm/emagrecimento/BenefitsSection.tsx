@@ -7,8 +7,8 @@ export function BenefitsSection() {
   const benefits = [
     {
       icon: '🩺',
-      title: 'Aprovado e Seguro',
-      description: 'Tratamento aprovado pela Anvisa, com prescrição médica e monitoramento de segurança.',
+      title: 'Seguranca clinica',
+      description: 'Tudo passa por avaliacao medica, prescricao quando houver indicacao e acompanhamento de seguranca.',
     },
     {
       icon: '👨‍⚕️',
@@ -17,13 +17,13 @@ export function BenefitsSection() {
     },
     {
       icon: '💉',
-      title: 'Medicação de Ponta',
-      description: 'Utilizamos a tirzepatida (Mounjaro®), a mais nova geração de medicamento para emagrecimento, com resultados superiores.',
+      title: 'Estrategias atuais',
+      description: 'A equipe considera opcoes modernas, como tirzepatida, semaglutida e outras linhas quando fizer sentido clinico.',
     },
     {
       icon: '📊',
       title: 'Resultados Reais',
-      description: 'Resultados sustentáveis: nossos pacientes alcançaram em média 15% de redução do peso em 6–12 meses.',
+      description: 'A perda de peso pode ser relevante quando ha indicacao, aderencia e acompanhamento. A resposta varia de pessoa para pessoa.',
     },
     {
       icon: '🍎',
@@ -93,4 +93,3 @@ export function BenefitsSection() {
     </section>
   );
 }
-

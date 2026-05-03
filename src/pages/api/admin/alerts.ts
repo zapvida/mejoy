@@ -8,7 +8,7 @@ import { ensureRole, UnauthorizedError } from '@/lib/rbac';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Verificar autorização
-    const user = ensureRole(req, ['admin', 'analyst']);
+    ensureRole(req, ['admin', 'analyst']);
     
     switch (req.method) {
       case 'GET':

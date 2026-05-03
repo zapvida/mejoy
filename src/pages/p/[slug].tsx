@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { isStoreV2Enabled, isStoreV2ConversionEnabled, isCopyV2PilotEnabled, isCopyV4Enabled } from '@/lib/flags';
 import { getProductBySlug, getRelatedProducts } from '@/lib/store-v2/catalog';
+import { getFallbackProductBySlug, getFallbackRelatedProducts } from '@/lib/store-v2/catalog-fallback';
 import {
   getCopyV2BySku,
   getCopyV4BySku,
@@ -25,6 +26,7 @@ import {
 } from '@/lib/store-v2/copy-v2';
 import type { CopyV4Extras } from '@/lib/store-v2/copy-v2';
 import { objectiveToSlug } from '@/lib/store-v2/slugs';
+import { isDataStoreUnavailable } from '@/lib/prisma/runtime-errors';
 import StorefrontHeader from '@/components/store-v2/StorefrontHeader';
 import TrustBar from '@/components/store-v2/TrustBar';
 import StorefrontFooter from '@/components/store-v2/StorefrontFooter';
@@ -1500,7 +1502,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!slug) return { notFound: true };
 
   try {
-    const product = await getProductBySlug(slug);
+    let usingFallbackCatalog = false;
+    let product = null;
+
+    try {
+      product = await getProductBySlug(slug);
+    } catch (err) {
+      if (!isDataStoreUnavailable(err)) throw err;
+      product = getFallbackProductBySlug(slug);
+      usingFallbackCatalog = true;
+    }
+
+    if (!product) {
+      product = getFallbackProductBySlug(slug);
+      usingFallbackCatalog = Boolean(product);
+    }
+
     if (!product) return { notFound: true };
     if (product.slug !== slug) {
       return { redirect: { destination: `/p/${product.slug}`, permanent: true } };
@@ -1658,7 +1675,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       advertenciasCompleto: advertenciasCompleto ?? null,
     };
 
-    let related = await getRelatedProducts(product.objective ?? 'Saúde', product.slug, 4);
+    let related = usingFallbackCatalog
+      ? getFallbackRelatedProducts(product.objective ?? 'Saúde', product.slug, 4)
+      : [];
+
+    if (!usingFallbackCatalog) {
+      try {
+        related = await getRelatedProducts(product.objective ?? 'Saúde', product.slug, 4);
+      } catch (err) {
+        if (!isDataStoreUnavailable(err)) throw err;
+        related = getFallbackRelatedProducts(product.objective ?? 'Saúde', product.slug, 4);
+      }
+    }
     if (isCopyV4Enabled()) {
       related = related.map((p) => {
         if (!p.sku) return p;

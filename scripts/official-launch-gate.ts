@@ -19,10 +19,12 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { config } from 'dotenv';
+import { launchTaskCommands, withEnv } from './lib/local-cli';
 config({ path: path.join(process.cwd(), '.env.local') });
 
 const BASE_URL = process.env.BASE_URL || '';
 const OUTPUT = path.join(process.cwd(), 'scripts', 'generated', 'official-launch-gate-report.json');
+const commands = launchTaskCommands();
 
 interface StepResult {
   name: string;
@@ -49,7 +51,7 @@ async function main() {
   console.log('\n🚀 OFFICIAL LAUNCH GATE\n');
 
   const steps = [
-    ['Soft Launch Gate', 'pnpm run soft-launch:gate'],
+    ['Soft Launch Gate', commands.softLaunchGate],
   ];
 
   for (const [name, cmd] of steps) {
@@ -60,7 +62,10 @@ async function main() {
 
   let checkoutOk = true;
   if (BASE_URL) {
-    const checkout = run('Smoke Checkout', `BASE_URL=${BASE_URL} pnpm tsx scripts/smoke-checkout-store-v2.ts`);
+    const checkout = run(
+      'Smoke Checkout',
+      withEnv(commands.smokeCheckout, { BASE_URL })
+    );
     results.push(checkout);
     checkoutOk = checkout.passed;
     console.log(checkout.passed ? '✅ Smoke Checkout' : '❌ Smoke Checkout');

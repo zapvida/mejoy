@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/buttons';
+import { fetchWithUserSession } from '@/lib/api/client-auth';
 import StorefrontHeader from '@/components/store-v2/StorefrontHeader';
 import StorefrontFooter from '@/components/store-v2/StorefrontFooter';
 
@@ -34,16 +35,32 @@ export default function OrderDetailPage() {
   const orderId = router.query.orderId as string;
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!orderId) return;
-    fetch(`/api/store-v2/orders/${orderId}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.error) setOrder(data);
+    const access = typeof router.query.access === 'string' ? router.query.access : '';
+    const url = access
+      ? `/api/store-v2/orders/${orderId}?access=${encodeURIComponent(access)}`
+      : `/api/store-v2/orders/${orderId}`;
+
+    setLoading(true);
+    setError(null);
+
+    fetchWithUserSession(url)
+      .then((result) => {
+        if (result.ok === false) {
+          setError(result.error);
+          setOrder(null);
+          return;
+        }
+        setOrder(result.data);
+      })
+      .catch(() => {
+        setError('Não foi possível carregar o pedido.');
       })
       .finally(() => setLoading(false));
-  }, [orderId]);
+  }, [orderId, router.query.access]);
 
   if (!orderId) {
     return (
@@ -62,7 +79,26 @@ export default function OrderDetailPage() {
         <Head><title>Carregando... | Me Joy</title></Head>
         <StorefrontHeader />
         <main className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-500">{loading ? 'Carregando...' : 'Pedido não encontrado'}</p>
+          <div className="max-w-md text-center px-6">
+            <p className="text-gray-500">
+              {loading ? 'Carregando...' : error || 'Pedido não encontrado'}
+            </p>
+            {!loading && (
+              <div className="mt-4 flex flex-col gap-3">
+                <Link href="/login?redirect=/dashboard" className="inline-flex justify-center">
+                  <Button>Entrar para ver meus pedidos</Button>
+                </Link>
+                <a
+                  href={`${WHATSAPP_CTA}?text=${encodeURIComponent(`Olá! Preciso de ajuda para acessar o pedido ${orderId?.slice(-8)?.toUpperCase() || ''}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Falar com suporte
+                </a>
+              </div>
+            )}
+          </div>
         </main>
         <StorefrontFooter />
       </>
@@ -77,7 +113,7 @@ export default function OrderDetailPage() {
   return (
     <>
       <Head>
-        <title>Pedido #{order.id?.slice(-8)?.toUpperCase()} | Me Joy</title>
+        <title>Pedido #{order.id?.slice(-8)?.toUpperCase()} | MeJoy</title>
       </Head>
       <StorefrontHeader />
       <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">

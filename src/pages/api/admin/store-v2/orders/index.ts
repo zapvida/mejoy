@@ -6,6 +6,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/admin-auth';
+import { buildOrderAccessUrl } from '@/lib/store-v2/order-access';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -61,6 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
         itemsCount: o.items.length,
+        customerAccessUrl: buildOrderAccessUrl({
+          orderId: o.id,
+          customerEmail: o.customerEmail,
+        }),
       }))
     );
   } catch (err) {

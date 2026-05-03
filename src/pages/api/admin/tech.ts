@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Verificar autorização
-    const user = ensureRole(req, ['admin', 'analyst']);
+    ensureRole(req, ['admin', 'analyst']);
 
     const p = { uptime: 99.9, avgResponseTime: 150, errorRate: 0.01 };
     const db = { connections: 12, queryTime: 25, size: 2.4 * 1024 * 1024 * 1024 };

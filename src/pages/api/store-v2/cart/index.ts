@@ -7,23 +7,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { getProductBySlug } from '@/lib/store-v2/catalog';
 import { storeLogger } from '@/lib/store-v2/logger';
-
-function getErrorMessage(err: unknown): string {
-  if (err instanceof Error) return err.message;
-  return String(err);
-}
-
-function isDataStoreUnavailable(err: unknown): boolean {
-  const msg = getErrorMessage(err).toLowerCase();
-  return (
-    msg.includes('denied access') ||
-    msg.includes("can't reach database") ||
-    msg.includes('prismaclientinitializationerror') ||
-    msg.includes('p1000') ||
-    msg.includes('p1001') ||
-    msg.includes('p1010')
-  );
-}
+import { getRuntimeErrorMessage, isDataStoreUnavailable } from '@/lib/prisma/runtime-errors';
+import { addFallbackCartItem, getFallbackCart } from '@/lib/store-v2/cart-fallback';
 
 async function getOrCreateCart(sessionId: string | null, profileId: string | null) {
   if (profileId) {
@@ -52,115 +37,141 @@ async function getOrCreateCart(sessionId: string | null, profileId: string | nul
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
   const sessionId = (req.headers['x-session-id'] as string) || req.cookies?.['store_v2_session'] || null;
-  const profileId = (req as any).profileId ?? null;
+  const profileId = (req as NextApiRequest & { profileId?: string | null }).profileId ?? null;
 
-  if (req.method === 'GET') {
-    const cart = await getOrCreateCart(sessionId, profileId);
-    if (cart.items.length === 0) {
-      return res.status(200).json({
-        cartId: cart.id,
-        items: [],
-        itemCount: 0,
-      });
-    }
-    const productIds = [...new Set(cart.items.map((i) => i.productId))];
-    const products = await prisma.product.findMany({
-      where: { id: { in: productIds }, status: 'active' },
-      include: {
-        variants: true,
-        priceVersions: { where: { validTo: null }, take: 1 },
-      },
-    });
-    type ProductWithPricing = (typeof products)[number];
-    const productMap = new Map<string, ProductWithPricing>(products.map((p) => [p.id, p]));
-    const itemsWithProduct: Array<{
-      id: string;
-      productId: string;
-      variantId: string | null;
-      quantity: number;
-      product?: Awaited<ReturnType<typeof getProductBySlug>>;
-    }> = [];
-    for (const item of cart.items) {
-      const product = productMap.get(item.productId);
-      if (!product) continue;
-      const priceCents = product.variants[0]?.priceCents ?? product.priceVersions[0]?.priceCents ?? null;
-      itemsWithProduct.push({
-        id: item.id,
-        productId: item.productId,
-        variantId: item.variantId,
-        quantity: item.quantity,
-        product: {
-          id: product.id,
-          slug: product.slug,
-          name: product.name,
-          priceCents,
-          images: product.images,
-          formDisplay: product.formDisplay,
-        } as Awaited<ReturnType<typeof getProductBySlug>>,
-      });
-    }
-    return res.status(200).json({
-      cartId: cart.id,
-      items: itemsWithProduct,
-      itemCount: itemsWithProduct.reduce((s, i) => s + i.quantity, 0),
-    });
-  }
-
-  if (req.method === 'POST') {
-    const { productSlug, quantity = 1 } = req.body as { productSlug?: string; quantity?: number };
-    if (!productSlug) {
-      return res.status(400).json({ error: 'productSlug obrigatório' });
-    }
-
-    const product = await prisma.product.findFirst({
-      where: { slug: productSlug, status: 'active', active: true },
-      include: { variants: true },
-    });
-    if (!product) {
-      return res.status(404).json({ error: 'Produto não encontrado' });
-    }
-
-    const cart = await getOrCreateCart(sessionId, profileId);
-    const variantId = product.variants[0]?.id ?? null;
-
-    const existing = await prisma.cartItem.findFirst({
-      where: { cartId: cart.id, productId: product.id },
-    });
-
-    if (existing) {
-      const newQty = Math.max(1, (existing.quantity + quantity));
-      await prisma.cartItem.update({
-        where: { id: existing.id },
-        data: { quantity: newQty },
-      });
-    } else {
-      await prisma.cartItem.create({
-        data: {
+  try {
+    if (req.method === 'GET') {
+      const cart = await getOrCreateCart(sessionId, profileId);
+      if (cart.items.length === 0) {
+        return res.status(200).json({
           cartId: cart.id,
-          productId: product.id,
-          variantId,
-          quantity: Math.max(1, quantity),
+          items: [],
+          itemCount: 0,
+        });
+      }
+      const productIds = [...new Set(cart.items.map((i) => i.productId))];
+      const products = await prisma.product.findMany({
+        where: { id: { in: productIds }, status: 'active' },
+        include: {
+          variants: true,
+          priceVersions: { where: { validTo: null }, take: 1 },
         },
       });
-    }
-
-    storeLogger.cart('Item added', { productSlug, quantity, cartId: cart.id });
-    return res.status(200).json({ ok: true, cartId: cart.id });
-  }
-
-  return res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) {
-    storeLogger.error('Cart API error', err);
-    if (req.method === 'GET' && isDataStoreUnavailable(err)) {
+      type ProductWithPricing = (typeof products)[number];
+      const productMap = new Map<string, ProductWithPricing>(products.map((p) => [p.id, p]));
+      const itemsWithProduct: Array<{
+        id: string;
+        productId: string;
+        variantId: string | null;
+        quantity: number;
+        product?: Awaited<ReturnType<typeof getProductBySlug>>;
+      }> = [];
+      for (const item of cart.items) {
+        const product = productMap.get(item.productId);
+        if (!product) continue;
+        const priceCents = product.variants[0]?.priceCents ?? product.priceVersions[0]?.priceCents ?? null;
+        itemsWithProduct.push({
+          id: item.id,
+          productId: item.productId,
+          variantId: item.variantId,
+          quantity: item.quantity,
+          product: {
+            id: product.id,
+            slug: product.slug,
+            name: product.name,
+            priceCents,
+            images: product.images,
+            formDisplay: product.formDisplay,
+          } as Awaited<ReturnType<typeof getProductBySlug>>,
+        });
+      }
       return res.status(200).json({
-        cartId: null,
-        items: [],
-        itemCount: 0,
-        degraded: true,
+        cartId: cart.id,
+        items: itemsWithProduct,
+        itemCount: itemsWithProduct.reduce((s, i) => s + i.quantity, 0),
       });
     }
-    return res.status(500).json({ error: getErrorMessage(err) || 'Cart error' });
+
+    if (req.method === 'POST') {
+      const { productSlug, quantity = 1 } = req.body as { productSlug?: string; quantity?: number };
+      if (!productSlug) {
+        return res.status(400).json({ error: 'productSlug obrigatório' });
+      }
+
+      const product = await prisma.product.findFirst({
+        where: { slug: productSlug, status: 'active', active: true },
+        include: { variants: true },
+      });
+      if (!product) {
+        return res.status(404).json({ error: 'Produto não encontrado' });
+      }
+
+      const cart = await getOrCreateCart(sessionId, profileId);
+      const variantId = product.variants[0]?.id ?? null;
+
+      const existing = await prisma.cartItem.findFirst({
+        where: { cartId: cart.id, productId: product.id },
+      });
+
+      if (existing) {
+        const newQty = Math.max(1, existing.quantity + quantity);
+        await prisma.cartItem.update({
+          where: { id: existing.id },
+          data: { quantity: newQty },
+        });
+      } else {
+        await prisma.cartItem.create({
+          data: {
+            cartId: cart.id,
+            productId: product.id,
+            variantId,
+            quantity: Math.max(1, quantity),
+          },
+        });
+      }
+
+      storeLogger.cart('Item added', { productSlug, quantity, cartId: cart.id });
+      return res.status(200).json({ ok: true, cartId: cart.id });
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (err) {
+    storeLogger.error('Cart API error', err);
+    if (isDataStoreUnavailable(err)) {
+      if (req.method === 'GET') {
+        const fallbackCart = getFallbackCart(sessionId, profileId);
+        return res.status(200).json({
+          ...fallbackCart,
+          degraded: true,
+          code: 'DATASTORE_UNAVAILABLE',
+          error: 'Carrinho temporariamente indisponivel',
+        });
+      }
+
+      const { productSlug, quantity = 1 } = req.body as { productSlug?: string; quantity?: number };
+      if (!productSlug) {
+        return res.status(400).json({ error: 'productSlug obrigatório' });
+      }
+
+      const fallbackCart = addFallbackCartItem(sessionId, profileId, productSlug, quantity);
+      if (!fallbackCart) {
+        return res.status(503).json({
+          ok: false,
+          degraded: true,
+          code: 'DATASTORE_UNAVAILABLE',
+          error: 'Catalogo temporariamente indisponivel para adicionar itens',
+        });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        cartId: fallbackCart.cartId,
+        degraded: true,
+        code: 'DATASTORE_UNAVAILABLE',
+        message: 'Carrinho funcionando em modo degradado',
+      });
+    }
+    return res.status(500).json({ error: getRuntimeErrorMessage(err) || 'Cart error' });
   }
 }

@@ -1,9 +1,11 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { FiRefreshCw } from 'react-icons/fi';
 
 import { AdminLayout } from '../../components/admin/AdminLayout';
+import { adminFetchJson, AdminClientError } from '@/lib/admin/client';
 
 type HandoffMetricsResponse = {
   ok: boolean;
@@ -33,55 +35,6 @@ export async function getServerSideProps() {
   return { props: {} };
 }
 
-const token = () => process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || 'admin-secret-key';
-
-const FALLBACK_MOCK: HandoffMetricsResponse = {
-  ok: true,
-  periodDays: 7,
-  totals: {
-    created: 480,
-    opened: 390,
-    completed: 210,
-    clinicalPaymentStarted: 180,
-    clinicalPaymentSuccess: 122,
-    consultCompleted: 97,
-    pharmacyOrderStarted: 68,
-    pharmacyOrderCreated: 49,
-    followupStarted: 39
-  },
-  rates: {
-    openRate: 81.25,
-    completionRate: 43.75,
-    clinicalPaymentRate: 46.15
-  },
-  byStatus: {
-    created: 480,
-    opened: 390,
-    clinical_payment_started: 180,
-    clinical_payment_success: 122,
-    consult_completed: 97,
-    pharmacy_order_started: 68,
-    pharmacy_order_created: 49,
-    followup_started: 39
-  },
-  _mock: true
-};
-
-const fetcherWithFallback = async (url: string): Promise<HandoffMetricsResponse> => {
-  try {
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token()}` }
-    });
-    if (res.ok) {
-      return res.json();
-    }
-  } catch {
-    // fallback abaixo
-  }
-
-  return FALLBACK_MOCK;
-};
-
 const statusLabels: Record<string, string> = {
   created: 'Handoff criado',
   opened: 'Handoff aberto',
@@ -99,9 +52,9 @@ const statusLabels: Record<string, string> = {
 
 export default function AdminHandoffPage() {
   const [days, setDays] = useState(7);
-  const { data, isLoading, mutate } = useSWR<HandoffMetricsResponse>(
+  const { data, error, isLoading, mutate } = useSWR<HandoffMetricsResponse>(
     `/api/admin/handoff?days=${days}`,
-    fetcherWithFallback,
+    adminFetchJson,
     { refreshInterval: 30000 }
   );
 
@@ -127,6 +80,15 @@ export default function AdminHandoffPage() {
         subtitle="Rastreabilidade de ponta a ponta do funil clínico"
       >
         <div className="space-y-6">
+          {error instanceof AdminClientError && error.status === 401 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+              Sessão admin necessária para carregar o handoff clínico.
+              <Link href="/admin/login" className="ml-2 font-semibold underline">
+                Entrar
+              </Link>
+            </div>
+          )}
+
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <label htmlFor="period" className="text-sm font-medium text-gray-700">
@@ -153,12 +115,6 @@ export default function AdminHandoffPage() {
               Atualizar
             </button>
           </div>
-
-          {data?._mock && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-              Modo demonstração: configure a tabela `handoff_events` no Supabase para dados reais.
-            </div>
-          )}
 
           {isLoading && (
             <div className="flex justify-center py-12">

@@ -1,11 +1,18 @@
 import type { NextApiRequest } from 'next';
-
-const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY || 'admin-secret-key';
+import { allowLegacyAdminBearer, getAdminSessionUser, verifyAdminSecret } from '@/lib/admin/session';
 
 export function validateAdminRequest(req: NextApiRequest): boolean {
+  if (getAdminSessionUser(req)) {
+    return true;
+  }
+
+  if (!allowLegacyAdminBearer()) {
+    return false;
+  }
+
   const auth = req.headers.authorization || req.query.secret;
   const secret = typeof auth === 'string' ? auth.replace(/^Bearer\s+/i, '') : req.body?.secret;
-  return secret === ADMIN_SECRET;
+  return verifyAdminSecret(secret);
 }
 
 export function requireAdmin(req: NextApiRequest, res: { status: (c: number) => { json: (o: object) => void } }) {

@@ -41,7 +41,7 @@ import { faqJsonLd, orgJsonLd, websiteJsonLd, SITE } from '@/lib/seo';
 // FAQ adaptado para e-commerce
 const faqData = [
   {
-    q: 'O que exatamente estou comprando na MonJoy?',
+    q: 'O que exatamente estou comprando na MeJoy?',
     a: 'Você está comprando protocolos de saúde prontos, formados por combinações de produtos pensados para um objetivo específico (como emagrecimento, sono, intestino, imunidade, cabelos, etc.). Em cada página explicamos o que inclui, como usar e quais são os cuidados.',
   },
   {
@@ -58,7 +58,7 @@ const faqData = [
   },
   {
     q: 'Posso usar os protocolos junto com meus remédios atuais?',
-    a: 'Muitos protocolos podem ser usados em conjunto com tratamentos já em andamento, mas isso precisa ser avaliado caso a caso. Se você usa medicamentos contínuos, gestante ou lactante, fale com seu médico ou agende uma consulta online pelo ZapVida antes de iniciar.',
+    a: 'Muitos protocolos podem ser usados em conjunto com tratamentos já em andamento, mas isso precisa ser avaliado caso a caso. Se você usa medicamentos contínuos, está gestante ou lactante, fale com seu médico ou use o suporte clínico da MeJoy antes de iniciar.',
     },
     {
     q: 'E se eu não me adaptar ao protocolo?',
@@ -89,7 +89,7 @@ export default function B2CLanding() {
   return (
     <>
       <Seo
-        title="Protocolos de Saúde com Curadoria Médica | Emagrecimento, Sono e Mais | MonJoy"
+        title="Protocolos de Saúde com Curadoria Médica | Emagrecimento, Sono e Mais | MeJoy"
         description="Compre protocolos de saúde prontos com produtos manipulados e suplementos selecionados por médicos. Emagrecimento, sono, cabelos, intestino, fígado, imunidade e mais. Entrega em todo Brasil. Check-up gratuito."
         path="/"
         keywords={[
@@ -162,5 +162,4 @@ export default function B2CLanding() {
     </>
   );
 }
-
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { buildAuthenticatedHeaders, fetchWithUserSession } from '@/lib/api/client-auth';
 
 type ProfileData = {
   id: string;
@@ -41,23 +42,15 @@ export function useProfile() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/profile', {
-        headers: {
-          'X-User-Email': user.email,
-        },
-      });
-
-      if (!response.ok) {
+      const response = await fetchWithUserSession<ProfileData>('/api/profile');
+      if (response.ok === false) {
         if (response.status === 404) {
-          // Profile não encontrado, não é erro crítico
           setProfile(null);
           return;
         }
-        throw new Error('Erro ao buscar perfil');
+        throw new Error(response.error || 'Erro ao buscar perfil');
       }
-
-      const data = await response.json();
-      setProfile(data);
+      setProfile(response.data);
     } catch (err: any) {
       console.error('[useProfile] Error:', err);
       setError(err.message || 'Erro ao carregar perfil');
@@ -80,12 +73,12 @@ export function useProfile() {
       setUpdating(true);
       setError(null);
 
+      const headers = await buildAuthenticatedHeaders({
+        'Content-Type': 'application/json',
+      });
       const response = await fetch('/api/profile', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-Email': user.email,
-        },
+        headers,
         body: JSON.stringify(data),
       });
 
@@ -108,4 +101,3 @@ export function useProfile() {
 
   return { profile, loading, error, updating, updateProfile, refetch: fetchProfile };
 }
-

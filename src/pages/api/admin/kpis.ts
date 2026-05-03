@@ -31,8 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const period = (req.query.period as string) || '30d';
     const { from } = parsePeriod(period);
 
-    const fromIso = from.toISOString();
-    const nowIso = new Date().toISOString();
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
@@ -52,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           prisma.order.aggregate({ _sum: { totalCents: true }, where: { status: 'PAID', createdAt: { gte: from } } }),
           prisma.order.aggregate({ _sum: { totalCents: true }, where: { status: 'PAID', createdAt: { gte: todayStart } } }),
         ]);
-    } catch (_) {
+    } catch {
       /* DB indisponível: usar zeros */
     }
 

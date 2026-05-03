@@ -5,15 +5,41 @@ import { useEffect } from 'react';
 
 import LoggedLayout from '@/components/layout/LoggedLayout';
 import { useAuth } from '@/context/AuthContext';
-import { useDashboardData } from '@/hooks/useDashboardData';
-import { useOrders } from '@/hooks/useOrders';
-import { useStoreV2Orders } from '@/hooks/useStoreV2Orders';
-import { useReports } from '@/hooks/useReports';
-import { useProfile } from '@/hooks/useProfile';
+import type { DashboardSeverity, OrderTimelineEvent } from '@/lib/dashboard/types';
+import { useMeDashboard } from '@/hooks/useMeDashboard';
+
+function formatDate(value: string | null | undefined) {
+  if (!value) return 'Sem data';
+  return new Intl.DateTimeFormat('pt-BR', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(value));
+}
+
+function formatMoney(cents: number) {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(cents / 100);
+}
+
+function badgeClass(level: DashboardSeverity) {
+  if (level === 'critical') return 'bg-rose-100 text-rose-700 border-rose-200';
+  if (level === 'warning') return 'bg-amber-100 text-amber-700 border-amber-200';
+  if (level === 'success') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+  return 'bg-slate-100 text-slate-700 border-slate-200';
+}
+
+function timelineClass(event: OrderTimelineEvent) {
+  if (event.status === 'issue') return 'border-rose-200 bg-rose-50';
+  if (event.status === 'current') return 'border-emerald-200 bg-emerald-50';
+  return 'border-slate-200 bg-white';
+}
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { dashboard, loading, error } = useMeDashboard();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -23,443 +49,323 @@ export default function DashboardPage() {
 
   if (authLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f7f3]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto mb-4" />
-          <p className="text-gray-600">Carregando...</p>
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-emerald-500" />
+          <p className="text-sm text-slate-600">Carregando seu painel MeJoy...</p>
         </div>
       </div>
     );
   }
-  const { stats, loading: statsLoading } = useDashboardData();
-  const { orders, loading: ordersLoading } = useOrders();
-  const { orders: storeV2Orders, loading: storeV2OrdersLoading } = useStoreV2Orders();
-  const { reports, loading: reportsLoading } = useReports();
-  const { profile, loading: profileLoading } = useProfile();
-
-  // Calcular triagens hoje (simplificado - pode ser melhorado na API)
-  // const triagensHoje = stats?.ultimaAtividade 
-  //   ? new Date(stats.ultimaAtividade).toDateString() === new Date().toDateString() ? 1 : 0
-  //   : 0;
-
-  // Formatar última atividade
-  const formatarUltimaAtividade = (data: string | null) => {
-    if (!data) return null;
-    const date = new Date(data);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffHours < 1) return 'Há menos de 1 hora';
-    if (diffHours < 24) return `Há ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
-    if (diffDays === 1) return 'Ontem';
-    return `Há ${diffDays} dias`;
-  };
-
-  // Comparação temporal: hoje vs período anterior
-  const hoje = new Date().toDateString();
-  const isToday = (d: string) => new Date(d).toDateString() === hoje;
-  const isThisWeek = (d: string) => {
-    const date = new Date(d);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    return diffDays <= 7;
-  };
-  const triagensHoje = reports?.filter((r) => isToday(r.createdAt)).length ?? 0;
-  const relatoriosHoje = reports?.filter((r) => isToday(r.completedAt || r.createdAt) && r.status === 'completed').length ?? 0;
-  const pedidosHoje =
-    (orders?.filter((o) => isToday(o.createdAt)).length ?? 0) +
-    (storeV2Orders?.filter((o) => isToday(o.createdAt)).length ?? 0);
-  const atividadesEstaSemana =
-    (reports?.filter((r) => isThisWeek(r.createdAt)).length ?? 0) +
-    (orders?.filter((o) => isThisWeek(o.createdAt)).length ?? 0) +
-    (storeV2Orders?.filter((o) => isThisWeek(o.createdAt)).length ?? 0);
-
-  // Obter atividade recente (últimos relatórios e pedidos)
-  const atividadesRecentes = [
-    ...(reports?.slice(0, 2).map(r => ({
-      tipo: 'relatorio' as const,
-      titulo: `Relatório ${r.triageSlug}`,
-      data: r.completedAt || r.createdAt,
-      status: r.status === 'completed' ? 'completed' : 'pending',
-      score: null as number | null,
-    })) || []),
-    ...(orders?.slice(0, 2).map(o => ({
-      tipo: 'pedido' as const,
-      titulo: `Pedido ${o.productSlug}`,
-      data: o.createdAt,
-      status: o.status === 'PAID' ? 'completed' : o.status.toLowerCase(),
-      score: null as number | null,
-    })) || []),
-    ...(storeV2Orders?.slice(0, 2).map(o => ({
-      tipo: 'pedido' as const,
-      titulo: `Pedido Loja #${o.id.slice(-8).toUpperCase()}`,
-      data: o.createdAt,
-      status: o.status === 'PAID' ? 'completed' : o.status === 'PENDING_PAYMENT' ? 'pending' : o.status.toLowerCase(),
-      score: null as number | null,
-    })) || []),
-  ].sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime()).slice(0, 4);
 
   return (
     <>
       <Head>
-        <title>Dashboard | Me Joy</title>
-        <meta name="description" content="Seu painel de controle de saúde personalizado" />
+        <title>Dashboard | MeJoy</title>
+        <meta name="description" content="Painel MeJoy com jornada de compra, clínica, relatórios e próximos passos." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
       <LoggedLayout>
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/50 text-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-          {/* Header */}
-          <div className="mb-8 rounded-3xl border border-emerald-100 bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-900 p-6 sm:p-8 text-white shadow-[0_30px_80px_rgba(15,23,42,0.22)]">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.12em] text-emerald-200">Painel Me Joy</p>
-                <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold">
-                  Seu acompanhamento em um só lugar
-                </h1>
-                <p className="mt-3 text-sm sm:text-base text-slate-200 max-w-2xl">
-                  Veja sua evolução, acompanhe pedidos, revise relatórios e mantenha sua jornada organizada.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="/protocolos"
-                  className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-emerald-400"
-                >
-                  Nova triagem
-                </Link>
-                <Link
-                  href="/relatorios"
-                  className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20"
-                >
-                  Ver relatórios
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Metrics Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-1">Total de Triagens</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {statsLoading ? '...' : (stats?.totalTriagens || 0)}
+        <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.12),_transparent_32%),linear-gradient(180deg,_#f8fbf8_0%,_#eef4ef_100%)] text-slate-900">
+          <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+            <section className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-[linear-gradient(135deg,_#08151f_0%,_#10242b_50%,_#0f3b2f_100%)] p-6 text-white shadow-[0_30px_80px_rgba(8,21,31,0.18)] sm:p-8">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-3xl">
+                  <p className="text-xs uppercase tracking-[0.22em] text-emerald-200">Painel de jornada MeJoy</p>
+                  <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+                    {dashboard?.journey.title || 'Sua jornada completa em um só lugar'}
+                  </h1>
+                  <p className="mt-3 max-w-2xl text-sm text-slate-200 sm:text-base">
+                    {dashboard?.journey.summary || 'Compras, clínica, relatórios e próximos passos conectados em uma única visão mobile-first.'}
                   </p>
-                  {stats?.ultimaAtividade && (
-                    <p className="text-green-600 text-sm font-medium">
-                      {formatarUltimaAtividade(stats.ultimaAtividade)}
+                  {dashboard?.journey.trust && (
+                    <p className="mt-4 max-w-2xl text-sm text-emerald-100/90">
+                      {dashboard.journey.trust}
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">📊</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-1">Relatórios Gerados</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {reportsLoading ? '...' : (stats?.totalRelatorios || 0)}
-                  </p>
-                  {stats?.totalRelatorios && stats.totalRelatorios > 0 && (
-                    <p className="text-emerald-700 text-sm font-medium">
-                      {Math.round((stats.totalRelatorios / (stats.totalTriagens || 1)) * 100)}% completos
-                    </p>
-                  )}
-                </div>
-                <div className="h-12 w-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">📄</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-1">Pedidos</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {ordersLoading ? '...' : (stats?.totalPedidos || 0)}
-                  </p>
-                  {stats?.totalPedidos && stats.totalPedidos > 0 && (
-                    <p className="text-slate-700 text-sm font-medium">Total de compras</p>
-                  )}
-                </div>
-                <div className="h-12 w-12 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">🛒</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-1">Score Médio</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {statsLoading ? '...' : (stats?.scoreMedio || 'N/A')}
-                  </p>
-                  {stats?.scoreMedio && (
-                    <p className="text-amber-700 text-sm font-medium">
-                      {stats.scoreMedio >= 80 ? 'Excelente' : stats.scoreMedio >= 60 ? 'Bom' : 'Regular'}
-                    </p>
-                  )}
-                </div>
-                <div className="h-12 w-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">⭐</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Comparação temporal: Hoje vs Evolução */}
-          <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100 mb-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span>📅</span> Resumo do dia e evolução
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                <p className="text-gray-500 text-sm">Hoje</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {triagensHoje + relatoriosHoje + pedidosHoje} atividade(s)
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {triagensHoje} triagem(ns) · {relatoriosHoje} relatório(s) · {pedidosHoje} pedido(s)
-                </p>
-              </div>
-              <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                <p className="text-gray-500 text-sm">Esta semana</p>
-                <p className="text-2xl font-bold text-gray-900">{atividadesEstaSemana}</p>
-                <p className="text-xs text-gray-500 mt-1">triagens + pedidos</p>
-              </div>
-              <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                <p className="text-gray-500 text-sm">Total</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {(stats?.totalTriagens || 0) + (stats?.totalPedidos || 0)}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">triagens + pedidos</p>
-              </div>
-              <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                <p className="text-gray-500 text-sm">Última atividade</p>
-                <p className="text-lg font-bold text-gray-900">
-                  {stats?.ultimaAtividade ? formatarUltimaAtividade(stats.ultimaAtividade) : '—'}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Start New Triage */}
-            <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl p-8 shadow-xl text-white">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="h-16 w-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                  <span className="text-3xl">➕</span>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Nova Triagem</h3>
-                  <p className="text-emerald-100">Inicie uma nova avaliação de saúde</p>
-                </div>
-              </div>
-              <Link
-                href="/protocolos"
-                className="inline-flex items-center gap-2 bg-white text-emerald-700 font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <span className="text-lg">🚀</span>
-                Fazer triagem
-              </Link>
-            </div>
-
-            {/* View Reports */}
-            <div className="bg-gradient-to-br from-slate-800 to-slate-950 rounded-2xl p-8 shadow-xl text-white">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="h-16 w-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                  <span className="text-3xl">📊</span>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Meus Relatórios</h3>
-                  <p className="text-slate-200">Visualize seus relatórios de saúde</p>
-                </div>
-              </div>
-              <Link
-                href="/relatorios"
-                className="inline-flex items-center gap-2 bg-white text-slate-800 font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <span className="text-lg">👁️</span>
-                Ver Relatórios
-              </Link>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-emerald-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <span className="text-green-500">📈</span>
-              Atividade Recente
-            </h3>
-            
-            {reportsLoading || ordersLoading || storeV2OrdersLoading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto"></div>
-                <p className="text-gray-500 mt-2">Carregando...</p>
-              </div>
-            ) : atividadesRecentes.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-500">Nenhuma atividade recente</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {atividadesRecentes.map((atividade, index) => {
-                  const statusColor = atividade.status === 'completed' || atividade.status === 'PAID'
-                    ? 'text-green-600'
-                    : atividade.status === 'pending' || atividade.status === 'PENDING'
-                    ? 'text-amber-600'
-                    : 'text-slate-700';
-                  
-                  const statusText = atividade.status === 'completed' || atividade.status === 'PAID'
-                    ? 'Concluído'
-                    : atividade.status === 'pending' || atividade.status === 'PENDING'
-                    ? 'Pendente'
-                    : 'Em andamento';
-
-                  const icon = atividade.tipo === 'relatorio' ? '📄' : '🛒';
-                  const bgColor = atividade.tipo === 'relatorio' ? 'bg-emerald-100' : 'bg-slate-100';
-
-                  return (
-                    <div key={index} className="flex items-center gap-4 p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
-                      <div className={`h-10 w-10 ${bgColor} rounded-lg flex items-center justify-center`}>
-                        <span className="text-lg">{icon}</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-gray-900">{atividade.titulo}</p>
-                        <p className="text-gray-600 text-sm">
-                          {formatarUltimaAtividade(atividade.data)}
-                          {atividade.score && ` • Score: ${atividade.score}`}
-                        </p>
-                      </div>
-                      <div className={`${statusColor} font-semibold`}>{statusText}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Pedidos da Loja (Store V2) */}
-          <div className="mt-8 bg-white rounded-2xl p-8 shadow-lg border border-emerald-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <span className="text-emerald-500">🛒</span>
-              Pedidos da Loja
-            </h3>
-            {storeV2OrdersLoading ? (
-              <div className="text-center py-6">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto" />
-                <p className="text-gray-500 mt-2">Carregando...</p>
-              </div>
-            ) : storeV2Orders.length === 0 ? (
-              <p className="text-gray-500 text-center py-6">Nenhum pedido da loja ainda.</p>
-            ) : (
-              <div className="space-y-4">
-                {storeV2Orders.map((o) => (
-                  <Link
-                    key={o.id}
-                    href={`/pedidos/${o.id}`}
-                    className="flex items-center justify-between p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 hover:bg-emerald-50 transition-colors"
-                  >
+                <div className="w-full max-w-sm rounded-[1.5rem] border border-white/10 bg-white/8 p-4 backdrop-blur">
+                  <div className="flex items-center justify-between gap-4">
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        Pedido #{o.id.slice(-8).toUpperCase()}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        {new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL',
-                        }).format(o.totalCents / 100)}{' '}
-                        · {new Date(o.createdAt).toLocaleDateString('pt-BR')}
-                      </p>
+                      <p className="text-xs uppercase tracking-[0.16em] text-emerald-100/80">Status atual</p>
+                      <p className="mt-2 text-lg font-semibold">{dashboard?.journey.state || 'loading'}</p>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        o.status === 'PAID'
-                          ? 'bg-green-100 text-green-800'
-                          : o.status === 'PENDING_PAYMENT'
-                            ? 'bg-amber-100 text-amber-800'
-                            : o.status === 'SHIPPED' || o.status === 'DELIVERED'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {o.status === 'PAID'
-                        ? 'Pago'
-                        : o.status === 'PENDING_PAYMENT'
-                          ? 'Aguardando pagamento'
-                          : o.status === 'PREPARING'
-                            ? 'Em preparação'
-                            : o.status === 'SHIPPED'
-                              ? 'Enviado'
-                              : o.status === 'DELIVERED'
-                                ? 'Entregue'
-                                : o.status}
-                    </span>
-                  </Link>
-                ))}
+                    {dashboard?.journey.primaryAction && (
+                      <Link
+                        href={dashboard.journey.primaryAction.href}
+                        className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300"
+                      >
+                        {dashboard.journey.primaryAction.label}
+                      </Link>
+                    )}
+                  </div>
+                  {dashboard?.journey.primaryAction?.note && (
+                    <p className="mt-3 text-xs text-slate-200">{dashboard.journey.primaryAction.note}</p>
+                  )}
+                  <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-200">
+                    <div className="rounded-2xl border border-white/10 bg-black/10 p-3">
+                      <p className="text-[11px] uppercase tracking-[0.14em] text-emerald-100/70">SLA</p>
+                      <p className="mt-2 leading-relaxed">{dashboard?.journey.sla || 'Carregando...'}</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-black/10 p-3">
+                      <p className="text-[11px] uppercase tracking-[0.14em] text-emerald-100/70">Suporte</p>
+                      <p className="mt-2 leading-relaxed">{dashboard?.journey.supportRule || 'Evite abrir suporte sem necessidade.'}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
+            </section>
 
-          {/* User Info */}
-          <div className="mt-8 bg-white rounded-2xl p-8 shadow-lg border border-emerald-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <span className="text-emerald-600">👤</span>
-              Informações do Usuário
-            </h3>
-            {profileLoading ? (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500 mx-auto"></div>
-              </div>
-            ) : profile ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {(error || dashboard?.degraded) && (
+              <section className="mt-6 rounded-[1.5rem] border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm font-medium mb-2">Nome Completo</p>
-                    <p className="text-gray-900 font-semibold text-lg">{profile.name || 'Não informado'}</p>
+                    <p className="text-sm font-semibold text-amber-900">Atenção operacional</p>
+                    <p className="mt-1 text-sm text-amber-800">
+                      {error?.message || 'Detectamos pontos do fluxo que exigem transparência extra neste momento.'}
+                    </p>
                   </div>
-                  <div>
-                    <p className="text-gray-500 text-sm font-medium mb-2">Email</p>
-                    <p className="text-gray-900 font-semibold text-lg">{profile.email || 'Não informado'}</p>
-                  </div>
-                </div>
-                <div className="mt-6">
                   <Link
-                    href="/perfil"
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    href={dashboard?.support.whatsappUrl || 'https://wa.me/5511999999999'}
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-amber-300 bg-white px-4 py-2 text-sm font-medium text-amber-900 hover:bg-amber-100"
                   >
-                    <span className="text-lg">✏️</span>
-                    Editar Perfil
+                    Falar com suporte
                   </Link>
                 </div>
-              </>
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-gray-500 mb-4">Nenhuma informação disponível</p>
-                <Link
-                  href="/perfil"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                  <span className="text-lg">✏️</span>
-                  Criar Perfil
-                </Link>
+                {dashboard?.degradedReasons?.length ? (
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {dashboard.degradedReasons.map((reason) => (
+                      <div key={`${reason.source}-${reason.message}`} className="rounded-2xl border border-amber-200 bg-white p-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-amber-700">{reason.source}</p>
+                        <p className="mt-2 text-sm text-slate-700">{reason.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </section>
+            )}
+
+            {loading && !dashboard ? (
+              <div className="flex justify-center py-16">
+                <div className="h-12 w-12 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
+              </div>
+            ) : null}
+
+            {dashboard && (
+              <div className="mt-6 grid gap-6 lg:grid-cols-[1.25fr_0.9fr]">
+                <section id="timeline" className="space-y-6">
+                  <div className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Próximos passos</p>
+                        <h2 className="mt-2 text-xl font-semibold text-slate-900">Timeline da sua jornada</h2>
+                      </div>
+                      <p className="text-xs text-slate-500">Atualizado em {formatDate(dashboard.generatedAt)}</p>
+                    </div>
+                    <div className="mt-5 space-y-3">
+                      {dashboard.timeline.map((event) => (
+                        <div
+                          key={event.id}
+                          className={`rounded-[1.25rem] border p-4 ${timelineClass(event)}`}
+                        >
+                          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                              <p className="text-sm font-semibold text-slate-900">{event.label}</p>
+                              <p className="mt-1 text-sm text-slate-600">{event.description}</p>
+                            </div>
+                            <div className="shrink-0 text-xs text-slate-500">
+                              {formatDate(event.at)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid gap-6 xl:grid-cols-2">
+                    <section className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Pedidos</p>
+                          <h2 className="mt-2 text-xl font-semibold text-slate-900">Compras e entregas</h2>
+                        </div>
+                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                          {dashboard.orders.total} registro(s)
+                        </span>
+                      </div>
+                      <div className="mt-5 space-y-3">
+                        {[...dashboard.orders.storeV2, ...dashboard.orders.protocol].slice(0, 6).map((order) => (
+                          <div key={`${order.type}-${order.id}`} className="rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <p className="text-sm font-semibold text-slate-900">{order.label}</p>
+                                <p className="mt-1 text-sm text-slate-600">{formatMoney(order.amountCents)}</p>
+                              </div>
+                              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                                {order.status}
+                              </span>
+                            </div>
+                            <p className="mt-3 text-xs text-slate-500">
+                              Criado em {formatDate(order.createdAt)}
+                            </p>
+                            {order.supportHint && (
+                              <p className="mt-2 text-xs text-slate-600">{order.supportHint}</p>
+                            )}
+                            {order.href && (
+                              <Link href={order.href} className="mt-3 inline-flex text-sm font-medium text-emerald-700 hover:text-emerald-800">
+                                Ver detalhes →
+                              </Link>
+                            )}
+                          </div>
+                        ))}
+                        {dashboard.orders.total === 0 && (
+                          <div className="rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                            Nenhuma compra vinculada ainda. Quando houver confirmação de pagamento, ela aparecerá aqui com próximos passos e SLA.
+                          </div>
+                        )}
+                      </div>
+                    </section>
+
+                    <section className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Relatórios</p>
+                          <h2 className="mt-2 text-xl font-semibold text-slate-900">Triagens e resultados</h2>
+                        </div>
+                        <Link href="/relatorios" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+                          Abrir tudo
+                        </Link>
+                      </div>
+                      <div className="mt-5 space-y-3">
+                        {dashboard.reports.active.slice(0, 6).map((report) => (
+                          <div key={report.id} className="rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <p className="text-sm font-semibold text-slate-900">{report.triageSlug}</p>
+                                <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">{report.status}</p>
+                              </div>
+                              <p className="text-xs text-slate-500">{formatDate(report.completedAt || report.createdAt)}</p>
+                            </div>
+                            {report.summary && (
+                              <p className="mt-3 line-clamp-3 text-sm text-slate-600">{report.summary}</p>
+                            )}
+                          </div>
+                        ))}
+                        {dashboard.reports.total === 0 && (
+                          <div className="rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                            Ainda não há relatórios vinculados. Assim que uma triagem entrar em processamento, ela aparece aqui.
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  </div>
+                </section>
+
+                <aside className="space-y-6">
+                  <section className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                    <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Conta</p>
+                    <h2 className="mt-2 text-xl font-semibold text-slate-900">
+                      {dashboard.profile?.name || 'Conta em validação'}
+                    </h2>
+                    <div className="mt-4 space-y-3 text-sm text-slate-600">
+                      <div className="rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Email</p>
+                        <p className="mt-1 font-medium text-slate-900">{dashboard.profile?.email || user.email || 'Não informado'}</p>
+                      </div>
+                      <div className="rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                        <p className="text-xs uppercase tracking-[0.12em] text-slate-500">WhatsApp</p>
+                        <p className="mt-1 font-medium text-slate-900">{dashboard.profile?.whatsapp || 'Adicionar no perfil'}</p>
+                      </div>
+                    </div>
+                    <Link href="/perfil" className="mt-4 inline-flex text-sm font-medium text-emerald-700 hover:text-emerald-800">
+                      Atualizar perfil →
+                    </Link>
+                  </section>
+
+                  <section id="clinical" className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Clínico</p>
+                        <h2 className="mt-2 text-xl font-semibold text-slate-900">Handoff e consulta</h2>
+                      </div>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                        {dashboard.clinical.status}
+                      </span>
+                    </div>
+                    <p className="mt-4 text-sm text-slate-600">
+                      Última atualização clínica: {formatDate(dashboard.clinical.lastUpdatedAt)}
+                    </p>
+                    <div className="mt-4 space-y-3">
+                      {dashboard.clinical.timeline.slice(0, 4).map((event) => (
+                        <div key={event.id} className="rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                          <p className="text-sm font-semibold text-slate-900">{event.label}</p>
+                          <p className="mt-1 text-sm text-slate-600">{event.description}</p>
+                          <p className="mt-2 text-xs text-slate-500">{formatDate(event.at)}</p>
+                        </div>
+                      ))}
+                      {dashboard.clinical.timeline.length === 0 && (
+                        <div className="rounded-[1.25rem] border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                          Quando a jornada clínica for iniciada, cada etapa aparecerá aqui de forma rastreável.
+                        </div>
+                      )}
+                    </div>
+                  </section>
+
+                  <section id="support" className="rounded-[1.75rem] border border-white/70 bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] sm:p-6">
+                    <p className="text-xs uppercase tracking-[0.16em] text-emerald-700">Centro de suporte</p>
+                    <h2 className="mt-2 text-xl font-semibold text-slate-900">Menos atrito, mais contexto</h2>
+                    <div className="mt-4 space-y-3">
+                      {dashboard.notifications.map((notification) => (
+                        <div
+                          key={notification.id}
+                          className={`rounded-[1.25rem] border p-4 ${badgeClass(notification.level)}`}
+                        >
+                          <p className="text-sm font-semibold">{notification.title}</p>
+                          <p className="mt-2 text-sm">{notification.body}</p>
+                          {notification.cta && (
+                            <Link href={notification.cta.href} className="mt-3 inline-flex text-sm font-semibold">
+                              {notification.cta.label} →
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-5 rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Regras de suporte</p>
+                      <p className="mt-2 text-sm text-slate-600">{dashboard.journey.supportRule}</p>
+                      <div className="mt-4 flex flex-col gap-3">
+                        <Link
+                          href={dashboard.support.whatsappUrl}
+                          className="inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                        >
+                          Abrir WhatsApp de suporte
+                        </Link>
+                        <a href={`mailto:${dashboard.support.email}`} className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+                          {dashboard.support.email}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 rounded-[1.25rem] border border-slate-200 bg-slate-50/70 p-4">
+                      <p className="text-sm font-semibold text-slate-900">FAQ contextual</p>
+                      <div className="mt-3 space-y-3">
+                        {dashboard.journey.faq.map((item) => (
+                          <div key={item.question}>
+                            <p className="text-sm font-medium text-slate-900">{item.question}</p>
+                            <p className="mt-1 text-sm text-slate-600">{item.answer}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+                </aside>
               </div>
             )}
           </div>
-        </div>
-      </main>
+        </main>
       </LoggedLayout>
     </>
   );

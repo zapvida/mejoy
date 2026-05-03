@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { ensureRole, UnauthorizedError } from '@/lib/rbac';
 
 type HandoffMetricsResponse = {
   ok: boolean;
@@ -67,6 +68,31 @@ export default async function handler(
       byStatus: {},
       error: "Use GET"
     });
+  }
+
+  try {
+    ensureRole(req, ['admin', 'analyst']);
+  } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      return res.status(401).json({
+        ok: false,
+        periodDays: 0,
+        totals: {
+          created: 0,
+          opened: 0,
+          completed: 0,
+          clinicalPaymentStarted: 0,
+          clinicalPaymentSuccess: 0,
+          consultCompleted: 0,
+          pharmacyOrderStarted: 0,
+          pharmacyOrderCreated: 0,
+          followupStarted: 0
+        },
+        rates: { openRate: 0, completionRate: 0, clinicalPaymentRate: 0 },
+        byStatus: {},
+        error: error.message
+      });
+    }
   }
 
   const supabase = getSupabaseClient();

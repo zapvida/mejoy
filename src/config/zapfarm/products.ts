@@ -265,7 +265,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
         },
         {
           icon: '🛡️',
-          title: 'Segurança garantida',
+          title: 'Seguranca clinica',
           description: 'Todo uso de medicação é feito apenas com prescrição médica',
         },
         {
@@ -304,7 +304,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     
     seo: {
       title: 'Emagreça com Segurança: MetaboSlim com Tirzepatida | Me Joy',
-      description: 'Emagreça até 15% do peso em 6 meses com MetaboSlim. Protocolo médico com tirzepatida, acompanhamento 24/7 e entrega em casa. Check-up gratuito em 3 minutos. Resultados garantidos.',
+      description: 'Programa de emagrecimento com avaliacao medica, estrategias modernas quando indicadas, acompanhamento continuo e suporte oficial. Entenda sua elegibilidade em poucos minutos.',
       keywords: ['emagrecer rápido', 'tirzepatida', 'perda de peso', 'emagrecimento médico', 'obesidade tratamento', 'endocrinologista online', 'emagrecer com segurança', 'metaboslim', 'protocolo emagrecimento'],
     },
   },
@@ -2119,4 +2119,3 @@ export function getProductPlans(slug: string) {
 export function getProductsByCategory(category: string): ZapfarmProductConfig[] {
   return getAllProducts().filter(p => p.category === category);
 }
-

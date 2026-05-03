@@ -120,7 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         steps = fallback.steps;
         count = fallback.count;
       }
-    } catch (err) {
+    } catch {
       const fallback = await getLeadsFromTriageSessions(productSlug, page, pageSize);
       steps = fallback.steps;
       count = fallback.count;

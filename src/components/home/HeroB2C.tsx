@@ -18,7 +18,7 @@ export default function HeroB2C() {
   const handleCtaProdutos = () => track('hero_secondary_cta_click', { id: 'cta_hero_produtos', section: 'hero' });
 
   return (
-    <section id="hero" className="relative min-h-[auto] sm:min-h-[80vh] flex items-center overflow-hidden bg-gradient-to-br from-surface via-muted/50 to-surface lpac-aurora py-8 sm:py-10 md:py-14" aria-label="Bem-vindo à MonJoy">
+    <section id="hero" className="relative min-h-[auto] sm:min-h-[80vh] flex items-center overflow-hidden bg-gradient-to-br from-surface via-muted/50 to-surface lpac-aurora py-8 sm:py-10 md:py-14" aria-label="Bem-vindo à MeJoy">
       {/* BG decorativo */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10" />
@@ -145,4 +145,3 @@ export default function HeroB2C() {
     </section>
   );
 }
-

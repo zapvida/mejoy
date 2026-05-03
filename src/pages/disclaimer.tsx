@@ -48,8 +48,8 @@ export default function Disclaimer() {
               <h2 className="text-2xl font-semibold mb-2 text-white">5. Contato</h2>
               <p className="text-muted-foreground">
                 Para dúvidas ou informações, entre em contato pelo e-mail:{' '}
-                <a href="mailto:contato@zapfarm.com.br" className="text-brand underline hover:text-green-300">
-                  contato@zapfarm.com.br
+                <a href="mailto:suporte@mejoy.com.br" className="text-brand underline hover:text-green-300">
+                  suporte@mejoy.com.br
                 </a>
               </p>
             </section>

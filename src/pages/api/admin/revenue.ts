@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       revenueThisWeek = (week._sum?.amount ?? 0) / 100;
       revenueThisMonth = (month._sum?.amount ?? 0) / 100;
       revenueThisYear = (year._sum?.amount ?? 0) / 100;
-    } catch (_) {
+    } catch {
       /* DB indisponível: usar zeros */
     }
 

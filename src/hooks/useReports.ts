@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { fetchWithUserSession } from '@/lib/api/client-auth';
 
 type Report = {
   id: string;
@@ -29,18 +30,11 @@ export function useReports() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/api/reports', {
-          headers: {
-            'X-User-Email': user.email,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao buscar relatórios');
+        const response = await fetchWithUserSession<Report[]>('/api/reports');
+        if (response.ok === false) {
+          throw new Error(response.error || 'Erro ao buscar relatórios');
         }
-
-        const data = await response.json();
-        setReports(data);
+        setReports(response.data);
       } catch (err: any) {
         console.error('[useReports] Error:', err);
         setError(err.message || 'Erro ao carregar relatórios');
@@ -55,4 +49,3 @@ export function useReports() {
 
   return { reports, loading, error };
 }
-

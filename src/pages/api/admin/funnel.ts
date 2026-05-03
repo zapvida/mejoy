@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.zapfarmOrder.count({ where: { createdAt: { gte: from } } }),
         prisma.zapfarmOrder.count({ where: { status: 'PAID', createdAt: { gte: from } } }),
       ]);
-    } catch (_) {
+    } catch {
       /* DB indisponível: usar zeros */
     }
 

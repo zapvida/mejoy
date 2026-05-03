@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { fetchWithUserSession } from '@/lib/api/client-auth';
 
 type DashboardStats = {
   totalTriagens: number;
@@ -17,14 +18,7 @@ export function useDashboardData() {
 
   useEffect(() => {
     if (!user?.email) {
-      // Se não houver usuário autenticado, retornar zeros
-      setStats({
-        totalTriagens: 0,
-        totalRelatorios: 0,
-        totalPedidos: 0,
-        scoreMedio: null,
-        ultimaAtividade: null,
-      });
+      setStats(null);
       setLoading(false);
       return;
     }
@@ -34,30 +28,15 @@ export function useDashboardData() {
         setLoading(true);
         setError(null);
 
-        // Enviar email do usuário no header
-        const response = await fetch('/api/dashboard/stats', {
-          headers: {
-            'X-User-Email': user.email,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao buscar estatísticas');
+        const response = await fetchWithUserSession<DashboardStats>('/api/dashboard/stats');
+        if (response.ok === false) {
+          throw new Error(response.error || 'Erro ao buscar estatísticas');
         }
-
-        const data = await response.json();
-        setStats(data);
+        setStats(response.data);
       } catch (err: any) {
         console.error('[useDashboardData] Error:', err);
         setError(err.message || 'Erro ao carregar dados');
-        // Em caso de erro, retornar zeros
-        setStats({
-          totalTriagens: 0,
-          totalRelatorios: 0,
-          totalPedidos: 0,
-          scoreMedio: null,
-          ultimaAtividade: null,
-        });
+        setStats(null);
       } finally {
         setLoading(false);
       }
@@ -68,4 +47,3 @@ export function useDashboardData() {
 
   return { stats, loading, error };
 }
-

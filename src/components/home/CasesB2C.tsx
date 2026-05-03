@@ -6,16 +6,16 @@ import LpacCard from '@/components/b2b/LpacCard';
 
 const cases = [
   {
-    client: 'Alloe Health',
-    desc: 'Linha nutricional que utiliza protocolos de trato gastrointestinal e imunidade semelhantes aos que você encontra na Me Joy.',
+    client: 'MeJoy Protocolos',
+    desc: 'Linha de protocolos com foco em saúde gastrointestinal, imunidade e rotina preventiva construída com a mesma base editorial da MeJoy.',
     metric: '+37%',
     metricLabel: 'conversão',
     metricIcon: TrendingUp,
     variant: 'amber' as const,
   },
   {
-    client: 'ZapVida',
-    desc: 'Plataforma de telemedicina que usa nossos protocolos como apoio no cuidado de rotina de pacientes em diferentes eixos de saúde.',
+    client: 'MeJoy Clínica',
+    desc: 'Acompanhamento clínico integrado à jornada de protocolos para organizar consulta, evolução e próximo passo sem atrito.',
     metric: '24h',
     metricLabel: 'go-live',
     metricIcon: Clock,
@@ -38,7 +38,7 @@ export default function CasesB2C() {
             Quem já usa a mesma base de protocolos
           </h2>
           <p className="text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
-            Nossos protocolos nascem de experiências reais em marcas e serviços de saúde
+            A mesma base de protocolos evolui entre produto, clínica e acompanhamento contínuo
           </p>
         </motion.div>
 
@@ -83,4 +83,3 @@ export default function CasesB2C() {
     </section>
   );
 }
-
