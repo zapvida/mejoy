@@ -2,7 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { deriveReport } from '@/lib/report/derive';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
@@ -33,6 +32,7 @@ import {
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
 import { createClinicalHandoff } from '@/lib/handoff/client';
 import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
+import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
 interface RelatorioEmagrecimentoProps {
   vm: ReportViewModel | null;
@@ -418,12 +418,12 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
   }
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
 
     // Modo mock para desenvolvimento
     if (!supabaseUrl || !supabaseKey) {
       if (process.env.NODE_ENV === 'development') {
+        const { deriveReport } = await import('@/lib/report/derive');
         console.warn('[relatorio] Supabase não configurado, usando modo mock');
         
         // Em modo mock, os dados já foram processados no finalize
@@ -476,7 +476,10 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
     const resolvedId = await resolveTriageId(supabase, id);
     const { data: sessionRow, error: sessionError } = await supabase
       .from('triage_sessions')
-      .select('*')
+      .select(`
+        *,
+        triage_reports(status, sections)
+      `)
       .eq('triage_id', resolvedId)
       .single();
 
@@ -484,8 +487,20 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
       return { props: { vm: null, reportId: id, error: 'Sessão não encontrada' } };
     }
 
+    const reportRow = Array.isArray(sessionRow.triage_reports)
+      ? sessionRow.triage_reports[0]
+      : sessionRow.triage_reports;
     const patientSnapshot = sessionRow.profile_snapshot || {};
     const answers = sessionRow.answers || {};
+    const triageSlug = sessionRow.triage_slug || 'emagrecimento';
+
+    if (reportRow?.status === 'completed' && reportRow?.sections && typeof reportRow.sections === 'object') {
+      const cached = reportRow.sections as ReportViewModel;
+      if (cached?.id && cached?.basics && cached?.content) {
+        (cached as any).answers = answers;
+        return { props: { vm: cached, reportId: resolvedId } };
+      }
+    }
     
     // Extrair dados do snapshot e answers (priorizar snapshot)
     const weightKg = patientSnapshot.weight_kg ?? answers.peso ?? answers.weight ?? null;
@@ -531,7 +546,8 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
       age,
       sex: patientSnapshot.sex || answers.sex
     });
-    
+
+    const { deriveReport } = await import('@/lib/report/derive');
     const vm = await deriveReport({
       triageId: resolvedId,
       sessionData: {
@@ -547,7 +563,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioEmagrecimentoProps>
           weightKg: weightKg ? Number(weightKg) : null,
           heightCm: heightCm ? Number(heightCm) : null,
         },
-        triageSlug: sessionRow.triage_slug || 'emagrecimento',
+        triageSlug,
       },
       options: {
         includeAudio: false,

@@ -13,6 +13,7 @@ import {
 import type { ReportViewModel } from "@/lib/report/derive";
 import { deriveReport } from "@/lib/report/derive";
 import type { PatientProfile } from "@/lib/report/types";
+import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
 
 interface RelatorioPageProps {
   vm: ReportViewModel | null;
@@ -98,8 +99,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioPageProps> = async 
   const shouldPrint = query.print === "true";
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
 
     if (!supabaseUrl || !supabaseKey) {
       console.error("[relatorio] Ambiente Supabase não configurado");

@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { deriveReport } from '@/lib/report/derive';
 import type { ReportViewModel } from '@/lib/report/derive';
+import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 import { cn } from '@/lib/utils';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { ReportView } from '@/components/report/ReportView';
@@ -166,8 +167,7 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
   }
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
 
     if (!supabaseUrl || !supabaseKey) {
       if (process.env.NODE_ENV === 'development') {

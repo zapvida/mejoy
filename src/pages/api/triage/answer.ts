@@ -7,6 +7,7 @@ import { withTriageMonitoring, captureTriageEvent } from "@/lib/monitoring/api-m
 import { setSentryTriageTag } from "@/lib/observability";
 import { coercePhoneLike } from "@/lib/phone/normalize";
 import { rateLimit } from "@/lib/rateLimit";
+import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
 import { hasProfileData } from "@/lib/triage/schema";
 
 type AnswerPayload = {
@@ -120,7 +121,7 @@ export default withTriageMonitoring(async function handler(req: NextApiRequest, 
   
   setSentryTriageTag(triageId);
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const { url: supabaseUrl } = getSupabaseServerConfig();
   const serviceKey = serverEnv.SUPABASE_SERVICE_ROLE_KEY;
   
   // Para desenvolvimento local, permitir funcionamento sem Supabase

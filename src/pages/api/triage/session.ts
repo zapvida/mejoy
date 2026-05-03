@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { setSentryTriageTag } from "@/lib/observability";
 import { coercePhoneLike } from "@/lib/phone/normalize";
+import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
 import { hasProfileData } from "@/lib/triage/schema";
 
 type SessionPayload = {
@@ -104,8 +105,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const startTime = Date.now();
   
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const { url: supabaseUrl, serviceRoleKey: serviceKey, readKey } = getSupabaseServerConfig();
 
     if (req.method === "GET") {
       const triageId = String(req.query.triageId || "");
@@ -113,7 +113,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return res.status(400).json({ error: "triageId é obrigatório." });
       }
 
-      if (!supabaseUrl || !serviceKey) {
+      if (!supabaseUrl || !readKey) {
         if (shouldAllowMockSession(req)) {
           return res.status(200).json({
             triageId,
@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return res.status(500).json({ error: "Serviço temporariamente indisponível. Tente novamente em alguns instantes." });
       }
 
-      const supabase = createClient(supabaseUrl, serviceKey);
+      const supabase = createClient(supabaseUrl, readKey);
       const { data: sessionRow, error: sessionError } = await supabase
         .from("triage_sessions")
         .select("triage_id, triage_slug, profile_snapshot, answers, progress_percent, completed_at, triage_reports:triage_reports(id)")

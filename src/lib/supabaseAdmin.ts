@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
+import {
+  getSupabasePublicConfig,
+  getSupabaseServerConfig,
+} from '@/lib/supabase/runtime-config';
 
-const configuredUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const configuredServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const configuredAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const { url: configuredUrl } = getSupabasePublicConfig();
+const { serviceRoleKey: configuredServiceKey, anonKey: configuredAnonKey } =
+  getSupabaseServerConfig();
 
 // Evita crash no import quando envs não estão presentes no ambiente local.
 const fallbackUrl = 'https://local-placeholder.supabase.co';

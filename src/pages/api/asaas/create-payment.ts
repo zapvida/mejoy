@@ -12,6 +12,7 @@ import { calculateDueDate } from '@/lib/asaas/utils';
 import { readUtmFromReq } from '@/lib/analytics/utm';
 import { resolvePixTransaction } from '@/lib/asaas/pix';
 import { getProfileByEmail } from '@/lib/supabase/server';
+import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -695,7 +696,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Salvar checkout_cache para "never repeat" (CPF, CEP, endereço)
       const { createClient } = await import('@supabase/supabase-js');
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const { url: supabaseUrl } = getSupabaseServerConfig();
       const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
       if (supabaseUrl && supabaseKey) {
         const supabase = createClient(supabaseUrl, supabaseKey);
