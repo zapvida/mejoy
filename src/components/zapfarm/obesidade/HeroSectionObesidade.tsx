@@ -63,16 +63,8 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
     <>
       Emagrecimento com
       <span className="text-emerald-700"> avaliação médica</span>,
-      <br className="hidden lg:block" />
+      <br className="sm:hidden" />
       <span className="text-emerald-700"> plano claro</span> e suporte contínuo.
-    </>
-  );
-  const emagrecimentoHeadlineMobile = (
-    <>
-      Avaliação médica
-      <span className="text-emerald-700">, plano claro</span>
-      <br />
-      para emagrecer.
     </>
   );
   const emagrecimentoSubMobile = 'Triagem rápida e orientação segura para entender o próximo passo com clareza.';
@@ -144,15 +136,13 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
           </div>
 
           <h1 className="mt-5 px-1 text-[2.2rem] font-bold leading-[0.92] tracking-[-0.055em] text-slate-950 sm:mt-8 sm:px-2 sm:text-6xl sm:leading-[0.95] sm:tracking-[-0.05em] md:text-7xl lg:text-[5.25rem]">
-            <span className="sm:hidden">{emagrecimentoHeadlineMobile}</span>
-            <span className="hidden sm:inline">{emagrecimentoHeadline}</span>
+            {emagrecimentoHeadline}
           </h1>
 
           <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:hidden">
             <a
               href="/triagem/emagrecimento"
               onClick={handlePrimaryCta}
-              data-testid="home-primary-cta"
               className="inline-flex w-full max-w-md items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 py-3.5 text-[15px] font-bold text-white shadow-[0_24px_60px_rgba(5,150,105,0.26)] transition-all duration-300"
             >
               Começar minha triagem
@@ -236,7 +226,6 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
                 className="object-cover"
                 sizes="(max-width: 768px) 50vw, 20vw"
                 quality={88}
-                loading="eager"
               />
             </div>
           ))}

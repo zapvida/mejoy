@@ -1,60 +1,38 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { MeJoyBrand } from '@/components/ui/MeJoyBrand';
+import Image from 'next/image';
 import { getCheckoutUrl, getProductConfig, productExists } from '@/lib/zapfarm/product-loader';
-import { cn } from '@/lib/utils';
-
-type HeaderLink = {
-  label: string;
-  href: string;
-};
 
 interface HeaderZapfarmProps {
-  homeHref?: string;
-  links?: HeaderLink[];
   primaryCtaHref?: string;
   primaryCtaLabel?: string;
-  primaryCtaMobileLabel?: string;
   primaryCtaOnClick?: () => void;
-  secondaryCtaHref?: string;
-  secondaryCtaLabel?: string;
-  brandSubtitle?: string;
-  transparentAtTop?: boolean;
 }
 
-const DEFAULT_LINKS: HeaderLink[] = [
-  { label: 'Programa', href: '/emagrecimento' },
-  { label: 'Como funciona', href: '/emagrecimento#como-funciona' },
-  { label: 'Planos', href: '/emagrecimento#planos' },
-  { label: 'FAQ', href: '/emagrecimento#faq' },
-];
-
 export function HeaderZapfarm({
-  homeHref = '/',
-  links = DEFAULT_LINKS,
   primaryCtaHref,
   primaryCtaLabel,
-  primaryCtaMobileLabel,
   primaryCtaOnClick,
-  secondaryCtaHref = '/produtos',
-  secondaryCtaLabel = 'Ver produtos',
-  brandSubtitle,
-  transparentAtTop = false,
 }: HeaderZapfarmProps = {}) {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const isReportPage = router.pathname.includes('/relatorio');
   const asPath = router.asPath?.split('?')[0] || '';
   const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
+  const isHomeJourney =
+    router.pathname === '/' ||
+    asPath === '/';
+  const useMedviMark =
+    isLandingPage ||
+    isHomeJourney ||
+    asPath.startsWith('/triagem/emagrecimento');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 16);
+      setScrolled(window.scrollY > 20);
     };
-
-    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -95,12 +73,12 @@ export function HeaderZapfarm({
 
   const productConfig = productSlug ? getProductConfig(productSlug) : null;
   const triageHref = productConfig ? `/triagem/${productConfig.triageSlug}` : '/triagem/emagrecimento';
-  const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/triagem/emagrecimento';
-  const resolvedPrimaryHref = primaryCtaHref ?? (isReportPage ? checkoutHref : triageHref);
-  const resolvedPrimaryLabel = primaryCtaLabel ?? (isReportPage ? 'Ver programa sugerido' : 'Começar avaliação');
-  const resolvedPrimaryMobileLabel =
-    primaryCtaMobileLabel ?? (resolvedPrimaryLabel.length > 18 ? 'Começar' : resolvedPrimaryLabel);
-  const effectiveSubtitle = brandSubtitle ?? 'Me cuido. Me amo!';
+  const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/protocolos';
+  const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
+  const resolvedPrimaryLabel =
+    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
+  const isEmagrecimentoFlow =
+    isLandingPage || asPath.startsWith('/triagem/emagrecimento');
 
   if (isLandingPage) {
     return (
@@ -158,76 +136,100 @@ export function HeaderZapfarm({
     );
   }
 
-  const lightHeader = !transparentAtTop || scrolled || isReportPage;
+  const shouldUseScrolledStyle = isReportPage ? true : scrolled;
+  const textColor = shouldUseScrolledStyle ? 'text-slate-700' : 'text-white';
 
   return (
     <header
-      className={cn(
-        'fixed left-0 right-0 top-0 z-50 transition-all duration-300',
-        lightHeader
-          ? 'border-b border-emerald-100 bg-white/94 shadow-[0_12px_40px_rgba(15,23,42,0.08)] backdrop-blur-xl'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        shouldUseScrolledStyle
+          ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
-      )}
+      }`}
+      data-testid="home-medvi-header"
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:gap-4 sm:px-6 sm:py-3 lg:px-8">
-        <a href={homeHref} className="flex min-w-0 shrink-0 items-center" aria-label="MeJoy — página inicial">
-          <div
-            className={cn(
-              'flex min-h-11 items-center rounded-full px-2.5 py-1.5 shadow-sm transition-colors sm:min-h-12 sm:px-3',
-              lightHeader ? 'bg-emerald-50 ring-1 ring-emerald-100' : 'bg-white/92'
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
+          <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — início">
+            {useMedviMark ? (
+              <div className="flex items-center gap-2">
+                <span
+                  className={`inline-flex rounded-full px-3 py-1.5 text-xs font-black tracking-[0.22em] ${
+                    shouldUseScrolledStyle || isReportPage
+                      ? 'bg-emerald-700 text-white shadow-md'
+                      : 'bg-white/95 text-emerald-800 shadow-lg'
+                  }`}
+                  style={{ fontFamily: 'ui-sans-serif, system-ui, sans-serif' }}
+                >
+                  MEJOY
+                </span>
+                {isEmagrecimentoFlow && (
+                  <span className={`hidden text-xs font-semibold md:inline ${textColor}`}>
+                    Programa de emagrecimento
+                  </span>
+                )}
+              </div>
+            ) : (
+              <Image
+                src="/logosmejoy/logomejoy.png"
+                alt="Me Joy Farma"
+                width={160}
+                height={48}
+                className="h-8 sm:h-9 md:h-10 w-auto object-contain"
+                priority
+              />
             )}
-          >
-            <MeJoyBrand
-              iconClassName="h-7 w-7 rounded-[0.95rem] sm:h-8 sm:w-8 sm:rounded-xl"
-              titleClassName="text-[14px] font-semibold sm:text-[15px]"
-              subtitle={effectiveSubtitle}
-              subtitleClassName={cn(
-                'mt-0.5 text-[9px] font-semibold tracking-[-0.01em] sm:text-[10px]',
-                lightHeader ? 'text-slate-500' : 'text-emerald-100/95'
-              )}
-            />
-          </div>
-        </a>
-
-        <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex">
-          {links.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'whitespace-nowrap text-sm font-semibold transition-colors',
-                lightHeader ? 'text-slate-700 hover:text-emerald-700' : 'text-emerald-50/95 hover:text-white'
-              )}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
-          <a
-            href={secondaryCtaHref}
-            className={cn(
-              'hidden whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-colors md:inline-flex',
-              lightHeader
-                ? 'border border-emerald-200 text-emerald-800 hover:bg-emerald-50'
-                : 'border border-white/30 bg-white/10 text-white hover:bg-white/16'
-            )}
-          >
-            {secondaryCtaLabel}
           </a>
+
+          <nav className="hidden lg:flex items-center space-x-6">
+            <a
+              href="/"
+              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+            >
+              Programa
+            </a>
+            <a
+              href="/#como-funciona"
+              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+            >
+              Como funciona
+            </a>
+            <a
+              href="/#planos"
+              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+            >
+              Planos
+            </a>
+            <a
+              href="/#faq"
+              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+            >
+              FAQ
+            </a>
+          </nav>
+
           <a
             href={resolvedPrimaryHref}
             onClick={primaryCtaOnClick}
-            className={cn(
-              'inline-flex items-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold shadow-lg transition-all sm:px-6 sm:py-3',
-              lightHeader
-                ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-xl'
-                : 'bg-white text-emerald-800 hover:bg-emerald-50 hover:shadow-xl'
-            )}
+            className={`hidden md:inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
+              shouldUseScrolledStyle || isReportPage
+                ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
+                : 'bg-white text-emerald-700 shadow-xl'
+            }`}
           >
-            <span className="sm:hidden">{resolvedPrimaryMobileLabel}</span>
-            <span className="hidden sm:inline">{resolvedPrimaryLabel}</span>
+            {resolvedPrimaryLabel}
+          </a>
+
+          <a
+            href={resolvedPrimaryHref}
+            onClick={primaryCtaOnClick}
+            className={`md:hidden rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-bold transition-all shadow-lg hover:shadow-xl whitespace-nowrap ${
+              shouldUseScrolledStyle || isReportPage
+                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                : 'bg-white text-emerald-700 hover:bg-emerald-50'
+            }`}
+          >
+            {isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar'}
           </a>
         </div>
       </div>
