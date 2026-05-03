@@ -1,78 +1,144 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { trackFunnelEvent } from '@/lib/funnel/events-client';
+
+type AccessState = 'loading' | 'confirmed' | 'pending' | 'error';
 
 export default function ObrigadoPage() {
-  const [reportId, setReportId] = useState<string | null>(null);
+  const router = useRouter();
+  const paymentId = readStringQuery(router.query.paymentId);
+  const queryReportId = readStringQuery(router.query.reportId);
+  const [reportId, setReportId] = useState<string | null>(queryReportId || null);
+  const [accessState, setAccessState] = useState<AccessState>(paymentId ? 'loading' : 'confirmed');
+  const [dashboardUrl, setDashboardUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Tentar obter reportId da sessão ou localStorage
-    const storedReportId = localStorage.getItem('zapfarm_report_id');
-    if (storedReportId) {
+    const storedReportId = typeof window !== 'undefined' ? localStorage.getItem('zapfarm_report_id') : null;
+    if (!reportId && storedReportId) {
       setReportId(storedReportId);
     }
-  }, []);
+  }, [reportId]);
+
+  useEffect(() => {
+    if (!paymentId) return;
+
+    let cancelled = false;
+    setAccessState('loading');
+
+    fetch(`/api/asaas/payment-dashboard-link?paymentId=${paymentId}`)
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 409) {
+            setAccessState('pending');
+            return;
+          }
+          throw new Error(data.message || 'Nao foi possivel validar o pagamento.');
+        }
+
+        if (cancelled) return;
+        setDashboardUrl(data.magicUrl || null);
+        setAccessState('confirmed');
+        trackFunnelEvent('dashboard_redirect_after_payment', {
+          payment_id: paymentId,
+          source: 'obrigado_fallback',
+        });
+
+        if (data.magicUrl) {
+          window.setTimeout(() => {
+            window.location.href = data.magicUrl;
+          }, 1600);
+        }
+      })
+      .catch((error) => {
+        console.error('[obrigado] payment verification failed', error);
+        if (!cancelled) {
+          setAccessState('error');
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [paymentId]);
 
   return (
     <>
       <Head>
-        <title>Obrigado! - Me Joy</title>
+        <title>Pagamento em validação | Me Joy</title>
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 flex items-center justify-center text-white py-8 sm:py-10 md:py-12">
-        <div className="container mx-auto px-4 sm:px-6 max-w-2xl text-center">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/20">
-            <div className="text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6">🎉</div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white">
-              Parabéns por iniciar sua jornada!
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 py-8 text-white sm:py-10 md:py-12">
+        <div className="container mx-auto flex min-h-[80vh] max-w-2xl items-center px-4 sm:px-6">
+          <div className="w-full rounded-[32px] border border-white/15 bg-white/10 p-6 backdrop-blur-md sm:p-8 md:p-12">
+            <div className="text-5xl">✅</div>
+            <h1 className="mt-5 text-3xl font-bold tracking-[-0.04em] text-white sm:text-4xl">
+              {accessState === 'pending'
+                ? 'Pagamento aguardando confirmação'
+                : accessState === 'error'
+                  ? 'Pagamento recebido, acesso ainda em preparação'
+                  : 'Pagamento confirmado'}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-slate-100 mb-6 sm:mb-8 px-2">
-              Seu pagamento foi confirmado com sucesso.
+
+            <p className="mt-4 text-base leading-relaxed text-slate-100 sm:text-lg">
+              {accessState === 'loading' &&
+                'Estamos validando o pagamento com o Asaas e liberando o seu dashboard Me Joy.'}
+              {accessState === 'confirmed' &&
+                'Seu acesso está sendo liberado agora. Você será redirecionado para o dashboard em instantes.'}
+              {accessState === 'pending' &&
+                'O pagamento ainda não virou pago no gateway. Continue por aqui ou retorne ao PIX/cartão para concluir.'}
+              {accessState === 'error' &&
+                'Recebemos sua solicitação, mas o link seguro do dashboard não foi gerado automaticamente. Use os canais oficiais abaixo.'}
             </p>
 
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 mb-6 sm:mb-8 text-left">
-              <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white">Próximos passos:</h2>
-              <ol className="space-y-2 sm:space-y-3 text-slate-100">
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-xl sm:text-2xl flex-shrink-0">1️⃣</span>
-                  <span className="text-sm sm:text-base leading-relaxed">
-                    <strong>Nossa equipe entrará em contato</strong> pelo WhatsApp em até 30 minutos úteis para agendar sua consulta.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-xl sm:text-2xl flex-shrink-0">2️⃣</span>
-                  <span className="text-sm sm:text-base leading-relaxed">
-                    <strong>Você receberá um e-mail</strong> de confirmação com todos os detalhes do seu plano.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2 sm:gap-3">
-                  <span className="text-xl sm:text-2xl flex-shrink-0">3️⃣</span>
-                  <span className="text-sm sm:text-base leading-relaxed">
-                    <strong>Após a consulta médica</strong>, sua prescrição será liberada e o medicamento será enviado para sua casa.
-                  </span>
-                </li>
+            <div className="mt-8 rounded-[24px] border border-white/10 bg-white/10 p-5">
+              <h2 className="text-xl font-bold text-white">Próximos passos</h2>
+              <ol className="mt-4 space-y-3 text-sm leading-relaxed text-slate-100">
+                <li>1. O dashboard só abre depois da confirmação real do pagamento.</li>
+                <li>2. O time oficial continua o atendimento por WhatsApp e e-mail.</li>
+                <li>3. A prescrição, quando houver indicação, segue apenas após avaliação médica.</li>
               </ol>
             </div>
 
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              {dashboardUrl && (
+                <a
+                  href={dashboardUrl}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"
+                >
+                  Ir para meu dashboard
+                </a>
+              )}
+              {paymentId && (
+                <a
+                  href={`/emagrecimento/checkout?paymentId=${encodeURIComponent(paymentId)}${reportId ? `&reportId=${encodeURIComponent(reportId)}` : ''}`}
+                  className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/15"
+                >
+                  Voltar ao checkout
+                </a>
+              )}
+            </div>
+
             {reportId && (
-              <div className="mb-4 sm:mb-6">
+              <div className="mt-6">
                 <a
                   href={`/api/pdf/report?id=${reportId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-emerald-700 rounded-full font-semibold text-sm sm:text-base hover:bg-emerald-50 transition-colors"
+                  className="inline-flex items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-500/15 px-5 py-2.5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/20"
                 >
-                  ⬇️ Baixar relatório em PDF novamente
+                  Baixar relatório em PDF
                 </a>
               </div>
             )}
-
-            <div className="text-slate-200 text-xs sm:text-sm px-2">
-              <p>Estamos juntos nessa caminhada. 💚</p>
-              <p className="mt-2 break-words">Dúvidas? Entre em contato: contato@mejoy.com.br</p>
-            </div>
           </div>
         </div>
       </div>
     </>
   );
+}
+
+function readStringQuery(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }

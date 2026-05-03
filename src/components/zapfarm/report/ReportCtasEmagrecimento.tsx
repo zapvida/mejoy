@@ -1,81 +1,85 @@
 import { useState } from 'react';
-import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { RefinedCard } from '@/components/ui/RefinedCard';
 import { RefinedButton } from '@/components/ui/RefinedButton';
-import { buildZapVidaPlantaoUrl, emagrecimentoPlans, emagrecimentoLegalNote, planIdMapping } from '@/config/zapfarm/emagrecimento-plans';
+import {
+  buildZapVidaPlantaoUrl,
+  emagrecimentoLegalNote,
+  emagrecimentoPlans,
+  planIdMapping,
+} from '@/config/zapfarm/emagrecimento-plans';
+import {
+  estimateWeightLossRangeKg,
+  getMedicationTrackCard,
+} from '@/lib/emagrecimento/medicationCards';
+import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
+import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
 import { createClinicalHandoff } from '@/lib/handoff/client';
 import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
-import { trilhaFromPreferencia } from '@/lib/emagrecimento/checkoutUrls';
+import type { EmagrecimentoTrilha } from '@/lib/emagrecimento/checkoutUrls';
 
 interface Props {
   reportId: string;
   preferenciaPrincipioAtivo?: string;
   vm?: ReportViewModel;
+  selectedPlanId: string;
+  selectedTrilha: EmagrecimentoTrilha;
+  onSelectPlan?: (planId: string) => void;
+  onOpenInlineCheckout?: () => void;
 }
 
-export function ReportCtasEmagrecimento({ reportId, preferenciaPrincipioAtivo, vm }: Props) {
+export function ReportCtasEmagrecimento({
+  reportId,
+  preferenciaPrincipioAtivo,
+  vm,
+  selectedPlanId,
+  selectedTrilha,
+  onSelectPlan,
+  onOpenInlineCheckout,
+}: Props) {
   const [handoffLoading, setHandoffLoading] = useState(false);
   const [handoffError, setHandoffError] = useState<string | null>(null);
   const triageContextId = vm?.triageId || reportId;
 
-  // Normalizar preferência
-  const principio =
-    preferenciaPrincipioAtivo === 'tirzepatida'
-      ? 'tirzepatida'
-      : preferenciaPrincipioAtivo === 'semaglutida'
-        ? 'semaglutida'
-        : preferenciaPrincipioAtivo === 'contrave'
-          ? 'contrave'
-          : undefined;
-  
-  const preferenciaTexto =
-    principio === 'tirzepatida'
-      ? 'Tirzepatida'
-      : principio === 'semaglutida'
-        ? 'Semaglutida'
-        : principio === 'contrave'
-          ? 'Contrave®'
-          : undefined;
-
-  const trilhaCheckout = trilhaFromPreferencia(preferenciaPrincipioAtivo);
-  
-  // Determinar plano recomendado inteligente
-  const classification = vm ? (vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined : undefined;
+  const classification = vm
+    ? ((vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined)
+    : undefined;
   const answers = vm ? (vm as any).answers || {} : {};
   const impactoVida = answers.impacto_vida;
   const comorbidades = Array.isArray(answers.comorbidades)
-    ? answers.comorbidades.filter((c: string) => c !== 'nenhuma')
+    ? answers.comorbidades.filter((item: string) => item !== 'nenhuma')
     : [];
-  
-  // Obter plano recomendado (retorna: 'mensal'|'trimestral'|'semestral')
-  const recommendedPlanIdOld = classification 
+
+  const recommendedPlanLegacy = classification
     ? getRecommendedPlan(classification, impactoVida, comorbidades)
     : 'trimestral';
-  
-  // Mapear para ID do plano (programa-1m, programa-3m, programa-6m)
-  const recommendedPlanId = planIdMapping[recommendedPlanIdOld as keyof typeof planIdMapping] || 'programa-3m';
-  
-  // Usar planos centralizados
-  const plans = emagrecimentoPlans.map((plan) => ({
-    id: plan.id,
-    name: plan.title,
-    badge: plan.badge,
-    price: plan.priceMain,
-    priceDetail: plan.priceDetail,
-    features: plan.bullets,
-    recommended: plan.recommended,
-    highlight: plan.highlight,
-  }));
+  const recommendedPlanId =
+    planIdMapping[recommendedPlanLegacy as keyof typeof planIdMapping] || 'programa-3m';
+
+  const preferenciaTexto =
+    preferenciaPrincipioAtivo === 'tirzepatida'
+      ? 'Tirzepatida'
+      : preferenciaPrincipioAtivo === 'semaglutida'
+        ? 'Semaglutida'
+        : preferenciaPrincipioAtivo === 'contrave'
+          ? 'Contrave'
+          : 'Definicao clinica guiada';
+  const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
+  const selectedTrack = TREATMENT_TRACKS_BY_ID[selectedTrilha];
+  const estimatedRange = estimateWeightLossRangeKg(
+    vm?.basics.weightKg,
+    selectedTrackCard.efficacyRangePercent
+  );
 
   const handleClinicalHandoff = async () => {
     if (handoffLoading) return;
     setHandoffLoading(true);
     setHandoffError(null);
+
     trackFunnelEvent('cta_clinical_handoff', {
       report_id: reportId,
-      origin: 'report_primary'
+      origin: 'report_plan_help',
     });
 
     try {
@@ -83,194 +87,237 @@ export function ReportCtasEmagrecimento({ reportId, preferenciaPrincipioAtivo, v
         triageId: triageContextId,
         reportId,
         sourceJourney: 'emagrecimento.report',
-        sourceOrigin: 'report_primary'
+        sourceOrigin: 'report_plan_help',
       });
 
-      trackFunnelEvent('handoff_created', {
-        report_id: reportId
-      });
-      trackFunnelEvent('handoff_opened', {
-        report_id: reportId
-      });
-
+      trackFunnelEvent('handoff_created', { report_id: reportId });
+      trackFunnelEvent('handoff_opened', { report_id: reportId });
       window.location.href = data.redirectUrl;
     } catch (error: any) {
       trackFunnelEvent('handoff_failed', {
         report_id: reportId,
-        origin: 'report_primary',
-        surface: 'report_ctas'
+        origin: 'report_plan_help',
+        surface: 'report_ctas',
       });
-      setHandoffError(error?.message || 'Falha ao iniciar avaliação clínica.');
+      setHandoffError(error?.message || 'Falha ao iniciar a avaliacao clinica.');
       setHandoffLoading(false);
     }
   };
 
-  return (
-    <section className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-emerald-100">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 text-center px-2">
-        Escolha como deseja começar o seu programa
-      </h2>
-      <p className="text-sm sm:text-base text-gray-600 mb-4 text-center px-2">
-        O valor do programa fica claro aqui, com continuidade médica e suporte pelo canal oficial após a compra.
-      </p>
+  const handleSelectPlan = (planId: string) => {
+    trackFunnelEvent('report_plan_selected', {
+      report_id: reportId,
+      triage_id: triageContextId,
+      plano: planId,
+      trilha: selectedTrilha,
+      preferencia: preferenciaPrincipioAtivo,
+    });
+    onSelectPlan?.(planId);
+    onOpenInlineCheckout?.();
+  };
 
-      <div className="mb-6 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-4 sm:p-5">
-        <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center">
-          Precisa de ajuda antes de pagar?
-        </h3>
-        <p className="mt-2 text-xs sm:text-sm text-gray-700 text-center">
-          Se quiser, nosso time pode revisar seu contexto com você antes do fechamento. A decisão médica final acontece apenas na consulta.
+  return (
+    <section className="rounded-[32px] border border-[#d8e9df] bg-white p-5 shadow-[0_30px_90px_rgba(15,23,42,0.08)] sm:p-6 md:p-8">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
+          Fechamento do programa
         </p>
-        <div className="mt-4 flex flex-col gap-3">
-          <button
-            type="button"
-            onClick={handleClinicalHandoff}
-            disabled={handoffLoading}
-            className="inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-3 text-sm sm:text-base font-bold text-white shadow-lg transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {handoffLoading ? 'Conectando com o ZapVida...' : 'Continuar avaliação clínica →'}
-          </button>
-          <a
-            href={buildEmagrecimentoReportWhatsappUrl({
-              reportId,
-              firstName: vm?.basics?.firstName,
-              triageSlug: 'emagrecimento',
-            })}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() =>
-              trackFunnelEvent('whatsapp_report_cta', {
-                report_id: reportId,
-                surface: 'report_plan_zapvida_card',
-              })
-            }
-            className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm sm:text-base font-bold text-emerald-800 shadow-sm transition hover:bg-emerald-50"
-          >
-            WhatsApp oficial — falar com o time →
-          </a>
-          {handoffError && (
-            <div className="space-y-2 text-center">
-              <p className="text-xs sm:text-sm text-red-600">{handoffError}</p>
+        <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
+          Escolha o plano e abra o checkout inline
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+          O valor fica claro aqui, a trilha ja viaja junto com seu relatorio e o pagamento segue na mesma pagina.
+        </p>
+      </div>
+
+      <div className="mt-6 rounded-[28px] border border-[#e4efe8] bg-[linear-gradient(135deg,#f8faf9_0%,#eef8f2_100%)] p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              Suporte antes do pagamento
+            </p>
+            <h3 className="mt-2 text-xl font-bold text-slate-900">
+              Quer revisar seu contexto com o time antes de fechar?
+            </h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+              Nossa equipe pode te orientar pelo canal oficial. A decisao medica final acontece somente na consulta.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <RefinedButton
+              onClick={handleClinicalHandoff}
+              loading={handoffLoading}
+              className="rounded-full bg-slate-900 px-6 hover:bg-slate-800"
+            >
+              Continuar avaliacao clinica
+            </RefinedButton>
+            <RefinedButton asChild variant="secondary" className="rounded-full px-6">
               <a
-                href={buildZapVidaPlantaoUrl('report_primary_fallback')}
+                href={buildEmagrecimentoReportWhatsappUrl({
+                  reportId,
+                  firstName: vm?.basics.firstName,
+                  triageSlug: 'emagrecimento',
+                })}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() =>
-                  trackFunnelEvent('clinical_payment_started', {
+                  trackFunnelEvent('whatsapp_report_cta', {
                     report_id: reportId,
-                    source: 'report_primary_fallback'
+                    surface: 'report_plan_help',
                   })
                 }
-                className="inline-block text-xs sm:text-sm font-semibold text-emerald-700 underline underline-offset-2"
               >
-                Abrir ZapVida direto
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <a
-        href={buildZapVidaPlantaoUrl('report_primary_direct')}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mb-6 flex items-center justify-center gap-2 text-sm text-emerald-700 hover:text-emerald-800 font-semibold underline underline-offset-2"
-        onClick={() => trackFunnelEvent('clinical_payment_started', { report_id: reportId, entry: 'direct_plantao' })}
-      >
-        👨‍⚕️ Falar com um médico antes de escolher
-      </a>
-
-      {preferenciaTexto && (
-        <div className="mb-6 p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-center">
-          <p className="text-sm sm:text-base text-gray-700">
-            <strong>Sua preferência declarada:</strong> {preferenciaTexto} 
-            <span className="text-gray-500 text-xs sm:text-sm block mt-1">
-              (o médico irá avaliar se essa é a melhor opção para o seu caso)
-            </span>
-          </p>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {plans.map((plan) => {
-          const isRecommended = plan.id === recommendedPlanId || plan.recommended;
-          return (
-          <RefinedCard
-            key={plan.id}
-            variant={isRecommended ? "elevated" : "default"}
-            padding="lg"
-            rounded="xl"
-            hover
-            className={`${
-              isRecommended
-                ? 'border-emerald-300 bg-gradient-to-br from-emerald-50 to-teal-50/70 sm:scale-105'
-                : ''
-            }`}
-          >
-            <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
-              {isRecommended && (
-                <div className="inline-block px-2 sm:px-3 py-1 rounded-full bg-emerald-600 text-white text-xs sm:text-sm font-bold">
-                  ⭐ Recomendado para você
-                </div>
-              )}
-              {plan.badge && !isRecommended && (
-                <div className="inline-block px-2 sm:px-3 py-1 rounded-full bg-slate-900 text-white text-xs sm:text-sm font-bold">
-                  {plan.badge}
-                </div>
-              )}
-              {preferenciaTexto && (
-                <div className="inline-block px-2 sm:px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-semibold border border-emerald-300">
-                  Preferência: {preferenciaTexto}
-                </div>
-              )}
-            </div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-tight">{plan.name}</h3>
-            <div className="mb-3 sm:mb-4">
-              <div className="text-2xl sm:text-3xl font-bold text-emerald-700 mb-1">{plan.price}</div>
-              {plan.priceDetail && (
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{plan.priceDetail}</p>
-              )}
-            </div>
-            <ul className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-              {plan.features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 leading-relaxed">
-                  <span className="text-emerald-600 mt-0.5 flex-shrink-0">✓</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <RefinedButton
-              variant={isRecommended ? "primary" : "secondary"}
-              size="md"
-              fullWidth
-              asChild
-            >
-              <a
-                href={`/emagrecimento/checkout?plano=${plan.id}&reportId=${reportId}&trilha=${trilhaCheckout}${principio ? `&principio=${principio}` : ''}`}
-              >
-                Iniciar com este plano →
+                WhatsApp oficial
               </a>
             </RefinedButton>
-          </RefinedCard>
-        );
-        })}
+          </div>
+        </div>
+
+        {handoffError && (
+          <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {handoffError}{' '}
+            <a
+              href={buildZapVidaPlantaoUrl('report_primary_fallback')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline underline-offset-2"
+            >
+              Abrir ZapVida direto
+            </a>
+          </div>
+        )}
       </div>
 
-      <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-emerald-50 rounded-lg sm:rounded-xl border border-emerald-200">
-        <p className="text-xs sm:text-sm text-gray-700 text-center leading-relaxed">
-          {emagrecimentoLegalNote}
+      <div className="mt-8 rounded-[28px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-5 sm:p-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+              Trilha selecionada
+            </p>
+            <h3 className="mt-2 text-2xl font-bold text-slate-950">{selectedTrackCard.title}</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
+              {selectedTrackCard.plainLanguageFit}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm">
+              {selectedTrackCard.potencyLabel}
+            </span>
+            <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
+              {selectedTrackCard.certaintyLabel}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          <div className="rounded-[22px] bg-white p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+              O que costuma entregar
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrackCard.efficacyText}</p>
+          </div>
+          <div className="rounded-[22px] bg-white p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+              Traduzindo em peso
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-700">
+              {estimatedRange
+                ? `Usando o peso atual do relatorio como referencia, isso pode representar ${estimatedRange.label}.`
+                : selectedTrack?.estimate || 'A faixa real depende do seu ponto de partida e da resposta individual.'}
+            </p>
+          </div>
+          <div className="rounded-[22px] bg-white p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+              Seguranca clinica
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrackCard.safetyText}</p>
+          </div>
+        </div>
+
+        <p className="mt-4 text-xs leading-relaxed text-slate-500">
+          Faixas de referencia baseadas em medias de estudos e experiencia clinica. Nao sao promessa de
+          resultado individual.
         </p>
       </div>
 
-      <div className="mt-4 text-center">
-        <a
-          href={buildZapVidaPlantaoUrl('report_footer_direct')}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm text-emerald-700 hover:text-emerald-800 font-medium"
-        >
-          👨‍⚕️ Dúvidas? Fale com um médico no plantão ZapVida
-        </a>
+      <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        {emagrecimentoPlans.map((plan) => {
+          const recommended = plan.id === recommendedPlanId;
+          const selected = plan.id === selectedPlanId;
+          return (
+            <RefinedCard
+              key={plan.id}
+              padding="lg"
+              rounded="xl"
+              hover
+              className={`border ${
+                selected
+                  ? 'border-emerald-500 bg-[linear-gradient(180deg,#f5fbf7_0%,#edf8f1_100%)] shadow-[0_20px_55px_rgba(5,150,105,0.12)]'
+                  : recommended
+                    ? 'border-emerald-300 bg-emerald-50/60'
+                    : 'border-zinc-200 bg-white'
+              }`}
+            >
+              <div className="flex flex-wrap gap-2">
+                {recommended && (
+                  <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white">
+                    Recomendado pelo relatorio
+                  </span>
+                )}
+                {selected && (
+                  <span className="rounded-full border border-emerald-300 bg-white px-3 py-1 text-xs font-bold text-emerald-700">
+                    Selecionado agora
+                  </span>
+                )}
+              </div>
+
+              <h3 className="mt-4 text-2xl font-bold text-slate-900">{plan.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{plan.subtitle}</p>
+
+              <div className="mt-5">
+                <p className="text-3xl font-bold text-slate-900">{plan.priceMain}</p>
+                <p className="mt-1 text-xs text-slate-500">{plan.priceDetail}</p>
+              </div>
+
+              <div className="mt-4 rounded-2xl border border-zinc-100 bg-white/80 p-4 text-sm text-slate-700">
+                <p>
+                  <strong>Trilha ativa:</strong> {selectedTrackCard.shortTitle}
+                </p>
+                <p className="mt-2">
+                  <strong>Preferencia declarada:</strong> {preferenciaTexto}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {selectedTrackCard.plainLanguageFit}
+                </p>
+              </div>
+
+              <ul className="mt-5 space-y-2">
+                {plan.bullets.slice(0, 4).map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm leading-relaxed text-slate-700">
+                    <span className="mt-0.5 text-emerald-600">✓</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <RefinedButton
+                  onClick={() => handleSelectPlan(plan.id)}
+                  fullWidth
+                  className="rounded-full"
+                  variant={selected || recommended ? 'primary' : 'secondary'}
+                >
+                  Escolher e seguir nesta pagina
+                </RefinedButton>
+              </div>
+            </RefinedCard>
+          );
+        })}
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-4 text-center text-sm leading-relaxed text-slate-600">
+        {emagrecimentoLegalNote}
       </div>
     </section>
   );

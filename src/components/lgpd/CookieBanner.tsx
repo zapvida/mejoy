@@ -165,59 +165,118 @@ export function CookieBanner() {
 
   return (
     <>
-      {/* Banner fixo na parte inferior - design profissional para apresentação */}
-      <div className="fixed bottom-0 left-0 right-0 z-[9999] animate-fade-in-up">
-        <div className="bg-white/98 backdrop-blur-lg border-t border-zinc-200 shadow-[0_-8px_32px_rgba(0,0,0,0.06)] rounded-t-2xl overflow-hidden safe-area-bottom">
-          <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4">
+      <div className="fixed inset-x-0 bottom-0 z-[9999] animate-fade-in-up px-3 pb-3 sm:px-4 sm:pb-4 md:inset-x-auto md:right-4 md:left-auto md:w-[min(360px,calc(100vw-2rem))]">
+        <div className="safe-area-bottom overflow-hidden rounded-[30px] border border-zinc-200 bg-white/98 shadow-[0_24px_60px_rgba(15,23,42,0.14)] backdrop-blur-lg">
+          <div className="mx-auto px-4 py-3 sm:py-4">
             {!showSettings ? (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="p-1.5 rounded-full bg-[color:var(--brand-50)] flex-shrink-0">
-                    <Cookie className="w-4 h-4 text-[color:var(--brand-600)]" />
+              <>
+                <div className="sm:hidden">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 rounded-full bg-[color:var(--brand-50)] p-2">
+                      <Cookie className="w-4 h-4 text-[color:var(--brand-600)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-zinc-900">Cookies essenciais e opcionais</p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-zinc-500">
+                        Mantêm a navegação estável. Você pode ajustar depois.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-zinc-700 leading-snug">
-                      Cookies para melhorar sua experiência. Dados seguros • LGPD
-                    </p>
+
+                  <div className="mt-2 flex items-center justify-between gap-3">
                     <a
                       href="/politicas-lgpd#cookies"
-                      className="text-[10px] text-zinc-500 hover:text-[color:var(--brand-600)] transition-colors underline underline-offset-1"
+                      className="text-[11px] text-zinc-500 underline underline-offset-2 transition-colors hover:text-[color:var(--brand-600)]"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Política de cookies
                     </a>
+                    <button
+                      type="button"
+                      onClick={handleRejectAll}
+                      disabled={isLoading}
+                      className="text-[11px] font-medium text-zinc-500 underline underline-offset-2 transition-colors hover:text-zinc-700"
+                    >
+                      Rejeitar opcionais
+                    </button>
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <RefinedButton
+                      onClick={() => setShowSettings(true)}
+                      variant="outline"
+                      size="sm"
+                      className="h-9 rounded-full border-zinc-300 px-3 text-[13px] text-zinc-800"
+                    >
+                      <Settings className="w-3 h-3 mr-1" />
+                      Personalizar
+                    </RefinedButton>
+                    <RefinedButton
+                      onClick={handleAcceptAll}
+                      disabled={isLoading}
+                      size="sm"
+                      className="h-9 rounded-full px-3 text-[13px]"
+                    >
+                      Aceitar
+                    </RefinedButton>
                   </div>
                 </div>
-                <div className="flex items-center justify-end gap-2">
-                  <RefinedButton
-                    onClick={handleRejectAll}
-                    variant="ghost"
-                    size="sm"
-                    disabled={isLoading}
-                    className="text-xs py-1.5 px-3"
-                  >
-                    Rejeitar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={() => setShowSettings(true)}
-                    variant="outline"
-                    size="sm"
-                    className="text-xs py-1.5 px-3"
-                  >
-                    <Settings className="w-3 h-3 mr-1" />
-                    Personalizar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={handleAcceptAll}
-                    disabled={isLoading}
-                    size="sm"
-                    className="text-xs py-1.5 px-4"
-                  >
-                    Aceitar
-                  </RefinedButton>
+
+                <div className="hidden sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 rounded-full bg-[color:var(--brand-50)] p-2">
+                      <Cookie className="w-4 h-4 text-[color:var(--brand-600)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-zinc-900 sm:text-xs">
+                        Cookies essenciais e opcionais
+                      </p>
+                      <p className="mt-1 text-xs leading-relaxed text-zinc-500 sm:text-[11px]">
+                        Mantêm a navegação estável e você pode ajustar depois.
+                      </p>
+                      <div className="mt-2 flex items-center gap-3">
+                        <a
+                          href="/politicas-lgpd#cookies"
+                          className="text-[11px] text-zinc-500 underline underline-offset-2 transition-colors hover:text-[color:var(--brand-600)]"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Política de cookies
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
+                    <RefinedButton
+                      onClick={() => setShowSettings(true)}
+                      variant="outline"
+                      size="sm"
+                      className="h-9 rounded-full border-zinc-300 px-3 text-xs text-zinc-800"
+                    >
+                      <Settings className="w-3 h-3 mr-1" />
+                      Personalizar
+                    </RefinedButton>
+                    <RefinedButton
+                      onClick={handleAcceptAll}
+                      disabled={isLoading}
+                      size="sm"
+                      className="h-9 rounded-full px-4 text-xs"
+                    >
+                      Aceitar
+                    </RefinedButton>
+                    <RefinedButton
+                      onClick={handleRejectAll}
+                      variant="ghost"
+                      size="sm"
+                      disabled={isLoading}
+                      className="h-9 px-3 text-xs"
+                    >
+                      Rejeitar
+                    </RefinedButton>
+                  </div>
                 </div>
-              </div>
+              </>
             ) : (
               <>
               {/* Settings View - painel que expande no próprio banner */}
@@ -323,4 +382,3 @@ export function CookieBanner() {
     </>
   );
 }
-

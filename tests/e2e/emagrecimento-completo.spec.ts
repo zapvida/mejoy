@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.PRODUCTION_URL || 'http://localhost:3000';
-const LANDING_PATH = '/emagrecimento';
+const LANDING_PATH = '/';
 
 const NON_BLOCKING_ERROR_PATTERNS = [
   /content-security-policy/i,
@@ -52,7 +52,9 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
     // 1. Landing Page
     console.log('🔍 Testando Landing Page...');
     await page.goto(`${BASE_URL}${LANDING_PATH}`, { waitUntil: 'domcontentloaded' });
-    await expect(page).toHaveURL(/.*(emagrecimento|obesidade)/);
+    expect(new URL(page.url()).pathname).toBe(LANDING_PATH);
+    await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Emagrecimento com');
     
     // Verificar cookie banner
     const cookieBanner = page.locator('text=Uso de Cookies').or(page.locator('text=Cookie'));
@@ -66,8 +68,12 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
     }
 
     // Verificar CTAs
-    const cta = page.locator('a[href*="triagem/emagrecimento"]:visible').first();
-    const fallbackCta = page.locator('a:has-text("Iniciar minha avaliação"), a:has-text("Quero começar"), button:has-text("Iniciar minha avaliação")').first();
+    const cta = page.getByTestId('home-primary-cta');
+    const fallbackCta = page
+      .locator(
+        'a[href*="triagem/emagrecimento"]:visible, a:has-text("Ver minha elegibilidade"), a:has-text("Iniciar minha triagem agora"), a:has-text("Fazer minha triagem agora")',
+      )
+      .first();
     const ctaVisible = await cta.isVisible({ timeout: 5000 }).catch(() => false);
     if (!ctaVisible) {
       await expect(fallbackCta).toBeVisible({ timeout: 10000 });
@@ -179,78 +185,61 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
     }
 
     // 4. Verificar CTAs de planos no relatório
-    const planoCta = page.locator('a[href*="checkout"], button:has-text("Plano"), a:has-text("Iniciar")').first();
+    const planoCta = page.locator('button:has-text("Escolher e seguir nesta pagina"), button:has-text("Continuar nesta pagina"), button:has-text("Abrir checkout agora")').first();
     if (await planoCta.isVisible({ timeout: 10000 }).catch(() => false)) {
       console.log('✅ CTAs de planos encontrados no relatório');
     }
 
-    // 5. Navegar para Checkout
-    console.log('🔍 Testando Checkout...');
-    
-    // Tentar navegar para checkout (via CTA ou URL direta)
-    const checkoutUrl = page.url().includes('relatorio') 
-      ? `${BASE_URL}/emagrecimento/checkout?plano=programa-glp1-3m&reportId=test`
-      : `${BASE_URL}/emagrecimento/checkout?plano=programa-glp1-3m`;
-    
+    // 5. Abrir checkout inline no relatório
+    console.log('🔍 Testando checkout inline...');
     let checkoutLoaded = false;
-    try {
-      await page.goto(checkoutUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-      await page.waitForTimeout(1500);
-      await expect(page).toHaveURL(/.*checkout/, { timeout: 10000 });
-      checkoutLoaded = true;
-      console.log('✅ Checkout carregado');
-    } catch (checkoutNavError: any) {
-      console.log(`⚠️ Falha na navegação visual do checkout (${checkoutNavError?.message || 'erro desconhecido'})`);
-      const checkoutResponse = await page.request.get(checkoutUrl, { timeout: 30000 });
-      if (!checkoutResponse.ok()) {
-        throw new Error(`Checkout indisponível: HTTP ${checkoutResponse.status()}`);
+    const openInlineCheckoutButton = page.locator('button:has-text("Abrir checkout agora"), button:has-text("Continuar nesta pagina"), button:has-text("Escolher e seguir nesta pagina")').first();
+    if (await openInlineCheckoutButton.isVisible({ timeout: 10000 }).catch(() => false)) {
+      await openInlineCheckoutButton.click();
+      await page.waitForTimeout(1200);
+      const inlineCheckout = page.locator('#report-inline-checkout');
+      await expect(inlineCheckout).toBeVisible({ timeout: 10000 });
+      const checkoutTitle = page.locator('text=Finalize sem sair desta pagina').first();
+      if (await checkoutTitle.isVisible({ timeout: 10000 }).catch(() => false)) {
+        checkoutLoaded = true;
+        console.log('✅ Checkout inline carregado no relatório');
       }
-      checkoutLoaded = true;
-      console.log('✅ Checkout respondeu HTTP 200 (fallback de disponibilidade)');
     }
 
-    // 6. VALIDAÇÃO CRÍTICA: Verificar valores dos planos
-    console.log('🔍 Validando valores dos planos...');
-    
+    // 6. Fallback standalone continua operacional
+    const checkoutUrl = page.url().includes('relatorio')
+      ? `${BASE_URL}/emagrecimento/checkout?plano=programa-3m&reportId=test`
+      : `${BASE_URL}/emagrecimento/checkout?plano=programa-3m`;
+    const checkoutResponse = await page.request.get(checkoutUrl, { timeout: 30000 });
+    if (!checkoutResponse.ok()) {
+      throw new Error(`Checkout standalone indisponível: HTTP ${checkoutResponse.status()}`);
+    }
+    console.log('✅ Checkout standalone respondeu HTTP 200');
+
+    // 7. Validar cards/plano do novo fluxo
+    console.log('🔍 Validando planos do relatório...');
     const planos = [
-      { nome: 'Start GLP-1', valor: 'R$ 349', total: 'R$ 4.188' },
-      { nome: 'Programa 3 Meses', valor: 'R$ 399', total: 'R$ 4.788' },
-      { nome: 'Programa 6 Meses', valor: 'R$ 449', total: 'R$ 5.388' },
+      { nome: 'Programa 1 Mês', valor: '12x de R$ 166,67' },
+      { nome: 'Programa 3 Meses', valor: '12x de R$ 333,33' },
+      { nome: 'Programa 6 Meses', valor: '12x de R$ 500' },
     ];
 
-    if (page.url().includes('/checkout')) {
-      for (const plano of planos) {
-        // Verificar se o plano aparece na página
-        const planoElement = page.locator(`text=${plano.nome}`).first();
-        if (await planoElement.isVisible({ timeout: 2000 }).catch(() => false)) {
-          // Verificar valor mensal
-          const valorMensal = page.locator(`text=${plano.valor}`).first();
-          const valorTotal = page.locator(`text=${plano.total}`).first();
-          
-          if (await valorMensal.isVisible({ timeout: 1000 }).catch(() => false)) {
-            console.log(`✅ ${plano.nome}: Valor mensal correto (${plano.valor})`);
-          } else {
-            console.log(`⚠️ ${plano.nome}: Valor mensal não encontrado`);
-          }
-
-          if (await valorTotal.isVisible({ timeout: 1000 }).catch(() => false)) {
-            console.log(`✅ ${plano.nome}: Valor total correto (${plano.total})`);
-          } else {
-            console.log(`⚠️ ${plano.nome}: Valor total não encontrado`);
-          }
+    for (const plano of planos) {
+      const planoElement = page.locator(`text=${plano.nome}`).first();
+      if (await planoElement.isVisible({ timeout: 2000 }).catch(() => false)) {
+        const valorMensal = page.locator(`text=${plano.valor}`).first();
+        if (await valorMensal.isVisible({ timeout: 1000 }).catch(() => false)) {
+          console.log(`✅ ${plano.nome}: faixa exibida (${plano.valor})`);
         }
       }
-
-      // Verificar se formulário de pagamento está presente
-      const paymentForm = page.locator('input[name="nome"], input[placeholder*="nome" i]').first();
-      if (await paymentForm.isVisible({ timeout: 5000 }).catch(() => false)) {
-        console.log('✅ Formulário de checkout presente');
-      }
-    } else {
-      console.log('⚠️ Checkout visual não foi aberto no browser; validação de disponibilidade aplicada via fallback HTTP');
     }
 
-    // 7. Gerar relatório de validação
+    const paymentForm = page.locator('input[aria-label="Nome completo"]').first();
+    if (await paymentForm.isVisible({ timeout: 5000 }).catch(() => false)) {
+      console.log('✅ Formulário inline presente');
+    }
+
+    // 8. Gerar relatório de validação
     const validationReport = {
       timestamp: new Date().toISOString(),
       baseUrl: BASE_URL,
