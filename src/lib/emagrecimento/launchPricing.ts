@@ -28,7 +28,7 @@ function sanitizeLaunchCopy(envValue?: string): string | null {
 export function getLpPriceHook(): string {
   const env = sanitizeLaunchCopy(process.env.NEXT_PUBLIC_EMAGRECIMENTO_LP_FROM_PRICE);
   if (env) return env;
-  return 'Programas com avaliação médica e acompanhamento: consulte faixas após a triagem — o investimento varia conforme prescrição, dose e disponibilidade.';
+  return 'Faixas do programa são definidas após a triagem, conforme prescrição e disponibilidade.';
 }
 
 /** Faixa / estimativa exibida na results (placeholder até financeiro fechar). */

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Link from 'next/link';
+import { MeJoyBrand } from '@/components/ui/MeJoyBrand';
 
 interface EmagrecimentoLayoutProps {
   children: React.ReactNode;
@@ -48,16 +48,15 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
-            {/* Logo Me Joy Farma */}
             <Link href="/emagrecimento" className="flex items-center shrink-0">
-              <Image
-                src="/logosmejoy/logomejoy.png"
-                alt="Me Joy Farma"
-                width={160}
-                height={48}
-                className="h-8 sm:h-9 md:h-10 w-auto object-contain"
-                priority
-              />
+              <div className="rounded-full bg-white/95 px-3 py-2 shadow-sm ring-1 ring-black/5">
+                <MeJoyBrand
+                  iconClassName="h-8 w-8 rounded-xl"
+                  titleClassName="text-[15px]"
+                  subtitle="Me cuido. Me amo!"
+                  subtitleClassName="mt-0.5 text-[10px] font-semibold tracking-[-0.01em] text-slate-500"
+                />
+              </div>
             </Link>
 
             {/* Navigation Links - Desktop */}
@@ -144,7 +143,8 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
             <div className="sm:col-span-2 lg:col-span-1">
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">Me Joy</h3>
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">MeJoy</h3>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">Me amo. Me cuido!</p>
               <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                 Emagrecimento com acompanhamento médico especializado e medicação sob prescrição.
               </p>
@@ -198,7 +198,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
             </div>
           </div>
           <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-gray-400">
-            <p>© 2025 Me Joy. Todos os direitos reservados.</p>
+            <p>© 2025 MeJoy. Todos os direitos reservados.</p>
             <p className="mt-2">Tratamento sob prescrição médica. Siga as normas da ANVISA.</p>
           </div>
         </div>

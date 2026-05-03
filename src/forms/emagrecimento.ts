@@ -20,6 +20,8 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     helperText: 'Triagem rápida; seus dados de saúde são tratados com cuidado (LGPD).',
     justification: 'Conformidade LGPD e telemedicina.',
+    group: 'consentimento',
+    autoAdvance: true,
     legalLinks: [
       { label: 'Termos de Uso', href: '/termos' },
       { label: 'Política de Privacidade (LGPD)', href: '/politicas-lgpd' },
@@ -36,6 +38,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Centímetros (ex.: 170 para 1,70 m).',
     justification: 'IMC e elegibilidade.',
+    group: 'consentimento',
+    compact: true,
   },
   {
     name: 'peso',
@@ -45,6 +49,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Quilogramas.',
     justification: 'IMC e elegibilidade.',
+    group: 'consentimento',
+    compact: true,
   },
   {
     name: 'peso_meta',
@@ -54,6 +60,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Quilogramas — estimativa de prazo no relatório depende da consulta.',
     justification: 'Personalização do relatório.',
+    group: 'consentimento',
+    compact: true,
   },
 
   {
@@ -67,6 +75,9 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Usado para critérios de segurança e gestação.',
     justification: 'Condicionais clínicas.',
+    group: 'consentimento',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -82,6 +93,8 @@ export const perguntasEmagrecimento: Step[] = [
     helperText: 'Medicações GLP-1 não são indicadas na gestação.',
     evidenceNote: 'Contraindicação importante para agonistas GLP-1.',
     justification: 'Segurança.',
+    group: 'seguranca',
+    autoAdvance: true,
     conditional: { field: 'sexo', value: 'F' },
   },
 
@@ -92,6 +105,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Usamos para idade e adequação do programa.',
     justification: 'Perfil clínico.',
+    group: 'consentimento',
+    compact: true,
   },
 
   {
@@ -115,6 +130,7 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Ajuda a definir risco e caminhos mais seguros.',
     justification: 'Elegibilidade e relatório.',
+    group: 'seguranca',
   },
 
   {
@@ -133,6 +149,7 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Contraindicações clássicas a agonistas GLP-1 — transparência para sua segurança.',
     justification: 'Segurança.',
+    group: 'seguranca',
   },
 
   {
@@ -146,6 +163,9 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'O médico precisa desse contexto na consulta.',
     justification: 'Histórico cirúrgico.',
+    group: 'seguranca',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -159,6 +179,9 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Informação de segurança; o médico avaliará na consulta.',
     justification: 'Triagem de segurança.',
+    group: 'seguranca',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -171,6 +194,9 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     required: true,
     justification: 'Interações e segurança.',
+    group: 'seguranca',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -185,6 +211,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Substitui lista antiga; alimenta o mesmo raciocínio clínico do relatório.',
     justification: 'Histórico terapêutico.',
+    group: 'historico',
+    autoAdvance: true,
   },
 
   {
@@ -198,6 +226,8 @@ export const perguntasEmagrecimento: Step[] = [
       { value: 'sim_parou', label: 'Sim — precisei parar' },
     ],
     required: true,
+    group: 'historico',
+    autoAdvance: true,
     conditional: {
       field: 'uso_medicacao_emagrecimento_recente',
       value: ['glp1', 'outro'],
@@ -219,6 +249,9 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Não substitui aferição médica; ajuda o relatório e o médico no contexto.',
     justification: 'Risco cardiometabólico.',
+    group: 'seguranca',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -234,6 +267,9 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     required: true,
     justification: 'Contexto clínico.',
+    group: 'seguranca',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -248,6 +284,9 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     required: true,
     justification: 'Priorização no relatório.',
+    group: 'objetivos',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -262,6 +301,9 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     required: true,
     justification: 'Foco do relatório.',
+    group: 'objetivos',
+    autoAdvance: true,
+    compact: true,
   },
 
   {
@@ -270,27 +312,29 @@ export const perguntasEmagrecimento: Step[] = [
     label: 'Preferência inicial de linha (a decisão final é sempre do médico)',
     helperText: 'Programa com avaliação; medicação original somente se indicada.',
     required: true,
+    group: 'objetivos',
+    autoAdvance: true,
     cardOptions: [
       {
-        value: 'tirzepatida',
-        title: 'Tirzepatida (original)',
-        subtitle: 'Quando indicada na consulta.',
-        priceHint: 'Estratégia de maior potência clínica, quando indicada.',
-        badge: 'Potência em estudos',
+        value: 'contrave',
+        title: 'Contrave®',
+        subtitle: 'Via oral, quando indicada.',
+        priceHint: 'Potência clínica menor que as opções injetáveis.',
+        badge: 'Alternativa oral',
       },
       {
         value: 'semaglutida',
-        title: 'Semaglutida (original)',
-        subtitle: 'Injetável ou oral conforme indicação médica.',
-        priceHint: 'Estratégia intermediária, quando indicada.',
-        badge: 'Amplamente estudada',
+        title: 'Semaglutida',
+        subtitle: 'Linha intermediária, quando indicada.',
+        priceHint: 'Potência clínica intermediária em perda de peso.',
+        badge: 'Potência intermediária',
       },
       {
-        value: 'contrave',
-        title: 'Contrave® (bupropiona + naltrexona)',
-        subtitle: 'Via oral, quando indicada — não é GLP-1.',
-        priceHint: 'Alternativa oral para controle de apetite, quando indicada.',
-        badge: 'Alternativa oral',
+        value: 'tirzepatida',
+        title: 'Tirzepatida',
+        subtitle: 'Linha de maior potência, quando indicada.',
+        priceHint: 'Maior potência clínica em estudos de perda de peso.',
+        badge: 'Maior potência',
       },
       {
         value: 'nao_sei',
@@ -308,8 +352,10 @@ export const perguntasEmagrecimento: Step[] = [
     placeholder: 'Como podemos te chamar?',
     required: true,
     helperText:
-      'Agora vamos gerar seu relatório digital Me Joy. Informe seu nome para receber seu resumo personalizado e os próximos passos pelo canal oficial.',
+      'Seu nome entra no relatório e no resumo oficial da Me Joy.',
     justification: 'Personalização.',
+    group: 'contato',
+    compact: true,
   },
 
   {
@@ -320,6 +366,8 @@ export const perguntasEmagrecimento: Step[] = [
     required: true,
     helperText: 'Canal oficial Me Joy para envio do relatório e próximos passos.',
     justification: 'Contato pós-triagem.',
+    group: 'contato',
+    compact: true,
   },
 
   {
@@ -337,6 +385,8 @@ export const perguntasEmagrecimento: Step[] = [
     ],
     helperText: 'Você pode exercer seus direitos LGPD a qualquer momento.',
     justification: 'LGPD — contato no canal.',
+    group: 'contato',
+    autoAdvance: true,
     legalLinks: [
       { label: 'Política de Privacidade', href: '/politicas-lgpd' },
       { label: 'Telemedicina', href: '/telemedicina' },

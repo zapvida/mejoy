@@ -22,6 +22,10 @@ export function EmagrecimentoLegalDisclaimerSection() {
             CFM.
           </p>
           <p className="text-gray-700 leading-relaxed">
+            Prescrição somente quando indicada em consulta médica. Dados tratados com boas práticas de privacidade,
+            segurança e governança no fluxo inteiro.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
             Resultados variam conforme perfil clínico, aderência e orientação médica. Não prometemos resultado
             rápido ou garantido. Em caso de dúvida sobre riscos e benefícios de qualquer medicação, converse com
             o profissional que acompanha você.

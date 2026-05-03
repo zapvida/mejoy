@@ -27,7 +27,10 @@ export function WhatsappFloatingButton() {
   const router = useRouter();
   const pathname = router?.pathname || '';
 
-  const shouldHide = HIDE_ON_PATHS.some((p) => pathname.startsWith(p));
+  const shouldHide =
+    pathname === '/' ||
+    pathname.startsWith('/emagrecimento') ||
+    HIDE_ON_PATHS.some((p) => pathname.startsWith(p));
   if (shouldHide) return null;
 
   const handleClick = () => {

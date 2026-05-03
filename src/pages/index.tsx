@@ -306,7 +306,6 @@ function fillListWithGlobalUniqueness(
   const merged = [...current];
   const ids = new Set(current.map((p) => p.id));
 
-  // 1) Prioriza itens inéditos entre vitrines.
   for (const product of fallback) {
     if (merged.length >= limit) break;
     if (ids.has(product.id) || usedIds.has(product.id)) continue;
@@ -315,7 +314,6 @@ function fillListWithGlobalUniqueness(
     usedIds.add(product.id);
   }
 
-  // 2) Catálogo curto: completa a vitrine mesmo com repetição.
   for (const product of fallback) {
     if (merged.length >= limit) break;
     if (ids.has(product.id)) continue;
@@ -342,7 +340,6 @@ async function getFeaturedHomeSections(limit = FEATURED_LIMIT): Promise<HomeFeat
   let maisVendidos = pickUniqueProducts([tagVendidos, topProducts, newestProducts], limit, usedIds);
   let novidades = pickUniqueProducts([tagNovidades, newestProducts, topProducts], limit, usedIds);
 
-  // Catálogo pequeno: completa cada vitrine sem deixá-la vazia.
   maisBuscados = fillListWithGlobalUniqueness(maisBuscados, [...tagBuscados, ...topProducts, ...newestProducts], limit, usedIds);
   maisVendidos = fillListWithGlobalUniqueness(maisVendidos, [...tagVendidos, ...topProducts, ...newestProducts], limit, usedIds);
   novidades = fillListWithGlobalUniqueness(novidades, [...tagNovidades, ...newestProducts, ...topProducts], limit, usedIds);

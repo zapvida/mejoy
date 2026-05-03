@@ -71,6 +71,9 @@ export type Step = {
     label: string;
     href: string;
   }[];
+  group?: string;
+  autoAdvance?: boolean;
+  compact?: boolean;
 };
 
 export type FormData = {

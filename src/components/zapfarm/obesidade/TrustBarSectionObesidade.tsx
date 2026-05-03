@@ -4,34 +4,40 @@ import {
   ShieldCheckIcon,
   BuildingOffice2Icon,
   DevicePhoneMobileIcon,
-  TruckIcon,
+  ChatBubbleLeftRightIcon,
+  ClipboardDocumentCheckIcon,
 } from '@heroicons/react/24/outline';
 
 const items = [
   {
     icon: ShieldCheckIcon,
     label: 'Médicos com CRM',
-    sub: 'Avaliação clínica e prescrição somente quando indicada',
+    sub: 'Avaliação clínica com critério',
   },
   {
     icon: ShieldCheckIcon,
     label: 'Privacidade e LGPD',
-    sub: 'Dados de saúde tratados com boas práticas de segurança',
+    sub: 'Dados tratados com boas práticas',
   },
   {
     icon: BuildingOffice2Icon,
-    label: 'Conformidade regulatória',
-    sub: 'Fluxo sob orientação médica e operação regular',
+    label: 'Conformidade clínica',
+    sub: 'Fluxo alinhado a telemedicina',
   },
   {
     icon: DevicePhoneMobileIcon,
     label: 'Atendimento 100% online',
-    sub: 'Triagem, consulta e acompanhamento no mesmo ecossistema',
+    sub: 'Triagem, consulta e acompanhamento',
   },
   {
-    icon: TruckIcon,
-    label: 'Operação estruturada',
-    sub: 'Organização de próximos passos com clareza para o paciente',
+    icon: ChatBubbleLeftRightIcon,
+    label: 'WhatsApp oficial',
+    sub: 'Resumo e próximos passos no canal',
+  },
+  {
+    icon: ClipboardDocumentCheckIcon,
+    label: 'Próximos passos claros',
+    sub: 'Menos dúvida e menos fricção',
   },
 ] as const;
 
@@ -43,18 +49,18 @@ export function TrustBarSectionObesidade() {
       data-home-section="trust-bar"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="grid max-w-6xl grid-cols-2 gap-5 sm:gap-6 md:grid-cols-3 xl:grid-cols-6 mx-auto">
           {items.map(({ icon: Icon, label, sub }) => (
             <div
               key={label}
-              className="flex flex-col items-center text-center gap-2 sm:gap-3"
+              className="flex flex-col items-center gap-2 text-center sm:gap-3"
             >
               <div className="rounded-full bg-emerald-100 p-3 text-emerald-700 ring-1 ring-emerald-200/80">
                 <Icon className="h-7 w-7 sm:h-8 sm:w-8" aria-hidden />
               </div>
               <div>
-                <p className="text-sm sm:text-base font-bold text-gray-900">{label}</p>
-                <p className="text-xs sm:text-sm text-gray-600 leading-snug mt-1">{sub}</p>
+                <p className="text-sm font-bold text-gray-900 sm:text-base">{label}</p>
+                <p className="mt-1 text-xs leading-snug text-gray-600 sm:text-sm">{sub}</p>
               </div>
             </div>
           ))}

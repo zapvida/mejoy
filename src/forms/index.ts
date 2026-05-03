@@ -129,6 +129,8 @@ export type Formulario = {
   participantes?: number;
   tags?: string[];
   categoria?: string;
+  flowVersion?: string;
+  schemaVersion?: string;
 };
 
 // 🔧 MODO TESTE: Liberar todas as triagens temporariamente
@@ -756,7 +758,9 @@ export const formularios: Record<TipoTriagem, Formulario> = {
     categoria: 'Endocrinologia',
     perguntas: perguntasEmagrecimento,
     isFree: true, // Check-up gratuito
-    icon: '💊'
+    icon: '💊',
+    flowVersion: 'emagrecimento-launch-v2',
+    schemaVersion: '2026-04-30'
   },
   // Formulários ZapFarm - Produtos de e-commerce
   calvicie: {

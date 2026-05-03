@@ -3,6 +3,18 @@ function digitsOnly(value: unknown): string {
   return String(value).replace(/\D/g, '');
 }
 
+export function formatBrazilPhoneDisplay(value: unknown): string {
+  const normalized = normalizeBrazilPhoneNational(value) ?? digitsOnly(value).slice(0, 11);
+  if (!normalized) return '';
+
+  const ddd = normalized.slice(0, 2);
+  const rest = normalized.slice(2);
+
+  if (rest.length <= 4) return ddd ? `(${ddd}) ${rest}`.trim() : rest;
+  if (rest.length <= 8) return `(${ddd}) ${rest.slice(0, 4)}-${rest.slice(4)}`.trim();
+  return `(${ddd}) ${rest.slice(0, 5)}-${rest.slice(5, 9)}`.trim();
+}
+
 export function normalizeBrazilPhoneNational(value: unknown): string | undefined {
   const digits = digitsOnly(value);
   if (!digits) return undefined;

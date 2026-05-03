@@ -12,8 +12,9 @@ export function FooterZapfarm() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div className="sm:col-span-2 lg:col-span-1">
             <h3 className="text-lg sm:text-xl font-black mb-3 sm:mb-4 text-white tracking-[0.18em]">
-              Me Joy
+              MeJoy
             </h3>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">Me amo. Me cuido!</p>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               Programa de emagrecimento com avaliação médica, acompanhamento contínuo e suporte oficial pelo WhatsApp.
             </p>
@@ -48,7 +49,7 @@ export function FooterZapfarm() {
           </div>
         </div>
         <div className="border-t border-slate-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-slate-400">
-          <p>© 2026 Me Joy. Todos os direitos reservados.</p>
+          <p>© 2026 MeJoy. Todos os direitos reservados.</p>
           <p className="mt-2">Avaliação médica obrigatória antes de qualquer prescrição. Telemedicina e privacidade tratadas conforme a legislação aplicável.</p>
         </div>
       </div>

@@ -45,6 +45,7 @@ Estes itens bloqueiam declarar **launch oficial** até estarem verificados e arq
 - [ ] **Protocolo foco:** emagrecimento como vertical única do go-live (decisão de produto registrada).
 - [ ] **Oferta mínima v1** (trilhas): (1) tirzepatida original, (2) semaglutida original, (3) Contrave, (4) médico escolhe / alternativas — copy comercial **sem** Ozempic/Rybelsus como promessa principal.
 - [ ] **Preços em camadas:** LP “a partir de” / texto aprovado (`NEXT_PUBLIC_EMAGRECIMENTO_LP_FROM_PRICE`); relatório faixa (`NEXT_PUBLIC_EMAGRECIMENTO_RESULTS_BAND`); checkout valor final aprovado ou placeholder explícito até aprovação jurídico/comercial.
+- [ ] Guard rail de launch: placeholders como `2222`, `3333`, `todo` ou `test` nunca podem aparecer na LP ou no relatório; devem cair em fallback seguro.
 
 ### Smoke produção ponta a ponta
 - [ ] `pnpm exec playwright install` (uma vez por máquina/CI) e `pnpm qa:emagrecimento` com `PRODUCTION_URL` correto.

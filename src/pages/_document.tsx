@@ -23,6 +23,7 @@ class MyDocument extends Document {
           <meta name="copyright" content="© 2025 Me Joy" />
 
           {/* 🔥 Favicon - Me Joy Farma */}
+          <link rel="icon" type="image/svg+xml" href="/logosmejoy/me-mark.svg" />
           <link rel="icon" type="image/png" sizes="32x32" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="96x96" href="/logosmejoy/faviconmejoy.png" />
