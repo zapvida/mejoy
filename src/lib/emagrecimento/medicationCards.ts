@@ -22,7 +22,6 @@ const EFFICACY_RANGE_BY_TRACK: Partial<Record<EmagrecimentoTrilha, [number, numb
   alternativas_clinicas: [5, 10],
 };
 
-<<<<<<< HEAD
 export const medicationTrackCards: MedicationTrackCard[] = TREATMENT_TRACKS.map((track) => ({
   id: track.id,
   title: track.title,

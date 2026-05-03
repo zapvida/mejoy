@@ -6,15 +6,27 @@ import Image from 'next/image';
 import { getCheckoutUrl, getProductConfig, productExists } from '@/lib/zapfarm/product-loader';
 
 interface HeaderZapfarmProps {
+  links?: Array<{ label: string; href: string }>;
   primaryCtaHref?: string;
   primaryCtaLabel?: string;
+  primaryCtaMobileLabel?: string;
   primaryCtaOnClick?: () => void;
+  secondaryCtaHref?: string;
+  secondaryCtaLabel?: string;
+  brandSubtitle?: string;
+  transparentAtTop?: boolean;
 }
 
 export function HeaderZapfarm({
+  links,
   primaryCtaHref,
   primaryCtaLabel,
+  primaryCtaMobileLabel,
   primaryCtaOnClick,
+  secondaryCtaHref,
+  secondaryCtaLabel,
+  brandSubtitle,
+  transparentAtTop,
 }: HeaderZapfarmProps = {}) {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
@@ -77,6 +89,17 @@ export function HeaderZapfarm({
   const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
   const resolvedPrimaryLabel =
     primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
+  const resolvedPrimaryMobileLabel =
+    primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar');
+  const navigationLinks =
+    links?.length
+      ? links
+      : [
+          { label: 'Programa', href: '/' },
+          { label: 'Como funciona', href: '/#como-funciona' },
+          { label: 'Planos', href: '/#planos' },
+          { label: 'FAQ', href: '/#faq' },
+        ];
   const isEmagrecimentoFlow =
     isLandingPage || asPath.startsWith('/triagem/emagrecimento');
 
@@ -136,7 +159,7 @@ export function HeaderZapfarm({
     );
   }
 
-  const shouldUseScrolledStyle = isReportPage ? true : scrolled;
+  const shouldUseScrolledStyle = isReportPage ? true : transparentAtTop === false ? true : scrolled;
   const textColor = shouldUseScrolledStyle ? 'text-slate-700' : 'text-white';
 
   return (
@@ -168,6 +191,11 @@ export function HeaderZapfarm({
                     Programa de emagrecimento
                   </span>
                 )}
+                {!isEmagrecimentoFlow && brandSubtitle && (
+                  <span className={`hidden text-xs md:inline ${textColor}`}>
+                    {brandSubtitle}
+                  </span>
+                )}
               </div>
             ) : (
               <Image
@@ -182,43 +210,42 @@ export function HeaderZapfarm({
           </a>
 
           <nav className="hidden lg:flex items-center space-x-6">
-            <a
-              href="/"
-              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
-            >
-              Programa
-            </a>
-            <a
-              href="/#como-funciona"
-              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
-            >
-              Como funciona
-            </a>
-            <a
-              href="/#planos"
-              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
-            >
-              Planos
-            </a>
-            <a
-              href="/#faq"
-              className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
-            >
-              FAQ
-            </a>
+            {navigationLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
 
-          <a
-            href={resolvedPrimaryHref}
-            onClick={primaryCtaOnClick}
-            className={`hidden md:inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
-              shouldUseScrolledStyle || isReportPage
-                ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
-                : 'bg-white text-emerald-700 shadow-xl'
-            }`}
-          >
-            {resolvedPrimaryLabel}
-          </a>
+          <div className="hidden md:flex items-center gap-3">
+            {secondaryCtaHref && secondaryCtaLabel && (
+              <a
+                href={secondaryCtaHref}
+                className={`rounded-full px-5 py-2.5 text-xs font-bold transition-all hover:scale-105 ${
+                  shouldUseScrolledStyle || isReportPage
+                    ? 'border border-emerald-200 bg-white text-emerald-700 shadow-sm hover:bg-emerald-50'
+                    : 'border border-white/20 bg-white/10 text-white backdrop-blur-sm'
+                }`}
+              >
+                {secondaryCtaLabel}
+              </a>
+            )}
+            <a
+              href={resolvedPrimaryHref}
+              onClick={primaryCtaOnClick}
+              className={`inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
+                shouldUseScrolledStyle || isReportPage
+                  ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
+                  : 'bg-white text-emerald-700 shadow-xl'
+              }`}
+            >
+              {resolvedPrimaryLabel}
+            </a>
+          </div>
 
           <a
             href={resolvedPrimaryHref}
@@ -229,7 +256,7 @@ export function HeaderZapfarm({
                 : 'bg-white text-emerald-700 hover:bg-emerald-50'
             }`}
           >
-            {isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar'}
+            {resolvedPrimaryMobileLabel}
           </a>
         </div>
       </div>
