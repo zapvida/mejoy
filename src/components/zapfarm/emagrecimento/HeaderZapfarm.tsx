@@ -24,10 +24,10 @@ interface HeaderZapfarmProps {
 }
 
 const DEFAULT_LINKS: HeaderLink[] = [
-  { label: 'Programa', href: '/emagrecimento' },
-  { label: 'Como funciona', href: '/emagrecimento#como-funciona' },
-  { label: 'Planos', href: '/emagrecimento#planos' },
-  { label: 'FAQ', href: '/emagrecimento#faq' },
+  { label: 'Programa', href: '/' },
+  { label: 'Como funciona', href: '/#como-funciona' },
+  { label: 'Planos', href: '/#planos' },
+  { label: 'FAQ', href: '/#faq' },
 ];
 
 export function HeaderZapfarm({
@@ -44,7 +44,6 @@ export function HeaderZapfarm({
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const isReportPage = router.pathname.includes('/relatorio');
-  const asPath = router.asPath?.split('?')[0] || '';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,7 +91,7 @@ export function HeaderZapfarm({
 
   const productConfig = productSlug ? getProductConfig(productSlug) : null;
   const triageHref = productConfig ? `/triagem/${productConfig.triageSlug}` : '/triagem/emagrecimento';
-  const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/triagem/emagrecimento';
+  const checkoutHref = productConfig ? getCheckoutUrl(productSlug, undefined, reportId) : '/triagem/emagrecimento';
 
   const resolvedPrimaryHref = primaryCtaHref ?? (isReportPage ? checkoutHref : triageHref);
   const resolvedPrimaryLabel = primaryCtaLabel ?? (isReportPage ? 'Ver programa sugerido' : 'Começar avaliação');
@@ -104,6 +103,7 @@ export function HeaderZapfarm({
 
   return (
     <header
+      data-testid="home-medvi-header"
       className={cn(
         'fixed left-0 right-0 top-0 z-50 transition-all duration-300',
         lightHeader

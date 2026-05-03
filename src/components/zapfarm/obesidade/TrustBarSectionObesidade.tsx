@@ -46,6 +46,7 @@ export function TrustBarSectionObesidade() {
     <section
       className="border-y border-emerald-100 bg-gradient-to-r from-zinc-50 via-white to-emerald-50/60 py-6 sm:py-8"
       aria-label="Selos de confiança"
+      data-home-section="trust-bar"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid max-w-6xl grid-cols-2 gap-5 sm:gap-6 md:grid-cols-3 xl:grid-cols-6 mx-auto">

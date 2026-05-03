@@ -17,49 +17,10 @@ class MyDocument extends Document {
           
           {/* Manifest (se houver) */}
           <link rel="manifest" href="/manifest.webmanifest" />
-          
-          {/* Cor do navegador mobile */}
-          <meta name="theme-color" content="#00b894" />
 
-          {/* 🔥 SEO */}
+          {/* Meta globais */}
           <meta name="author" content="Me Joy" />
           <meta name="copyright" content="© 2025 Me Joy" />
-          <meta
-            name="description"
-            content="Me Joy - Protocolos de Saúde com Curadoria Médica. Produtos manipulados e suplementos selecionados por médicos especialistas. Emagrecimento, sono, cabelos, intestino, fígado, imunidade, libido, menopausa, articulações e ansiedade. Check-up gratuito e entrega em todo Brasil."
-          />
-          <meta
-            name="keywords"
-            content="protocolos de saúde, produtos manipulados, suplementos médicos, emagrecimento, tratamento online, medicina integrativa, saúde preventiva, check-up gratuito, tirzepatida, minoxidil, melatonina, probióticos, fitormônios, colágeno, vitamina D, Me Joy"
-          />
-          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-          <meta name="googlebot" content="index, follow" />
-          <meta name="bingbot" content="index, follow" />
-
-          {/* 🔥 Open Graph */}
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content="Me Joy - Protocolos de Saúde com Curadoria Médica | Emagrecimento, Sono e Mais" />
-          <meta
-            property="og:description"
-            content="Compre protocolos de saúde prontos com produtos manipulados e suplementos selecionados por médicos. Emagrecimento, sono, cabelos, intestino, fígado, imunidade, libido, menopausa, articulações e ansiedade. Check-up gratuito e entrega em todo Brasil."
-          />
-          <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
-          <meta property="og:url" content="https://www.mejoy.com.br" />
-          <meta property="og:site_name" content="Me Joy" />
-          <meta property="og:locale" content="pt_BR" />
-
-          {/* 🔥 Twitter Card */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Me Joy - Protocolos de Saúde com Curadoria Médica" />
-          <meta
-            name="twitter:description"
-            content="Produtos manipulados e suplementos selecionados por médicos. Emagrecimento, sono, cabelos, intestino e mais. Check-up gratuito."
-          />
-          <meta name="twitter:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-          <meta name="twitter:site" content="@mejoy" />
-          <meta name="twitter:creator" content="@mejoy" />
 
           {/* 🔥 Favicon */}
           <link rel="icon" type="image/svg+xml" href="/logosmejoy/me-mark.svg" />

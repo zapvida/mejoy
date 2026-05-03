@@ -1,154 +1,75 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test';
 
-test.describe('Homepage', () => {
-  test('should load homepage successfully', async ({ page }) => {
-    await page.goto('/')
-    await expect(page).toHaveTitle(/Alloe Health/)
-  })
+const EXPECTED_SECTION_ORDER = [
+  'hero',
+  'trust-bar',
+  'zero-cost',
+  'how-it-works',
+  'benefits',
+  'tailored',
+  'app-features',
+  'testimonials',
+  'plans',
+  'decision',
+  'faq',
+  'legal-disclaimer',
+  'footer',
+];
 
-  test('should display main navigation', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Alloe Health')).toBeVisible()
-    await expect(page.getByText('Triagem')).toBeVisible()
-    await expect(page.getByText('Sobre')).toBeVisible()
-    await expect(page.getByText('FAQ')).toBeVisible()
-  })
+test.describe('Homepage Medvi Journey', () => {
+  test('renderiza a jornada Medvi na raiz com header, hero e CTA principal', async ({ page }) => {
+    await page.goto('/');
 
-  test('should display hero section', async ({ page }) => {
-    await page.goto('/')
-    
-    const heroHeading = page.getByRole('heading', { level: 1 })
-    await expect(heroHeading).toBeVisible()
-    
-    const ctaButton = page.getByRole('button', { name: /Fazer Triagem|Começar Minha Avaliação/ })
-    await expect(ctaButton).toBeVisible()
-  })
+    await expect(page).toHaveTitle(/Emagrecimento com avaliacao medica/i);
+    await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
+    await expect(page.getByTestId('home-medvi-header')).toBeVisible();
+    await expect(page.getByTestId('home-medvi-hero')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Emagrecimento com');
+    await expect(page.getByTestId('home-primary-cta')).toHaveAttribute('href', '/triagem/emagrecimento');
+  });
 
-  test('should display how it works section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Como funciona?')).toBeVisible()
-    
-    const processSteps = [
-      'Inicie sua triagem',
-      'Responda em menos de 5 minutos',
-      'Veja seu diagnóstico',
-      'Descubra como melhorar',
-      'Compartilhe com seus médicos',
-      'Consulte um médico'
-    ]
-    
-    for (const step of processSteps) {
-      await expect(page.getByText(step)).toBeVisible()
-    }
-  })
+  test('mantem a ordem canonica das secoes da home', async ({ page }) => {
+    await page.goto('/');
 
-  test('should display business section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('É dono de empresa, clínica ou farmácia?')).toBeVisible()
-    await expect(page.getByText('Fale com nosso time Agora')).toBeVisible()
-  })
+    const sections = await page.locator('[data-home-section]').evaluateAll((elements) =>
+      elements.map((element) => element.getAttribute('data-home-section')),
+    );
 
-  test('should display mission/vision/values section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Por que o Alloe Health foi criado?')).toBeVisible()
-    await expect(page.getByText('Nossa Missão')).toBeVisible()
-    await expect(page.getByText('Nossa Visão')).toBeVisible()
-    await expect(page.getByText('O Que Valorizamos')).toBeVisible()
-  })
+    expect(sections).toEqual(EXPECTED_SECTION_ORDER);
+  });
 
-  test('should display testimonials section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('O que as pessoas estão dizendo?')).toBeVisible()
-  })
+  test('usa ancoras da raiz no header desktop e navega para as secoes corretas', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
 
-  test('should display authority section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Autoridade e Confiança')).toBeVisible()
-  })
+    const desktopNav = page.locator('header nav');
+    await expect(desktopNav).toBeVisible();
 
-  test('should display guarantee section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Garantia de Confiança Total')).toBeVisible()
-  })
+    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/');
+    await expect(desktopNav.getByRole('link', { name: 'Como funciona' })).toHaveAttribute('href', '/#como-funciona');
+    await expect(desktopNav.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/#planos');
+    await expect(desktopNav.getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
 
-  test('should display FAQ section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Perguntas Frequentes')).toBeVisible()
-  })
+    await desktopNav.getByRole('link', { name: 'Como funciona' }).click();
+    await expect(page).toHaveURL(/#como-funciona$/);
+    await expect(page.locator('#como-funciona')).toBeInViewport();
+  });
 
-  test('should display final CTA section', async ({ page }) => {
-    await page.goto('/')
-    
-    await expect(page.getByText('Entenda sua saúde agora')).toBeVisible()
-  })
+  test('nao renderiza blocos de storefront nem branding legado na raiz', async ({ page }) => {
+    await page.goto('/');
 
-  test('should have working navigation links', async ({ page }) => {
-    await page.goto('/')
-    
-    // Test Triagem link
-    await page.getByText('Triagem').click()
-    await expect(page).toHaveURL('/triagem')
-    
-    await page.goto('/')
-    
-    // Test Sobre link
-    await page.getByText('Sobre').click()
-    await expect(page).toHaveURL('/quem-somos')
-    
-    await page.goto('/')
-    
-    // Test FAQ link
-    await page.getByText('FAQ').click()
-    await expect(page).toHaveURL('/faq')
-  })
+    const bodyText = await page.locator('body').innerText();
+    expect(bodyText).not.toMatch(/Alloe Health|AlloeHealth|ZapFarm|Mais buscados|Mais vendidos/i);
+  });
 
-  test('should have working CTA buttons', async ({ page }) => {
-    await page.goto('/')
-    
-    const ctaButton = page.getByRole('button', { name: /Fazer Triagem|Começar Minha Avaliação/ })
-    await ctaButton.click()
-    await expect(page).toHaveURL('/triagem')
-  })
+  test('o CTA principal inicia a triagem de emagrecimento', async ({ page }) => {
+    await page.goto('/');
 
-  test('should have working WhatsApp button', async ({ page }) => {
-    await page.goto('/')
-    
-    const whatsappButton = page.getByTitle('Fale com um médico agora')
-    await expect(whatsappButton).toBeVisible()
-    
-    const href = await whatsappButton.getAttribute('href')
-    expect(href).toContain('zapvida.com')
-  })
+    await Promise.all([
+      page.waitForURL(/\/triagem\/emagrecimento/),
+      page.getByTestId('home-primary-cta').click(),
+    ]);
 
-  test('should be responsive on mobile', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 })
-    await page.goto('/')
-    
-    // Check if mobile menu button is visible
-    const menuButton = page.getByRole('button').first()
-    await expect(menuButton).toBeVisible()
-    
-    // Check if main content is visible
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-  })
-
-  test('should have correct color scheme', async ({ page }) => {
-    await page.goto('/')
-    
-    // Check if page has dark background
-    const body = page.locator('body')
-    await expect(body).toHaveClass(/bg-black/)
-    
-    // Check if text is white
-    const mainHeading = page.getByRole('heading', { level: 1 })
-    await expect(mainHeading).toHaveClass(/text-white|text-green/)
-  })
-})
+    await expect(page).toHaveURL(/\/triagem\/emagrecimento/);
+  });
+});

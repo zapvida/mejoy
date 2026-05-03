@@ -1,17 +1,16 @@
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
-import { isRootB2BDomain, isStoreV2Enabled, isCopyV4Enabled } from '@/lib/flags';
+import { getHomeVariant, isRootB2BDomain, isCopyV4Enabled, type HomeVariant } from '@/lib/flags';
+import { HomeMedviJourney } from '@/components/home/HomeMedviJourney';
 import { getHomeSections, getProductsByTag, getNewestProducts, getTopProducts } from '@/lib/store-v2/catalog';
 import { getCopyV4BySku } from '@/lib/store-v2/copy-v2';
-import { buildCanonical, SITE } from '@/lib/seo';
 import type { ProductCardData } from '@/lib/store-v2/catalog';
-import { MeJoyGreenHome } from '@/components/home/MeJoyGreenHome';
 
 const B2BLanding = dynamic(() => import('@/components/b2b/B2BLanding'));
+const StoreV2Home = dynamic(() => import('@/components/store-v2/StoreV2Home'));
 
 /**
- * Homepage: mejoy.com.br = Loja (B2CLanding ou StoreV2Home). zapfarm.com.br = B2B white-label.
+ * Homepage: mejoy.com.br = jornada MEDVi-like ou storefront, conforme HOME_VARIANT.
  */
 export type HomeFeaturedSections = {
   maisBuscados: ProductCardData[];
@@ -23,8 +22,6 @@ type HomeSection = { objectiveSlug: string; objectiveName: string; products: Pro
 
 const FEATURED_LIMIT = 8;
 const SUBTITLE_MAX_WORDS = 6;
-const ROOT_DESCRIPTION =
-  'Saúde digital com avaliação médica, triagem online e acompanhamento humano em uma jornada contínua da leitura inicial aos próximos passos.';
 const OBJECTIVE_HOME_FALLBACKS: Record<string, string[]> = {
   'Ansiedade & Humor': [
     'Equilíbrio emocional com foco diário.',
@@ -309,7 +306,6 @@ function fillListWithGlobalUniqueness(
   const merged = [...current];
   const ids = new Set(current.map((p) => p.id));
 
-  // 1) Prioriza itens inéditos entre vitrines.
   for (const product of fallback) {
     if (merged.length >= limit) break;
     if (ids.has(product.id) || usedIds.has(product.id)) continue;
@@ -318,7 +314,6 @@ function fillListWithGlobalUniqueness(
     usedIds.add(product.id);
   }
 
-  // 2) Catálogo curto: completa a vitrine mesmo com repetição.
   for (const product of fallback) {
     if (merged.length >= limit) break;
     if (ids.has(product.id)) continue;
@@ -345,7 +340,6 @@ async function getFeaturedHomeSections(limit = FEATURED_LIMIT): Promise<HomeFeat
   let maisVendidos = pickUniqueProducts([tagVendidos, topProducts, newestProducts], limit, usedIds);
   let novidades = pickUniqueProducts([tagNovidades, newestProducts, topProducts], limit, usedIds);
 
-  // Catálogo pequeno: completa cada vitrine sem deixá-la vazia.
   maisBuscados = fillListWithGlobalUniqueness(maisBuscados, [...tagBuscados, ...topProducts, ...newestProducts], limit, usedIds);
   maisVendidos = fillListWithGlobalUniqueness(maisVendidos, [...tagVendidos, ...topProducts, ...newestProducts], limit, usedIds);
   novidades = fillListWithGlobalUniqueness(novidades, [...tagNovidades, ...newestProducts, ...topProducts], limit, usedIds);
@@ -355,48 +349,29 @@ async function getFeaturedHomeSections(limit = FEATURED_LIMIT): Promise<HomeFeat
 
 export default function Home({
   showB2C,
+  homeVariant,
+  sections,
+  featured,
 }: {
   showB2C: boolean;
-  storeV2: boolean;
+  homeVariant: HomeVariant;
   sections: HomeSection[];
   featured: HomeFeaturedSections;
 }) {
   if (!showB2C) return <B2BLanding />;
-
-  const canonical = buildCanonical('/');
-  const ogImage = `${SITE.baseUrl}/images/emagrecimento/medvi/hero-main.webp`;
-
-  return (
-    <>
-      <Head>
-        <title>Saúde digital para a vida real · Me Joy</title>
-        <meta name="description" content={ROOT_DESCRIPTION} />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content="Saúde digital para a vida real · Me Joy" />
-        <meta property="og:description" content={ROOT_DESCRIPTION} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:site_name" content={SITE.name} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Saúde digital para a vida real · Me Joy" />
-        <meta name="twitter:description" content={ROOT_DESCRIPTION} />
-        <meta name="twitter:image" content={ogImage} />
-      </Head>
-      <MeJoyGreenHome />
-    </>
-  );
+  if (homeVariant === 'store_v2') return <StoreV2Home sections={sections} featured={featured} />;
+  return <HomeMedviJourney page="home" canonicalPath="/" />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const host = ctx.req?.headers?.host ?? '';
   const showB2C = !isRootB2BDomain(host);
-  const storeV2 = isStoreV2Enabled();
+  const homeVariant = getHomeVariant();
 
   let sections: HomeSection[] = [];
   let featured: HomeFeaturedSections = { maisBuscados: [], maisVendidos: [], novidades: [] };
 
-  if (storeV2) {
+  if (homeVariant === 'store_v2') {
     try {
       sections = await getHomeSections();
       featured = await getFeaturedHomeSections(FEATURED_LIMIT);
@@ -427,7 +402,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       showB2C,
-      storeV2,
+      homeVariant,
       sections,
       featured,
     },

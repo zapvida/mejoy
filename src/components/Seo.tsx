@@ -15,6 +15,7 @@ type Props = {
   ogType?: 'website' | 'article' | 'product';
   publishedTime?: string; // para artigos
   modifiedTime?: string; // para artigos
+  renderMeta?: boolean;
 };
 
 export default function Seo({
@@ -28,7 +29,8 @@ export default function Seo({
   author,
   ogType = 'website',
   publishedTime,
-  modifiedTime
+  modifiedTime,
+  renderMeta = true,
 }: Props) {
   const canonical = buildCanonical(path);
   const t = buildTitle(title);
@@ -38,48 +40,50 @@ export default function Seo({
 
   return (
     <>
-      <Head>
-        <title>{t}</title>
-        <link rel="canonical" href={canonical} />
-        {noIndex && <meta name="robots" content="noindex,nofollow" />}
+      {renderMeta ? (
+        <Head>
+          <title>{t}</title>
+          <link rel="canonical" href={canonical} />
+          {noIndex && <meta name="robots" content="noindex,nofollow" />}
 
-        {/* Primary meta */}
-        <meta name="description" content={desc} />
-        {keywordsStr && <meta name="keywords" content={keywordsStr} />}
-        {author && <meta name="author" content={author} />}
-        <meta name="theme-color" content="#10b981" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {/* Primary meta */}
+          <meta name="description" content={desc} />
+          {keywordsStr && <meta name="keywords" content={keywordsStr} />}
+          {author && <meta name="author" content={author} />}
+          <meta name="theme-color" content="#10b981" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {/* Open Graph */}
-        <meta property="og:type" content={ogType} />
-        <meta property="og:title" content={t} />
-        <meta property="og:description" content={desc} />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:site_name" content={SITE.name} />
-        <meta property="og:image" content={image} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={t} />
-        <meta property="og:locale" content="pt_BR" />
-        {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-        {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+          {/* Open Graph */}
+          <meta property="og:type" content={ogType} />
+          <meta property="og:title" content={t} />
+          <meta property="og:description" content={desc} />
+          <meta property="og:url" content={canonical} />
+          <meta property="og:site_name" content={SITE.name} />
+          <meta property="og:image" content={image} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content={t} />
+          <meta property="og:locale" content="pt_BR" />
+          {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+          {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
-        <meta name="twitter:creator" content={SITE.twitter} />
-        <meta name="twitter:title" content={t} />
-        <meta name="twitter:description" content={desc} />
-        <meta name="twitter:image" content={image} />
-        <meta name="twitter:image:alt" content={t} />
+          {/* Twitter */}
+          <meta name="twitter:card" content="summary_large_image" />
+          {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
+          <meta name="twitter:creator" content={SITE.twitter} />
+          <meta name="twitter:title" content={t} />
+          <meta name="twitter:description" content={desc} />
+          <meta name="twitter:image" content={image} />
+          <meta name="twitter:image:alt" content={t} />
 
-        {/* Additional SEO */}
-        <meta name="geo.region" content="BR" />
-        <meta name="geo.placename" content="Brasil" />
-        <meta name="language" content="Portuguese" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="rating" content="general" />
-      </Head>
+          {/* Additional SEO */}
+          <meta name="geo.region" content="BR" />
+          <meta name="geo.placename" content="Brasil" />
+          <meta name="language" content="Portuguese" />
+          <meta name="revisit-after" content="7 days" />
+          <meta name="rating" content="general" />
+        </Head>
+      ) : null}
 
       {/* JSON-LD */}
       {jsonLd.map((obj, i) => (

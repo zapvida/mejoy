@@ -46,6 +46,7 @@ export function HowItWorksSectionObesidade() {
       id="como-funciona"
       className="py-12 sm:py-16 md:py-20 bg-white scroll-mt-24"
       aria-labelledby="how-it-works-heading"
+      data-home-section="how-it-works"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">

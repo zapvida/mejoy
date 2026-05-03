@@ -9,37 +9,38 @@ import { HowItWorksSectionObesidade } from '@/components/zapfarm/obesidade/HowIt
 import { BenefitsSectionObesidade } from '@/components/zapfarm/obesidade/BenefitsSectionObesidade';
 import { TailoredSectionObesidade } from '@/components/zapfarm/obesidade/TailoredSectionObesidade';
 import { AppFeaturesSectionObesidade } from '@/components/zapfarm/obesidade/AppFeaturesSectionObesidade';
-import { TestimonialsSectionObesidade } from '@/components/zapfarm/obesidade/TestimonialsSectionObesidade';
 import { PlansSectionObesidade } from '@/components/zapfarm/obesidade/PlansSectionObesidade';
+import { TestimonialsSectionObesidade } from '@/components/zapfarm/obesidade/TestimonialsSectionObesidade';
 import { DecisionSectionObesidade } from '@/components/zapfarm/obesidade/DecisionSectionObesidade';
 import { FaqSectionObesidade } from '@/components/zapfarm/obesidade/FaqSectionObesidade';
 import { EmagrecimentoLegalDisclaimerSection } from '@/components/zapfarm/obesidade/EmagrecimentoLegalDisclaimerSection';
 import { LandingAnalyticsProvider } from '@/contexts/LandingAnalyticsContext';
+import type { LandingPageKey } from '@/contexts/LandingAnalyticsContext';
 
 /**
- * LP principal /emagrecimento — ordem e blocos alinhados ao plano MEDVi + Me Joy.
+ * Jornada principal MEDVi-like — usada na home `/` e em `/emagrecimento` como alias.
  */
-export function EmagrecimentoMedviLanding() {
+export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: LandingPageKey }) {
   return (
-    <LandingAnalyticsProvider page="emagrecimento">
+    <LandingAnalyticsProvider page={page}>
       <LandingPageViewTracker />
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white" data-testid="home-medvi-journey">
         <HeaderZapfarm />
         <EmagrecimentoStickyCta />
-        <div className="pb-20 md:pb-0">
+        <main className="pb-24 md:pb-0">
           <HeroSectionObesidade variant="emagrecimento" />
-        </div>
-        <TrustBarSectionObesidade />
-        <ZeroCostSectionObesidade />
-        <HowItWorksSectionObesidade />
-        <BenefitsSectionObesidade />
-        <TailoredSectionObesidade />
-        <AppFeaturesSectionObesidade />
-        <TestimonialsSectionObesidade />
-        <PlansSectionObesidade />
-        <DecisionSectionObesidade />
-        <FaqSectionObesidade />
-        <EmagrecimentoLegalDisclaimerSection />
+          <TrustBarSectionObesidade />
+          <ZeroCostSectionObesidade />
+          <HowItWorksSectionObesidade />
+          <BenefitsSectionObesidade />
+          <TailoredSectionObesidade />
+          <AppFeaturesSectionObesidade />
+          <TestimonialsSectionObesidade />
+          <PlansSectionObesidade />
+          <DecisionSectionObesidade />
+          <FaqSectionObesidade />
+          <EmagrecimentoLegalDisclaimerSection />
+        </main>
         <FooterZapfarm />
       </div>
     </LandingAnalyticsProvider>

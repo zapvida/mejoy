@@ -1,16 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { getLpPriceHook } from '@/lib/emagrecimento/launchPricing';
-import {
-  planEssentialFeatures,
-  planMetabolicoFeatures,
-  planTotalFeatures,
-  planDescriptions,
-} from '@/config/zapfarm/benefits';
+import { TREATMENT_TRACKS } from '@/lib/emagrecimento/treatmentTracks';
 
 export function PlansSectionObesidade() {
   const page = useLandingPageKey();
@@ -23,131 +17,112 @@ export function PlansSectionObesidade() {
     });
   };
 
-  const plans = [
-    {
-      name: 'Plano Essencial Me Joy',
-      features: planEssentialFeatures.map(f => f.text),
-      description: planDescriptions.essential,
-      popular: false,
-      image: '/images/emagrecimento/medvi/treatment-comprimidos.avif',
-    },
-    {
-      name: 'Plano Metabólico Me Joy',
-      features: planMetabolicoFeatures.map(f => f.text),
-      description: planDescriptions.metabolico,
-      popular: true,
-      image: '/images/emagrecimento/medvi/treatment-escolha.avif',
-    },
-    {
-      name: 'Plano Total Me Joy',
-      features: planTotalFeatures.map(f => f.text),
-      description: planDescriptions.total,
-      popular: false,
-      image: '/images/emagrecimento/medvi/treatment-injetavel.webp',
-    },
-  ];
-
   return (
-    <section id="planos" className="py-12 sm:py-16 md:py-20 bg-white scroll-mt-24">
+    <section
+      id="planos"
+      data-home-section="plans"
+      data-testid="emagrecimento-treatments"
+      className="scroll-mt-24 bg-[#f8fcf9] py-14 sm:py-16 md:py-20"
+    >
+      <div id="tratamentos" className="relative -top-24 h-0 w-0" aria-hidden="true" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          
-          {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Escolha o nível de acompanhamento ideal para você
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicacoes</p>
+            <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl">
+              Ninguem deveria decidir isso so pelo nome do remedio.
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-              Você escolhe o formato de suporte. A conduta clínica continua sendo definida em consulta médica.
+            <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+              O que realmente importa e entender potencia, previsibilidade, seguranca clinica e quanto essa diferenca
+              pode aparecer na balanca ao longo do tempo.
             </p>
-            <p className="text-sm sm:text-base text-gray-500 max-w-2xl mx-auto mt-3">
+            <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-relaxed text-slate-500 sm:text-base">
               {getLpPriceHook()}
+            </p>
+            <p className="mx-auto mt-4 max-w-3xl text-xs leading-relaxed text-slate-500 sm:text-sm">
+              Para ficar simples: 10% do peso inicial equivale a cerca de 10 kg para alguem com 100 kg. As faixas
+              abaixo resumem medias de estudos clinicos com dieta e atividade fisica junto do tratamento.
             </p>
           </div>
 
-          {/* Plans Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
-            {plans.map((plan, index) => (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 sm:gap-8">
+            {TREATMENT_TRACKS.map((track) => (
               <div
-                key={index}
-                className={cn(
-                  "relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg border-2 transition-all duration-300",
-                  plan.popular
-                    ? "border-emerald-500 shadow-xl scale-105 md:scale-110"
-                    : "border-emerald-100 hover:border-emerald-300 hover:shadow-xl"
-                )}
+                key={track.id}
+                className="relative flex h-full flex-col overflow-hidden rounded-[30px] border border-emerald-100 bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.06)] transition-transform duration-300 hover:-translate-y-1 sm:p-8"
               >
-                {/* Popular Badge */}
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-emerald-600 to-emerald-800 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">
-                      Mais escolhido
-                    </span>
-                  </div>
-                )}
+                <div className="absolute left-6 top-6">
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-800">
+                    {track.badge}
+                  </span>
+                </div>
 
-                {/* Plan Name */}
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
-                  {plan.name}
-                </h3>
-
-                <div className="relative mx-auto mb-4 aspect-[4/3] w-28 overflow-hidden rounded-xl border border-emerald-100 bg-emerald-50">
+                <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-emerald-100 bg-emerald-50">
                   <Image
-                    src={plan.image}
-                    alt={plan.name}
+                    src={track.image}
+                    alt={track.title}
                     fill
                     className="object-cover"
-                    sizes="120px"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     quality={85}
                   />
                 </div>
 
-                {/* Description */}
-                <p className="text-sm sm:text-base text-gray-600 mb-6 text-center">
-                  {plan.description}
-                </p>
+                <div className="mt-auto flex h-full flex-col">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                    <span className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
+                      {track.format}
+                    </span>
+                    <span className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
+                      {track.potency}
+                    </span>
+                    <span className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
+                      {track.certainty}
+                    </span>
+                  </div>
 
-                {/* Features List */}
-                <ul className="space-y-3 sm:space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-800 flex items-center justify-center mt-0.5">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <span className="text-sm sm:text-base text-gray-700 leading-relaxed flex-1">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                  <h3 className="mt-5 text-2xl font-bold text-slate-950">{track.title}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate-600">{track.subtitle}</p>
 
-                {/* CTA */}
-                <a
-                  href="/triagem/emagrecimento"
-                  onClick={handleCtaClick}
-                  className={cn(
-                    "inline-flex items-center justify-center w-full",
-                    "h-12 sm:h-14 px-6 sm:px-8",
-                    "text-sm sm:text-base font-bold text-white",
-                    "rounded-full shadow-lg transition-all duration-200",
-                    plan.popular
-                      ? "bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900"
-                      : "bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800",
-                    "hover:shadow-xl hover:scale-105 active:scale-100"
-                  )}
-                >
-                  Iniciar triagem deste plano
-                </a>
+                  <div className="mt-6 space-y-4 rounded-[24px] border border-zinc-100 bg-[#fbfdfc] p-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Quanto costuma perder
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700 sm:text-base">{track.efficacy}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Em kg, para ficar palpavel
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700 sm:text-base">{track.estimate}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Seguranca clinica
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700 sm:text-base">{track.safety}</p>
+                    </div>
+                  </div>
+
+                  <p className="mt-6 text-sm leading-relaxed text-slate-700 sm:text-base">{track.bestFor}</p>
+
+                  <a
+                    href="/triagem/emagrecimento"
+                    onClick={handleCtaClick}
+                    className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 sm:text-base"
+                  >
+                    Ver se esta opcao faz sentido pra mim
+                  </a>
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Note */}
-          <div className="text-center">
-            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-              As decisões de tratamento são sempre tomadas pelo médico responsável. A tecnologia apenas ajuda a organizar informações e padronizar os protocolos, nunca substitui o julgamento clínico.
+          <div className="mx-auto mt-10 max-w-3xl text-center">
+            <p className="text-sm leading-relaxed text-slate-500 sm:text-base">
+              O papel da Me Joy aqui e reduzir duvida, deixar a comparacao honesta e levar a decisao para uma consulta
+              melhor informada. Indicacao de medicacao, dose, duracao e frequencia continuam dependendo de avaliacao medica.
             </p>
           </div>
         </div>

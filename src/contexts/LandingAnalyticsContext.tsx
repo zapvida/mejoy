@@ -2,9 +2,9 @@
 
 import { createContext, useContext, type ReactNode } from 'react';
 
-export type LandingPageKey = 'obesidade' | 'emagrecimento';
+export type LandingPageKey = 'home' | 'obesidade' | 'emagrecimento';
 
-const LandingAnalyticsContext = createContext<LandingPageKey>('obesidade');
+const LandingAnalyticsContext = createContext<LandingPageKey>('home');
 
 export function LandingAnalyticsProvider({
   page,

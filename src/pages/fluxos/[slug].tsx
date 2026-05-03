@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { ChevronLeft } from 'lucide-react';
 import {
   getFluxoBySlug,
-  getAllSlugs,
   FLUXOS_SOL,
   LABEL_SOL,
 } from '@/lib/fluxos-mejoy/dados';
@@ -131,22 +130,16 @@ export default function FluxoSlugPage({ slug }: PageProps) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = getAllSlugs();
-  return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<PageProps> = async ({
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
 }) => {
   const slug = params?.slug as string;
   const fluxo = getFluxoBySlug(slug);
 
   if (!fluxo) {
-    return { notFound: true };
+    return {
+      notFound: true,
+    };
   }
 
   return {

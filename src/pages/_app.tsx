@@ -6,6 +6,7 @@ import "@/styles/print.css";
 import "@/lib/report/print.css";
 import { Analytics } from '@vercel/analytics/react';
 import type { AppProps, NextWebVitalsMetric } from "next/app";
+import Head from 'next/head';
 import { useRouter } from "next/router";
 import Script from 'next/script';
 import { useEffect, useState } from "react";
@@ -163,7 +164,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           <AuthProvider>
             <Seo
               jsonLd={[orgJsonLd(), websiteJsonLd()]}
+              renderMeta={false}
             />
+            <Head>
+              <link rel="icon" type="image/png" href="/logosmejoy/faviconmejoy.png" />
+            </Head>
             
             {/* Tracking global (fallback para GTM global) */}
             {env.NEXT_PUBLIC_GTM_ID && (

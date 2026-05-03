@@ -7,7 +7,7 @@ export function FooterZapfarm() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
 
   return (
-    <footer className="bg-slate-950 text-white py-8 sm:py-10 md:py-12">
+    <footer className="bg-slate-950 text-white py-8 sm:py-10 md:py-12" data-home-section="footer">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -22,9 +22,10 @@ export function FooterZapfarm() {
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-white text-sm sm:text-base">Links</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
-              <li><a href="/emagrecimento" className="hover:text-white transition-colors">Programa</a></li>
-              <li><a href="/emagrecimento#como-funciona" className="hover:text-white transition-colors">Como funciona</a></li>
-              <li><a href="/emagrecimento#planos" className="hover:text-white transition-colors">Planos</a></li>
+              <li><a href="/" className="hover:text-white transition-colors">Programa</a></li>
+              <li><a href="/#como-funciona" className="hover:text-white transition-colors">Como funciona</a></li>
+              <li><a href="/#planos" className="hover:text-white transition-colors">Planos</a></li>
+              <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
               <li><a href="/contato" className="hover:text-white transition-colors">Contato</a></li>
               <li><a href="/dados-fiscais" className="hover:text-white transition-colors">Dados fiscais</a></li>
             </ul>
