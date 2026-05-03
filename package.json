@@ -4,7 +4,8 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next dev",
-    "build": "NEXT_TELEMETRY_DISABLED=1 next build --experimental-build-mode=compile",
+    "prebuild": "mkdir -p .next/server/pages .next/export",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "postbuild": "npx next-sitemap || true",
     "start": "next start -p ${PORT:-3000}",
     "lint": "eslint src/ --max-warnings=0",

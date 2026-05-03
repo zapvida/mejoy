@@ -1,146 +1,92 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 export function TestimonialsSectionObesidade() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   const testimonials = [
     {
       quote:
-        'Quando entrei, eu só tinha tentado dieta restritiva. Com acompanhamento e meta semanal simples, consegui manter rotina por meses.',
+        'Eu precisava de um plano realista, não de promessa. Quando entendi o próximo passo com clareza, ficou mais fácil manter consistência sem começar e abandonar.',
       author: 'Paciente A., 37 anos',
-      image: '/images/emagrecimento/medvi/avatar-belinda.webp',
+      role: 'Acompanhamento com metas claras',
     },
     {
       quote:
-        'A diferença foi ter clareza do próximo passo. Não fico mais perdida, e consigo ajustar alimentação e treino sem culpa.',
+        'A diferença foi sair da tentativa aleatória e entrar em uma rotina acompanhada. O suporte ajudou a transformar direção em constância.',
       author: 'Paciente B., 42 anos',
-      image: '/images/emagrecimento/medvi/avatar-melissa.webp',
-    },
-    {
-      quote:
-        'O suporte frequente no WhatsApp ajudou a manter adesão. Hoje eu consigo enxergar progresso sem ansiedade de resultado imediato.',
-      author: 'Paciente C., 33 anos',
-      image: '/images/emagrecimento/medvi/avatar-sandra.webp',
-    },
-    {
-      quote:
-        'Eu precisava de um plano realista, não de promessa. Com avaliação médica e metas possíveis, parei de começar e abandonar.',
-      author: 'Paciente D., 45 anos',
-      image: '/images/emagrecimento/medvi/avatar-terri.webp',
+      role: 'Suporte para aderência e próximos passos',
     },
   ];
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const currentTestimonial = testimonials[currentIndex];
-
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white" aria-labelledby="testimonials-heading">
+    <section
+      id="depoimentos"
+      data-home-section="testimonials"
+      data-testid="emagrecimento-results"
+      className="bg-white py-14 sm:py-16 md:py-20"
+      aria-labelledby="testimonials-heading"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-              Histórias de evolução com acompanhamento
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Resultados e depoimentos</p>
+            <h2
+              id="testimonials-heading"
+              className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+            >
+              Resultado sem contexto vira promessa vazia. Aqui, a história é outra.
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
               Relatos de pacientes acompanhados no programa. Identidade preservada por privacidade.
             </p>
-            <div className="mx-auto mt-4 w-fit rounded-full border border-amber-100 bg-amber-50 px-4 py-2">
+            <div className="mx-auto mt-5 w-fit rounded-full border border-amber-100 bg-amber-50 px-4 py-2 shadow-sm">
               <Image
                 src="/images/emagrecimento/medvi/social-proof-rating.webp"
                 alt="Faixa de prova social com avaliações"
-                width={150}
-                height={14}
+                width={160}
+                height={15}
               />
             </div>
           </div>
 
-          <div className="bg-white border-2 border-emerald-200 rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg mb-8">
-            <div className="text-center">
-              <div className="relative mx-auto mb-6 h-20 w-20 overflow-hidden rounded-full border-2 border-emerald-200 sm:h-24 sm:w-24">
-                <Image
-                  src={currentTestimonial.image}
-                  alt={currentTestimonial.author}
-                  fill
-                  className="object-cover"
-                  sizes="96px"
-                />
-              </div>
-
-              <blockquote className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-6 leading-relaxed italic">
-                &ldquo;{currentTestimonial.quote}&rdquo;
+          <div className="mt-10 grid gap-6 lg:grid-cols-[1.15fr,0.85fr]">
+            <div className="rounded-[32px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_24px_55px_rgba(15,23,42,0.05)] sm:p-8">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">Depoimento em foco</p>
+              <blockquote className="mt-6 text-2xl font-semibold leading-tight tracking-[-0.03em] text-slate-950 sm:text-3xl">
+                &ldquo;{testimonials[0].quote}&rdquo;
               </blockquote>
+              <p className="mt-6 text-base font-semibold text-slate-900">{testimonials[0].author}</p>
+              <p className="mt-1 text-sm text-slate-500">{testimonials[0].role}</p>
 
-              <p className="text-base sm:text-lg font-semibold text-gray-900">{currentTestimonial.author}</p>
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                {testimonials.map((testimonial) => (
+                  <div key={testimonial.author} className="rounded-2xl border border-emerald-100 bg-white p-4">
+                    <p className="text-sm leading-relaxed text-slate-700">&ldquo;{testimonial.quote}&rdquo;</p>
+                    <p className="mt-4 text-sm font-semibold text-slate-900">{testimonial.author}</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.12em] text-emerald-700">{testimonial.role}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={prevTestimonial}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center transition-colors"
-              aria-label="Depoimento anterior"
-            >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            <div className="flex gap-2" role="tablist" aria-label="Selecionar depoimento">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    'w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all',
-                    index === currentIndex
-                      ? 'bg-emerald-600 w-8 sm:w-10'
-                      : 'bg-emerald-200 hover:bg-emerald-300'
-                  )}
-                  aria-label={`Ir para depoimento ${index + 1}`}
-                  aria-current={index === currentIndex ? 'true' : undefined}
-                />
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { src: '/images/emagrecimento/medvi/reviews-01.webp', alt: 'Paciente em retrato editorial', className: 'aspect-[4/5]' },
+                { src: '/images/emagrecimento/medvi/reviews-03.avif', alt: 'Paciente sorrindo em acompanhamento', className: 'aspect-[4/5]' },
+                { src: '/images/emagrecimento/medvi/reviews-04.avif', alt: 'Paciente em etapa de acompanhamento', className: 'col-span-2 aspect-[16/10]' },
+                { src: '/images/emagrecimento/medvi/support-whatsapp.avif', alt: 'Profissional do suporte do programa', className: 'col-span-2 aspect-[16/10]' },
+              ].map((image) => (
+                <div
+                  key={image.src}
+                  className={`relative overflow-hidden rounded-[28px] border border-emerald-100 shadow-[0_18px_40px_rgba(15,23,42,0.05)] ${image.className}`}
+                >
+                  <Image src={image.src} alt={image.alt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" />
+                </div>
               ))}
             </div>
-
-            <button
-              type="button"
-              onClick={nextTestimonial}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center transition-colors"
-              aria-label="Próximo depoimento"
-            >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              '/images/emagrecimento/medvi/reviews-01.webp',
-              '/images/emagrecimento/medvi/reviews-03.avif',
-              '/images/emagrecimento/medvi/reviews-04.avif',
-              '/images/emagrecimento/medvi/reviews-06.webp',
-            ].map((src) => (
-              <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-xl border border-emerald-100">
-                <Image src={src} alt="Momento de acompanhamento no programa" fill className="object-cover" sizes="25vw" />
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center text-xs sm:text-sm text-gray-500 mt-10 max-w-xl mx-auto">
+          <p className="mx-auto mt-10 max-w-xl text-center text-xs text-slate-500 sm:text-sm">
             Resultados individuais variam. Cada caso é acompanhado por equipe médica; depoimentos não garantem o mesmo
             desempenho para todos.
           </p>

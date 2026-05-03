@@ -48,6 +48,7 @@ export function ZeroCostSectionObesidade() {
     <section
       className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-green-100 via-emerald-100 to-green-50"
       aria-labelledby="inclusions-heading"
+      data-home-section="zero-cost"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">

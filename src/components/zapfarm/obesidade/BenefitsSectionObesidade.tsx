@@ -1,10 +1,26 @@
 'use client';
 
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { DevicePhoneMobileIcon, ShieldCheckIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
-import { mainBenefits, programDescription } from '@/config/zapfarm/benefits';
+
+const proofCards = [
+  {
+    icon: ShieldCheckIcon,
+    title: 'Avaliação médica individual',
+    text: 'O fluxo organiza seus dados para o médico decidir com critério, sem promessa automática de prescrição.',
+  },
+  {
+    icon: DevicePhoneMobileIcon,
+    title: 'Jornada digital enxuta',
+    text: 'Triagem, próximos passos e suporte ficam na mesma experiência, com menos fricção entre decidir e avançar.',
+  },
+  {
+    icon: UserGroupIcon,
+    title: 'Suporte oficial e acompanhamento',
+    text: 'Você entende o que acontece depois da triagem e mantém contato pelos canais oficiais da Me Joy.',
+  },
+] as const;
 
 export function BenefitsSectionObesidade() {
   const page = useLandingPageKey();
@@ -16,88 +32,64 @@ export function BenefitsSectionObesidade() {
       section: 'benefits_section',
     });
   };
-  
-  const benefits = mainBenefits;
-  const benefitImages = [
-    '/images/emagrecimento/medvi/treatment-escolha.avif',
-    '/images/emagrecimento/medvi/metabolism-habits.avif',
-    '/images/emagrecimento/medvi/support-whatsapp.avif',
-  ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-emerald-50 via-white to-amber-50">
+    <section
+      className="bg-white py-14 sm:py-16 md:py-20"
+      data-home-section="benefits"
+      data-testid="emagrecimento-proof"
+      aria-labelledby="emagrecimento-proof-heading"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              {programDescription.title}
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Prova e autoridade</p>
+            <h2
+              id="emagrecimento-proof-heading"
+              className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+            >
+              O programa precisa parecer simples sem perder rigor clínico
             </h2>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-700">
-              {programDescription.subtitle}
+            <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
+              A decisão vem com contexto, transparência e canais oficiais. Sem exagerar nos claims e sem transformar a
+              landing em e-commerce genérico.
             </p>
-            <p className="mt-4 text-sm sm:text-base text-gray-600">
-              Sem atalhos milagrosos: decisões clínicas responsáveis, metas realistas e suporte de verdade.
-            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
+              {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 shadow-sm"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
-            {benefits.map((benefit, index) => (
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {proofCards.map(({ icon: Icon, title, text }) => (
               <div
-                key={index}
-                className={cn(
-                  "bg-white rounded-2xl p-6 sm:p-8 shadow-lg",
-                  "border-2 border-emerald-100",
-                  "hover:shadow-xl hover:border-emerald-300",
-                  "transition-all duration-300",
-                  "text-center"
-                )}
+                key={title}
+                className="rounded-[28px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_20px_45px_rgba(15,23,42,0.05)]"
               >
-                <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-xl border border-emerald-100 bg-emerald-50">
-                  <Image
-                    src={benefitImages[index] || benefitImages[0]}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
+                <div className="inline-flex rounded-2xl bg-emerald-100 p-3 text-emerald-800 ring-1 ring-emerald-200">
+                  <Icon className="h-6 w-6" aria-hidden />
                 </div>
-                <div className="text-5xl sm:text-6xl mb-4">{benefit.icon}</div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-                  {benefit.title}
-                </h3>
-                <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                  {benefit.description}
-                </p>
+                <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
+                <p className="mt-3 text-base leading-relaxed text-slate-600">{text}</p>
               </div>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="text-center">
+          <div className="mt-10 text-center">
             <a
               href="/triagem/emagrecimento"
               onClick={handleCtaClick}
-              className={cn(
-                "inline-flex items-center justify-center",
-                "h-14 sm:h-16 px-8 sm:px-10 md:px-12",
-                "text-base sm:text-lg md:text-xl font-bold text-white",
-                "rounded-full shadow-xl transition-all duration-200",
-                "bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800",
-                "hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900",
-                "hover:shadow-2xl hover:scale-105 active:scale-100"
-              )}
+              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-bold text-emerald-800 shadow-sm ring-1 ring-emerald-200 transition-all hover:-translate-y-0.5 hover:bg-emerald-50"
             >
               Ver minha elegibilidade
             </a>
           </div>
-
-          {/* Notice */}
-          <p className="text-center text-sm text-gray-500 mt-6">
-            Tratamento e prescrição sempre dependem de avaliação médica individual.
-          </p>
         </div>
       </div>
     </section>

@@ -5,13 +5,28 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { getCheckoutUrl, getProductConfig, productExists } from '@/lib/zapfarm/product-loader';
 
-export function HeaderZapfarm() {
+interface HeaderZapfarmProps {
+  primaryCtaHref?: string;
+  primaryCtaLabel?: string;
+  primaryCtaOnClick?: () => void;
+}
+
+export function HeaderZapfarm({
+  primaryCtaHref,
+  primaryCtaLabel,
+  primaryCtaOnClick,
+}: HeaderZapfarmProps = {}) {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const isReportPage = router.pathname.includes('/relatorio');
   const asPath = router.asPath?.split('?')[0] || '';
+  const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
+  const isHomeJourney =
+    router.pathname === '/' ||
+    asPath === '/';
   const useMedviMark =
-    router.pathname.startsWith('/emagrecimento') ||
+    isLandingPage ||
+    isHomeJourney ||
     asPath.startsWith('/triagem/emagrecimento');
 
   useEffect(() => {
@@ -59,10 +74,68 @@ export function HeaderZapfarm() {
   const productConfig = productSlug ? getProductConfig(productSlug) : null;
   const triageHref = productConfig ? `/triagem/${productConfig.triageSlug}` : '/triagem/emagrecimento';
   const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/protocolos';
+  const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
+  const resolvedPrimaryLabel =
+    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const isEmagrecimentoFlow =
-    router.pathname.startsWith('/emagrecimento') || asPath.startsWith('/triagem/emagrecimento');
+    isLandingPage || asPath.startsWith('/triagem/emagrecimento');
 
-  // Na página de relatório, sempre usar estilo scrolled (fundo branco)
+  if (isLandingPage) {
+    return (
+      <header className="fixed inset-x-0 top-0 z-50" data-testid="home-medvi-header">
+        <div className="border-b border-emerald-100 bg-white/95 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.06em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2.5 sm:text-[11px] sm:uppercase sm:tracking-[0.12em]">
+          <span className="sm:hidden">Avaliação médica e suporte oficial no WhatsApp</span>
+          <span className="hidden sm:inline">Programa com avaliação médica individual e suporte oficial no WhatsApp</span>
+        </div>
+        <div
+          className={`border-b border-emerald-100/80 backdrop-blur transition-all duration-300 ${
+            scrolled ? 'bg-white/95 shadow-sm' : 'bg-[#f6fbf7]/92'
+          }`}
+        >
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex h-14 items-center justify-between sm:h-24">
+              <a
+                href="/"
+                className="inline-flex items-center gap-2 rounded-[22px] border border-emerald-100 bg-white/92 px-3 py-2 shadow-sm sm:gap-3 sm:rounded-full sm:px-4"
+                aria-label="Me Joy — início"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f7efe9] text-xl font-black text-amber-950 sm:h-9 sm:w-9 sm:text-sm">
+                  Me
+                </span>
+                <span className="leading-none sm:leading-tight">
+                  <span className="block text-[15px] font-bold tracking-[-0.03em] text-slate-950 sm:text-xl">MeJoy</span>
+                  <span className="hidden text-[11px] text-slate-500 sm:block">Me cuido. Me amo!</span>
+                </span>
+              </a>
+
+              <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-700 md:flex">
+                <a href="/emagrecimento#programa" className="transition-colors hover:text-emerald-700">
+                  Programa
+                </a>
+                <a href="/emagrecimento#tratamentos" className="transition-colors hover:text-emerald-700">
+                  Tratamentos
+                </a>
+                <a href="/emagrecimento#depoimentos" className="transition-colors hover:text-emerald-700">
+                  Resultados
+                </a>
+                <a href="/emagrecimento#faq" className="transition-colors hover:text-emerald-700">
+                  FAQ
+                </a>
+              </nav>
+
+              <a
+                href="/emagrecimento#faq"
+                className="inline-flex rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.06em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
+              >
+                FAQ
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   const shouldUseScrolledStyle = isReportPage ? true : scrolled;
   const textColor = shouldUseScrolledStyle ? 'text-slate-700' : 'text-white';
 
@@ -73,10 +146,10 @@ export function HeaderZapfarm() {
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
+      data-testid="home-medvi-header"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
-          {/* Marca compacta e neutra para manter o funil limpo sem copiar o benchmark. */}
           <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — início">
             {useMedviMark ? (
               <div className="flex items-center gap-2">
@@ -108,56 +181,55 @@ export function HeaderZapfarm() {
             )}
           </a>
 
-          {/* Navigation Links - Desktop */}
           <nav className="hidden lg:flex items-center space-x-6">
             <a
-              href="/emagrecimento"
+              href="/"
               className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
             >
               Programa
             </a>
             <a
-              href="/emagrecimento#como-funciona"
+              href="/#como-funciona"
               className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
             >
               Como funciona
             </a>
             <a
-              href="/emagrecimento#planos"
+              href="/#planos"
               className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
             >
               Planos
             </a>
             <a
-              href="/emagrecimento#faq"
+              href="/#faq"
               className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
             >
               FAQ
             </a>
           </nav>
 
-          {/* CTA Button - Desktop */}
           <a
-            href={checkoutHref}
+            href={resolvedPrimaryHref}
+            onClick={primaryCtaOnClick}
             className={`hidden md:inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
               shouldUseScrolledStyle || isReportPage
                 ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
                 : 'bg-white text-emerald-700 shadow-xl'
             }`}
           >
-            {isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem'}
+            {resolvedPrimaryLabel}
           </a>
 
-          {/* Mobile Menu Button */}
           <a
-            href={isReportPage ? checkoutHref : triageHref}
+            href={resolvedPrimaryHref}
+            onClick={primaryCtaOnClick}
             className={`md:hidden rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-bold transition-all shadow-lg hover:shadow-xl whitespace-nowrap ${
               shouldUseScrolledStyle || isReportPage
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-white text-emerald-700 hover:bg-emerald-50'
             }`}
           >
-            {isReportPage ? 'Continuar' : 'Iniciar'}
+            {isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar'}
           </a>
         </div>
       </div>

@@ -48,39 +48,39 @@ export function FaqSectionObesidade() {
     {
       question: 'Preciso de receita? Como funciona a medicação?',
       answer:
-        'Quando houver indicação médica, o profissional responsável realiza a prescrição e orienta o uso. Não há dispensação de medicamento sem receita.',
+        'Quando houver indicacao medica, o profissional responsavel prescreve e orienta o uso. Nao existe liberacao automatica de medicamento, e a receita continua sendo obrigatoria.',
     },
     {
       question: 'O programa inclui medicamentos GLP-1 (ou similares)?',
       answer:
-        'O médico pode avaliar elegibilidade para estratégias metabólicas, incluindo classes usadas em obesidade, quando apropriado para o seu perfil clínico. A decisão sempre é individualizada.',
-    },
-    {
-      question: 'Preciso baixar o app?',
-      answer:
-        'O app é recomendado para acompanhar metas, evolução e orientações. Se você não conseguir usar, o suporte orienta alternativas de acompanhamento.',
+        'Pode incluir, sim, mas so quando fizer sentido para o seu perfil. Em alguns casos o medico pode considerar tirzepatida, semaglutida ou uma alternativa oral; em outros, o caminho mais seguro e comecar por ajustes de rotina, exames ou outra estrategia.',
     },
     {
       question: 'Quanto custa e posso cancelar?',
       answer:
         'Os valores dependem do plano e da conduta indicada na avaliação médica. Políticas de cancelamento e reembolso seguem os termos vigentes e a legislação aplicável.',
     },
-    {
-      question: 'Qual a diferença entre os planos Essencial, Metabólico e Total?',
-      answer:
-        'O Essencial cobre a base do acompanhamento. O Metabólico amplia o acompanhamento clínico. O Total adiciona suporte intensivo e mais frequência de acompanhamento.',
-    },
   ];
 
   return (
-    <section id="faq" className="py-12 sm:py-16 md:py-20 bg-white scroll-mt-24" aria-labelledby="faq-heading">
+    <section
+      id="faq"
+      data-home-section="faq"
+      data-testid="emagrecimento-faq"
+      className="scroll-mt-24 bg-white py-14 sm:py-16 md:py-20"
+      aria-labelledby="faq-heading"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 id="faq-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Perguntas frequentes</p>
+            <h2
+              id="faq-heading"
+              className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+            >
               Ainda tem dúvidas?
             </h2>
-            <p className="text-gray-600 text-base sm:text-lg">
+            <p className="mt-4 text-base text-slate-600 sm:text-lg">
               Respostas diretas sobre elegibilidade, privacidade e como funciona o cuidado na Me Joy.
             </p>
           </div>
@@ -90,8 +90,8 @@ export function FaqSectionObesidade() {
               <div
                 key={index}
                 className={cn(
-                  'border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden',
-                  'bg-white shadow-sm hover:shadow-md transition-shadow'
+                  'overflow-hidden rounded-[22px] border border-emerald-100',
+                  'bg-[#fcfffd] shadow-sm transition-shadow hover:shadow-md'
                 )}
               >
                 <button
@@ -101,14 +101,14 @@ export function FaqSectionObesidade() {
                     handleToggle(index, next !== null);
                     setOpenIndex(next);
                   }}
-                  className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between hover:bg-emerald-50 transition-colors gap-4"
+                  className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition-colors hover:bg-emerald-50 sm:px-6 sm:py-5"
                 >
-                  <span className="text-base sm:text-lg font-semibold text-gray-900 leading-tight flex-1">
+                  <span className="flex-1 text-base font-semibold leading-tight text-slate-950 sm:text-lg">
                     {faq.question}
                   </span>
                   <svg
                     className={cn(
-                      'w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 transition-transform flex-shrink-0',
+                      'h-5 w-5 shrink-0 text-emerald-600 transition-transform sm:h-6 sm:w-6',
                       openIndex === index ? 'rotate-180' : ''
                     )}
                     fill="none"
@@ -120,8 +120,8 @@ export function FaqSectionObesidade() {
                   </svg>
                 </button>
                 {openIndex === index && (
-                  <div className="px-4 sm:px-6 py-4 sm:py-5 bg-emerald-50 border-t border-emerald-200">
-                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{faq.answer}</p>
+                  <div className="border-t border-emerald-100 bg-emerald-50 px-4 py-4 sm:px-6 sm:py-5">
+                    <p className="text-sm leading-relaxed text-slate-700 sm:text-base">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -132,15 +132,7 @@ export function FaqSectionObesidade() {
             <a
               href="/triagem/emagrecimento"
               onClick={handleCtaClick}
-              className={cn(
-                'inline-flex items-center justify-center',
-                'h-14 sm:h-16 px-8 sm:px-10 md:px-12',
-                'text-base sm:text-lg md:text-xl font-bold text-white',
-                'rounded-full shadow-xl transition-all duration-200',
-                'bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800',
-                'hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900',
-                'hover:shadow-2xl hover:scale-105 active:scale-100'
-              )}
+              className="inline-flex items-center justify-center h-14 sm:h-16 px-8 sm:px-10 md:px-12 text-base sm:text-lg md:text-xl font-bold text-white rounded-full shadow-xl transition-all duration-200 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900 hover:shadow-2xl hover:scale-105 active:scale-100"
             >
               Iniciar minha triagem de elegibilidade
             </a>

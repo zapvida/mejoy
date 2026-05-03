@@ -18,6 +18,12 @@ export const ROOT_LOJA_DOMAINS = (process.env.NEXT_PUBLIC_ROOT_LOJA_DOMAINS ?? '
 export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'Me Joy';
 export const SHOW_SALES_ASSISTANT = (process.env.NEXT_PUBLIC_SHOW_SALES_ASSISTANT ?? '1') === '1';
 
+export type HomeVariant = 'medvi_journey' | 'store_v2';
+
+function normalizeHomeVariant(value?: string): HomeVariant {
+  return value === 'store_v2' ? 'store_v2' : 'medvi_journey';
+}
+
 // Feature flags para GI Enhanced
 export const GI_ENHANCED = (process.env.NEXT_PUBLIC_TRIAGE_GI_ENHANCED ?? '0') === '1';
 export const EMOJI_MODE = (process.env.NEXT_PUBLIC_EMOJI_MODE ?? 'legacy') as 'legacy'|'smart'|'off';
@@ -49,6 +55,16 @@ export function isRootB2BDomain(host?: string) {
 export function isRootLojaDomain(host?: string) {
   const h = (host ?? (typeof window !== 'undefined' ? window.location.hostname : '')).toLowerCase();
   return ROOT_LOJA_DOMAINS.includes(h);
+}
+
+// Home principal da loja. Independente do STORE_V2, que segue controlando catálogo e rotas de loja.
+export const HOME_VARIANT = normalizeHomeVariant(
+  process.env.HOME_VARIANT ?? process.env.NEXT_PUBLIC_HOME_VARIANT,
+);
+export const NEXT_PUBLIC_HOME_VARIANT = normalizeHomeVariant(process.env.NEXT_PUBLIC_HOME_VARIANT);
+
+export function getHomeVariant(): HomeVariant {
+  return HOME_VARIANT;
 }
 
 // Store V2 — Loja nova com 200 SKUs (Me Joy e-commerce 1P)

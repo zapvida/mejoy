@@ -7,6 +7,7 @@ export function EmagrecimentoLegalDisclaimerSection() {
     <section
       className="border-t border-gray-200 bg-zinc-50 py-10 sm:py-12"
       aria-labelledby="legal-disclaimer-heading"
+      data-home-section="legal-disclaimer"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto prose prose-sm sm:prose-base prose-gray">

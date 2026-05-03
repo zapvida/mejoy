@@ -1,16 +1,16 @@
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
-import { isRootB2BDomain, isStoreV2Enabled, isCopyV4Enabled } from '@/lib/flags';
+import { getHomeVariant, isRootB2BDomain, isCopyV4Enabled, type HomeVariant } from '@/lib/flags';
+import { HomeMedviJourney } from '@/components/home/HomeMedviJourney';
 import { getHomeSections, getProductsByTag, getNewestProducts, getTopProducts } from '@/lib/store-v2/catalog';
 import { getCopyV4BySku } from '@/lib/store-v2/copy-v2';
 import type { ProductCardData } from '@/lib/store-v2/catalog';
 
 const B2BLanding = dynamic(() => import('@/components/b2b/B2BLanding'));
-const B2CLanding = dynamic(() => import('@/components/home/B2CLanding'));
 const StoreV2Home = dynamic(() => import('@/components/store-v2/StoreV2Home'));
 
 /**
- * Homepage: mejoy.com.br = Loja (B2CLanding ou StoreV2Home). zapfarm.com.br = B2B white-label.
+ * Homepage: mejoy.com.br = jornada MEDVi-like ou storefront, conforme HOME_VARIANT.
  */
 export type HomeFeaturedSections = {
   maisBuscados: ProductCardData[];
@@ -352,29 +352,29 @@ async function getFeaturedHomeSections(limit = FEATURED_LIMIT): Promise<HomeFeat
 
 export default function Home({
   showB2C,
-  storeV2,
+  homeVariant,
   sections,
   featured,
 }: {
   showB2C: boolean;
-  storeV2: boolean;
+  homeVariant: HomeVariant;
   sections: HomeSection[];
   featured: HomeFeaturedSections;
 }) {
   if (!showB2C) return <B2BLanding />;
-  if (storeV2) return <StoreV2Home sections={sections} featured={featured} />;
-  return <B2CLanding />;
+  if (homeVariant === 'store_v2') return <StoreV2Home sections={sections} featured={featured} />;
+  return <HomeMedviJourney page="home" canonicalPath="/" />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const host = ctx.req?.headers?.host ?? '';
   const showB2C = !isRootB2BDomain(host);
-  const storeV2 = isStoreV2Enabled();
+  const homeVariant = getHomeVariant();
 
   let sections: HomeSection[] = [];
   let featured: HomeFeaturedSections = { maisBuscados: [], maisVendidos: [], novidades: [] };
 
-  if (storeV2) {
+  if (homeVariant === 'store_v2') {
     try {
       sections = await getHomeSections();
       featured = await getFeaturedHomeSections(FEATURED_LIMIT);
@@ -405,7 +405,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       showB2C,
-      storeV2,
+      homeVariant,
       sections,
       featured,
     },

@@ -23,6 +23,7 @@ export function AppFeaturesSectionObesidade() {
     <section
       className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-emerald-50 to-amber-50"
       aria-labelledby="app-portal-heading"
+      data-home-section="app-features"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">

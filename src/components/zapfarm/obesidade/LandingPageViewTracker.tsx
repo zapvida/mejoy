@@ -9,6 +9,7 @@ import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 export function LandingPageViewTracker() {
   const page = useLandingPageKey();
   const [mounted, setMounted] = useState(false);
+  const isHomepage = page === 'home';
 
   useEffect(() => {
     setMounted(true);
@@ -21,10 +22,10 @@ export function LandingPageViewTracker() {
       gtag('event', 'zapfarm_lp_view', {
         page,
         lp_type: page,
-        is_homepage: false,
+        is_homepage: isHomepage,
       });
     }
-  }, [mounted, page]);
+  }, [isHomepage, mounted, page]);
 
   return null;
 }
