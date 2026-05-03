@@ -4,7 +4,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { setSentryTriageTag } from "@/lib/observability";
 import { coercePhoneLike } from "@/lib/phone/normalize";
 import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
-import { flowsMap } from "@/lib/triage/flows";
 import { hasProfileData } from "@/lib/triage/schema";
 
 type SessionPayload = {
