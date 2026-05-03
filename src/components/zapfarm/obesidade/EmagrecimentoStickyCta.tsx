@@ -10,7 +10,11 @@ export function EmagrecimentoStickyCta() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 560);
+      const resultsSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-results"]');
+      const resultsTop = resultsSection ? resultsSection.offsetTop : Number.POSITIVE_INFINITY;
+      const shouldStayVisible = window.scrollY < resultsTop - 120;
+
+      setIsVisible(window.scrollY > 720 && shouldStayVisible);
     };
 
     handleScroll();
@@ -22,7 +26,7 @@ export function EmagrecimentoStickyCta() {
 
   return (
     <div
-      className="fixed bottom-3 left-3 right-3 z-40 rounded-[28px] bg-gradient-to-r from-emerald-700 to-emerald-800 p-3 shadow-2xl md:hidden"
+      className="fixed inset-x-4 bottom-3 z-40 mx-auto w-[calc(100%-2rem)] max-w-sm md:hidden"
       data-testid="home-medvi-sticky-cta"
     >
       <a
@@ -35,7 +39,7 @@ export function EmagrecimentoStickyCta() {
           })
         }
         data-testid="home-sticky-cta-link"
-        className="block w-full rounded-full bg-white px-4 py-3 text-center text-sm font-bold text-emerald-700 transition-colors hover:bg-emerald-50"
+        className="block w-full rounded-full bg-gradient-to-r from-emerald-700 to-emerald-800 px-5 py-3.5 text-center text-[15px] font-bold text-white shadow-[0_18px_45px_rgba(5,150,105,0.32)] transition-transform duration-200 hover:scale-[1.01]"
       >
         Fazer minha triagem agora
       </a>

@@ -21,6 +21,8 @@ import type { LandingPageKey } from '@/contexts/LandingAnalyticsContext';
  * Jornada principal MEDVi-like — usada na home `/` e em `/emagrecimento` como alias.
  */
 export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: LandingPageKey }) {
+  const isEmagrecimentoLanding = page === 'emagrecimento';
+
   return (
     <LandingAnalyticsProvider page={page}>
       <LandingPageViewTracker />
@@ -28,18 +30,32 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
         <HeaderZapfarm />
         <EmagrecimentoStickyCta />
         <main className="pb-24 md:pb-0">
-          <HeroSectionObesidade variant="emagrecimento" />
-          <TrustBarSectionObesidade />
-          <ZeroCostSectionObesidade />
-          <HowItWorksSectionObesidade />
-          <BenefitsSectionObesidade />
-          <TailoredSectionObesidade />
-          <AppFeaturesSectionObesidade />
-          <TestimonialsSectionObesidade />
-          <PlansSectionObesidade />
-          <DecisionSectionObesidade />
-          <FaqSectionObesidade />
-          <EmagrecimentoLegalDisclaimerSection />
+          {isEmagrecimentoLanding ? (
+            <>
+              <HeroSectionObesidade variant="emagrecimento" />
+              <BenefitsSectionObesidade />
+              <PlansSectionObesidade />
+              <TestimonialsSectionObesidade />
+              <DecisionSectionObesidade />
+              <FaqSectionObesidade />
+              <EmagrecimentoLegalDisclaimerSection />
+            </>
+          ) : (
+            <>
+              <HeroSectionObesidade variant="emagrecimento" />
+              <TrustBarSectionObesidade />
+              <ZeroCostSectionObesidade />
+              <HowItWorksSectionObesidade />
+              <BenefitsSectionObesidade />
+              <TailoredSectionObesidade />
+              <AppFeaturesSectionObesidade />
+              <TestimonialsSectionObesidade />
+              <PlansSectionObesidade />
+              <DecisionSectionObesidade />
+              <FaqSectionObesidade />
+              <EmagrecimentoLegalDisclaimerSection />
+            </>
+          )}
         </main>
         <FooterZapfarm />
       </div>

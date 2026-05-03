@@ -12,19 +12,18 @@ export function PlansSectionObesidade() {
   const handleCtaClick = () => {
     track('cta_click', {
       page,
-      position: 'plans',
-      section: 'plans_section',
+      position: 'treatments',
+      section: 'treatments_section',
     });
   };
 
   return (
     <section
-      id="planos"
-      data-home-section="plans"
+      id="tratamentos"
+      data-home-section="treatments"
       data-testid="emagrecimento-treatments"
       className="scroll-mt-24 bg-[#f8fcf9] py-14 sm:py-16 md:py-20"
     >
-      <div id="tratamentos" className="relative -top-24 h-0 w-0" aria-hidden="true" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">

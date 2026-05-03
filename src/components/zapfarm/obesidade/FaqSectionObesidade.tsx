@@ -67,6 +67,7 @@ export function FaqSectionObesidade() {
       id="faq"
       data-home-section="faq"
       data-testid="emagrecimento-faq"
+      data-sticky-cta-stop
       className="scroll-mt-24 bg-white py-14 sm:py-16 md:py-20"
       aria-labelledby="faq-heading"
     >
@@ -128,7 +129,7 @@ export function FaqSectionObesidade() {
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-12 text-center" data-sticky-cta-stop>
             <a
               href="/triagem/emagrecimento"
               onClick={handleCtaClick}

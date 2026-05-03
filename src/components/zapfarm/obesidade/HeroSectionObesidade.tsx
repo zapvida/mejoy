@@ -77,14 +77,6 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
     });
   };
 
-  const handleSecondaryCta = () => {
-    track('hero_secondary_cta_click', {
-      page,
-      position: 'hero',
-      section: 'hero_secondary',
-    });
-  };
-
   if (variant !== 'emagrecimento') {
     return (
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-50/60 via-white to-white pt-20 sm:pt-24">
@@ -190,14 +182,6 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
             >
               Começar minha triagem
             </a>
-
-            <a
-              href="#como-funciona"
-              onClick={handleSecondaryCta}
-              className="hidden text-sm font-semibold text-emerald-800 underline decoration-emerald-300 underline-offset-4 transition-colors hover:text-emerald-900 sm:inline"
-            >
-              Entender como funciona
-            </a>
           </div>
 
           <p className="mx-auto mt-5 hidden max-w-3xl rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-3 text-xs font-medium leading-relaxed text-emerald-950 shadow-sm sm:block sm:text-base">
@@ -211,7 +195,7 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
         </div>
 
         <div className="mx-auto mt-10 grid max-w-6xl grid-cols-2 gap-4 md:mt-12 md:grid-cols-8 md:gap-5" data-testid="emagrecimento-hero-mosaic">
-          {HERO_MOSAIC.map((image) => (
+          {HERO_MOSAIC.map((image, index) => (
             <div
               key={image.src}
               className={cn(
@@ -226,6 +210,7 @@ export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVa
                 className="object-cover"
                 sizes="(max-width: 768px) 50vw, 20vw"
                 quality={88}
+                priority={index < 4}
               />
             </div>
           ))}

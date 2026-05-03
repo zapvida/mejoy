@@ -1,10 +1,19 @@
+import { useRouter } from 'next/router';
+
 export function FooterZapfarm() {
+  const router = useRouter();
   const whatsapp =
     process.env.NEXT_PUBLIC_CONTACT_WHATSAPP ||
     process.env.NEXT_PUBLIC_WHATSAPP_CTA ||
     '554797789479';
   const whatsappDisplay = whatsapp.replace(/^55/, '+55 ').replace(/(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
+  const asPath = router.asPath?.split('?')[0] || '';
+  const isEmagrecimentoFlow =
+    router.pathname === '/emagrecimento' ||
+    asPath === '/emagrecimento' ||
+    asPath.startsWith('/triagem/emagrecimento');
+  const lpBasePath = isEmagrecimentoFlow ? '/emagrecimento' : '';
 
   return (
     <footer className="bg-slate-950 text-white py-8 sm:py-10 md:py-12" data-home-section="footer">
@@ -22,10 +31,10 @@ export function FooterZapfarm() {
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-white text-sm sm:text-base">Links</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
-              <li><a href="/" className="hover:text-white transition-colors">Programa</a></li>
-              <li><a href="/#como-funciona" className="hover:text-white transition-colors">Como funciona</a></li>
-              <li><a href="/#planos" className="hover:text-white transition-colors">Planos</a></li>
-              <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
+              <li><a href={`${lpBasePath || '/'}#programa`} className="hover:text-white transition-colors">Programa</a></li>
+              <li><a href={`${lpBasePath || '/'}#tratamentos`} className="hover:text-white transition-colors">Tratamentos</a></li>
+              <li><a href={`${lpBasePath || '/'}#depoimentos`} className="hover:text-white transition-colors">Resultados</a></li>
+              <li><a href={`${lpBasePath || '/'}#faq`} className="hover:text-white transition-colors">FAQ</a></li>
               <li><a href="/contato" className="hover:text-white transition-colors">Contato</a></li>
               <li><a href="/dados-fiscais" className="hover:text-white transition-colors">Dados fiscais</a></li>
             </ul>

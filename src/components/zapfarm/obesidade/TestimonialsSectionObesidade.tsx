@@ -23,6 +23,7 @@ export function TestimonialsSectionObesidade() {
       id="depoimentos"
       data-home-section="testimonials"
       data-testid="emagrecimento-results"
+      data-sticky-cta-stop
       className="bg-white py-14 sm:py-16 md:py-20"
       aria-labelledby="testimonials-heading"
     >

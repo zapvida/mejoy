@@ -20,6 +20,7 @@ export function DecisionSectionObesidade() {
       className="bg-[#f7fbf8] py-14 sm:py-16 md:py-20"
       data-home-section="decision"
       data-testid="emagrecimento-decision"
+      data-sticky-cta-stop
       aria-labelledby="decision-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,7 +56,7 @@ export function DecisionSectionObesidade() {
                 ))}
               </ul>
 
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center" data-sticky-cta-stop>
                 <a
                   href="/triagem/emagrecimento"
                   onClick={handleCta}

@@ -65,12 +65,10 @@ async function waitForSectionImages(section: import('@playwright/test').Locator)
 }
 
 test.describe('Emagrecimento visual parity', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(LANDING_PATH, { waitUntil: 'domcontentloaded' });
-  });
-
   test('mobile first paint keeps hero readable above cookie banner', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'Mobile Safari');
+
+    await page.goto(LANDING_PATH, { waitUntil: 'domcontentloaded' });
 
     const hero = page.getByTestId('emagrecimento-hero');
     const headline = hero.getByRole('heading', { level: 1 });
