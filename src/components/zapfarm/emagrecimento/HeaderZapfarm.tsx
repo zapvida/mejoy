@@ -100,7 +100,7 @@ export function HeaderZapfarm({
   const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/protocolos';
   const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
   const resolvedPrimaryLabel =
-    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Comecar minha triagem');
+    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
   const navigationLinks = links?.length
