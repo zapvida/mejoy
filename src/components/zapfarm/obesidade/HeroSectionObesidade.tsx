@@ -22,6 +22,29 @@ const quickProof = [
   { label: 'Canal oficial', value: 'WhatsApp' },
 ] as const;
 
+const mobileMosaic = [
+  {
+    src: '/images/emagrecimento/medvi/reviews-01.webp',
+    alt: 'Paciente em retrato editorial',
+    className: 'aspect-[4/6]',
+  },
+  {
+    src: '/images/emagrecimento/medvi/hero-secondary.webp',
+    alt: 'Paciente acompanhada em programa de emagrecimento',
+    className: 'aspect-[4/4]',
+  },
+  {
+    src: '/images/emagrecimento/medvi/reviews-03.avif',
+    alt: 'Paciente sorrindo em acompanhamento',
+    className: 'aspect-[4/4]',
+  },
+  {
+    src: '/images/emagrecimento/medvi/hero-main.webp',
+    alt: 'Paciente em retrato principal da jornada Me Joy',
+    className: 'aspect-[4/6]',
+  },
+] as const;
+
 export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: string }) {
   const page = useLandingPageKey();
 
@@ -49,10 +72,10 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
         <div className="grid items-center gap-10 pb-12 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:gap-12 lg:pb-16">
           <div className="relative z-10 max-w-2xl">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex rounded-full border border-emerald-200 bg-white/90 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-emerald-800 shadow-sm">
+              <span className="inline-flex rounded-full border border-emerald-200 bg-white/90 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-800 shadow-sm sm:text-[11px] sm:tracking-[0.22em]">
                 Programa 100% online com avaliacao medica
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm">
+              <span className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm sm:inline-flex">
                 <span className="relative h-3 w-20 overflow-hidden">
                   <Image
                     src="/images/emagrecimento/medvi/social-proof-rating.webp"
@@ -66,16 +89,33 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               </span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-black leading-[0.96] tracking-[-0.06em] text-slate-950 sm:text-5xl lg:max-w-[12ch] lg:text-[4.2rem]">
+            <h1 className="mt-5 text-[3rem] font-black leading-[0.94] tracking-[-0.06em] text-slate-950 sm:mt-6 sm:text-5xl lg:max-w-[12ch] lg:text-[4.2rem]">
               Emagrecimento com <span className="text-emerald-700">avaliacao medica</span>, plano claro e suporte continuo.
             </h1>
 
-            <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+            <p className="mt-4 max-w-xl text-[15px] leading-7 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8">
               Triagem online, avaliacao medica quando indicada e acompanhamento continuo para seguir com mais clareza,
               seguranca e constancia.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2.5">
+            <div className="mt-5 flex flex-col gap-3 sm:hidden">
+              <a
+                href="/triagem/emagrecimento"
+                onClick={handlePrimaryCta}
+                data-testid="home-primary-cta"
+                className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 text-base font-bold text-white shadow-[0_22px_48px_rgba(5,150,105,0.26)] transition-all hover:-translate-y-0.5 hover:shadow-[0_26px_60px_rgba(5,150,105,0.3)]"
+              >
+                Fazer minha triagem
+              </a>
+              <p className="max-w-xl rounded-2xl border border-emerald-100 bg-white/92 px-4 py-3 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm">
+                {getLpPriceHook()}
+              </p>
+              <p className="text-center text-sm leading-7 text-slate-500">
+                Triagem rapida e orientacao segura para entender o proximo passo com clareza.
+              </p>
+            </div>
+
+            <div className="mt-6 hidden flex-wrap gap-2.5 sm:flex">
               {quickProof.map((item) => (
                 <span
                   key={item.label}
@@ -86,11 +126,22 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               ))}
             </div>
 
-            <ul className="mt-7 space-y-3">
+            <ul className="mt-6 space-y-3 sm:mt-7">
+              {proofBullets.slice(0, 2).map((item) => (
+                <li
+                  key={`mobile-${item}`}
+                  className="flex items-start gap-3 rounded-[22px] border border-emerald-100 bg-white/84 px-4 py-3 shadow-sm backdrop-blur sm:hidden"
+                >
+                  <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-black text-white">
+                    ✓
+                  </span>
+                  <span className="text-sm leading-6 text-slate-700">{item}</span>
+                </li>
+              ))}
               {proofBullets.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-3 rounded-[22px] border border-emerald-100 bg-white/84 px-4 py-3 shadow-sm backdrop-blur"
+                  className="hidden items-start gap-3 rounded-[22px] border border-emerald-100 bg-white/84 px-4 py-3 shadow-sm backdrop-blur sm:flex"
                 >
                   <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-black text-white">
                     ✓
@@ -100,7 +151,7 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               ))}
             </ul>
 
-            <div className="mt-7 flex flex-col gap-3 sm:items-start">
+            <div className="mt-7 hidden flex-col gap-3 sm:flex sm:items-start">
               <a
                 href="/triagem/emagrecimento"
                 onClick={handlePrimaryCta}
@@ -114,7 +165,7 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               </p>
             </div>
 
-            <p className="mt-5 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+            <p className="mt-5 hidden max-w-xl text-xs leading-6 text-slate-500 sm:block sm:text-sm">
               Prescricao e escolha da trilha dependem de avaliacao medica individual, disponibilidade e criterio clinico.
             </p>
           </div>
@@ -122,7 +173,35 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
           <div className="relative mx-auto w-full max-w-[38rem] lg:max-w-none">
             <div className="absolute inset-x-8 top-12 h-64 rounded-full bg-emerald-200/45 blur-3xl" />
 
-            <div className="relative grid gap-4 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1fr)]">
+            <div className="grid grid-cols-2 gap-4 lg:hidden">
+              {mobileMosaic.map((image) => (
+                <div
+                  key={image.src}
+                  className={`relative overflow-hidden rounded-[28px] border border-white/90 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${image.className}`}
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 46vw, 32vw"
+                    priority
+                  />
+                </div>
+              ))}
+              <div className="relative col-span-2 overflow-hidden rounded-[30px] border border-white/90 bg-white shadow-[0_22px_60px_rgba(15,23,42,0.1)] aspect-[16/10]">
+                <Image
+                  src="/images/emagrecimento/medvi/reviews-04.avif"
+                  alt="Paciente em etapa de acompanhamento"
+                  fill
+                  className="object-cover"
+                  sizes="92vw"
+                  priority
+                />
+              </div>
+            </div>
+
+            <div className="relative hidden gap-4 lg:grid lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1fr)]">
               <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-1 lg:grid-cols-1 lg:pt-12">
                 <div className="rounded-[28px] border border-emerald-100 bg-white/90 p-4 shadow-[0_20px_50px_rgba(15,23,42,0.08)] backdrop-blur">
                   <div className="flex items-start gap-3">

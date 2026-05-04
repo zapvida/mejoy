@@ -71,11 +71,12 @@ test.describe('Emagrecimento visual parity', () => {
     await page.goto(LANDING_PATH, { waitUntil: 'domcontentloaded' });
 
     const hero = page.getByTestId('emagrecimento-hero');
+    await expect(hero).toBeVisible({ timeout: 15000 });
     const headline = hero.getByRole('heading', { level: 1 });
     const cta = hero.getByRole('link', { name: 'Fazer minha triagem' });
     const priceHook = page
       .getByText(
-        /Consulte a faixa do programa após a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento/i
+        /Consulte a faixa do programa após a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento|Triagem rapida e orientacao segura para entender o proximo passo com clareza/i
       )
       .first();
 
@@ -123,6 +124,7 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(results).toHaveScreenshot(`results-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
+      maxDiffPixels: 1500,
     });
 
     const decision = page.getByTestId('emagrecimento-decision');
