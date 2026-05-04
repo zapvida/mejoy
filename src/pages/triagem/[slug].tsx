@@ -30,9 +30,28 @@ const clearLocalCache = (triageId?: string) => {
   window.localStorage.removeItem(pendingKey(triageId));
 };
 
+const LOCALE_PREFIX_PATTERN = /^\/[a-z]{2}(?:-[A-Z]{2})?(?=\/|$)/;
+
+const resolveSlugFromAsPath = (asPath: string | undefined) => {
+  if (!asPath) return undefined;
+
+  const cleanPath = asPath.split("#")[0]?.split("?")[0] ?? "";
+  const withoutLocale = cleanPath.replace(LOCALE_PREFIX_PATTERN, "");
+  const segments = withoutLocale.split("/").filter(Boolean);
+
+  if (segments[0] !== "triagem") return undefined;
+
+  return segments[1];
+};
+
 export default function TriageSlugPage() {
   const router = useRouter();
-  const slug = router.query.slug as string | undefined;
+  const slugFromQuery = router.query.slug;
+  const slug = useMemo(() => {
+    if (typeof slugFromQuery === "string" && slugFromQuery) return slugFromQuery;
+    if (Array.isArray(slugFromQuery) && slugFromQuery[0]) return slugFromQuery[0];
+    return resolveSlugFromAsPath(router.asPath);
+  }, [router.asPath, slugFromQuery]);
   const flow: TriageFlow | undefined = useMemo(() => (slug ? flowsMap[slug] : undefined), [slug]);
 
   const [state, setState] = useState<FetchState>("idle");
