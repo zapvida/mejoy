@@ -52,11 +52,11 @@ const resolveSlugFromLocation = () => {
 export default function TriageSlugPage() {
   const router = useRouter();
   const slugFromQuery = router.query.slug;
-  const slug = useMemo(() => {
+  const [slug, setSlug] = useState<string | undefined>(() => {
     if (typeof slugFromQuery === "string" && slugFromQuery) return slugFromQuery;
     if (Array.isArray(slugFromQuery) && slugFromQuery[0]) return slugFromQuery[0];
-    return resolveSlugFromLocation() || extractSlugFromPath(router.asPath);
-  }, [router.asPath, slugFromQuery]);
+    return undefined;
+  });
   const flow: TriageFlow | undefined = useMemo(() => (slug ? flowsMap[slug] : undefined), [slug]);
 
   const [state, setState] = useState<FetchState>("idle");
@@ -191,6 +191,16 @@ export default function TriageSlugPage() {
     });
     triageStartedTrackedRef.current = true;
   }, [slug, session?.triageId]);
+
+  useEffect(() => {
+    const nextSlug =
+      (typeof slugFromQuery === "string" && slugFromQuery) ||
+      (Array.isArray(slugFromQuery) ? slugFromQuery[0] : undefined) ||
+      resolveSlugFromLocation() ||
+      extractSlugFromPath(router.asPath);
+
+    setSlug(current => (current === nextSlug ? current : nextSlug));
+  }, [router.asPath, slugFromQuery]);
 
   useEffect(() => {
     if (!slug) return;
