@@ -21,7 +21,7 @@ export function HomeMedviJourney({
   return (
     <>
       <Seo
-        title="Emagrecimento com avaliacao medica e acompanhamento continuo"
+        title="Emagrecimento com avaliacao medica, plano claro e suporte continuo"
         description={DESCRIPTION}
         path={canonicalPath}
         ogImage={ogImage}
