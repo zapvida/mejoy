@@ -98,19 +98,19 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               seguranca e constancia.
             </p>
 
-            <div className="mt-5 flex flex-col gap-3 sm:hidden">
+            <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:items-start">
               <a
                 href="/triagem/emagrecimento"
                 onClick={handlePrimaryCta}
                 data-testid="home-primary-cta"
-                className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 text-base font-bold text-white shadow-[0_22px_48px_rgba(5,150,105,0.26)] transition-all hover:-translate-y-0.5 hover:shadow-[0_26px_60px_rgba(5,150,105,0.3)]"
+                className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 text-base font-bold text-white shadow-[0_22px_48px_rgba(5,150,105,0.26)] transition-all hover:-translate-y-0.5 hover:shadow-[0_26px_60px_rgba(5,150,105,0.3)] sm:h-16 sm:px-8 sm:text-lg"
               >
                 Fazer minha triagem
               </a>
-              <p className="max-w-xl rounded-2xl border border-emerald-100 bg-white/92 px-4 py-3 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm">
+              <p className="max-w-xl rounded-2xl border border-emerald-100 bg-white/92 px-4 py-3 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm sm:text-sm">
                 {getLpPriceHook()}
               </p>
-              <p className="text-center text-sm leading-7 text-slate-500">
+              <p className="text-center text-sm leading-7 text-slate-500 sm:hidden">
                 Triagem rapida e orientacao segura para entender o proximo passo com clareza.
               </p>
             </div>
@@ -150,21 +150,6 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
                 </li>
               ))}
             </ul>
-
-            <div className="mt-7 hidden flex-col gap-3 sm:flex sm:items-start">
-              <a
-                href="/triagem/emagrecimento"
-                onClick={handlePrimaryCta}
-                data-testid="home-primary-cta"
-                className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 text-base font-bold text-white shadow-[0_22px_48px_rgba(5,150,105,0.26)] transition-all hover:-translate-y-0.5 hover:shadow-[0_26px_60px_rgba(5,150,105,0.3)] sm:h-16 sm:px-8 sm:text-lg"
-              >
-                Fazer minha triagem
-              </a>
-              <p className="max-w-xl rounded-2xl border border-emerald-100 bg-white/92 px-4 py-3 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm sm:text-sm">
-                {getLpPriceHook()}
-              </p>
-            </div>
-
             <p className="mt-5 hidden max-w-xl text-xs leading-6 text-slate-500 sm:block sm:text-sm">
               Prescricao e escolha da trilha dependem de avaliacao medica individual, disponibilidade e criterio clinico.
             </p>

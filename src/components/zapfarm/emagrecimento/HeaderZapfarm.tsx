@@ -25,13 +25,6 @@ const HOME_JOURNEY_LINKS = [
   { label: 'FAQ', href: '/#faq' },
 ] as const;
 
-const EMAGRECIMENTO_LANDING_LINKS = [
-  { label: 'Programa', href: '/emagrecimento#programa' },
-  { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
-  { label: 'Resultados', href: '/emagrecimento#depoimentos' },
-  { label: 'FAQ', href: '/emagrecimento#faq' },
-] as const;
-
 export function HeaderZapfarm({
   links,
   primaryCtaHref,
@@ -103,11 +96,7 @@ export function HeaderZapfarm({
     primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
-  const navigationLinks = links?.length
-    ? links
-    : isLandingPage
-      ? EMAGRECIMENTO_LANDING_LINKS
-      : HOME_JOURNEY_LINKS;
+  const navigationLinks = links?.length ? links : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const shouldUseScrolledStyle =
     isJourneyPage || isReportPage ? true : transparentAtTop === false ? true : scrolled;
@@ -123,7 +112,7 @@ export function HeaderZapfarm({
       {isJourneyPage && !useMinimalReportHeader && (
         <div className="border-b border-emerald-100/90 bg-white/92 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.08em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2 sm:text-[10px] sm:uppercase sm:tracking-[0.14em]">
           <span className="sm:hidden">Avaliacao medica, privacidade e suporte oficial</span>
-          <span className="hidden sm:inline">Avaliacao medica, privacidade e suporte oficial</span>
+          <span className="hidden sm:inline">Avaliacao medica individual, privacidade e suporte oficial no mesmo fluxo</span>
         </div>
       )}
 
@@ -144,7 +133,7 @@ export function HeaderZapfarm({
                 </span>
                 {isEmagrecimentoFlow && (
                   <span className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}>
-                    Programa de emagrecimento
+                    Emagrecimento com avaliacao medica
                   </span>
                 )}
                 {!isEmagrecimentoFlow && brandSubtitle && (
@@ -203,10 +192,10 @@ export function HeaderZapfarm({
 
           {isJourneyPage && !useMinimalReportHeader ? (
             <a
-              href={isLandingPage ? '/emagrecimento#tratamentos' : '/#planos'}
+              href="/#planos"
               className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
             >
-              {isLandingPage ? 'Tratamentos' : 'Planos'}
+              Planos
             </a>
           ) : (
             <a

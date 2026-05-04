@@ -15,7 +15,9 @@ export function EmagrecimentoStickyCta() {
       const stopSection = stopSections.at(-1);
       const heroBottom = heroSection ? heroSection.offsetTop + heroSection.offsetHeight : 760;
       const stopTop = stopSection ? stopSection.offsetTop : Number.POSITIVE_INFINITY;
-      const scrolledPastHero = window.scrollY > Math.max(heroBottom - window.innerHeight + 120, 460);
+      const mobileRevealOffset = window.innerWidth < 768 ? 260 : -120;
+      const revealThreshold = Math.max(heroBottom - window.innerHeight - mobileRevealOffset, 460);
+      const scrolledPastHero = window.scrollY > revealThreshold;
       const shouldStayVisible = window.scrollY < stopTop - 140;
 
       setIsVisible(scrolledPastHero && shouldStayVisible);

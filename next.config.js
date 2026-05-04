@@ -1,8 +1,119 @@
+const fs = require('fs');
+const path = require('path');
+const getRouteFromEntrypoint = require('next/dist/server/get-route-from-entrypoint').default;
+const {
+  CLIENT_STATIC_FILES_RUNTIME_MAIN,
+  SYSTEM_ENTRYPOINTS,
+} = require('next/dist/shared/lib/constants');
+
 const DEFAULT_PUBLIC_SUPABASE_URL = 'https://ksmrownmfwcywhxtpshq.supabase.co';
 const DEFAULT_PUBLIC_SUPABASE_PUBLISHABLE_KEY =
   'sb_publishable_zsyeTlTXL4jzYVpz5RyiKQ_xQdOGyQQ';
 const shouldUseManagedSupabaseFallback =
   process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL_ENV);
+
+function walkEmittedFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkEmittedFiles(fullPath));
+      continue;
+    }
+    if (entry.isFile()) files.push(fullPath);
+  }
+  return files;
+}
+
+function routeFromEmittedPage(relativePath) {
+  if (!relativePath.endsWith('.js')) return null;
+  if (relativePath.endsWith('.nft.json')) return null;
+
+  const normalized = relativePath.split(path.sep).join('/');
+  const withoutExt = normalized.slice(0, -'.js'.length);
+
+  if (
+    withoutExt.startsWith('chunks/') ||
+    withoutExt.startsWith('vendor-chunks/') ||
+    withoutExt.startsWith('static/') ||
+    withoutExt.startsWith('webpack')
+  ) {
+    return null;
+  }
+
+  if (withoutExt === 'index') return '/';
+  if (withoutExt.endsWith('/index')) return `/${withoutExt.slice(0, -'/index'.length)}`;
+  return `/${withoutExt}`;
+}
+
+class EnsurePagesManifestPlugin {
+  apply(compiler) {
+    if (compiler.name !== 'server') return;
+
+    compiler.hooks.afterEmit.tap('EnsurePagesManifestPlugin', () => {
+      const pagesDir = path.join(compiler.outputPath, 'pages');
+      const manifestPath = path.join(compiler.outputPath, 'pages-manifest.json');
+
+      if (!fs.existsSync(pagesDir)) return;
+
+      const manifest = {};
+      for (const filePath of walkEmittedFiles(pagesDir)) {
+        const relativePath = path.relative(pagesDir, filePath);
+        const route = routeFromEmittedPage(relativePath);
+        if (!route) continue;
+
+        manifest[route] = `pages/${relativePath.split(path.sep).join('/')}`;
+      }
+
+      if (Object.keys(manifest).length > 0) {
+        fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+      }
+    });
+  }
+}
+
+function getEntrypointFiles(entrypoint) {
+  return (entrypoint?.getFiles().filter((file) => /(?<!\.hot-update)\.(js|css)($|\?)/.test(file)) ?? []).map((file) =>
+    file.replace(/\\/g, '/'),
+  );
+}
+
+class EnsureBuildManifestPlugin {
+  apply(compiler) {
+    compiler.hooks.afterEmit.tap('EnsureBuildManifestPlugin', (compilation) => {
+      const entrypoints = compilation.entrypoints;
+      const mainFiles = new Set(getEntrypointFiles(entrypoints.get(CLIENT_STATIC_FILES_RUNTIME_MAIN)));
+      const buildManifestPath = path.join(compiler.outputPath, 'build-manifest.json');
+      const assetMap = {
+        polyfillFiles: [],
+        devFiles: [],
+        ampDevFiles: [],
+        lowPriorityFiles: [],
+        rootMainFiles: [],
+        rootMainFilesTree: {},
+        pages: {
+          '/_app': [...mainFiles],
+        },
+        ampFirstPages: [],
+      };
+
+      for (const entrypoint of entrypoints.values()) {
+        if (SYSTEM_ENTRYPOINTS.has(entrypoint.name)) continue;
+
+        const pagePath = getRouteFromEntrypoint(entrypoint.name);
+        if (!pagePath) continue;
+
+        assetMap.pages[pagePath] = [
+          ...new Set([...mainFiles, ...getEntrypointFiles(entrypoint)]),
+        ];
+      }
+
+      fs.writeFileSync(buildManifestPath, `${JSON.stringify(assetMap, null, 2)}\n`, 'utf8');
+    });
+  }
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -113,6 +224,10 @@ const nextConfig = {
   
   // Otimizações de bundle
   webpack: (config, { isServer }) => {
+    if (process.env.NEXT_DISABLE_WEBPACK_FS_CACHE === '1') {
+      config.cache = false;
+    }
+
     config.ignoreWarnings = [
       ...(config.ignoreWarnings || []),
       (warning) =>
@@ -130,7 +245,16 @@ const nextConfig = {
         net: false,
         tls: false,
       };
+
+      config.plugins = config.plugins || [];
+      config.plugins.push(new EnsureBuildManifestPlugin());
     }
+
+    if (isServer) {
+      config.plugins = config.plugins || [];
+      config.plugins.push(new EnsurePagesManifestPlugin());
+    }
+
     return config;
   },
 };

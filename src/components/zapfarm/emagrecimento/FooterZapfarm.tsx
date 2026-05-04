@@ -1,30 +1,17 @@
-import { useRouter } from 'next/router';
-
 export function FooterZapfarm() {
-  const router = useRouter();
   const whatsapp =
     process.env.NEXT_PUBLIC_CONTACT_WHATSAPP ||
     process.env.NEXT_PUBLIC_WHATSAPP_CTA ||
     '554797789479';
   const whatsappDisplay = whatsapp.replace(/^55/, '+55 ').replace(/(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
-  const asPath = router.asPath?.split('?')[0] || '';
-  const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
-  const lpBasePath = isLandingPage ? '/emagrecimento' : '';
-  const links = isLandingPage
-    ? [
-        { label: 'Programa', href: `${lpBasePath}#programa` },
-        { label: 'Tratamentos', href: `${lpBasePath}#tratamentos` },
-        { label: 'Resultados', href: `${lpBasePath}#depoimentos` },
-        { label: 'FAQ', href: `${lpBasePath}#faq` },
-      ]
-    : [
-        { label: 'Programa', href: '/#programa' },
-        { label: 'Como funciona', href: '/#como-funciona' },
-        { label: 'Planos', href: '/#planos' },
-        { label: 'Depoimentos', href: '/#depoimentos' },
-        { label: 'FAQ', href: '/#faq' },
-      ];
+  const links = [
+    { label: 'Programa', href: '/#programa' },
+    { label: 'Como funciona', href: '/#como-funciona' },
+    { label: 'Planos', href: '/#planos' },
+    { label: 'Depoimentos', href: '/#depoimentos' },
+    { label: 'FAQ', href: '/#faq' },
+  ];
 
   return (
     <footer className="bg-slate-950 text-white py-8 sm:py-10 md:py-12" data-home-section="footer">
@@ -36,7 +23,7 @@ export function FooterZapfarm() {
             </h3>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">Me amo. Me cuido!</p>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Programa de emagrecimento com avaliação médica, acompanhamento contínuo e suporte oficial pelo WhatsApp.
+              Triagem online, avaliação médica quando indicada e acompanhamento contínuo com suporte oficial da Me Joy.
             </p>
           </div>
           <div>

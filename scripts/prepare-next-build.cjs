@@ -6,8 +6,10 @@ const distDirName = process.env.NEXT_DIST_DIR || '.next';
 const distDir = path.join(baseDir, distDirName);
 const exportDir = path.join(distDir, 'export');
 const serverPagesDir = path.join(distDir, 'server', 'pages');
+const pagesManifestPath = path.join(distDir, 'server', 'pages-manifest.json');
 const localizedExportDir = path.join(exportDir, 'pt-BR');
 const localizedServerDir = path.join(serverPagesDir, 'pt-BR');
+const sourcePagesDir = path.join(baseDir, 'src', 'pages');
 
 const fallbackPages = [
   {
@@ -32,6 +34,72 @@ function ensureFile(filePath, html) {
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, html, 'utf8');
   }
+}
+
+function walkFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(fullPath));
+      continue;
+    }
+    if (!entry.isFile()) continue;
+    files.push(fullPath);
+  }
+
+  return files;
+}
+
+function isPageSourceFile(filePath) {
+  if (!/\.(tsx?|jsx?)$/.test(filePath)) return false;
+  if (/\.d\.ts$/.test(filePath)) return false;
+
+  const relative = path.relative(sourcePagesDir, filePath).split(path.sep).join('/');
+  const basename = path.basename(relative, path.extname(relative));
+
+  if (basename && /^[A-Z]/.test(basename)) return false;
+  return true;
+}
+
+function normalizeArtifact(relativeNoExt) {
+  if (relativeNoExt === 'index') return 'pages/index.js';
+  if (relativeNoExt.endsWith('/index')) {
+    return `pages/${relativeNoExt.slice(0, -'/index'.length)}.js`;
+  }
+  return `pages/${relativeNoExt}.js`;
+}
+
+function normalizeRoute(relativeNoExt) {
+  if (relativeNoExt === 'index') return '/';
+  if (relativeNoExt.endsWith('/index')) {
+    return `/${relativeNoExt.slice(0, -'/index'.length)}`;
+  }
+  return `/${relativeNoExt}`;
+}
+
+function buildPagesManifestSkeleton() {
+  const manifest = {};
+
+  for (const filePath of walkFiles(sourcePagesDir)) {
+    if (!isPageSourceFile(filePath)) continue;
+
+    const relativeNoExt = path
+      .relative(sourcePagesDir, filePath)
+      .replace(/\.(tsx?|jsx?)$/, '')
+      .split(path.sep)
+      .join('/');
+
+    const route = normalizeRoute(relativeNoExt);
+    const artifact = normalizeArtifact(relativeNoExt);
+
+    manifest[route] = artifact;
+  }
+
+  return manifest;
 }
 
 function renderHtml(page) {
@@ -111,3 +179,9 @@ ensureDir(localizedServerDir);
 for (const page of fallbackPages) {
   ensureFile(path.join(localizedExportDir, page.filename), renderHtml(page));
 }
+
+fs.writeFileSync(
+  pagesManifestPath,
+  `${JSON.stringify(buildPagesManifestSkeleton(), null, 2)}\n`,
+  'utf8',
+);
