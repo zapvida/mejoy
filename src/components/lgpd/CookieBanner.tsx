@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { X, Cookie, Settings, Check } from 'lucide-react';
+import { useRouter } from 'next/router';
 import { RefinedButton } from '@/components/ui/RefinedButton';
 import Cookies from 'js-cookie';
 
@@ -16,6 +17,7 @@ const COOKIE_PREFERENCES_KEY = 'zapfarm_cookie_preferences';
 const COOKIE_VERSION = '1.0.0';
 
 export function CookieBanner() {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
@@ -24,6 +26,16 @@ export function CookieBanner() {
     marketing: false,
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const currentPath = useMemo(() => (router.asPath || '').split('?')[0].toLowerCase(), [router.asPath]);
+  const isSensitiveFlow = useMemo(() => {
+    return (
+      currentPath.includes('/triagem/') ||
+      currentPath.endsWith('/triagem') ||
+      currentPath.includes('/emagrecimento/checkout') ||
+      currentPath.includes('/emagrecimento/relatorio')
+    );
+  }, [currentPath]);
 
   useEffect(() => {
     // Verificar se já existe consentimento
@@ -47,6 +59,28 @@ export function CookieBanner() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!isVisible || !isSensitiveFlow || window.innerWidth >= 768) return;
+
+    const previousBodyPaddingBottom = document.body.style.paddingBottom;
+    const previousScrollPaddingBottom = document.documentElement.style.scrollPaddingBottom;
+    const previousOverscrollBehavior = document.documentElement.style.overscrollBehaviorY;
+    const offset = showSettings ? '23rem' : '15rem';
+
+    // On mobile triage/checkout/report flows, reserve space for the floating banner
+    // so it never sits on top of the primary CTA or input fields.
+    document.body.style.paddingBottom = offset;
+    document.documentElement.style.scrollPaddingBottom = offset;
+    document.documentElement.style.overscrollBehaviorY = 'contain';
+
+    return () => {
+      document.body.style.paddingBottom = previousBodyPaddingBottom;
+      document.documentElement.style.scrollPaddingBottom = previousScrollPaddingBottom;
+      document.documentElement.style.overscrollBehaviorY = previousOverscrollBehavior;
+    };
+  }, [isSensitiveFlow, isVisible, showSettings]);
 
   const applyCookiePreferences = (prefs: CookiePreferences) => {
     // Cookies essenciais sempre ativos
