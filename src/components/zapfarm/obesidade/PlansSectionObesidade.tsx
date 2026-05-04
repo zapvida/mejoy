@@ -19,30 +19,30 @@ export function PlansSectionObesidade() {
 
   return (
     <section
-      id="planos"
+      id="tratamentos"
       data-home-section="plans"
       data-testid="emagrecimento-plans"
       className="scroll-mt-24 bg-[#f8fcf9] py-14 sm:py-16 md:py-20"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <span id="tratamentos" className="block h-0 scroll-mt-24" aria-hidden />
           <div className="mb-12 text-center sm:mb-16">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Trilhas avaliadas</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicacoes</p>
             <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl">
-              Entenda as opcoes antes de decidir com o medico.
+              Compare potencia, previsibilidade e seguranca sem adivinhar.
             </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Potencia, previsibilidade, via de uso e seguranca clinica mudam bastante de uma trilha para outra.
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              O nome do remedio nao resolve a decisao sozinho. O que importa e entender resposta esperada, tolerancia e
+              contexto clinico.
             </p>
-            <p className="mx-auto mt-4 max-w-3xl text-xs leading-relaxed text-slate-500 sm:text-sm">
-              As faixas abaixo resumem medias de estudos clinicos e nao substituem avaliacao medica individual.
+            <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-slate-500 sm:text-base">
+              Para ficar palpavel: 10% do peso inicial equivale a cerca de 10 kg para alguem com 100 kg.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 sm:gap-8">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
             {TREATMENT_TRACKS.map((track) => (
-              <div
+              <article
                 key={track.id}
                 className="relative flex h-full flex-col overflow-hidden rounded-[30px] border border-emerald-100 bg-white p-5 shadow-[0_20px_45px_rgba(15,23,42,0.06)] transition-transform duration-300 hover:-translate-y-1 sm:p-6"
               >
@@ -77,32 +77,25 @@ export function PlansSectionObesidade() {
                   </div>
 
                   <h3 className="mt-4 text-2xl font-bold text-slate-950">{track.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">{track.subtitle}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{track.subtitle}</p>
 
-                  <div className="mt-5 grid gap-3 rounded-[24px] border border-zinc-100 bg-[#fbfdfc] p-4">
+                  <div className="mt-5 grid grid-cols-1 gap-3 rounded-[24px] border border-zinc-100 bg-[#fbfdfc] p-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
-                        Perda media
-                      </p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Perda media</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.efficacy}</p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
-                        Em kg
-                      </p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Em kg</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.estimate}</p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
-                        Seguranca clinica
-                      </p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Seguranca clinica</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.safety}</p>
                     </div>
-                  </div>
-
-                  <div className="mt-4 rounded-[22px] border border-emerald-100 bg-emerald-50/60 px-4 py-3">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Melhor quando</p>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.bestFor}</p>
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Quando tende a fazer sentido</p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.bestFor}</p>
+                    </div>
                   </div>
 
                   <a
@@ -110,19 +103,17 @@ export function PlansSectionObesidade() {
                     onClick={handleCtaClick}
                     className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 sm:text-base"
                   >
-                    Ver se essa trilha faz sentido
+                    Fazer minha triagem
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
           <div className="mx-auto mt-10 max-w-3xl text-center">
-            <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">
-              {getLpPriceHook()}
-            </p>
+            <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">{getLpPriceHook()}</p>
             <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
-              Indicacao de medicacao, dose, duracao e frequencia continuam dependendo de avaliacao medica.
+              A comparacao aqui e honesta para deixar a consulta melhor informada, nao para prometer prescricao.
             </p>
           </div>
         </div>
