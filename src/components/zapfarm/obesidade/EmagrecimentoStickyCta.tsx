@@ -44,7 +44,7 @@ export function EmagrecimentoStickyCta() {
         data-testid="home-sticky-cta-link"
         className="block w-full rounded-full bg-gradient-to-r from-emerald-700 to-emerald-800 px-5 py-3 text-center text-[14px] font-bold text-white shadow-[0_18px_45px_rgba(5,150,105,0.32)] transition-transform duration-200 hover:scale-[1.01]"
       >
-        Comecar minha triagem
+        Fazer minha triagem
       </a>
     </div>
   );
