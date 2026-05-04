@@ -133,9 +133,9 @@ export function FaqSectionObesidade() {
             <a
               href="/triagem/emagrecimento"
               onClick={handleCtaClick}
-              className="inline-flex items-center justify-center h-14 sm:h-16 px-8 sm:px-10 md:px-12 text-base sm:text-lg md:text-xl font-bold text-white rounded-full shadow-xl transition-all duration-200 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900 hover:shadow-2xl hover:scale-105 active:scale-100"
+              className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-8 text-base font-bold text-white shadow-xl transition-all duration-200 hover:scale-105 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900 hover:shadow-2xl active:scale-100 sm:h-16 sm:px-10 sm:text-lg"
             >
-              Iniciar minha triagem de elegibilidade
+              Fazer minha triagem
             </a>
           </div>
         </div>
