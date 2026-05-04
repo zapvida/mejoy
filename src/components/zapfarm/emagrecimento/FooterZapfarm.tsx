@@ -10,12 +10,13 @@ export function FooterZapfarm() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
   const asPath = router.asPath?.split('?')[0] || '';
   const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
+  const lpBasePath = isLandingPage ? '/emagrecimento' : '';
   const links = isLandingPage
     ? [
-        { label: 'Programa', href: '/emagrecimento#programa' },
-        { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
-        { label: 'Resultados', href: '/emagrecimento#depoimentos' },
-        { label: 'FAQ', href: '/emagrecimento#faq' },
+        { label: 'Programa', href: `${lpBasePath}#programa` },
+        { label: 'Tratamentos', href: `${lpBasePath}#tratamentos` },
+        { label: 'Resultados', href: `${lpBasePath}#depoimentos` },
+        { label: 'FAQ', href: `${lpBasePath}#faq` },
       ]
     : [
         { label: 'Programa', href: '/#programa' },
