@@ -5,6 +5,9 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (..._args: any[]) => void;
+    analytics?: {
+      track?: (event: string, payload?: Record<string, any>) => void;
+    };
   }
 }
 
