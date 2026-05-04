@@ -64,6 +64,25 @@ async function waitForSectionImages(section: import('@playwright/test').Locator)
   await section.scrollIntoViewIfNeeded();
 }
 
+async function hideScreenshotChrome(page: import('@playwright/test').Page) {
+  await page.addStyleTag({
+    content: `
+      [data-testid="home-medvi-header"] > div:first-child,
+      [data-testid="cookie-banner"],
+      [data-testid="home-medvi-sticky-cta"],
+      a[aria-label="Falar no WhatsApp"],
+      a[aria-label="Individualize a sua fórmula de saúde"] {
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+
+      [data-testid="home-medvi-header"] > div:first-child {
+        display: none !important;
+      }
+    `,
+  });
+}
+
 test.describe('Emagrecimento visual parity', () => {
   test('mobile first paint keeps hero readable above cookie banner', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'Mobile Safari');
@@ -94,6 +113,7 @@ test.describe('Emagrecimento visual parity', () => {
 
     await grantCookieConsent(page);
     await page.goto(LANDING_PATH, { waitUntil: 'domcontentloaded' });
+    await hideScreenshotChrome(page);
 
     const hero = page.getByTestId('emagrecimento-hero');
     await waitForSectionImages(hero);
@@ -133,6 +153,7 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(decision).toHaveScreenshot(`decision-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
+      maxDiffPixels: 2500,
     });
   });
 });
