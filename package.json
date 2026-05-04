@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next dev",
-    "prebuild": "mkdir -p .next/server/pages .next/export",
+    "prebuild": "node scripts/prepare-next-build.cjs",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "postbuild": "npx next-sitemap || true",
     "start": "next start -p ${PORT:-3000}",

@@ -87,7 +87,7 @@ export function AppFeaturesSectionObesidade() {
                   Ver minha elegibilidade
                 </a>
                 <a
-                  href="/emagrecimento#como-funciona"
+                  href="/#como-funciona"
                   onClick={handleCtaClick}
                   className={cn(
                     'inline-flex items-center justify-center gap-2',

@@ -168,7 +168,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
                   </Link>
                 </li>
                 <li>
-                  <Link href="/emagrecimento#faq" className="hover:text-white transition-colors">
+                  <Link href="/#faq" className="hover:text-white transition-colors">
                     FAQ
                   </Link>
                 </li>

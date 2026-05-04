@@ -8,6 +8,7 @@ const shouldUseManagedSupabaseFallback =
 const nextConfig = {
   // output: 'standalone' removido - causa ENOENT no build Next.js 15 (rename export/*.html)
   // Vercel não exige standalone; deploy funciona normalmente sem ele.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
 
   // Variáveis de ambiente para PDF
   env: {

@@ -45,7 +45,7 @@ test.describe('Homepage Medvi Journey', () => {
     const desktopNav = page.locator('header nav');
     await expect(desktopNav).toBeVisible();
 
-    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/');
+    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/#programa');
     await expect(desktopNav.getByRole('link', { name: 'Como funciona' })).toHaveAttribute('href', '/#como-funciona');
     await expect(desktopNav.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/#planos');
     await expect(desktopNav.getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');

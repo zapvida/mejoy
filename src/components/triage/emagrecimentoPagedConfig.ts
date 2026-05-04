@@ -28,42 +28,35 @@ export interface EmagrecimentoPageConfig {
   items: EmagrecimentoPageItem[];
 }
 
-export const EMAGRECIMENTO_TOTAL_SECTIONS = 6;
+export const EMAGRECIMENTO_TOTAL_SECTIONS = 3;
 
 export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
   {
-    id: 'perfil',
+    id: 'etapa-1-perfil',
     section: 1,
-    title: 'Qual é sua altura, peso e objetivo?',
+    title: 'Vamos começar pelo seu perfil clínico.',
     description:
-      'Esses dados ajudam a avaliar elegibilidade e preparar uma recomendação clínica inicial.',
+      'Precisamos dos dados básicos para calcular elegibilidade e personalizar sua leitura inicial.',
     ctaLabel: 'Próximo',
     items: [
-      { kind: 'field', key: 'aceita_termos' },
-      { kind: 'field', key: 'altura' },
-      { kind: 'field', key: 'peso' },
-      { kind: 'field', key: 'peso_meta' },
-      { kind: 'field', key: 'sexo' },
-      { kind: 'field', key: 'gestacao' },
-      { kind: 'field', key: 'data_nascimento' },
+      { kind: 'field', key: 'aceita_termos', required: true, resumeRequired: true },
+      { kind: 'field', key: 'altura', required: true, resumeRequired: true },
+      { kind: 'field', key: 'peso', required: true, resumeRequired: true },
+      { kind: 'field', key: 'peso_meta', required: true, resumeRequired: true },
+      { kind: 'field', key: 'sexo', required: true, resumeRequired: true },
+      { kind: 'field', key: 'gestacao', required: true, resumeRequired: true },
+      { kind: 'field', key: 'data_nascimento', required: true, resumeRequired: true },
     ],
   },
   {
-    id: 'contraindicacoes',
+    id: 'etapa-2-clinico',
     section: 2,
-    title: 'Existe alguma contraindicação importante para a linha GLP-1?',
+    title: 'Agora precisamos do seu histórico de saúde.',
     description:
-      'Marque tudo o que se aplica. Se nada se aplicar, selecione a opção correspondente.',
-    ctaLabel: 'Próximo',
-    items: [{ kind: 'field', key: 'contraindicacoes_glp1' }],
-  },
-  {
-    id: 'comorbidades-1',
-    section: 3,
-    title: 'Quais condições de saúde se aplicam ao seu caso?',
-    description: 'Parte 1 de 2. Marque somente o que realmente faz parte do seu histórico.',
+      'Essas respostas ajudam a reduzir risco, evitar contraindicações e poupar tempo na avaliação médica.',
     ctaLabel: 'Próximo',
     items: [
+      { kind: 'field', key: 'contraindicacoes_glp1', required: true, resumeRequired: true },
       {
         kind: 'multiselectSlice',
         key: 'comorbidades',
@@ -77,78 +70,49 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
         ],
         resumeRequired: true,
       },
-    ],
-  },
-  {
-    id: 'comorbidades-2',
-    section: 3,
-    title: 'Quais condições de saúde se aplicam ao seu caso?',
-    description:
-      'Parte 2 de 2. Se nenhuma das condições listadas se aplicar ao seu caso, escolha a opção correspondente.',
-    ctaLabel: 'Próximo',
-    items: [
       {
         kind: 'multiselectSlice',
         key: 'comorbidades',
         optionValues: ['depressao', 'refluxo', 'asma', 'pcos', 'hepatite_esteatose'],
         includeNoneOption: true,
         required: true,
+        resumeRequired: true,
+      },
+      { kind: 'field', key: 'cirurgia_bariatrica_previa', required: true, resumeRequired: true },
+      { kind: 'field', key: 'uso_opioides_3meses', required: true, resumeRequired: true },
+      { kind: 'field', key: 'medicamentos_prescritos_atual', required: true, resumeRequired: true },
+      {
+        kind: 'field',
+        key: 'uso_medicacao_emagrecimento_recente',
+        required: true,
+        resumeRequired: true,
+      },
+      { kind: 'field', key: 'efeitos_colaterais_previos', required: true, resumeRequired: true },
+      { kind: 'field', key: 'pressao_arterial_faixa', required: true, resumeRequired: true },
+      {
+        kind: 'field',
+        key: 'frequencia_cardiaca_repouso',
+        required: true,
+        resumeRequired: true,
       },
     ],
   },
   {
-    id: 'historico-clinico',
-    section: 4,
-    title: 'Conte seu histórico clínico e terapêutico.',
+    id: 'etapa-3-objetivo-e-contato',
+    section: 3,
+    title: 'Falta só entender seu objetivo e onde enviar o resultado.',
     description:
-      'Essa etapa reduz tentativa e erro na avaliação médica e evita repetir caminhos que já não funcionaram.',
-    ctaLabel: 'Próximo',
-    items: [
-      { kind: 'field', key: 'cirurgia_bariatrica_previa' },
-      { kind: 'field', key: 'uso_opioides_3meses' },
-      { kind: 'field', key: 'medicamentos_prescritos_atual' },
-      { kind: 'field', key: 'uso_medicacao_emagrecimento_recente' },
-      { kind: 'field', key: 'efeitos_colaterais_previos' },
-    ],
-  },
-  {
-    id: 'contexto-cardiometabolico',
-    section: 4,
-    title: 'Como está seu contexto cardiometabólico hoje?',
-    description:
-      'São sinais simples, mas úteis para posicionar risco e orientar o próximo passo com mais precisão.',
-    ctaLabel: 'Próximo',
-    items: [
-      { kind: 'field', key: 'pressao_arterial_faixa' },
-      { kind: 'field', key: 'frequencia_cardiaca_repouso' },
-    ],
-  },
-  {
-    id: 'objetivos',
-    section: 5,
-    title: 'Qual é seu objetivo principal com o programa?',
-    description:
-      'Queremos entender o impacto do peso na sua rotina e como você prefere começar a estratégia.',
-    ctaLabel: 'Próximo',
-    items: [
-      { kind: 'field', key: 'impacto_vida' },
-      { kind: 'field', key: 'objetivo_principal' },
-      { kind: 'field', key: 'preferencia_principio_ativo' },
-    ],
-  },
-  {
-    id: 'contato',
-    section: 6,
-    title: 'Para quem vamos enviar seu resultado?',
-    description:
-      'Seu resultado inicial e os próximos passos seguem pelo canal oficial da Mejoy.',
-    note: 'Prescrição somente quando indicada após avaliação médica.',
+      'Com isso, a Me Joy consegue montar sua leitura inicial e orientar o próximo passo pelo canal oficial.',
+    note: 'Prescrição e medicação somente quando indicadas após avaliação médica.',
     ctaLabel: 'Gerar meu resultado inicial',
     submit: true,
     items: [
-      { kind: 'field', key: 'primeiro_nome' },
-      { kind: 'field', key: 'whatsapp' },
-      { kind: 'field', key: 'consentimento_whatsapp' },
+      { kind: 'field', key: 'impacto_vida', required: true, resumeRequired: true },
+      { kind: 'field', key: 'objetivo_principal', required: true, resumeRequired: true },
+      { kind: 'field', key: 'preferencia_principio_ativo', required: true, resumeRequired: true },
+      { kind: 'field', key: 'primeiro_nome', required: true, resumeRequired: true },
+      { kind: 'field', key: 'whatsapp', required: true, resumeRequired: true },
+      { kind: 'field', key: 'consentimento_whatsapp', required: true, resumeRequired: true },
     ],
   },
 ];
