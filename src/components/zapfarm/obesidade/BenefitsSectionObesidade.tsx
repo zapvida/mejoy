@@ -7,18 +7,18 @@ import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 const proofCards = [
   {
     icon: ShieldCheckIcon,
-    title: 'Avaliação médica individual',
-    text: 'Se houver indicação, a decisão acontece em consulta, com critério clínico e sem prescrição automática.',
+    title: 'Avaliacao medica individual',
+    text: 'Prescricao nao e automatica. A decisao acontece em consulta, com criterio clinico e contexto.',
   },
   {
     icon: DevicePhoneMobileIcon,
     title: 'Fluxo digital enxuto',
-    text: 'Triagem, próximos passos e suporte ficam no mesmo caminho, com menos fricção para avançar.',
+    text: 'Triagem, proximos passos e suporte ficam no mesmo caminho, com menos friccao para avancar.',
   },
   {
     icon: UserGroupIcon,
     title: 'Suporte oficial',
-    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da MeJoy.',
+    text: 'Voce entende o que acontece depois da triagem e segue pelos canais oficiais da Me Joy.',
   },
 ] as const;
 
@@ -48,13 +48,13 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Simples na leitura, criterioso na decisão.
+              Clareza primeiro. A decisao clinica vem depois.
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              O objetivo aqui é reduzir ruído: você entende elegibilidade, fluxo e suporte sem transformar a LP em catálogo genérico.
+            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+              O objetivo aqui nao e parecer catalogo. E mostrar um caminho serio, claro e oficial para decidir melhor.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
-              {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
+              {['Medicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Proximos passos claros'].map((item) => (
                 <span
                   key={item}
                   className="rounded-full border border-emerald-100 bg-white px-4 py-2 shadow-sm"
@@ -65,28 +65,28 @@ export function BenefitsSectionObesidade() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-9 grid gap-5 md:grid-cols-3">
             {proofCards.map(({ icon: Icon, title, text }) => (
               <div
                 key={title}
-                className="rounded-[28px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_16px_36px_rgba(15,23,42,0.05)]"
+                className="rounded-[28px] border border-emerald-100 bg-[#fcfffd] p-5 shadow-[0_16px_36px_rgba(15,23,42,0.05)] sm:p-6"
               >
                 <div className="inline-flex rounded-2xl bg-emerald-100 p-3 text-emerald-800 ring-1 ring-emerald-200">
                   <Icon className="h-6 w-6" aria-hidden />
                 </div>
-                <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-slate-600">{text}</p>
+                <h3 className="mt-4 text-lg font-bold text-slate-950 sm:text-xl">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{text}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 text-center">
+          <div className="mt-9 text-center">
             <a
               href="/triagem/emagrecimento"
               onClick={handleCtaClick}
               className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-bold text-emerald-800 shadow-sm ring-1 ring-emerald-200 transition-all hover:-translate-y-0.5 hover:bg-emerald-50"
             >
-              Ver minha elegibilidade
+              Fazer minha triagem
             </a>
           </div>
         </div>
