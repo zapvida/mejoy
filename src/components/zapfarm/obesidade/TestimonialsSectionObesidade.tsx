@@ -35,9 +35,9 @@ export function TestimonialsSectionObesidade() {
               id="testimonials-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Resultado sem contexto vira promessa vazia. Aqui, a história é outra.
+              Resultado sem contexto vira promessa vazia.
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
               Relatos de pacientes acompanhados no programa. Identidade preservada por privacidade.
             </p>
             <div className="mx-auto mt-5 w-fit rounded-full border border-amber-100 bg-amber-50 px-4 py-2 shadow-sm">
@@ -50,7 +50,7 @@ export function TestimonialsSectionObesidade() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-[1.15fr,0.85fr]">
+          <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
             <div className="rounded-[32px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_24px_55px_rgba(15,23,42,0.05)] sm:p-8">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">Depoimento em foco</p>
               <blockquote className="mt-6 text-2xl font-semibold leading-tight tracking-[-0.03em] text-slate-950 sm:text-3xl">
@@ -60,7 +60,7 @@ export function TestimonialsSectionObesidade() {
               <p className="mt-1 text-sm text-slate-500">{testimonials[0].role}</p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {testimonials.map((testimonial) => (
+                {testimonials.slice(1).map((testimonial) => (
                   <div key={testimonial.author} className="rounded-2xl border border-emerald-100 bg-white p-4">
                     <p className="text-sm leading-relaxed text-slate-700">&ldquo;{testimonial.quote}&rdquo;</p>
                     <p className="mt-4 text-sm font-semibold text-slate-900">{testimonial.author}</p>
