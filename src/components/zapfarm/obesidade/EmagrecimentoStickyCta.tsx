@@ -10,11 +10,14 @@ export function EmagrecimentoStickyCta() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const resultsSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-results"]');
-      const resultsTop = resultsSection ? resultsSection.offsetTop : Number.POSITIVE_INFINITY;
-      const shouldStayVisible = window.scrollY < resultsTop - 160;
+      const heroSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-hero"]');
+      const stopSection = document.querySelector<HTMLElement>('[data-sticky-cta-stop]');
+      const heroBottom = heroSection ? heroSection.offsetTop + heroSection.offsetHeight : 760;
+      const stopTop = stopSection ? stopSection.offsetTop : Number.POSITIVE_INFINITY;
+      const scrolledPastHero = window.scrollY > Math.max(heroBottom - window.innerHeight + 120, 460);
+      const shouldStayVisible = window.scrollY < stopTop - 140;
 
-      setIsVisible(window.scrollY > 880 && shouldStayVisible);
+      setIsVisible(scrolledPastHero && shouldStayVisible);
     };
 
     handleScroll();
@@ -41,7 +44,7 @@ export function EmagrecimentoStickyCta() {
         data-testid="home-sticky-cta-link"
         className="block w-full rounded-full bg-gradient-to-r from-emerald-700 to-emerald-800 px-5 py-3 text-center text-[14px] font-bold text-white shadow-[0_18px_45px_rgba(5,150,105,0.32)] transition-transform duration-200 hover:scale-[1.01]"
       >
-        Fazer minha triagem agora
+        Comecar minha triagem
       </a>
     </div>
   );

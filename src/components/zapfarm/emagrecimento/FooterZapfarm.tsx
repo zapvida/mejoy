@@ -1,10 +1,29 @@
+import { useRouter } from 'next/router';
+
 export function FooterZapfarm() {
+  const router = useRouter();
   const whatsapp =
     process.env.NEXT_PUBLIC_CONTACT_WHATSAPP ||
     process.env.NEXT_PUBLIC_WHATSAPP_CTA ||
     '554797789479';
   const whatsappDisplay = whatsapp.replace(/^55/, '+55 ').replace(/(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
+  const asPath = router.asPath?.split('?')[0] || '';
+  const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
+  const links = isLandingPage
+    ? [
+        { label: 'Programa', href: '/emagrecimento#programa' },
+        { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
+        { label: 'Resultados', href: '/emagrecimento#depoimentos' },
+        { label: 'FAQ', href: '/emagrecimento#faq' },
+      ]
+    : [
+        { label: 'Programa', href: '/#programa' },
+        { label: 'Como funciona', href: '/#como-funciona' },
+        { label: 'Planos', href: '/#planos' },
+        { label: 'Depoimentos', href: '/#depoimentos' },
+        { label: 'FAQ', href: '/#faq' },
+      ];
 
   return (
     <footer className="bg-slate-950 text-white py-8 sm:py-10 md:py-12" data-home-section="footer">
@@ -22,11 +41,13 @@ export function FooterZapfarm() {
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-white text-sm sm:text-base">Links</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
-              <li><a href="/#programa" className="hover:text-white transition-colors">Programa</a></li>
-              <li><a href="/#como-funciona" className="hover:text-white transition-colors">Como funciona</a></li>
-              <li><a href="/#planos" className="hover:text-white transition-colors">Planos</a></li>
-              <li><a href="/#depoimentos" className="hover:text-white transition-colors">Depoimentos</a></li>
-              <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
+              {links.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="hover:text-white transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
               <li><a href="/contato" className="hover:text-white transition-colors">Contato</a></li>
               <li><a href="/dados-fiscais" className="hover:text-white transition-colors">Dados fiscais</a></li>
             </ul>
