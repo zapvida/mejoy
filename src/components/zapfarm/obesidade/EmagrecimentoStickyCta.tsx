@@ -12,9 +12,9 @@ export function EmagrecimentoStickyCta() {
     const handleScroll = () => {
       const resultsSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-results"]');
       const resultsTop = resultsSection ? resultsSection.offsetTop : Number.POSITIVE_INFINITY;
-      const shouldStayVisible = window.scrollY < resultsTop - 120;
+      const shouldStayVisible = window.scrollY < resultsTop - 160;
 
-      setIsVisible(window.scrollY > 720 && shouldStayVisible);
+      setIsVisible(window.scrollY > 880 && shouldStayVisible);
     };
 
     handleScroll();
@@ -26,7 +26,7 @@ export function EmagrecimentoStickyCta() {
 
   return (
     <div
-      className="fixed inset-x-4 bottom-3 z-40 mx-auto w-[calc(100%-2rem)] max-w-sm md:hidden"
+      className="fixed inset-x-4 bottom-3 z-40 mx-auto w-[calc(100%-2rem)] max-w-[22rem] md:hidden"
       data-testid="home-medvi-sticky-cta"
     >
       <a
@@ -39,7 +39,7 @@ export function EmagrecimentoStickyCta() {
           })
         }
         data-testid="home-sticky-cta-link"
-        className="block w-full rounded-full bg-gradient-to-r from-emerald-700 to-emerald-800 px-5 py-3.5 text-center text-[15px] font-bold text-white shadow-[0_18px_45px_rgba(5,150,105,0.32)] transition-transform duration-200 hover:scale-[1.01]"
+        className="block w-full rounded-full bg-gradient-to-r from-emerald-700 to-emerald-800 px-5 py-3 text-center text-[14px] font-bold text-white shadow-[0_18px_45px_rgba(5,150,105,0.32)] transition-transform duration-200 hover:scale-[1.01]"
       >
         Fazer minha triagem agora
       </a>

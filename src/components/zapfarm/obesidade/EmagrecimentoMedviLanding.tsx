@@ -17,9 +17,6 @@ import { EmagrecimentoLegalDisclaimerSection } from '@/components/zapfarm/obesid
 import { LandingAnalyticsProvider } from '@/contexts/LandingAnalyticsContext';
 import type { LandingPageKey } from '@/contexts/LandingAnalyticsContext';
 
-/**
- * Jornada principal MEDVi-like — usada na home `/` e em `/emagrecimento` como alias.
- */
 export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: LandingPageKey }) {
   const isEmagrecimentoLanding = page === 'emagrecimento';
 

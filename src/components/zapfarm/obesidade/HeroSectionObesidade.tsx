@@ -1,219 +1,223 @@
 'use client';
 
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import {
+  ChatBubbleLeftRightIcon,
+  ClipboardDocumentCheckIcon,
+  ShieldCheckIcon,
+} from '@heroicons/react/24/outline';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { getLpPriceHook } from '@/lib/emagrecimento/launchPricing';
 
-const COPY = {
-  default: {
-    h1: 'Comece sua jornada de bem-estar hoje',
-    sub: 'Plano personalizado com avaliação clínica e acompanhamento contínuo.',
-  },
-  emagrecimento: {
-    h1: 'Emagrecimento com avaliação médica, plano claro e acompanhamento contínuo.',
-    sub:
-      'Triagem online, avaliação médica quando indicada e acompanhamento contínuo para seguir com mais clareza, segurança e constância.',
-  },
-} as const;
-
-const HERO_BULLETS = [
-  'Triagem rápida para entender histórico, rotina e objetivos.',
-  'Conduta individual com próximos passos objetivos.',
-  'Suporte oficial no WhatsApp para manter aderência e clareza.',
-  'A decisão clínica só acontece quando o caso pede avaliação médica.',
+const proofBullets = [
+  'Triagem em poucos minutos para entender historico, rotina e objetivo.',
+  'Avaliacao medica quando indicada, com conduta e proximo passo claros.',
+  'Suporte oficial no app e no WhatsApp para manter constancia.',
 ] as const;
 
-const HERO_MOSAIC = [
-  {
-    src: '/images/emagrecimento/medvi/reviews-06.webp',
-    alt: 'Paciente sorrindo durante acompanhamento',
-    className: 'md:col-span-2 md:row-span-2 md:aspect-[0.68] aspect-[4/5]',
-  },
-  {
-    src: '/images/emagrecimento/medvi/hero-main.webp',
-    alt: 'Paciente em retrato editorial do programa',
-    className: 'md:col-span-2 md:aspect-[4/5] aspect-[4/3]',
-  },
-  {
-    src: '/images/emagrecimento/medvi/hero-secondary.webp',
-    alt: 'Paciente em acompanhamento de rotina',
-    className: 'md:col-span-2 md:aspect-[4/5] aspect-[4/3]',
-  },
-  {
-    src: '/images/emagrecimento/medvi/reviews-07.webp',
-    alt: 'Paciente sorrindo em retrato editorial',
-    className: 'md:col-span-2 md:row-span-2 md:aspect-[0.68] aspect-[4/5]',
-  },
-  {
-    src: '/images/emagrecimento/medvi/reviews-04.avif',
-    alt: 'Paciente em jornada de transformação',
-    className: 'col-span-2 md:col-span-4 md:aspect-[1.55] aspect-[16/10]',
-  },
+const quickProof = [
+  { label: 'Triagem', value: '5 min' },
+  { label: 'Canal oficial', value: 'WhatsApp' },
+  { label: 'Prescricao', value: 'Quando indicada' },
 ] as const;
 
-type HeroVariant = keyof typeof COPY;
-
-export function HeroSectionObesidade({ variant = 'default' }: { variant?: HeroVariant }) {
+export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: string }) {
   const page = useLandingPageKey();
-  const { h1, sub } = COPY[variant];
-
-  const emagrecimentoHeadline = (
-    <>
-      Emagrecimento com
-      <span className="text-emerald-700"> avaliação médica</span>,
-      <br className="sm:hidden" />
-      <span className="text-emerald-700"> plano claro</span> e suporte contínuo.
-    </>
-  );
-  const emagrecimentoSubMobile = 'Triagem rápida e orientação segura para entender o próximo passo com clareza.';
 
   const handlePrimaryCta = () => {
-    track('hero_primary_cta_click', {
+    track('cta_click', {
       page,
-      position: 'hero',
-      section: 'hero',
+      position: 'hero_primary',
+      section: 'hero_section',
+      variant,
     });
   };
-
-  if (variant !== 'emagrecimento') {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-50/60 via-white to-white pt-20 sm:pt-24">
-        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">{h1}</h1>
-            <p className="mt-6 text-lg leading-relaxed text-gray-700 sm:text-xl">{sub}</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section
       id="programa"
       data-home-section="hero"
       data-testid="home-medvi-hero"
-      className="relative overflow-hidden bg-gradient-to-b from-[#f4fbf7] via-white to-white pt-28 sm:pt-40"
+      className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(209,250,229,0.7),_rgba(255,255,255,0.96)_44%,_#ffffff_76%)] pt-28 sm:pt-32 lg:pt-36"
     >
-      <div
-        className="relative mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20"
-        data-testid="emagrecimento-hero"
-      >
-        <div className="mx-auto max-w-5xl text-center">
-          <div className="inline-flex rounded-full border border-emerald-200 bg-[#eff8f2] px-3 py-1.5 text-[10px] font-bold tracking-[0.12em] text-emerald-900 sm:px-5 sm:py-2 sm:text-xs sm:uppercase sm:tracking-[0.2em]">
-            <span className="sm:hidden">100% online com avaliação médica</span>
-            <span className="hidden sm:inline">Programa 100% online com avaliação médica</span>
-          </div>
+      <div className="absolute inset-x-0 top-0 h-[34rem] bg-[linear-gradient(180deg,rgba(4,120,87,0.05),rgba(255,255,255,0))]" />
+      <div className="absolute left-[-8rem] top-24 h-52 w-52 rounded-full bg-emerald-100/70 blur-3xl sm:h-72 sm:w-72" />
+      <div className="absolute right-[-7rem] top-16 h-56 w-56 rounded-full bg-lime-100/60 blur-3xl sm:h-72 sm:w-72" />
 
-          <div className="mt-4 sm:hidden">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-              Clareza, privacidade e acompanhamento oficial.
-            </p>
-          </div>
-
-          <div className="mt-6 hidden items-center gap-2 rounded-full bg-white/90 px-4 py-2 shadow-sm ring-1 ring-emerald-100 sm:inline-flex">
-            <Image
-              src="/images/emagrecimento/medvi/social-proof-rating.webp"
-              alt="Faixa de prova social do programa"
-              width={82}
-              height={10}
-              className="h-3 w-auto"
-            />
-            <span className="text-xs font-semibold text-slate-600 sm:text-sm">
-              <span className="sm:hidden">Clareza, privacidade e acompanhamento oficial.</span>
-              <span className="hidden sm:inline">Conduta organizada com clareza, privacidade e acompanhamento oficial.</span>
-            </span>
-          </div>
-
-          <h1 className="mt-5 px-1 text-[2.2rem] font-bold leading-[0.92] tracking-[-0.055em] text-slate-950 sm:mt-8 sm:px-2 sm:text-6xl sm:leading-[0.95] sm:tracking-[-0.05em] md:text-7xl lg:text-[5.25rem]">
-            {emagrecimentoHeadline}
-          </h1>
-
-          <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:hidden">
-            <a
-              href="/triagem/emagrecimento"
-              onClick={handlePrimaryCta}
-              className="inline-flex w-full max-w-md items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 py-3.5 text-[15px] font-bold text-white shadow-[0_24px_60px_rgba(5,150,105,0.26)] transition-all duration-300"
-            >
-              Começar minha triagem
-            </a>
-
-            <p className="w-full max-w-md rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-2.5 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm">
-              Consulte a faixa do programa após a triagem e a avaliação médica.
-            </p>
-          </div>
-
-          <p className="mx-auto mt-4 max-w-3xl px-2 text-sm leading-relaxed text-slate-600 sm:hidden">
-            {emagrecimentoSubMobile}
-          </p>
-
-          <p className="mx-auto mt-5 hidden max-w-3xl px-2 text-base leading-relaxed text-slate-600 sm:mt-6 sm:block sm:text-xl md:text-[1.45rem]">
-            {sub}
-          </p>
-
-          <ul className="mx-auto mt-5 grid max-w-4xl gap-2.5 text-left sm:mt-8 sm:gap-4 sm:grid-cols-2">
-            {HERO_BULLETS.map((item, index) => (
-              <li
-                key={item}
-                className={cn(
-                  'items-start gap-3 rounded-2xl border border-emerald-100 bg-white/88 px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.04)] sm:py-4',
-                  index > 1 ? 'hidden sm:flex' : 'flex'
-                )}
-              >
-                <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
-                  ✓
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8" data-testid="emagrecimento-hero">
+        <div className="grid items-center gap-10 pb-12 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:gap-12 lg:pb-16">
+          <div className="relative z-10 max-w-2xl">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex rounded-full border border-emerald-200 bg-white/90 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-emerald-800 shadow-sm">
+                Programa 100% online com avaliacao medica
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm">
+                <span className="relative h-3 w-20 overflow-hidden">
+                  <Image
+                    src="/images/emagrecimento/medvi/social-proof-rating.webp"
+                    alt="Avaliacoes positivas do programa"
+                    fill
+                    className="object-contain"
+                    sizes="80px"
+                  />
                 </span>
-                <span className="text-sm font-medium leading-relaxed text-slate-700">{item}</span>
-              </li>
-            ))}
-          </ul>
+                Clareza, privacidade e suporte oficial.
+              </span>
+            </div>
 
-          <div className="mt-6 hidden flex-col items-center justify-center gap-3 sm:mt-8 sm:flex sm:gap-4">
-            <a
-              href="/triagem/emagrecimento"
-              onClick={handlePrimaryCta}
-              data-testid="home-primary-cta"
-              className={cn(
-                'inline-flex items-center justify-center rounded-full px-8 py-4 text-base font-bold text-white shadow-[0_24px_60px_rgba(5,150,105,0.26)] transition-all duration-300 sm:px-14 sm:py-5 sm:text-lg',
-                'bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:scale-[1.02] hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900'
-              )}
-            >
-              Começar minha triagem
-            </a>
+            <h1 className="mt-6 text-4xl font-black leading-[0.96] tracking-[-0.06em] text-slate-950 sm:text-5xl lg:max-w-[12ch] lg:text-[4.2rem]">
+              Emagrecimento com <span className="text-emerald-700">avaliacao medica</span>, plano claro e suporte
+              continuo.
+            </h1>
+
+            <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+              Voce preenche a triagem, entende o seu perfil e recebe o proximo passo com mais seguranca. Quando houver
+              indicacao, a decisao clinica acontece no fluxo certo, sem catalogo confuso nem promessa vaga.
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:items-start">
+              <a
+                href="/triagem/emagrecimento"
+                onClick={handlePrimaryCta}
+                data-testid="home-primary-cta"
+                className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-7 text-base font-bold text-white shadow-[0_22px_48px_rgba(5,150,105,0.26)] transition-all hover:-translate-y-0.5 hover:shadow-[0_26px_60px_rgba(5,150,105,0.3)] sm:h-16 sm:px-8 sm:text-lg"
+              >
+                Comecar minha triagem
+              </a>
+              <p className="max-w-xl rounded-2xl border border-emerald-100 bg-white/92 px-4 py-3 text-[11px] font-medium leading-relaxed text-emerald-950 shadow-sm sm:text-sm">
+                {getLpPriceHook()}
+              </p>
+            </div>
+
+            <div className="mt-7 grid gap-3 sm:grid-cols-3">
+              {quickProof.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-[24px] border border-emerald-100 bg-white/88 px-4 py-4 shadow-[0_14px_34px_rgba(15,23,42,0.05)] backdrop-blur"
+                >
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-700">{item.label}</p>
+                  <p className="mt-2 text-sm font-semibold text-slate-900 sm:text-[15px]">{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <ul className="mt-6 space-y-3">
+              {proofBullets.map((item, index) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-3 rounded-[22px] border border-emerald-100 bg-white/78 px-4 py-3.5 shadow-sm backdrop-blur"
+                >
+                  <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
+                    {index + 1}
+                  </span>
+                  <span className="text-sm leading-6 text-slate-700 sm:text-[15px]">{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-5 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+              Prescricao e escolha da trilha dependem de avaliacao medica individual, disponibilidade e criterio
+              clinico.
+            </p>
           </div>
 
-          <p className="mx-auto mt-5 hidden max-w-3xl rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-3 text-xs font-medium leading-relaxed text-emerald-950 shadow-sm sm:block sm:text-base">
-            {getLpPriceHook()}
-          </p>
+          <div className="relative mx-auto w-full max-w-[38rem] lg:max-w-none">
+            <div className="absolute inset-x-8 top-12 h-64 rounded-full bg-emerald-200/45 blur-3xl" />
 
-          <p className="mx-auto mt-4 hidden max-w-3xl px-2 text-xs leading-relaxed text-slate-500 sm:block sm:text-sm">
-            Prescrição somente quando indicada em consulta médica. Dados de saúde tratados com boas práticas de
-            privacidade e fluxo adequado ao contexto brasileiro.
-          </p>
-        </div>
+            <div className="relative grid gap-4 sm:grid-cols-[0.86fr_1fr]">
+              <div className="order-2 space-y-4 sm:order-1 sm:pt-12">
+                <div className="rounded-[30px] border border-emerald-100 bg-white/88 p-4 shadow-[0_20px_55px_rgba(15,23,42,0.08)] backdrop-blur">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-2xl bg-emerald-100 p-2.5 text-emerald-800">
+                      <ClipboardDocumentCheckIcon className="h-5 w-5" aria-hidden />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                        Fluxo organizado
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-slate-700">
+                        Triagem, avaliacao e proximo passo no mesmo caminho, sem te deixar perdido entre telas.
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-        <div className="mx-auto mt-10 grid max-w-6xl grid-cols-2 gap-4 md:mt-12 md:grid-cols-8 md:gap-5" data-testid="emagrecimento-hero-mosaic">
-          {HERO_MOSAIC.map((image, index) => (
-            <div
-              key={image.src}
-              className={cn(
-                'relative overflow-hidden rounded-[26px] border border-white/70 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] ring-1 ring-emerald-100/60',
-                image.className
-              )}
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 50vw, 20vw"
-                quality={88}
-                priority={index < 4}
-              />
+                <div className="relative overflow-hidden rounded-[34px] border border-white/80 bg-white shadow-[0_26px_65px_rgba(15,23,42,0.1)]">
+                  <div className="relative aspect-[4/5] w-full">
+                    <Image
+                      src="/images/emagrecimento/medvi/hero-secondary.webp"
+                      alt="Paciente acompanhada em programa de emagrecimento"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 22vw"
+                      priority
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="order-1 space-y-4 sm:order-2">
+                <div className="relative overflow-hidden rounded-[36px] border border-white/80 bg-white shadow-[0_34px_80px_rgba(15,23,42,0.12)]">
+                  <div className="relative aspect-[4/5] w-full">
+                    <Image
+                      src="/images/emagrecimento/medvi/hero-main.webp"
+                      alt="Paciente em retrato principal da jornada Me Joy"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 30vw"
+                      priority
+                    />
+                  </div>
+
+                  <div className="absolute inset-x-5 bottom-5 rounded-[24px] border border-white/90 bg-white/94 p-4 shadow-lg backdrop-blur">
+                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-emerald-700">
+                      O que voce recebe
+                    </p>
+                    <div className="mt-3 grid gap-2.5">
+                      {[
+                        'Leitura inicial do seu caso',
+                        'Conduta definida quando indicada',
+                        'Suporte oficial para seguir com clareza',
+                      ].map((item) => (
+                        <div key={item} className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-3 py-2">
+                          <span className="h-2.5 w-2.5 rounded-full bg-emerald-600" />
+                          <span className="text-sm font-medium text-slate-700">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-[1.05fr_0.95fr]">
+                  <div className="rounded-[30px] border border-emerald-100 bg-[#113c31] p-5 text-white shadow-[0_20px_55px_rgba(15,23,42,0.12)]">
+                    <div className="inline-flex rounded-2xl bg-white/12 p-2.5 text-emerald-200">
+                      <ChatBubbleLeftRightIcon className="h-5 w-5" aria-hidden />
+                    </div>
+                    <p className="mt-4 text-[11px] font-black uppercase tracking-[0.18em] text-emerald-200">
+                      Suporte oficial
+                    </p>
+                    <p className="mt-2 text-base font-semibold">App e WhatsApp no mesmo fluxo</p>
+                    <p className="mt-2 text-sm leading-6 text-white/78">
+                      Menos tentativa e erro, mais acompanhamento para seguir o plano com constancia.
+                    </p>
+                  </div>
+
+                  <div className="rounded-[30px] border border-emerald-100 bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+                    <div className="inline-flex rounded-2xl bg-emerald-100 p-2.5 text-emerald-700">
+                      <ShieldCheckIcon className="h-5 w-5" aria-hidden />
+                    </div>
+                    <p className="mt-4 text-[11px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                      Seguranca clinica
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-700">
+                      A medicacao so entra quando fizer sentido para o seu perfil e para a sua avaliacao.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

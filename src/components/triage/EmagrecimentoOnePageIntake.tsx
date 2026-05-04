@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
+import { EnhancedInput, NumericInput } from '@/components/ui/EnhancedInput';
+import { RefinedButton } from '@/components/ui/RefinedButton';
 import { trackMejoyConversionEvent } from '@/lib/funnel/events-client';
 import { validateBrazilPhoneInput } from '@/lib/phone/normalize';
-import { cn } from '@/lib/utils';
 import type { StepDef, TriageFlow } from '@/lib/triage/schema';
+import { cn } from '@/lib/utils';
 import {
   clearDependentAnswers,
   computeProgress,
@@ -48,14 +50,14 @@ type PendingPayload = {
   answeredAt: string;
 };
 
-const INPUT_CLASSNAME =
-  'h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-medium text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100';
+const FORM_INPUT_CLASSNAME =
+  'h-14 rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 text-base font-medium text-slate-900 shadow-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
+
+const DATE_INPUT_CLASSNAME =
+  'h-14 w-full rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 text-base font-medium text-slate-900 outline-none transition focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
 
 const TEXTAREA_CLASSNAME =
-  'min-h-[132px] w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-base font-medium text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100';
-
-const SURFACE_CLASSNAME =
-  'rounded-[28px] border border-slate-200 bg-[#f6f7f5] p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)] sm:p-6';
+  'min-h-[128px] w-full rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 py-4 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
 
 const REQUIRED_MESSAGES: Record<string, string> = {
   aceita_termos: 'Confirme os documentos para continuar.',
@@ -68,7 +70,7 @@ const INLINE_CONSENT_COPY: Record<string, string> = {
   aceita_termos:
     'Confirmo que li os documentos essenciais da jornada, incluindo privacidade, uso de IA nos relatórios e telemedicina.',
   consentimento_whatsapp:
-    'Autorizo o envio do meu resultado inicial, orientações e próximos passos pelo canal oficial da Mejoy no WhatsApp.',
+    'Autorizo o envio do meu resultado inicial, orientações e próximos passos pelo canal oficial da Me Joy no WhatsApp.',
 };
 
 const NUMERIC_UNITS_BY_KEY: Record<string, string> = {
@@ -77,6 +79,53 @@ const NUMERIC_UNITS_BY_KEY: Record<string, string> = {
   peso: 'kg',
   weight: 'kg',
   peso_meta: 'kg',
+};
+
+const FIELD_LABEL_OVERRIDES: Record<string, string> = {
+  altura: 'Altura',
+  peso: 'Peso atual',
+  peso_meta: 'Peso desejado',
+  sexo: 'Sexo biológico',
+  gestacao: 'Gestação ou plano de engravidar',
+  data_nascimento: 'Data de nascimento',
+  contraindicacoes_glp1: 'Existe algum destes históricos?',
+  comorbidades: 'Quais condições se aplicam ao seu caso?',
+  cirurgia_bariatrica_previa: 'Já fez cirurgia bariátrica?',
+  uso_opioides_3meses: 'Usou opioides nos últimos 3 meses?',
+  medicamentos_prescritos_atual: 'Usa medicamentos prescritos atualmente?',
+  uso_medicacao_emagrecimento_recente: 'Usou medicação para emagrecimento nas últimas 4 semanas?',
+  efeitos_colaterais_previos: 'Teve efeitos que fizeram parar o tratamento?',
+  pressao_arterial_faixa: 'Como estava sua pressão na última medição que lembra?',
+  frequencia_cardiaca_repouso: 'Frequência cardíaca em repouso, se souber',
+  impacto_vida: 'Quanto o peso afeta sua rotina?',
+  objetivo_principal: 'Qual é seu objetivo principal?',
+  preferencia_principio_ativo: 'Qual linha você prefere avaliar primeiro?',
+  primeiro_nome: 'Como podemos te chamar?',
+  whatsapp: 'WhatsApp com DDD',
+};
+
+const FIELD_HELPER_OVERRIDES: Record<string, string> = {
+  altura: 'Em centímetros. Se preferir, 1,70 também funciona.',
+  peso: 'Em quilogramas.',
+  peso_meta: 'Uma meta inicial já ajuda a leitura clínica.',
+  sexo: 'Usado para critérios de segurança e gestação.',
+  gestacao: 'GLP-1 não é indicado na gestação.',
+  data_nascimento: 'Programa para maiores de 18 anos.',
+  contraindicacoes_glp1:
+    'Marque tudo o que se aplicar. Se nada se aplicar, escolha a opção correspondente.',
+  comorbidades: 'Marque apenas o que já faz parte do seu histórico.',
+  cirurgia_bariatrica_previa: 'Esse contexto ajuda a evitar recomendações inadequadas.',
+  uso_opioides_3meses: 'Informação de segurança para a avaliação médica.',
+  medicamentos_prescritos_atual: 'Interações medicamentosas importam para a decisão clínica.',
+  uso_medicacao_emagrecimento_recente: 'Ajuda a entender tolerância e resposta recente.',
+  efeitos_colaterais_previos: 'Só aparece se você indicar uso prévio.',
+  pressao_arterial_faixa: 'Não substitui aferição médica; serve como contexto inicial.',
+  frequencia_cardiaca_repouso: 'Se não souber, selecione a opção correspondente.',
+  impacto_vida: 'Queremos medir o impacto real do peso no seu dia a dia.',
+  objetivo_principal: 'Isso orienta a prioridade do relatório.',
+  preferencia_principio_ativo: 'A decisão final é sempre do médico.',
+  primeiro_nome: 'Esse nome entra no seu resumo.',
+  whatsapp: 'Canal oficial para envio do resultado e próximos passos.',
 };
 
 function deriveImcRangeFromAnswers(answers: Record<string, any>): string | undefined {
@@ -309,17 +358,19 @@ export function EmagrecimentoOnePageIntake({
 
   const toggleMultiselect = useCallback(
     (step: StepDef, value: string, checked: boolean) => {
-      const cur = coerceStringArray(answers[step.key]);
-      let next: string[] = [...cur];
+      const currentValues = coerceStringArray(answers[step.key]);
+      let next: string[] = [...currentValues];
       const isNone = value === 'nenhuma';
+
       if (isNone && checked) {
         next = ['nenhuma'];
       } else if (checked) {
-        next = next.filter(v => v !== 'nenhuma');
+        next = next.filter(item => item !== 'nenhuma');
         if (!next.includes(value)) next.push(value);
       } else {
-        next = next.filter(v => v !== value);
+        next = next.filter(item => item !== value);
       }
+
       setField(step, next);
     },
     [answers, setField]
@@ -546,7 +597,8 @@ export function EmagrecimentoOnePageIntake({
         }
 
         if (item.required && !isStepAnswered(step, answers)) {
-          nextErrors[step.key] = REQUIRED_MESSAGES[step.key] ?? 'Selecione ao menos uma opção para continuar.';
+          nextErrors[step.key] =
+            REQUIRED_MESSAGES[step.key] ?? 'Selecione ao menos uma opção para continuar.';
         }
       }
 
@@ -645,6 +697,16 @@ export function EmagrecimentoOnePageIntake({
     [answers, steps]
   );
 
+  const getFieldLabel = useCallback(
+    (step: StepDef, override?: string) => override ?? FIELD_LABEL_OVERRIDES[step.key] ?? step.label,
+    []
+  );
+
+  const getFieldHelper = useCallback(
+    (step: StepDef, override?: string) => override ?? FIELD_HELPER_OVERRIDES[step.key] ?? step.helperText,
+    []
+  );
+
   const renderInlineLegalLinks = useCallback((step: StepDef) => {
     if (!step.legalLinks?.length) return null;
     return (
@@ -656,7 +718,7 @@ export function EmagrecimentoOnePageIntake({
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-emerald-700 underline underline-offset-4"
+              className="font-medium text-[#2f6a49] underline underline-offset-4"
             >
               {link.label}
             </a>
@@ -667,14 +729,28 @@ export function EmagrecimentoOnePageIntake({
   }, []);
 
   const renderQuestionShell = useCallback(
-    (step: StepDef, children: ReactNode, options?: { hideLabel?: boolean; helperText?: string }) => {
+    (
+      step: StepDef,
+      children: ReactNode,
+      options?: {
+        hideLabel?: boolean;
+        label?: string;
+        helperText?: string;
+        containerClassName?: string;
+      }
+    ) => {
       const error = sectionErrors[step.key];
-      const helperText = options?.helperText ?? step.helperText;
+      const helperText = getFieldHelper(step, options?.helperText);
+      const label = getFieldLabel(step, options?.label);
 
       return (
-        <div data-triage-field-error={error ? 'true' : undefined}>
+        <div
+          className={cn('min-w-0', options?.containerClassName)}
+          data-step-key={step.key}
+          data-triage-field-error={error ? 'true' : undefined}
+        >
           {!options?.hideLabel ? (
-            <label className="block text-[15px] font-semibold leading-6 text-slate-900">{step.label}</label>
+            <label className="block text-[15px] font-semibold leading-6 text-slate-900">{label}</label>
           ) : null}
           {helperText ? <p className="mt-1 text-sm leading-6 text-slate-500">{helperText}</p> : null}
           <div className={cn(options?.hideLabel ? '' : 'mt-3')}>{children}</div>
@@ -682,7 +758,7 @@ export function EmagrecimentoOnePageIntake({
         </div>
       );
     },
-    [sectionErrors]
+    [getFieldHelper, getFieldLabel, sectionErrors]
   );
 
   const renderConsentField = useCallback(
@@ -692,7 +768,8 @@ export function EmagrecimentoOnePageIntake({
 
       return (
         <div
-          className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+          className="rounded-[22px] border border-[#dce3d9] bg-[#fbfcfa] p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+          data-step-key={step.key}
           data-triage-field-error={sectionErrors[step.key] ? 'true' : undefined}
         >
           <button
@@ -708,12 +785,18 @@ export function EmagrecimentoOnePageIntake({
               className={cn(
                 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition',
                 isSelected
-                  ? 'border-emerald-600 bg-emerald-600 text-white'
+                  ? 'border-[#2f6a49] bg-[#2f6a49] text-white'
                   : 'border-slate-300 bg-white text-transparent'
               )}
             >
               <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8.5 6.2 11.7 13 4.9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M3 8.5 6.2 11.7 13 4.9"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </span>
             <span className="text-sm leading-6">{INLINE_CONSENT_COPY[step.key] ?? step.label}</span>
@@ -729,179 +812,196 @@ export function EmagrecimentoOnePageIntake({
   );
 
   const renderNumberField = useCallback(
-    (step: StepDef, extraClassName?: string) =>
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) =>
       renderQuestionShell(
         step,
-        <div className="relative">
-          <input
-            type="number"
-            inputMode="decimal"
-            value={
-              answers[step.key] === undefined || answers[step.key] === '' ? '' : String(answers[step.key])
-            }
-            onChange={event => {
-              const raw = event.target.value;
-              setField(step, raw === '' ? '' : Number(raw));
-            }}
-            placeholder={step.placeholder}
-            min={step.min}
-            max={step.max}
-            step={step.step}
-            className={cn(INPUT_CLASSNAME, NUMERIC_UNITS_BY_KEY[step.key] ? 'pr-14' : '', extraClassName)}
-          />
-          {NUMERIC_UNITS_BY_KEY[step.key] ? (
-            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-400">
-              {NUMERIC_UNITS_BY_KEY[step.key]}
-            </span>
-          ) : null}
-        </div>
+        <NumericInput
+          name={step.key}
+          unit={NUMERIC_UNITS_BY_KEY[step.key]}
+          value={
+            answers[step.key] === undefined || answers[step.key] === '' ? '' : String(answers[step.key])
+          }
+          onChange={event => {
+            const raw = event.target.value;
+            setField(step, raw === '' ? '' : Number(raw));
+          }}
+          placeholder={step.placeholder}
+          min={step.min}
+          max={step.max}
+          step={step.step}
+          className={FORM_INPUT_CLASSNAME}
+        />,
+        options
       ),
     [answers, renderQuestionShell, setField]
   );
 
   const renderTextField = useCallback(
-    (step: StepDef) =>
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) =>
       renderQuestionShell(
         step,
-        <input
+        <EnhancedInput
+          name={step.key}
           type={step.key === 'whatsapp' ? 'tel' : 'text'}
           inputMode={step.key === 'whatsapp' ? 'tel' : 'text'}
           value={answers[step.key] ?? ''}
           onChange={event => setField(step, event.target.value)}
           placeholder={step.placeholder}
-          className={INPUT_CLASSNAME}
-        />
+          className={FORM_INPUT_CLASSNAME}
+        />,
+        options
       ),
     [answers, renderQuestionShell, setField]
   );
 
   const renderDateField = useCallback(
-    (step: StepDef) =>
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) =>
       renderQuestionShell(
         step,
         <input
+          name={step.key}
           type="date"
           value={answers[step.key] ?? ''}
           onChange={event => setField(step, event.target.value)}
-          className={INPUT_CLASSNAME}
-        />
+          className={DATE_INPUT_CLASSNAME}
+        />,
+        options
       ),
     [answers, renderQuestionShell, setField]
   );
 
   const renderTextareaField = useCallback(
-    (step: StepDef) =>
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) =>
       renderQuestionShell(
         step,
         <textarea
+          name={step.key}
           value={answers[step.key] ?? ''}
           onChange={event => setField(step, event.target.value)}
           placeholder={step.placeholder}
           className={TEXTAREA_CLASSNAME}
-        />
+        />,
+        options
       ),
     [answers, renderQuestionShell, setField]
   );
 
   const renderBinaryField = useCallback(
-    (step: StepDef) => {
-      const options = step.options ?? [];
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) => {
+      const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
         <div className="grid grid-cols-2 gap-3">
-          {options.map(option => {
+          {fieldOptions.map(option => {
             const selected = answers[step.key] === option.value;
             return (
               <button
                 key={option.value}
                 type="button"
+                name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  'rounded-[22px] border px-4 py-5 text-left transition',
+                  'rounded-[18px] border px-4 py-4 text-left transition',
                   selected
-                    ? 'border-emerald-600 bg-emerald-50 shadow-[0_8px_18px_rgba(16,185,129,0.12)]'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.08)]'
+                    : 'border-[#d8dfd5] bg-white hover:border-[#bfcabd]'
                 )}
               >
                 <span className="text-[15px] font-semibold text-slate-900">{option.label}</span>
               </button>
             );
           })}
-        </div>
+        </div>,
+        options
       );
     },
     [answers, renderQuestionShell, setField]
   );
 
   const renderSexField = useCallback(
-    (step: StepDef) => {
-      const options = step.options ?? [];
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) => {
+      const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
         <div className="grid grid-cols-2 gap-3">
-          {options.map(option => {
+          {fieldOptions.map(option => {
             const selected = answers[step.key] === option.value;
             return (
               <button
                 key={option.value}
                 type="button"
+                name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  'rounded-[22px] border px-4 py-6 text-left transition',
+                  'rounded-[18px] border px-4 py-5 text-left transition',
                   selected
-                    ? 'border-emerald-600 bg-emerald-50 shadow-[0_8px_18px_rgba(16,185,129,0.12)]'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.08)]'
+                    : 'border-[#d8dfd5] bg-white hover:border-[#bfcabd]'
                 )}
               >
                 <span className="block text-base font-semibold text-slate-900">{option.label}</span>
               </button>
             );
           })}
-        </div>
+        </div>,
+        options
       );
     },
     [answers, renderQuestionShell, setField]
   );
 
   const renderSelectField = useCallback(
-    (step: StepDef) => {
-      const options = step.options ?? [];
+    (
+      step: StepDef,
+      options?: {
+        label?: string;
+        helperText?: string;
+        containerClassName?: string;
+      }
+    ) => {
+      const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
         <div className="space-y-2.5">
-          {options.map(option => {
+          {fieldOptions.map(option => {
             const selected = answers[step.key] === option.value;
             return (
               <button
                 key={option.value}
                 type="button"
+                name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  'flex w-full items-start gap-3 rounded-[22px] border px-4 py-4 text-left transition',
+                  'flex w-full items-start gap-3 rounded-[18px] border px-4 py-4 text-left transition',
                   selected
-                    ? 'border-emerald-600 bg-emerald-50 shadow-[0_8px_18px_rgba(16,185,129,0.08)]'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.06)]'
+                    : 'border-[#d8dfd5] bg-white hover:border-[#bfcabd]'
                 )}
               >
                 <span
                   className={cn(
                     'mt-1 h-4 w-4 shrink-0 rounded-full border-2',
-                    selected ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300 bg-white'
+                    selected ? 'border-[#2f6a49] bg-[#2f6a49]' : 'border-slate-300 bg-white'
                   )}
                 />
                 <span className="text-[15px] leading-6 text-slate-800">{option.label}</span>
               </button>
             );
           })}
-        </div>
+        </div>,
+        options
       );
     },
     [answers, renderQuestionShell, setField]
   );
 
   const renderMultiselectField = useCallback(
-    (step: StepDef, filteredOptionValues?: string[]) => {
-      const options = (step.options ?? []).filter(option =>
+    (
+      step: StepDef,
+      filteredOptionValues?: string[],
+      options?: { label?: string; helperText?: string; containerClassName?: string }
+    ) => {
+      const fieldOptions = (step.options ?? []).filter(option =>
         filteredOptionValues ? filteredOptionValues.includes(option.value) : true
       );
       const selected = coerceStringArray(answers[step.key]).filter(value => value !== '');
@@ -914,34 +1014,41 @@ export function EmagrecimentoOnePageIntake({
         <>
           {selectedOutsideSlice.length > 0 ? (
             <p className="mb-3 text-xs font-medium text-slate-500">
-              Seleções anteriores mantidas nesta etapa.
+              Seleções já marcadas acima seguem mantidas.
             </p>
           ) : null}
           <div className="space-y-2.5">
-            {options.map(option => {
+            {fieldOptions.map(option => {
               const checked = selected.includes(option.value);
               return (
                 <button
                   key={option.value}
                   type="button"
+                  name={step.key}
                   onClick={() => toggleMultiselect(step, option.value, !checked)}
                   className={cn(
-                    'flex w-full items-start gap-3 rounded-[22px] border px-4 py-4 text-left transition',
+                    'flex w-full items-start gap-3 rounded-[18px] border px-4 py-4 text-left transition',
                     checked
-                      ? 'border-emerald-600 bg-emerald-50 shadow-[0_8px_18px_rgba(16,185,129,0.08)]'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      ? 'border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.06)]'
+                      : 'border-[#d8dfd5] bg-white hover:border-[#bfcabd]'
                   )}
                 >
                   <span
                     className={cn(
                       'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition',
                       checked
-                        ? 'border-emerald-600 bg-emerald-600 text-white'
+                        ? 'border-[#2f6a49] bg-[#2f6a49] text-white'
                         : 'border-slate-300 bg-white text-transparent'
                     )}
                   >
                     <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path d="M3 8.5 6.2 11.7 13 4.9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path
+                        d="M3 8.5 6.2 11.7 13 4.9"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </span>
                   <span className="text-[15px] leading-6 text-slate-800">{option.label}</span>
@@ -949,14 +1056,15 @@ export function EmagrecimentoOnePageIntake({
               );
             })}
           </div>
-        </>
+        </>,
+        options
       );
     },
     [answers, renderQuestionShell, toggleMultiselect]
   );
 
   const renderSelectCardsField = useCallback(
-    (step: StepDef) =>
+    (step: StepDef, options?: { label?: string; helperText?: string; containerClassName?: string }) =>
       renderQuestionShell(
         step,
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -966,16 +1074,17 @@ export function EmagrecimentoOnePageIntake({
               <button
                 key={option.value}
                 type="button"
+                name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  'rounded-[24px] border px-4 py-4 text-left transition',
+                  'rounded-[22px] border px-4 py-4 text-left transition',
                   selected
-                    ? 'border-emerald-600 bg-emerald-50 shadow-[0_10px_20px_rgba(16,185,129,0.08)]'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-[#2f6a49] bg-[#eef6ef] shadow-[0_12px_24px_rgba(47,106,73,0.08)]'
+                    : 'border-[#d8dfd5] bg-white hover:border-[#bfcabd]'
                 )}
               >
                 {option.badge ? (
-                  <span className="mb-3 inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                  <span className="mb-3 inline-flex rounded-full bg-[#edf3ed] px-2.5 py-1 text-[11px] font-semibold text-[#2f6a49]">
                     {option.badge}
                   </span>
                 ) : null}
@@ -989,40 +1098,38 @@ export function EmagrecimentoOnePageIntake({
               </button>
             );
           })}
-        </div>
+        </div>,
+        options
       ),
     [answers, renderQuestionShell, setField]
   );
 
   const renderFieldByStep = useCallback(
-    (step: StepDef, item?: EmagrecimentoPageItem) => {
+    (step: StepDef, item?: EmagrecimentoPageItem, options?: { label?: string; helperText?: string }) => {
       if (step.key === 'aceita_termos' || step.key === 'consentimento_whatsapp') {
         return renderConsentField(step);
       }
 
-      if (step.type === 'number') return renderNumberField(step);
-      if (step.type === 'text') return renderTextField(step);
-      if (step.type === 'textarea') return renderTextareaField(step);
-      if (step.type === 'date') return renderDateField(step);
-      if (step.type === 'select_cards') return renderSelectCardsField(step);
+      if (step.type === 'number') return renderNumberField(step, options);
+      if (step.type === 'text') return renderTextField(step, options);
+      if (step.type === 'textarea') return renderTextareaField(step, options);
+      if (step.type === 'date') return renderDateField(step, options);
+      if (step.type === 'select_cards') return renderSelectCardsField(step, options);
       if (step.type === 'multiselect') {
         const filteredValues =
           item?.kind === 'multiselectSlice'
-            ? [
-                ...item.optionValues,
-                ...(item.includeNoneOption ? ['nenhuma'] : []),
-              ]
+            ? [...item.optionValues, ...(item.includeNoneOption ? ['nenhuma'] : [])]
             : undefined;
-        return renderMultiselectField(step, filteredValues);
+        return renderMultiselectField(step, filteredValues, options);
       }
 
       if (step.type === 'select') {
-        if (step.key === 'sexo') return renderSexField(step);
-        if ((step.options ?? []).length === 2) return renderBinaryField(step);
-        return renderSelectField(step);
+        if (step.key === 'sexo') return renderSexField(step, options);
+        if ((step.options ?? []).length === 2) return renderBinaryField(step, options);
+        return renderSelectField(step, options);
       }
 
-      return renderTextField(step);
+      return renderTextField(step, options);
     },
     [
       renderBinaryField,
@@ -1038,33 +1145,65 @@ export function EmagrecimentoOnePageIntake({
     ]
   );
 
+  const renderStageSection = useCallback(
+    (title: string, description: string | undefined, children: ReactNode, options?: { muted?: boolean }) => (
+      <section
+        className={cn(
+          'px-5 py-6 sm:px-7 sm:py-7',
+          options?.muted ? 'bg-[#f7f8f5]' : 'bg-white'
+        )}
+      >
+        <div className="mb-5">
+          <h2 className="text-[17px] font-semibold tracking-[-0.02em] text-slate-900">{title}</h2>
+          {description ? <p className="mt-1.5 text-sm leading-6 text-slate-600">{description}</p> : null}
+        </div>
+        {children}
+      </section>
+    ),
+    []
+  );
+
   const renderProfilePage = useCallback(() => {
+    const aceite = getVisibleStep('aceita_termos');
     const altura = getVisibleStep('altura');
     const peso = getVisibleStep('peso');
     const pesoMeta = getVisibleStep('peso_meta');
     const sexo = getVisibleStep('sexo');
     const gestacao = getVisibleStep('gestacao');
     const dataNascimento = getVisibleStep('data_nascimento');
-    const aceite = getVisibleStep('aceita_termos');
 
     return (
-      <div className="space-y-4">
-        {aceite ? renderFieldByStep(aceite) : null}
+      <>
+        {renderStageSection(
+          'Confirmação e documentos',
+          'Leitura rápida e essencial para iniciar sua avaliação.',
+          <div className="space-y-4">{aceite ? renderFieldByStep(aceite) : null}</div>,
+          { muted: true }
+        )}
 
-        <div className={SURFACE_CLASSNAME}>
+        {renderStageSection(
+          'Dados básicos',
+          'Esses dados ajudam a calcular elegibilidade e enquadramento inicial.',
           <div className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-2">
               {altura ? renderNumberField(altura) : null}
               {peso ? renderNumberField(peso) : null}
             </div>
-
             {pesoMeta ? renderNumberField(pesoMeta) : null}
+          </div>
+        )}
+
+        {renderStageSection(
+          'Critérios iniciais de segurança',
+          'Esse bloco replica o início clínico do benchmark e prepara a análise médica.',
+          <div className="space-y-5">
             {sexo ? renderSexField(sexo) : null}
             {gestacao ? renderSelectField(gestacao) : null}
             {dataNascimento ? renderDateField(dataNascimento) : null}
-          </div>
-        </div>
-      </div>
+          </div>,
+          { muted: true }
+        )}
+      </>
     );
   }, [
     getVisibleStep,
@@ -1073,36 +1212,178 @@ export function EmagrecimentoOnePageIntake({
     renderNumberField,
     renderSelectField,
     renderSexField,
+    renderStageSection,
+  ]);
+
+  const renderClinicalPage = useCallback(
+    (page: EmagrecimentoPageConfig) => {
+      const contraindicacoes = getVisibleStep('contraindicacoes_glp1');
+      const comorbidades = getVisibleStep('comorbidades');
+      const cirurgia = getVisibleStep('cirurgia_bariatrica_previa');
+      const opioides = getVisibleStep('uso_opioides_3meses');
+      const prescritos = getVisibleStep('medicamentos_prescritos_atual');
+      const usoRecente = getVisibleStep('uso_medicacao_emagrecimento_recente');
+      const efeitos = getVisibleStep('efeitos_colaterais_previos');
+      const pressao = getVisibleStep('pressao_arterial_faixa');
+      const frequencia = getVisibleStep('frequencia_cardiaca_repouso');
+
+      const comorbidadeSlices = page.items.filter(
+        (item): item is Extract<EmagrecimentoPageItem, { kind: 'multiselectSlice' }> =>
+          item.kind === 'multiselectSlice' && item.key === 'comorbidades'
+      );
+      const [primeiraFatia, segundaFatia] = comorbidadeSlices;
+
+      return (
+        <>
+          {renderStageSection(
+            'Health questions',
+            'Comece pelos critérios de segurança que podem mudar elegibilidade ou conduta.',
+            <div className="space-y-5">
+              {contraindicacoes
+                ? renderMultiselectField(
+                    contraindicacoes,
+                    undefined,
+                    {
+                      label: 'Histórico importante',
+                      helperText:
+                        'Marque tudo o que se aplicar. Se nada se aplicar, escolha a opção correspondente.',
+                    }
+                  )
+                : null}
+            </div>,
+            { muted: true }
+          )}
+
+          {renderStageSection(
+            'Condições associadas',
+            'Marque apenas diagnósticos ou contextos que realmente fazem parte do seu histórico.',
+            <div className="space-y-5">
+              {comorbidades && primeiraFatia
+                ? renderMultiselectField(comorbidades, primeiraFatia.optionValues, {
+                    label: 'Condições metabólicas e osteoarticulares',
+                    helperText: 'Parte 1 de 2.',
+                  })
+                : null}
+              {comorbidades && segundaFatia
+                ? renderMultiselectField(
+                    comorbidades,
+                    [...segundaFatia.optionValues, ...(segundaFatia.includeNoneOption ? ['nenhuma'] : [])],
+                    {
+                      label: 'Outras condições relevantes',
+                      helperText: 'Parte 2 de 2. Se nada se aplicar, marque a opção correspondente.',
+                    }
+                  )
+                : null}
+            </div>
+          )}
+
+          {renderStageSection(
+            'Histórico terapêutico',
+            'Esse bloco reduz retrabalho na consulta e evita repetir caminhos inadequados.',
+            <div className="grid gap-5 lg:grid-cols-2">
+              {cirurgia ? renderBinaryField(cirurgia) : null}
+              {opioides ? renderBinaryField(opioides) : null}
+              {prescritos ? renderBinaryField(prescritos) : null}
+              {usoRecente ? renderSelectField(usoRecente) : null}
+              {efeitos ? renderSelectField(efeitos, { containerClassName: 'lg:col-span-2' }) : null}
+            </div>,
+            { muted: true }
+          )}
+
+          {renderStageSection(
+            'Contexto cardiometabólico',
+            'Mais dois sinais simples para fechar a leitura de risco inicial.',
+            <div className="grid gap-5 lg:grid-cols-2">
+              {pressao ? renderSelectField(pressao) : null}
+              {frequencia ? renderSelectField(frequencia) : null}
+            </div>
+          )}
+        </>
+      );
+    },
+    [
+      getVisibleStep,
+      renderBinaryField,
+      renderMultiselectField,
+      renderSelectField,
+      renderStageSection,
+    ]
+  );
+
+  const renderGoalsContactPage = useCallback(() => {
+    const impacto = getVisibleStep('impacto_vida');
+    const objetivo = getVisibleStep('objetivo_principal');
+    const preferencia = getVisibleStep('preferencia_principio_ativo');
+    const primeiroNome = getVisibleStep('primeiro_nome');
+    const whatsapp = getVisibleStep('whatsapp');
+    const consentimentoWhatsapp = getVisibleStep('consentimento_whatsapp');
+
+    return (
+      <>
+        {renderStageSection(
+          'Objetivo e preferência inicial',
+          'Queremos entender o impacto do peso na sua vida e qual estratégia faz mais sentido avaliar.',
+          <div className="space-y-5">
+            {impacto ? renderSelectField(impacto) : null}
+            {objetivo ? renderSelectField(objetivo) : null}
+            {preferencia ? renderSelectCardsField(preferencia) : null}
+          </div>,
+          { muted: true }
+        )}
+
+        {renderStageSection(
+          'Entrega do resultado',
+          'Seu resultado inicial e os próximos passos seguem pelo canal oficial da Me Joy.',
+          <div className="space-y-5">
+            <div className="grid gap-5 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              {primeiroNome ? renderTextField(primeiroNome) : null}
+              {whatsapp ? renderTextField(whatsapp) : null}
+            </div>
+            {consentimentoWhatsapp ? renderFieldByStep(consentimentoWhatsapp) : null}
+          </div>
+        )}
+      </>
+    );
+  }, [
+    getVisibleStep,
+    renderFieldByStep,
+    renderSelectCardsField,
+    renderSelectField,
+    renderStageSection,
+    renderTextField,
   ]);
 
   const renderGenericPage = useCallback(
-    (page: EmagrecimentoPageConfig) => {
-      const renderedItems = page.items
-        .map(item => {
-          const step = stepsByKey.get(item.key);
-          if (!step || !isStepVisible(step, answers)) return null;
-          return (
-            <div key={`${page.id}-${item.key}`}>
-              {renderFieldByStep(step, item)}
-            </div>
-          );
-        })
-        .filter(Boolean);
-
-      return (
-        <div className={SURFACE_CLASSNAME}>
-          <div className="space-y-5">{renderedItems}</div>
-        </div>
-      );
-    },
+    (page: EmagrecimentoPageConfig) =>
+      page.items.map(item => {
+        const step = stepsByKey.get(item.key);
+        if (!step || !isStepVisible(step, answers)) return null;
+        return (
+          <div key={`${page.id}-${item.key}`} className="px-5 py-6 sm:px-7 sm:py-7">
+            {renderFieldByStep(step, item)}
+          </div>
+        );
+      }),
     [answers, renderFieldByStep, stepsByKey]
   );
 
+  const renderCurrentPageBody = useCallback(
+    (page: EmagrecimentoPageConfig) => {
+      if (page.id === 'etapa-1-perfil') return renderProfilePage();
+      if (page.id === 'etapa-2-clinico') return renderClinicalPage(page);
+      if (page.id === 'etapa-3-objetivo-e-contato') return renderGoalsContactPage();
+      return renderGenericPage(page);
+    },
+    [renderClinicalPage, renderGenericPage, renderGoalsContactPage, renderProfilePage]
+  );
+
+  if (!currentPage) return null;
+
   if (finalizeStatus === 'running' || finalizeStatus === 'completed') {
     return (
-      <div className="min-h-screen bg-[#fbfbf8] px-4 py-10 sm:px-6">
-        <div className="mx-auto max-w-[34rem] rounded-[32px] border border-slate-200 bg-white p-8 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />
+      <div className="min-h-screen bg-[#f5f6f1] px-4 py-10 sm:px-6">
+        <div className="mx-auto max-w-[34rem] rounded-[32px] border border-[#dce3d9] bg-white p-8 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#2f6a49] border-t-transparent" />
           <p className="text-xl font-semibold tracking-[-0.03em] text-slate-900">Gerando seu relatório</p>
           <p className="mt-2 text-sm leading-6 text-slate-500">
             Isso costuma levar alguns segundos. Mantenha esta página aberta.
@@ -1114,111 +1395,147 @@ export function EmagrecimentoOnePageIntake({
 
   if (finalizeStatus === 'failed' && finalizeError) {
     return (
-      <div className="min-h-screen bg-[#fbfbf8] px-4 py-10 sm:px-6">
+      <div className="min-h-screen bg-[#f5f6f1] px-4 py-10 sm:px-6">
         <div className="mx-auto max-w-[34rem] rounded-[32px] border border-red-200 bg-white p-8 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
           <p className="text-xl font-semibold tracking-[-0.03em] text-slate-900">Não foi possível finalizar</p>
           <p className="mt-2 text-sm leading-6 text-slate-500">{finalizeError}</p>
-          <button
+          <RefinedButton
             type="button"
-            onClick={() => void finalizeTriage()}
-            className="mt-6 inline-flex h-12 items-center justify-center rounded-full bg-emerald-600 px-6 text-sm font-semibold text-white transition hover:bg-emerald-700"
+            onClick={() => setFinalizeStatus('idle')}
+            className="mt-6 h-12 rounded-full bg-[#2f6a49] px-6 text-white hover:bg-[#25563b]"
           >
             Tentar novamente
-          </button>
+          </RefinedButton>
         </div>
       </div>
     );
   }
 
-  if (!currentPage) return null;
-
   return (
-    <div className="min-h-screen bg-[#fbfbf8] text-slate-900">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-[#fbfbf8]">
-        <div className="mx-auto max-w-[34rem] px-4 pb-4 pt-6 sm:px-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-[1.95rem] font-semibold tracking-[-0.08em] text-slate-900">MEJOY</div>
-            <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-              <span>Excelente 4,8</span>
+    <main
+      className="min-h-screen bg-[#f5f6f1] px-4 py-6 text-slate-900 sm:px-6 sm:py-8"
+      data-testid="emagrecimento-intake"
+    >
+      <div className="mx-auto max-w-[46rem]">
+        <header className="mb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
               <Image
-                src="/images/emagrecimento/medvi/stars.svg"
-                alt="Avaliação 4,8 de 5"
-                width={78}
-                height={14}
+                src="/mejoy2preto.png"
+                alt="Me Joy"
+                width={128}
+                height={28}
                 priority
+                className="h-auto w-[128px]"
               />
+              <span className="hidden h-5 w-px bg-[#d8dfd6] sm:block" />
+              <p className="text-xs font-medium tracking-[0.08em] text-slate-500 sm:text-[13px]">
+                TRIAGEM CLÍNICA DE EMAGRECIMENTO
+              </p>
+            </div>
+            <div className="inline-flex w-fit items-center rounded-full border border-[#dce3d9] bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
+              4,8/5 em satisfação no atendimento
+            </div>
+          </div>
+          <div className="mt-4 h-px bg-[#dce3d9]" />
+        </header>
+
+        <section
+          className="overflow-hidden rounded-[32px] border border-[#dce3d9] bg-white shadow-[0_20px_60px_rgba(15,23,42,0.06)]"
+          data-testid={`triage-stage-${currentPage.id}`}
+        >
+          <div className="border-b border-[#e5ebe2] bg-[#fbfcfa] px-5 py-6 sm:px-7 sm:py-7">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="inline-flex rounded-full bg-[#eef3ec] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#38573f]">
+                Etapa {currentPage.section} de {EMAGRECIMENTO_TOTAL_SECTIONS}
+              </span>
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+                {pageProgress}% concluído
+              </span>
+            </div>
+
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="max-w-[36rem]">
+                <h1 className="text-[28px] font-semibold tracking-[-0.04em] text-slate-900 sm:text-[34px]">
+                  {currentPage.title}
+                </h1>
+                {currentPage.description ? (
+                  <p className="mt-2 max-w-[32rem] text-sm leading-6 text-slate-600 sm:text-[15px]">
+                    {currentPage.description}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="rounded-[20px] border border-[#e4e9e0] bg-white px-4 py-3 text-right shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Progresso geral
+                </p>
+                <p className="mt-1 text-lg font-semibold tracking-[-0.03em] text-slate-900">
+                  {Math.max(progress, pageProgress)}%
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid grid-cols-3 gap-2">
+              {EMAGRECIMENTO_INTAKE_PAGES.map((page, index) => {
+                const isDone = index < currentPageIndex;
+                const isActive = index === currentPageIndex;
+                return (
+                  <div
+                    key={page.id}
+                    className={cn(
+                      'h-1.5 rounded-full transition',
+                      isDone
+                        ? 'bg-[#2f6a49]'
+                        : isActive
+                          ? 'bg-[#9bb89e]'
+                          : 'bg-[#e5ebe2]'
+                    )}
+                  />
+                );
+              })}
             </div>
           </div>
 
-          <div className="mt-4 h-px w-full bg-slate-200" />
+          <div className="divide-y divide-[#e5ebe2]">{renderCurrentPageBody(currentPage)}</div>
 
-          <div className="mt-4 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-            <span>Etapa {currentPage.section} de {EMAGRECIMENTO_TOTAL_SECTIONS}</span>
-            <span>
-              {currentPageIndex + 1}/{EMAGRECIMENTO_INTAKE_PAGES.length}
-            </span>
-          </div>
-
-          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200">
-            <div
-              className="h-full rounded-full bg-emerald-600 transition-[width] duration-300"
-              style={{ width: `${pageProgress}%` }}
-            />
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[34rem] px-4 py-8 sm:px-6 sm:py-10">
-        <section className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8">
-          <div className="mb-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Triagem de elegibilidade
-            </p>
-            <h1 className="mt-3 text-[2rem] font-semibold leading-[1.05] tracking-[-0.05em] text-slate-900 sm:text-[2.25rem]">
-              {currentPage.title}
-            </h1>
-            {currentPage.description ? (
-              <p className="mt-3 max-w-2xl text-[15px] leading-7 text-slate-600">{currentPage.description}</p>
+          <div className="border-t border-[#e5ebe2] bg-[#fbfcfa] px-5 py-5 sm:px-7 sm:py-6">
+            {finalizeError ? (
+              <div className="mb-4 rounded-[18px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {finalizeError}
+              </div>
             ) : null}
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="text-xs leading-6 text-slate-500">
+                {currentPage.note ?? 'Suas respostas seguem para a avaliação clínica inicial da Me Joy.'}
+              </div>
+
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+                {currentPageIndex > 0 ? (
+                  <RefinedButton
+                    type="button"
+                    variant="secondary"
+                    onClick={() => moveToPage(Math.max(currentPageIndex - 1, 0))}
+                    className="h-12 rounded-full border border-[#d8dfd5] bg-white px-5 text-slate-700 hover:bg-[#f4f6f1]"
+                  >
+                    Voltar
+                  </RefinedButton>
+                ) : null}
+
+                <RefinedButton
+                  type="button"
+                  loading={submitting}
+                  onClick={currentPage.submit ? () => void handleSubmit() : handleNext}
+                  className="h-12 rounded-full bg-[#2f6a49] px-6 text-white shadow-[0_12px_24px_rgba(47,106,73,0.18)] hover:bg-[#25563b] hover:shadow-[0_14px_28px_rgba(47,106,73,0.22)]"
+                >
+                  {currentPage.ctaLabel}
+                </RefinedButton>
+              </div>
+            </div>
           </div>
-
-          {currentPage.id === 'perfil' ? renderProfilePage() : renderGenericPage(currentPage)}
-
-          {currentPage.note ? (
-            <p className="mt-6 text-xs leading-6 text-slate-500">{currentPage.note}</p>
-          ) : null}
-
-          <div className="mt-8 flex items-center justify-between gap-3">
-            {currentPageIndex > 0 ? (
-              <button
-                type="button"
-                onClick={() => moveToPage(Math.max(currentPageIndex - 1, 0))}
-                className="inline-flex h-12 items-center justify-center rounded-full border border-slate-200 px-5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                Voltar
-              </button>
-            ) : (
-              <span />
-            )}
-
-            <button
-              type="button"
-              onClick={() => void (currentPage.submit ? handleSubmit() : handleNext())}
-              disabled={submitting}
-              className={cn(
-                'inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold text-white transition',
-                submitting ? 'bg-emerald-400' : 'bg-emerald-600 hover:bg-emerald-700'
-              )}
-            >
-              {submitting && currentPage.submit ? 'Gerando...' : currentPage.ctaLabel}
-            </button>
-          </div>
-
-          <p className="mt-4 text-center text-[11px] leading-5 text-slate-400">
-            Progresso clínico salvo automaticamente. {progress}% do questionário já foi registrado.
-          </p>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
