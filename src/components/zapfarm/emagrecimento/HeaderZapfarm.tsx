@@ -25,6 +25,13 @@ const HOME_JOURNEY_LINKS = [
   { label: 'FAQ', href: '/#faq' },
 ] as const;
 
+const EMAGRECIMENTO_LANDING_LINKS = [
+  { label: 'Programa', href: '/emagrecimento#programa' },
+  { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
+  { label: 'Resultados', href: '/emagrecimento#depoimentos' },
+  { label: 'FAQ', href: '/emagrecimento#faq' },
+] as const;
+
 export function HeaderZapfarm({
   links,
   primaryCtaHref,
@@ -93,10 +100,14 @@ export function HeaderZapfarm({
   const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/protocolos';
   const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
   const resolvedPrimaryLabel =
-    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
+    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Comecar minha triagem');
   const resolvedPrimaryMobileLabel =
-    primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar');
-  const navigationLinks = links?.length ? links : HOME_JOURNEY_LINKS;
+    primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
+  const navigationLinks = links?.length
+    ? links
+    : isLandingPage
+      ? EMAGRECIMENTO_LANDING_LINKS
+      : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const shouldUseScrolledStyle =
     isJourneyPage || isReportPage ? true : transparentAtTop === false ? true : scrolled;
@@ -112,12 +123,12 @@ export function HeaderZapfarm({
       {isJourneyPage && !useMinimalReportHeader && (
         <div className="border-b border-emerald-100/90 bg-white/92 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.08em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2 sm:text-[10px] sm:uppercase sm:tracking-[0.14em]">
           <span className="sm:hidden">Avaliacao medica, privacidade e suporte oficial</span>
-          <span className="hidden sm:inline">Programa com avaliacao medica, privacidade e suporte oficial no mesmo fluxo</span>
+          <span className="hidden sm:inline">Avaliacao medica individual, privacidade e suporte oficial no mesmo fluxo</span>
         </div>
       )}
 
       <div className="container mx-auto px-4 sm:px-6">
-        <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[76px]' : 'h-20 sm:h-16 md:h-20'}`}>
+        <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[72px]' : 'h-20 sm:h-16 md:h-20'}`}>
           <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — inicio">
             {useMedviMark ? (
               <div className="flex items-center gap-2">
@@ -133,7 +144,7 @@ export function HeaderZapfarm({
                 </span>
                 {isEmagrecimentoFlow && (
                   <span className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}>
-                    Emagrecimento com avaliacao medica
+                    Programa de emagrecimento
                   </span>
                 )}
                 {!isEmagrecimentoFlow && brandSubtitle && (
@@ -152,7 +163,7 @@ export function HeaderZapfarm({
             )}
           </a>
 
-          <nav className={`hidden items-center gap-7 text-[13px] font-semibold uppercase tracking-[0.08em] md:flex ${useMinimalReportHeader ? 'md:hidden' : ''}`}>
+          <nav className={`hidden items-center gap-6 text-[12px] font-semibold uppercase tracking-[0.1em] md:flex ${useMinimalReportHeader ? 'md:hidden' : ''}`}>
             {navigationLinks.map((link) => (
               <a
                 key={link.href}
@@ -192,10 +203,10 @@ export function HeaderZapfarm({
 
           {isJourneyPage && !useMinimalReportHeader ? (
             <a
-              href="/#planos"
+              href={isLandingPage ? '/emagrecimento#tratamentos' : '/#planos'}
               className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
             >
-              Planos
+              {isLandingPage ? 'Tratamentos' : 'Planos'}
             </a>
           ) : (
             <a
