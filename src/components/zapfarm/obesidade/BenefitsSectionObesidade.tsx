@@ -36,10 +36,10 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Primeiro voce entende o caminho. Depois decide.
+              Clareza primeiro. A decisao clinica vem depois.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              O programa foi desenhado para tirar ruído: menos promessa, mais contexto clínico e próximos passos claros.
+              Triagem, contexto clinico e proximos passos claros antes de qualquer decisao.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
               {['Medicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Proximos passos claros'].map((item) => (
