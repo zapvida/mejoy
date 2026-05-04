@@ -36,7 +36,7 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
     section: 1,
     title: 'Vamos começar pelo seu perfil clínico.',
     description:
-      'Precisamos dos dados básicos para calcular elegibilidade e personalizar sua leitura inicial.',
+      'Precisamos dos dados essenciais para calcular elegibilidade e iniciar sua leitura clínica.',
     ctaLabel: 'Próximo',
     items: [
       { kind: 'field', key: 'aceita_termos', required: true, resumeRequired: true },
@@ -53,7 +53,7 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
     section: 2,
     title: 'Agora precisamos do seu histórico de saúde.',
     description:
-      'Essas respostas ajudam a reduzir risco, evitar contraindicações e poupar tempo na avaliação médica.',
+      'Essas respostas reduzem risco, evitam contraindicações e aceleram a avaliação médica.',
     ctaLabel: 'Próximo',
     items: [
       { kind: 'field', key: 'contraindicacoes_glp1', required: true, resumeRequired: true },
@@ -102,7 +102,7 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
     section: 3,
     title: 'Falta só entender seu objetivo e onde enviar o resultado.',
     description:
-      'Com isso, a Me Joy consegue montar sua leitura inicial e orientar o próximo passo pelo canal oficial.',
+      'Com isso, a Me Joy monta sua leitura inicial e orienta o próximo passo pelo canal oficial.',
     note: 'Prescrição e medicação somente quando indicadas após avaliação médica.',
     ctaLabel: 'Gerar meu resultado inicial',
     submit: true,

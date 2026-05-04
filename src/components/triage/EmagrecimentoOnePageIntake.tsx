@@ -51,13 +51,13 @@ type PendingPayload = {
 };
 
 const FORM_INPUT_CLASSNAME =
-  'h-14 rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 text-base font-medium text-slate-900 shadow-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
+  'h-14 rounded-[16px] border border-[#d4d8d0] bg-white px-4 text-[17px] font-medium text-slate-900 shadow-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#e5efe4]';
 
 const DATE_INPUT_CLASSNAME =
-  'h-14 w-full rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 text-base font-medium text-slate-900 outline-none transition focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
+  'h-14 w-full rounded-[16px] border border-[#d4d8d0] bg-white px-4 text-[17px] font-medium text-slate-900 outline-none transition focus:border-[#2f6a49] focus:ring-4 focus:ring-[#e5efe4]';
 
 const TEXTAREA_CLASSNAME =
-  'min-h-[128px] w-full rounded-[18px] border border-[#d6ddd3] bg-[#fbfcfa] px-4 py-4 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#dfeee0]';
+  'min-h-[128px] w-full rounded-[16px] border border-[#d4d8d0] bg-white px-4 py-4 text-[17px] font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#e5efe4]';
 
 const REQUIRED_MESSAGES: Record<string, string> = {
   aceita_termos: 'Confirme os documentos para continuar.',
@@ -768,7 +768,7 @@ export function EmagrecimentoOnePageIntake({
 
       return (
         <div
-          className="rounded-[22px] border border-[#dce3d9] bg-[#fbfcfa] p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+          className="rounded-[18px] border border-[#d4d8d0] bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
           data-step-key={step.key}
           data-triage-field-error={sectionErrors[step.key] ? 'true' : undefined}
         >
@@ -1149,15 +1149,17 @@ export function EmagrecimentoOnePageIntake({
     (title: string, description: string | undefined, children: ReactNode, options?: { muted?: boolean }) => (
       <section
         className={cn(
-          'px-5 py-6 sm:px-7 sm:py-7',
-          options?.muted ? 'bg-[#f7f8f5]' : 'bg-white'
+          'px-5 py-5 sm:px-7 sm:py-6',
+          options?.muted ? 'bg-[#f6f7f3]' : 'bg-white'
         )}
       >
-        <div className="mb-5">
-          <h2 className="text-[17px] font-semibold tracking-[-0.02em] text-slate-900">{title}</h2>
-          {description ? <p className="mt-1.5 text-sm leading-6 text-slate-600">{description}</p> : null}
+        <div className="rounded-[22px] border border-[#dde1d8] bg-[#ecece8] p-4 sm:p-5">
+          <div className="mb-4">
+            <h2 className="text-[17px] font-semibold tracking-[-0.02em] text-slate-900">{title}</h2>
+            {description ? <p className="mt-1.5 text-[13px] leading-6 text-slate-600">{description}</p> : null}
+          </div>
+          {children}
         </div>
-        {children}
       </section>
     ),
     []
@@ -1176,7 +1178,7 @@ export function EmagrecimentoOnePageIntake({
       <>
         {renderStageSection(
           'Confirmação e documentos',
-          'Leitura rápida e essencial para iniciar sua avaliação.',
+          'Confirme para continuar.',
           <div className="space-y-4">{aceite ? renderFieldByStep(aceite) : null}</div>,
           { muted: true }
         )}
@@ -1195,7 +1197,7 @@ export function EmagrecimentoOnePageIntake({
 
         {renderStageSection(
           'Critérios iniciais de segurança',
-          'Esse bloco replica o início clínico do benchmark e prepara a análise médica.',
+          'Usamos esse bloco para reduzir risco e orientar a análise médica.',
           <div className="space-y-5">
             {sexo ? renderSexField(sexo) : null}
             {gestacao ? renderSelectField(gestacao) : null}
@@ -1236,8 +1238,8 @@ export function EmagrecimentoOnePageIntake({
       return (
         <>
           {renderStageSection(
-            'Health questions',
-            'Comece pelos critérios de segurança que podem mudar elegibilidade ou conduta.',
+            'Perguntas de saúde',
+            'Comece pelos critérios que podem mudar elegibilidade ou conduta.',
             <div className="space-y-5">
               {contraindicacoes
                 ? renderMultiselectField(
@@ -1322,7 +1324,7 @@ export function EmagrecimentoOnePageIntake({
       <>
         {renderStageSection(
           'Objetivo e preferência inicial',
-          'Queremos entender o impacto do peso na sua vida e qual estratégia faz mais sentido avaliar.',
+          'Queremos entender o impacto do peso na sua rotina e qual estratégia faz mais sentido avaliar.',
           <div className="space-y-5">
             {impacto ? renderSelectField(impacto) : null}
             {objetivo ? renderSelectField(objetivo) : null}
@@ -1413,40 +1415,39 @@ export function EmagrecimentoOnePageIntake({
 
   return (
     <main
-      className="min-h-screen bg-[#f5f6f1] px-4 py-6 text-slate-900 sm:px-6 sm:py-8"
+      className="min-h-screen bg-[#f7f6f2] px-4 py-6 text-slate-900 sm:px-6 sm:py-8"
       data-testid="emagrecimento-intake"
     >
-      <div className="mx-auto max-w-[46rem]">
-        <header className="mb-6">
+      <div className="mx-auto max-w-[42rem]">
+        <header className="mb-6 pt-2 sm:pt-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <Image
-                src="/mejoy2preto.png"
+                src="/logosmejoy/logomejoy.png"
                 alt="Me Joy"
-                width={128}
-                height={28}
+                width={208}
+                height={56}
                 priority
-                className="h-auto w-[128px]"
+                className="h-auto w-[176px] sm:w-[208px]"
               />
-              <span className="hidden h-5 w-px bg-[#d8dfd6] sm:block" />
-              <p className="text-xs font-medium tracking-[0.08em] text-slate-500 sm:text-[13px]">
-                TRIAGEM CLÍNICA DE EMAGRECIMENTO
-              </p>
             </div>
-            <div className="inline-flex w-fit items-center rounded-full border border-[#dce3d9] bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm">
-              4,8/5 em satisfação no atendimento
+            <div className="inline-flex w-fit items-center rounded-full border border-[#d8ddd5] bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
+              Excelente 4,8
             </div>
           </div>
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-xs">
+            Triagem clínica de emagrecimento
+          </p>
           <div className="mt-4 h-px bg-[#dce3d9]" />
         </header>
 
         <section
-          className="overflow-hidden rounded-[32px] border border-[#dce3d9] bg-white shadow-[0_20px_60px_rgba(15,23,42,0.06)]"
+          className="overflow-hidden rounded-[30px] border border-[#dde1d8] bg-white shadow-[0_20px_60px_rgba(15,23,42,0.05)]"
           data-testid={`triage-stage-${currentPage.id}`}
         >
-          <div className="border-b border-[#e5ebe2] bg-[#fbfcfa] px-5 py-6 sm:px-7 sm:py-7">
+          <div className="border-b border-[#e4e8df] bg-white px-5 py-7 sm:px-7 sm:pb-8 sm:pt-9">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="inline-flex rounded-full bg-[#eef3ec] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#38573f]">
+              <span className="inline-flex rounded-full bg-[#eef2eb] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#38573f]">
                 Etapa {currentPage.section} de {EMAGRECIMENTO_TOTAL_SECTIONS}
               </span>
               <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
@@ -1454,29 +1455,18 @@ export function EmagrecimentoOnePageIntake({
               </span>
             </div>
 
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="max-w-[36rem]">
-                <h1 className="text-[28px] font-semibold tracking-[-0.04em] text-slate-900 sm:text-[34px]">
-                  {currentPage.title}
-                </h1>
-                {currentPage.description ? (
-                  <p className="mt-2 max-w-[32rem] text-sm leading-6 text-slate-600 sm:text-[15px]">
-                    {currentPage.description}
-                  </p>
-                ) : null}
-              </div>
-
-              <div className="rounded-[20px] border border-[#e4e9e0] bg-white px-4 py-3 text-right shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-                  Progresso geral
+            <div className="mt-5 max-w-[34rem]">
+              <h1 className="text-[34px] font-semibold tracking-[-0.05em] text-slate-900 sm:text-[42px] sm:leading-[1.02]">
+                {currentPage.title}
+              </h1>
+              {currentPage.description ? (
+                <p className="mt-3 max-w-[30rem] text-sm leading-6 text-slate-600 sm:text-[15px]">
+                  {currentPage.description}
                 </p>
-                <p className="mt-1 text-lg font-semibold tracking-[-0.03em] text-slate-900">
-                  {Math.max(progress, pageProgress)}%
-                </p>
-              </div>
+              ) : null}
             </div>
 
-            <div className="mt-5 grid grid-cols-3 gap-2">
+            <div className="mt-6 grid grid-cols-3 gap-2">
               {EMAGRECIMENTO_INTAKE_PAGES.map((page, index) => {
                 const isDone = index < currentPageIndex;
                 const isActive = index === currentPageIndex;
