@@ -37,15 +37,15 @@ export function DecisionSectionObesidade() {
                 Em poucos minutos você já sabe o melhor próximo passo para o seu caso
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-                Triagem rápida, avaliação médica e plano estruturado para reduzir tentativa e erro. Sem promessa mágica,
-                com direção clínica e acompanhamento contínuo.
+                Triagem rapida, avaliacao medica e plano estruturado para reduzir tentativa e erro. Sem promessa
+                magica, com direcao clinica e acompanhamento continuo.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm sm:text-base">
                 {[
                   'Leva cerca de 5 minutos para concluir a triagem',
-                  'Conduta definida em avaliação individual',
-                  'Você entende exatamente o que está incluso antes de decidir',
+                  'Conduta definida em avaliacao individual',
+                  'Voce entende exatamente o que esta incluso antes de decidir',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-slate-700">
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">
@@ -62,7 +62,7 @@ export function DecisionSectionObesidade() {
                   onClick={handleCta}
                   className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-emerald-800 px-8 py-3.5 text-base font-bold text-white shadow-[0_20px_45px_rgba(16,185,129,0.28)] transition-all hover:scale-[1.02]"
                 >
-                  Fazer minha triagem agora
+                  Fazer minha triagem
                 </a>
                 <span className="text-xs text-slate-500 sm:text-sm">
                   Prescrição somente quando indicada em consulta médica.
