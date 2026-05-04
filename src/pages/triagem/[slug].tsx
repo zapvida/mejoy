@@ -32,10 +32,10 @@ const clearLocalCache = (triageId?: string) => {
 
 const LOCALE_PREFIX_PATTERN = /^\/[a-z]{2}(?:-[A-Z]{2})?(?=\/|$)/;
 
-const resolveSlugFromAsPath = (asPath: string | undefined) => {
-  if (!asPath) return undefined;
+const extractSlugFromPath = (path: string | undefined) => {
+  if (!path) return undefined;
 
-  const cleanPath = asPath.split("#")[0]?.split("?")[0] ?? "";
+  const cleanPath = path.split("#")[0]?.split("?")[0] ?? "";
   const withoutLocale = cleanPath.replace(LOCALE_PREFIX_PATTERN, "");
   const segments = withoutLocale.split("/").filter(Boolean);
 
@@ -44,13 +44,18 @@ const resolveSlugFromAsPath = (asPath: string | undefined) => {
   return segments[1];
 };
 
+const resolveSlugFromLocation = () => {
+  if (typeof window === "undefined") return undefined;
+  return extractSlugFromPath(window.location.pathname);
+};
+
 export default function TriageSlugPage() {
   const router = useRouter();
   const slugFromQuery = router.query.slug;
   const slug = useMemo(() => {
     if (typeof slugFromQuery === "string" && slugFromQuery) return slugFromQuery;
     if (Array.isArray(slugFromQuery) && slugFromQuery[0]) return slugFromQuery[0];
-    return resolveSlugFromAsPath(router.asPath);
+    return resolveSlugFromLocation() || extractSlugFromPath(router.asPath);
   }, [router.asPath, slugFromQuery]);
   const flow: TriageFlow | undefined = useMemo(() => (slug ? flowsMap[slug] : undefined), [slug]);
 
