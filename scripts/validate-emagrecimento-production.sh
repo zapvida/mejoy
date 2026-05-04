@@ -50,7 +50,7 @@ echo ""
 # 4. Testes E2E (se Playwright estiver disponível)
 echo "📋 [4/5] Rodando Testes E2E..."
 if command -v playwright &> /dev/null; then
-  if pnpm test:e2e tests/e2e/emagrecimento-completo.spec.ts --reporter=list 2>&1 | head -50; then
+  if pnpm test:e2e:prod-smoke --project=chromium --reporter=list 2>&1 | head -50; then
     echo -e "${GREEN}✅ Testes E2E passaram${NC}"
   else
     echo -e "${YELLOW}⚠️ Testes E2E com problemas (não bloqueante)${NC}"
@@ -83,4 +83,3 @@ else
   echo -e "${RED}❌ VALIDAÇÃO FALHOU - $ERRORS erro(s) encontrado(s)${NC}"
   exit 1
 fi
-

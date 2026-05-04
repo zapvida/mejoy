@@ -17,10 +17,11 @@ interface HeaderZapfarmProps {
   transparentAtTop?: boolean;
 }
 
+/** Hub `/` — âncoras alinhadas a `MedviHomeHub` e LPAC para planos. */
 const HOME_JOURNEY_LINKS = [
-  { label: 'Programa', href: '/#programa' },
+  { label: 'Programa', href: '/#tratamentos' },
   { label: 'Como funciona', href: '/#como-funciona' },
-  { label: 'Planos', href: '/#planos' },
+  { label: 'Planos', href: '/emagrecimento#tratamentos' },
   { label: 'Depoimentos', href: '/#depoimentos' },
   { label: 'FAQ', href: '/#faq' },
 ] as const;
@@ -199,7 +200,7 @@ export function HeaderZapfarm({
 
           {isJourneyPage && !useMinimalReportHeader ? (
             <a
-              href={isLandingPage ? '/emagrecimento#tratamentos' : '/#planos'}
+              href="/emagrecimento#tratamentos"
               className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
             >
               {isLandingPage ? 'Tratamentos' : 'Planos'}

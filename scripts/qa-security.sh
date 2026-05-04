@@ -93,7 +93,7 @@ fi
 # 6. Testes E2E de segurança
 log "6. Executando testes E2E de segurança..."
 if command -v playwright &> /dev/null; then
-    pnpm test:e2e tests/e2e/security-critical.spec.ts > "$ARTIFACTS_DIR/security-e2e.log" 2>&1
+    pnpm test:e2e:legacy tests/e2e/legacy/security-critical.spec.ts > "$ARTIFACTS_DIR/security-e2e.log" 2>&1
     if [ $? -eq 0 ]; then
         log "✅ Testes E2E de segurança passaram"
     else
@@ -107,7 +107,7 @@ fi
 # 7. Testes de acessibilidade
 log "7. Executando testes de acessibilidade..."
 if command -v playwright &> /dev/null; then
-    pnpm test:e2e tests/e2e/accessibility-critical.spec.ts > "$ARTIFACTS_DIR/accessibility-e2e.log" 2>&1
+    pnpm test:e2e:legacy tests/e2e/legacy/accessibility-critical.spec.ts > "$ARTIFACTS_DIR/accessibility-e2e.log" 2>&1
     if [ $? -eq 0 ]; then
         log "✅ Testes de acessibilidade passaram"
     else

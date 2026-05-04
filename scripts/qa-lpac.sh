@@ -62,7 +62,7 @@ if command -v playwright &> /dev/null; then
         warn "Playwright installation failed (continuing...)"
     fi
     
-    if pnpm playwright test tests/e2e/*.spec.ts; then
+    if pnpm test:e2e:pr --project=chromium; then
         log "E2E tests passed"
     else
         warn "E2E tests failed (continuing...)"

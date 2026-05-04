@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
 import { getHomeVariant, isRootB2BDomain, isCopyV4Enabled, type HomeVariant } from '@/lib/flags';
-import { HomeMedviJourney } from '@/components/home/HomeMedviJourney';
+import { MedviHomeHub } from '@/components/home/MedviHomeHub';
 import { getHomeSections, getProductsByTag, getNewestProducts, getTopProducts } from '@/lib/store-v2/catalog';
 import { getCopyV4BySku } from '@/lib/store-v2/copy-v2';
 import type { ProductCardData } from '@/lib/store-v2/catalog';
@@ -360,7 +360,7 @@ export default function Home({
 }) {
   if (!showB2C) return <B2BLanding />;
   if (homeVariant === 'store_v2') return <StoreV2Home sections={sections} featured={featured} />;
-  return <HomeMedviJourney page="home" canonicalPath="/" />;
+  return <MedviHomeHub canonicalPath="/" />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

@@ -31,6 +31,7 @@ const clearLocalCache = (triageId?: string) => {
 };
 
 const LOCALE_PREFIX_PATTERN = /^\/[a-z]{2}(?:-[A-Z]{2})?(?=\/|$)/;
+const DYNAMIC_SEGMENT_PATTERN = /^\[[^/]+\]$/;
 
 const extractSlugFromPath = (path: string | undefined) => {
   if (!path) return undefined;
@@ -40,8 +41,10 @@ const extractSlugFromPath = (path: string | undefined) => {
   const segments = withoutLocale.split("/").filter(Boolean);
 
   if (segments[0] !== "triagem") return undefined;
+  const candidate = segments[1];
+  if (!candidate || DYNAMIC_SEGMENT_PATTERN.test(candidate)) return undefined;
 
-  return segments[1];
+  return candidate;
 };
 
 const resolveSlugFromLocation = () => {
@@ -207,7 +210,6 @@ export default function TriageSlugPage() {
     
     // Verificar se o flow existe
     if (!flow) {
-      console.error(`[TriagePage] Flow not found for slug: ${slug}`);
       setError(`Triagem "${slug}" não encontrada.`);
       setState("error");
       return;
@@ -419,19 +421,20 @@ export default function TriageSlugPage() {
                 <p className="mt-4 text-white/80">
                   Seu relatório está pronto e ficou salvo com segurança. Você pode acessá-lo quando quiser.
                 </p>
-                
-                {/* CTAs de Parceiros */}
-                <div className="mt-6">
-                  <PartnerCTAGroup 
-                    partners={['zapvida', 'zapfarm']} 
-                    context="triage_done" 
-                    triageId={session.triageId}
-                    reportId={session.triageId}
-                    variant="primary"
-                    fullWidth
-                  />
-                </div>
-                
+
+                {slug !== 'emagrecimento' && (
+                  <div className="mt-6">
+                    <PartnerCTAGroup
+                      partners={['zapvida', 'zapfarm']}
+                      context="triage_done"
+                      triageId={session.triageId}
+                      reportId={session.triageId}
+                      variant="primary"
+                      fullWidth
+                    />
+                  </div>
+                )}
+
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <button
                     type="button"

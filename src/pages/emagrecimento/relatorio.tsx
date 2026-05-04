@@ -174,8 +174,8 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
         <div className="relative z-50">
           <HeaderZapfarm
             primaryCtaHref="#report-inline-checkout"
-            primaryCtaLabel="Continuar nesta pagina"
-            primaryCtaMobileLabel="Checkout"
+            primaryCtaLabel="Continuar com meu plano"
+            primaryCtaMobileLabel="Continuar"
             primaryCtaOnClick={openInlineCheckout}
           />
         </div>
@@ -187,7 +187,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
               onClick={openInlineCheckout}
               className="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-md"
             >
-              {checkoutOpen ? 'Voltar ao checkout' : 'Abrir checkout nesta pagina'}
+              {checkoutOpen ? 'Voltar ao checkout' : 'Continuar com meu plano'}
             </button>
             <a
               href={buildEmagrecimentoReportWhatsappUrl({
@@ -246,30 +246,30 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                   <div className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                        Frame 3
+                        Fechamento nesta página
                       </p>
                       <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-                        Checkout inline no mesmo fluxo do relatorio
+                        Continue seu plano sem sair desta página
                       </h2>
                       <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                        Seus dados da triagem entram aqui, o PIX aparece nesta mesma tela e o dashboard so libera depois da confirmacao real do pagamento.
+                        Seus dados da triagem já entram preenchidos. O PIX (ou cartão) aparece aqui mesmo e o seu painel é liberado automaticamente assim que o pagamento é confirmado.
                       </p>
 
                       <div className="mt-6 grid gap-4 md:grid-cols-3">
                         <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
-                          <p className="text-sm font-bold text-slate-900">Plano ativo</p>
+                          <p className="text-sm font-bold text-slate-900">Plano selecionado</p>
                           <p className="mt-2 text-slate-600">{selectedPlan?.title || selectedPlanId}</p>
                         </div>
                         <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
-                          <p className="text-sm font-bold text-slate-900">Trilha ativa</p>
+                          <p className="text-sm font-bold text-slate-900">Trilha clínica</p>
                           <p className="mt-2 text-slate-600">{selectedTrackCard.title}</p>
                           <p className="mt-2 text-xs font-semibold text-emerald-700">
                             {selectedTrackCard.potencyLabel}
                           </p>
                         </div>
                         <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
-                          <p className="text-sm font-bold text-slate-900">Liberacao do dashboard</p>
-                          <p className="mt-2 text-slate-600">Somente apos confirmacao real do pagamento.</p>
+                          <p className="text-sm font-bold text-slate-900">Acesso ao painel</p>
+                          <p className="mt-2 text-slate-600">Liberado automaticamente após a confirmação do pagamento.</p>
                         </div>
                       </div>
 
@@ -279,7 +279,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                           onClick={openInlineCheckout}
                           className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
                         >
-                          Abrir checkout agora
+                          Continuar com meu plano
                         </button>
                       </div>
                     </div>
@@ -288,18 +288,18 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                       {[
                         {
                           src: '/images/emagrecimento/medvi/journey-triagem.avif',
-                          alt: 'Triagem pronta',
+                          alt: 'Triagem concluída',
                           title: 'Triagem aproveitada',
                         },
                         {
                           src: '/images/emagrecimento/medvi/journey-consulta.avif',
-                          alt: 'Consulta medica',
+                          alt: 'Consulta médica online',
                           title: 'Consulta valida a conduta',
                         },
                         {
                           src: '/images/emagrecimento/medvi/support-whatsapp.avif',
-                          alt: 'Suporte por WhatsApp',
-                          title: 'Suporte oficial no pos-pagamento',
+                          alt: 'Suporte oficial no WhatsApp',
+                          title: 'Suporte oficial pós-pagamento',
                         },
                       ].map((item) => (
                         <div
@@ -371,7 +371,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="max-w-2xl">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                    Rodape do relatorio
+                    Informações importantes
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">
                     {emagrecimentoLegalNote}
@@ -383,7 +383,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
                 >
-                  Baixar PDF do relatorio
+                  Baixar PDF do relatório
                 </a>
               </div>
             </section>

@@ -31,15 +31,16 @@ export function BenefitsSectionObesidade() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Prova e autoridade</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Por que funciona</p>
             <h2
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Clareza primeiro. A decisao clinica vem depois.
+              Por que o programa funciona, com clareza médica
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              Triagem, contexto clinico e proximos passos claros antes de qualquer decisao.
+              Avaliação médica individual, jornada digital simples e suporte oficial pelos canais da Me Joy.
+              Você decide com contexto, transparência e segurança.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
               {['Medicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Proximos passos claros'].map((item) => (

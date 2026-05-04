@@ -101,13 +101,13 @@ export function ReportCtasEmagrecimento({
     <section className="rounded-[32px] border border-[#d7e3da] bg-white p-5 shadow-[0_30px_90px_rgba(15,23,42,0.08)] sm:p-6 md:p-8">
       <div className="mx-auto max-w-3xl text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-          Frame 2
+          Escolha do plano
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-          Escolha o plano do seu fechamento
+          Escolha o plano do seu programa
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-          A trilha clinica ja esta definida acima. Aqui voce escolhe somente a duracao do acompanhamento e abre o checkout inline.
+          A trilha clínica já está definida acima. Aqui você só escolhe a duração do acompanhamento e segue para o checkout nesta mesma página.
         </p>
       </div>
 

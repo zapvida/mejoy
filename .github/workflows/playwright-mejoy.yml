@@ -1,0 +1,635 @@
+name: Playwright MeJoy
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Which lane to run manually
+        required: true
+        default: pr-regression
+        type: choice
+        options:
+          - pr-regression
+          - prod-smoke
+          - sandbox-e2e
+          - public-cross-browser
+      base_url:
+        description: Optional override for PLAYWRIGHT_BASE_URL
+        required: false
+        type: string
+  workflow_run:
+    workflows: ["Deploy Vercel"]
+    types: [completed]
+  schedule:
+    - cron: '0 11 * * *'
+    - cron: '0 4 * * *'
+    - cron: '0 13 * * 1'
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+concurrency:
+  group: playwright-mejoy-${{ github.event_name }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  STORE_V2: '1'
+  NEXT_PUBLIC_STORE_V2: '1'
+  CI: 'true'
+
+jobs:
+  pr-regression:
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.target == 'pr-regression')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run PR regression
+        env:
+          PLAYWRIGHT_LANE: pr-regression
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || '' }}
+        run: pnpm exec playwright test --project=chromium
+
+      - name: Generate summary
+        if: always()
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always()
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-regression-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-regression-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-regression-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+  resolve-post-deploy-url:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_url: ${{ steps.resolve.outputs.deploy_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - id: resolve
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ] || [ ! -f .vercel/project.json ]; then
+            echo "deploy_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROJECT_ID=$(node -p "require('./.vercel/project.json').projectId || ''")
+          TEAM_ID=$(node -p "require('./.vercel/project.json').orgId || ''")
+
+          if [ -z "$PROJECT_ID" ]; then
+            echo "deploy_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          RESPONSE=$(curl -fsSL -G "https://api.vercel.com/v6/deployments" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            --data-urlencode "projectId=$PROJECT_ID" \
+            --data-urlencode "teamId=$TEAM_ID" \
+            --data-urlencode "meta-githubCommitSha=$COMMIT_SHA" \
+            --data-urlencode "limit=10")
+
+          DEPLOY_URL=$(node -e "const data = JSON.parse(process.argv[1]); const ready = (data.deployments || []).find((item) => item.readyState === 'READY' || item.state === 'READY'); process.stdout.write(ready?.url ? `https://${ready.url}` : '');" "$RESPONSE")
+          echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+  prod-smoke-post-deploy-preview:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    needs: resolve-post-deploy-url
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Skip when deploy URL is unavailable
+        if: needs.resolve-post-deploy-url.outputs.deploy_url == ''
+        run: echo "Deploy URL unavailable; skipping preview smoke." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run prod smoke on deploy URL
+        if: needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        env:
+          PLAYWRIGHT_LANE: prod-smoke
+          PLAYWRIGHT_BASE_URL: ${{ needs.resolve-post-deploy-url.outputs.deploy_url }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+          E2E_PROD_ORDER_ID: ${{ secrets.E2E_PROD_ORDER_ID }}
+          E2E_PROD_USER_EMAIL: ${{ secrets.E2E_PROD_USER_EMAIL }}
+          E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
+        run: |
+          test -n "$PLAYWRIGHT_BASE_URL"
+          test -n "$PRODUCTION_REPORT_ID"
+          pnpm exec playwright test --project=chromium
+
+      - name: Generate summary
+        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-preview-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-preview-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-preview-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+  prod-smoke-post-deploy-canonical:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run prod smoke on canonical domain
+        env:
+          PLAYWRIGHT_LANE: prod-smoke
+          PLAYWRIGHT_BASE_URL: https://www.mejoy.com.br
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+          E2E_PROD_ORDER_ID: ${{ secrets.E2E_PROD_ORDER_ID }}
+          E2E_PROD_USER_EMAIL: ${{ secrets.E2E_PROD_USER_EMAIL }}
+          E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
+        run: |
+          test -n "$PRODUCTION_REPORT_ID"
+          pnpm exec playwright test --project=chromium
+
+      - name: Generate summary
+        if: always()
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always()
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-canonical-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-canonical-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-post-deploy-canonical-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+  prod-smoke-daily:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 11 * * *' || (github.event_name == 'workflow_dispatch' && inputs.target == 'prod-smoke')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run daily prod smoke
+        env:
+          PLAYWRIGHT_LANE: prod-smoke
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+          E2E_PROD_ORDER_ID: ${{ secrets.E2E_PROD_ORDER_ID }}
+          E2E_PROD_USER_EMAIL: ${{ secrets.E2E_PROD_USER_EMAIL }}
+          E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
+        run: |
+          test -n "$PLAYWRIGHT_BASE_URL"
+          test -n "$PRODUCTION_REPORT_ID"
+          pnpm exec playwright test --project=chromium
+
+      - name: Generate summary
+        if: always()
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always()
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-daily-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-daily-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-daily-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+      - name: Open issue after repeated scheduled failure
+        if: always() && failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: prod-smoke-daily-summary-json
+          JOB_LABEL: prod-smoke-daily
+        run: |
+          CURRENT_DIGEST=$(node -e "const fs=require('fs'); const p='playwright-report/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+          if [ -z "$CURRENT_DIGEST" ]; then
+            exit 0
+          fi
+
+          PREVIOUS_RUN_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/playwright-mejoy.yml/runs" --jq ".workflow_runs | map(select(.event == \"schedule\" and .status == \"completed\" and (.id|tostring) != \"$GITHUB_RUN_ID\")) | sort_by(.created_at) | reverse | .[0].id // empty")
+          if [ -z "$PREVIOUS_RUN_ID" ]; then
+            exit 0
+          fi
+
+          ARTIFACT_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$ARTIFACT_NAME\") | .id" | head -n1)
+          if [ -z "$ARTIFACT_ID" ]; then
+            exit 0
+          fi
+
+          mkdir -p .previous-summary
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > .previous-summary/summary.zip
+          unzip -p .previous-summary/summary.zip summary.json > .previous-summary/summary.json
+          PREVIOUS_DIGEST=$(node -e "const fs=require('fs'); const p='.previous-summary/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+
+          if [ "$CURRENT_DIGEST" != "$PREVIOUS_DIGEST" ]; then
+            exit 0
+          fi
+
+          ISSUE_TITLE="Playwright MeJoy repeated failure ($JOB_LABEL) [${CURRENT_DIGEST:0:12}]"
+          ISSUE_BODY=$(cat <<EOF
+          Automated detection opened this issue after the same scheduled Playwright MeJoy failure repeated in two consecutive runs.
+
+          - Job: \`$JOB_LABEL\`
+          - Digest: \`$CURRENT_DIGEST\`
+          - Current run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          - Previous run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID
+
+          See the uploaded HTML report, trace, video and screenshots in the failed runs.
+          EOF
+          )
+
+          EXISTING_ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$ISSUE_TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING_ISSUE" ]; then
+            gh issue comment "$EXISTING_ISSUE" --repo "$GITHUB_REPOSITORY" --body "$ISSUE_BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
+          fi
+
+  sandbox-e2e-nightly:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 4 * * *' || (github.event_name == 'workflow_dispatch' && inputs.target == 'sandbox-e2e')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run sandbox e2e
+        env:
+          PLAYWRIGHT_LANE: sandbox-e2e
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || secrets.SANDBOX_URL }}
+          SANDBOX_URL: ${{ secrets.SANDBOX_URL }}
+          E2E_SANDBOX_USER_EMAIL: ${{ secrets.E2E_SANDBOX_USER_EMAIL }}
+          E2E_SANDBOX_USER_PASSWORD: ${{ secrets.E2E_SANDBOX_USER_PASSWORD }}
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
+          E2E_SANDBOX_CARD_HOLDER: ${{ secrets.E2E_SANDBOX_CARD_HOLDER }}
+          E2E_SANDBOX_CARD_NUMBER: ${{ secrets.E2E_SANDBOX_CARD_NUMBER }}
+          E2E_SANDBOX_CARD_EXPIRY: ${{ secrets.E2E_SANDBOX_CARD_EXPIRY }}
+          E2E_SANDBOX_CARD_CVV: ${{ secrets.E2E_SANDBOX_CARD_CVV }}
+          ASAAS_WEBHOOK_TOKEN: ${{ secrets.ASAAS_WEBHOOK_TOKEN }}
+        run: |
+          test -n "$PLAYWRIGHT_BASE_URL"
+          test -n "$E2E_SANDBOX_USER_EMAIL"
+          test -n "$E2E_SANDBOX_USER_PASSWORD"
+          test -n "$E2E_ADMIN_EMAIL"
+          test -n "$E2E_ADMIN_SECRET"
+          pnpm exec playwright test --project=chromium
+
+      - name: Generate summary
+        if: always()
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always()
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-e2e-nightly-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-e2e-nightly-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-e2e-nightly-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+      - name: Open issue after repeated scheduled failure
+        if: always() && failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: sandbox-e2e-nightly-summary-json
+          JOB_LABEL: sandbox-e2e-nightly
+        run: |
+          CURRENT_DIGEST=$(node -e "const fs=require('fs'); const p='playwright-report/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+          if [ -z "$CURRENT_DIGEST" ]; then
+            exit 0
+          fi
+
+          PREVIOUS_RUN_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/playwright-mejoy.yml/runs" --jq ".workflow_runs | map(select(.event == \"schedule\" and .status == \"completed\" and (.id|tostring) != \"$GITHUB_RUN_ID\")) | sort_by(.created_at) | reverse | .[0].id // empty")
+          if [ -z "$PREVIOUS_RUN_ID" ]; then
+            exit 0
+          fi
+
+          ARTIFACT_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$ARTIFACT_NAME\") | .id" | head -n1)
+          if [ -z "$ARTIFACT_ID" ]; then
+            exit 0
+          fi
+
+          mkdir -p .previous-summary
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > .previous-summary/summary.zip
+          unzip -p .previous-summary/summary.zip summary.json > .previous-summary/summary.json
+          PREVIOUS_DIGEST=$(node -e "const fs=require('fs'); const p='.previous-summary/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+
+          if [ "$CURRENT_DIGEST" != "$PREVIOUS_DIGEST" ]; then
+            exit 0
+          fi
+
+          ISSUE_TITLE="Playwright MeJoy repeated failure ($JOB_LABEL) [${CURRENT_DIGEST:0:12}]"
+          ISSUE_BODY=$(cat <<EOF
+          Automated detection opened this issue after the same scheduled Playwright MeJoy failure repeated in two consecutive runs.
+
+          - Job: \`$JOB_LABEL\`
+          - Digest: \`$CURRENT_DIGEST\`
+          - Current run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          - Previous run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID
+
+          See the uploaded HTML report, trace, video and screenshots in the failed runs.
+          EOF
+          )
+
+          EXISTING_ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$ISSUE_TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING_ISSUE" ]; then
+            gh issue comment "$EXISTING_ISSUE" --repo "$GITHUB_REPOSITORY" --body "$ISSUE_BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
+          fi
+
+  public-cross-browser-weekly:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 13 * * 1' || (github.event_name == 'workflow_dispatch' && inputs.target == 'public-cross-browser')
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps firefox webkit
+
+      - name: Run weekly cross-browser public smoke
+        env:
+          PLAYWRIGHT_LANE: prod-smoke
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+        run: |
+          test -n "$PLAYWRIGHT_BASE_URL"
+          test -n "$PRODUCTION_REPORT_ID"
+          pnpm exec playwright test tests/e2e/public/prod-smoke.spec.ts --project=firefox --project=webkit
+
+      - name: Generate summary
+        if: always()
+        run: pnpm qa:mejoy:summary
+
+      - name: Publish summary
+        if: always()
+        run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-cross-browser-weekly-html
+          path: playwright-report/html
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-cross-browser-weekly-test-results
+          path: test-results
+          retention-days: 7
+
+      - name: Upload summary JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-cross-browser-weekly-summary-json
+          path: playwright-report/summary.json
+          retention-days: 7
+
+      - name: Open issue after repeated scheduled failure
+        if: always() && failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: public-cross-browser-weekly-summary-json
+          JOB_LABEL: public-cross-browser-weekly
+        run: |
+          CURRENT_DIGEST=$(node -e "const fs=require('fs'); const p='playwright-report/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+          if [ -z "$CURRENT_DIGEST" ]; then
+            exit 0
+          fi
+
+          PREVIOUS_RUN_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/playwright-mejoy.yml/runs" --jq ".workflow_runs | map(select(.event == \"schedule\" and .status == \"completed\" and (.id|tostring) != \"$GITHUB_RUN_ID\")) | sort_by(.created_at) | reverse | .[0].id // empty")
+          if [ -z "$PREVIOUS_RUN_ID" ]; then
+            exit 0
+          fi
+
+          ARTIFACT_ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID/artifacts" --jq ".artifacts[] | select(.name == \"$ARTIFACT_NAME\") | .id" | head -n1)
+          if [ -z "$ARTIFACT_ID" ]; then
+            exit 0
+          fi
+
+          mkdir -p .previous-summary
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > .previous-summary/summary.zip
+          unzip -p .previous-summary/summary.zip summary.json > .previous-summary/summary.json
+          PREVIOUS_DIGEST=$(node -e "const fs=require('fs'); const p='.previous-summary/summary.json'; process.stdout.write(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')).digest : '');")
+
+          if [ "$CURRENT_DIGEST" != "$PREVIOUS_DIGEST" ]; then
+            exit 0
+          fi
+
+          ISSUE_TITLE="Playwright MeJoy repeated failure ($JOB_LABEL) [${CURRENT_DIGEST:0:12}]"
+          ISSUE_BODY=$(cat <<EOF
+          Automated detection opened this issue after the same scheduled Playwright MeJoy failure repeated in two consecutive runs.
+
+          - Job: \`$JOB_LABEL\`
+          - Digest: \`$CURRENT_DIGEST\`
+          - Current run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          - Previous run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$PREVIOUS_RUN_ID
+
+          See the uploaded HTML report, trace, video and screenshots in the failed runs.
+          EOF
+          )
+
+          EXISTING_ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$ISSUE_TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING_ISSUE" ]; then
+            gh issue comment "$EXISTING_ISSUE" --repo "$GITHUB_REPOSITORY" --body "$ISSUE_BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
+          fi

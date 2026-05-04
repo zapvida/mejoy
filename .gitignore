@@ -26,4 +26,5 @@ driveevidencias/
 smoke-test-report-*.json
 playwright-report/
 test-results/
+tmp/
 tmp/pdfs/

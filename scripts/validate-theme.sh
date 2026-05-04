@@ -60,7 +60,7 @@ fi
 
 # 2. Executar testes E2E
 log "🧪 Executando testes E2E..."
-if npx playwright test tests/e2e/theme.test.ts --reporter=line; then
+if npx playwright test tests/e2e/legacy/theme.test.ts --reporter=line; then
     success "✅ Todos os testes E2E passaram"
 else
     error "❌ Alguns testes E2E falharam!"
@@ -69,7 +69,7 @@ fi
 
 # 3. Verificar acessibilidade
 log "♿ Verificando acessibilidade..."
-if npx playwright test tests/e2e/theme.test.ts --grep="acessibilidade" --reporter=line; then
+if npx playwright test tests/e2e/legacy/theme.test.ts --grep="acessibilidade" --reporter=line; then
     success "✅ Testes de acessibilidade passaram"
 else
     warning "⚠️ Alguns testes de acessibilidade falharam"
@@ -77,7 +77,7 @@ fi
 
 # 4. Verificar responsividade
 log "📱 Verificando responsividade..."
-if npx playwright test tests/e2e/theme.test.ts --grep="responsivo" --reporter=line; then
+if npx playwright test tests/e2e/legacy/theme.test.ts --grep="responsivo" --reporter=line; then
     success "✅ Testes de responsividade passaram"
 else
     warning "⚠️ Alguns testes de responsividade falharam"
@@ -85,7 +85,7 @@ fi
 
 # 5. Verificar performance
 log "⚡ Verificando performance..."
-if npx playwright test tests/e2e/theme.test.ts --grep="performance" --reporter=line; then
+if npx playwright test tests/e2e/legacy/theme.test.ts --grep="performance" --reporter=line; then
     success "✅ Testes de performance passaram"
 else
     warning "⚠️ Alguns testes de performance falharam"

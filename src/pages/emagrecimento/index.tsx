@@ -1,5 +1,5 @@
-import { EmagrecimentoMedviLanding } from '@/components/zapfarm/obesidade/EmagrecimentoMedviLanding';
+import { EmagrecimentoLpacPage } from '@/components/lpac/EmagrecimentoLpacPage';
 
 export default function EmagrecimentoPage() {
-  return <EmagrecimentoMedviLanding page="emagrecimento" />;
+  return <EmagrecimentoLpacPage canonicalPath="/emagrecimento" />;
 }

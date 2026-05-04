@@ -160,7 +160,7 @@ export function ReportDecisionFold({
                 onClick={onOpenInlineCheckout}
                 className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
               >
-                Continuar nesta pagina
+                Continuar com meu plano
               </button>
               <a
                 href={buildEmagrecimentoReportWhatsappUrl({
@@ -239,10 +239,10 @@ export function ReportDecisionFold({
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                Frame 1
+                Trilha terapêutica
               </p>
               <h2 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-slate-950 sm:text-3xl">
-                Escolha a trilha terapeutica do seu fechamento
+                Escolha a trilha terapêutica do seu programa
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-relaxed text-slate-600">

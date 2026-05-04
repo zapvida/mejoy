@@ -12,14 +12,17 @@ const result = spawnSync(
     'exec',
     'playwright',
     'test',
-    'tests/e2e/emagrecimento-completo.spec.ts',
-    '--project=Mobile Chrome',
-    '--project=Mobile Safari'
+    'tests/e2e/public/ssr-responsive.pr-regression.spec.ts',
+    '--grep=landing remains stable',
+    '--project=chromium',
+    '--project=webkit'
   ],
   {
     stdio: 'inherit',
     env: {
       ...process.env,
+      PLAYWRIGHT_LANE: 'pr-regression',
+      PLAYWRIGHT_BASE_URL: productionUrl,
       PRODUCTION_URL: productionUrl,
     },
   }

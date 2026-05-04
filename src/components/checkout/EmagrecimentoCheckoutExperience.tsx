@@ -1262,7 +1262,7 @@ export function EmagrecimentoCheckoutExperience({
           >
             <div className="rounded-[24px] bg-[#f6fbf7] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
-                Frame 3
+                O que vem depois
               </p>
               <h3 className="mt-2 text-2xl font-bold text-slate-950">O que acontece depois do pagamento</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">

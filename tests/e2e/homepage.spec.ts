@@ -1,38 +1,34 @@
 import { expect, test } from '@playwright/test';
 
+/** Ordem das seções em `MedviHomeHub` (hub multi-tratamento na raiz). */
 const EXPECTED_SECTION_ORDER = [
   'hero',
-  'trust-bar',
-  'zero-cost',
-  'how-it-works',
-  'benefits',
-  'tailored',
-  'app-features',
+  'treatments',
+  'how_it_works',
+  'why_choose',
   'testimonials',
-  'plans',
-  'decision',
+  'cta_banner',
   'faq',
-  'legal-disclaimer',
   'footer',
 ];
 
 test.describe('Homepage Medvi Journey', () => {
-  test('renderiza a jornada Medvi na raiz com header, hero e CTA principal', async ({ page }) => {
+  test('renderiza o hub na raiz com header, hero e CTA principal', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/Emagrecimento com avaliacao medica/i);
+    await expect(page).toHaveTitle(/Telemedicina personalizada/i);
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
     await expect(page.getByTestId('home-medvi-header')).toBeVisible();
-    await expect(page.getByTestId('home-medvi-hero')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Emagrecimento com');
+    await expect(page.getByTestId('home-hub-hero')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Cuide da sua saúde');
     await expect(page.getByTestId('home-primary-cta')).toHaveAttribute('href', '/triagem/emagrecimento');
   });
 
   test('mantem a ordem canonica das secoes da home', async ({ page }) => {
     await page.goto('/');
 
-    const sections = await page.locator('[data-home-section]').evaluateAll((elements) =>
-      elements.map((element) => element.getAttribute('data-home-section')),
+    const sections = await page.locator('[data-home-section]').evaluateAll(elements =>
+      elements.map(element => element.getAttribute('data-home-section')),
     );
 
     expect(sections).toEqual(EXPECTED_SECTION_ORDER);
@@ -45,9 +41,9 @@ test.describe('Homepage Medvi Journey', () => {
     const desktopNav = page.locator('header nav');
     await expect(desktopNav).toBeVisible();
 
-    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/#programa');
+    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/#tratamentos');
     await expect(desktopNav.getByRole('link', { name: 'Como funciona' })).toHaveAttribute('href', '/#como-funciona');
-    await expect(desktopNav.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/#planos');
+    await expect(desktopNav.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/emagrecimento#tratamentos');
     await expect(desktopNav.getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
 
     await desktopNav.getByRole('link', { name: 'Como funciona' }).click();
