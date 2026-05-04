@@ -48,13 +48,14 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Simples na leitura, criterioso na decisão.
+              O programa precisa parecer simples sem perder rigor clinico.
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              O objetivo aqui é reduzir ruído: você entende elegibilidade, fluxo e suporte sem transformar a LP em catálogo genérico.
+              A decisao vem com contexto, transparencia e canais oficiais. Sem exagerar nos claims e sem transformar a
+              landing em e-commerce generico.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
-              {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
+              {['Medicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Proximos passos claros'].map((item) => (
                 <span
                   key={item}
                   className="rounded-full border border-emerald-100 bg-white px-4 py-2 shadow-sm"
