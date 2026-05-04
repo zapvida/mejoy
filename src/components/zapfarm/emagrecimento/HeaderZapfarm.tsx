@@ -25,6 +25,13 @@ const HOME_JOURNEY_LINKS = [
   { label: 'FAQ', href: '/#faq' },
 ] as const;
 
+const EMAGRECIMENTO_LANDING_LINKS = [
+  { label: 'Programa', href: '/emagrecimento#programa' },
+  { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
+  { label: 'Resultados', href: '/emagrecimento#depoimentos' },
+  { label: 'FAQ', href: '/emagrecimento#faq' },
+] as const;
+
 export function HeaderZapfarm({
   links,
   primaryCtaHref,
@@ -96,7 +103,7 @@ export function HeaderZapfarm({
     primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
-  const navigationLinks = links?.length ? links : HOME_JOURNEY_LINKS;
+  const navigationLinks = links?.length ? links : isLandingPage ? EMAGRECIMENTO_LANDING_LINKS : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const shouldUseScrolledStyle =
     isJourneyPage || isReportPage ? true : transparentAtTop === false ? true : scrolled;
@@ -192,10 +199,10 @@ export function HeaderZapfarm({
 
           {isJourneyPage && !useMinimalReportHeader ? (
             <a
-              href="/#planos"
+              href={isLandingPage ? '/emagrecimento#tratamentos' : '/#planos'}
               className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
             >
-              Planos
+              {isLandingPage ? 'Tratamentos' : 'Planos'}
             </a>
           ) : (
             <a

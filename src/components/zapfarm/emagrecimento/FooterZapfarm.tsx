@@ -6,11 +6,10 @@ export function FooterZapfarm() {
   const whatsappDisplay = whatsapp.replace(/^55/, '+55 ').replace(/(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contato@mejoy.com.br';
   const links = [
-    { label: 'Programa', href: '/#programa' },
-    { label: 'Como funciona', href: '/#como-funciona' },
-    { label: 'Planos', href: '/#planos' },
-    { label: 'Depoimentos', href: '/#depoimentos' },
-    { label: 'FAQ', href: '/#faq' },
+    { label: 'Programa', href: '/emagrecimento#programa' },
+    { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
+    { label: 'Resultados', href: '/emagrecimento#depoimentos' },
+    { label: 'FAQ', href: '/emagrecimento#faq' },
   ];
 
   return (

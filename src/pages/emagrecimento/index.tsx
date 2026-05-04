@@ -1,5 +1,5 @@
-import { HomeMedviJourney } from '@/components/home/HomeMedviJourney';
+import { EmagrecimentoMedviLanding } from '@/components/zapfarm/obesidade/EmagrecimentoMedviLanding';
 
 export default function EmagrecimentoPage() {
-  return <HomeMedviJourney page="emagrecimento" canonicalPath="/" />;
+  return <EmagrecimentoMedviLanding page="emagrecimento" />;
 }
