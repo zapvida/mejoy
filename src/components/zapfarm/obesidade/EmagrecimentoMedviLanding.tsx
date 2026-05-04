@@ -18,8 +18,6 @@ import { LandingAnalyticsProvider } from '@/contexts/LandingAnalyticsContext';
 import type { LandingPageKey } from '@/contexts/LandingAnalyticsContext';
 
 export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: LandingPageKey }) {
-  const isEmagrecimentoLanding = page === 'emagrecimento';
-
   return (
     <LandingAnalyticsProvider page={page}>
       <LandingPageViewTracker />
@@ -27,32 +25,18 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
         <HeaderZapfarm />
         <EmagrecimentoStickyCta />
         <main className="pb-24 md:pb-0">
-          {isEmagrecimentoLanding ? (
-            <>
-              <HeroSectionObesidade variant="emagrecimento" />
-              <BenefitsSectionObesidade />
-              <PlansSectionObesidade />
-              <TestimonialsSectionObesidade />
-              <DecisionSectionObesidade />
-              <FaqSectionObesidade />
-              <EmagrecimentoLegalDisclaimerSection />
-            </>
-          ) : (
-            <>
-              <HeroSectionObesidade variant="emagrecimento" />
-              <TrustBarSectionObesidade />
-              <ZeroCostSectionObesidade />
-              <HowItWorksSectionObesidade />
-              <BenefitsSectionObesidade />
-              <TailoredSectionObesidade />
-              <AppFeaturesSectionObesidade />
-              <TestimonialsSectionObesidade />
-              <PlansSectionObesidade />
-              <DecisionSectionObesidade />
-              <FaqSectionObesidade />
-              <EmagrecimentoLegalDisclaimerSection />
-            </>
-          )}
+          <HeroSectionObesidade variant="emagrecimento" />
+          <TrustBarSectionObesidade />
+          <ZeroCostSectionObesidade />
+          <HowItWorksSectionObesidade />
+          <BenefitsSectionObesidade />
+          <TailoredSectionObesidade />
+          <AppFeaturesSectionObesidade />
+          <TestimonialsSectionObesidade />
+          <PlansSectionObesidade />
+          <DecisionSectionObesidade />
+          <FaqSectionObesidade />
+          <EmagrecimentoLegalDisclaimerSection />
         </main>
         <FooterZapfarm />
       </div>

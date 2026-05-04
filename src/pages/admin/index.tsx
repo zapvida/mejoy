@@ -96,6 +96,10 @@ function QueueList({ title, items, emptyLabel }: { title: string; items: AdminQu
   );
 }
 
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default function AdminPage() {
   const router = useRouter();
   const [period, setPeriod] = useState<'today' | '7d' | '30d'>('30d');

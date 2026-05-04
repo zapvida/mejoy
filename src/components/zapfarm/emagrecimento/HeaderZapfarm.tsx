@@ -25,13 +25,6 @@ const HOME_JOURNEY_LINKS = [
   { label: 'FAQ', href: '/#faq' },
 ] as const;
 
-const EMAGRECIMENTO_LANDING_LINKS = [
-  { label: 'Programa', href: '/emagrecimento#programa' },
-  { label: 'Tratamentos', href: '/emagrecimento#tratamentos' },
-  { label: 'Depoimentos', href: '/emagrecimento#depoimentos' },
-  { label: 'FAQ', href: '/emagrecimento#faq' },
-] as const;
-
 export function HeaderZapfarm({
   links,
   primaryCtaHref,
@@ -103,11 +96,7 @@ export function HeaderZapfarm({
     primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar');
-  const navigationLinks = links?.length
-    ? links
-    : isLandingPage
-      ? EMAGRECIMENTO_LANDING_LINKS
-      : HOME_JOURNEY_LINKS;
+  const navigationLinks = links?.length ? links : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const shouldUseScrolledStyle =
     isJourneyPage || isReportPage ? true : transparentAtTop === false ? true : scrolled;
@@ -122,14 +111,14 @@ export function HeaderZapfarm({
     >
       {isJourneyPage && !useMinimalReportHeader && (
         <div className="border-b border-emerald-100/90 bg-white/92 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.08em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2 sm:text-[10px] sm:uppercase sm:tracking-[0.14em]">
-          <span className="sm:hidden">Avaliação médica, privacidade e suporte oficial</span>
-          <span className="hidden sm:inline">Programa com avaliação médica, privacidade e suporte oficial no mesmo fluxo</span>
+          <span className="sm:hidden">Avaliacao medica, privacidade e suporte oficial</span>
+          <span className="hidden sm:inline">Programa com avaliacao medica, privacidade e suporte oficial no mesmo fluxo</span>
         </div>
       )}
 
       <div className="container mx-auto px-4 sm:px-6">
         <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[76px]' : 'h-20 sm:h-16 md:h-20'}`}>
-          <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — início">
+          <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — inicio">
             {useMedviMark ? (
               <div className="flex items-center gap-2">
                 <span
@@ -144,13 +133,11 @@ export function HeaderZapfarm({
                 </span>
                 {isEmagrecimentoFlow && (
                   <span className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}>
-                    Programa de emagrecimento
+                    Emagrecimento com avaliacao medica
                   </span>
                 )}
                 {!isEmagrecimentoFlow && brandSubtitle && (
-                  <span className={`hidden text-xs md:inline ${textColor}`}>
-                    {brandSubtitle}
-                  </span>
+                  <span className={`hidden text-xs md:inline ${textColor}`}>{brandSubtitle}</span>
                 )}
               </div>
             ) : (
@@ -159,7 +146,7 @@ export function HeaderZapfarm({
                 alt="Me Joy Farma"
                 width={160}
                 height={48}
-                className="h-8 sm:h-9 md:h-10 w-auto object-contain"
+                className="h-8 w-auto object-contain sm:h-9 md:h-10"
                 priority
               />
             )}
@@ -177,7 +164,7 @@ export function HeaderZapfarm({
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden items-center gap-3 md:flex">
             {!useMinimalReportHeader && secondaryCtaHref && secondaryCtaLabel && (
               <a
                 href={secondaryCtaHref}
@@ -193,7 +180,7 @@ export function HeaderZapfarm({
             <a
               href={resolvedPrimaryHref}
               onClick={primaryCtaOnClick}
-              className={`inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
+              className={`inline-block rounded-full px-5 py-2.5 text-xs font-bold transition-all hover:scale-105 md:px-6 md:py-3 md:text-sm ${
                 shouldUseScrolledStyle || isReportPage
                   ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
                   : 'bg-white text-emerald-700 shadow-xl'
@@ -205,16 +192,16 @@ export function HeaderZapfarm({
 
           {isJourneyPage && !useMinimalReportHeader ? (
             <a
-              href={isLandingPage ? '/emagrecimento#faq' : '/#planos'}
-              className="md:hidden rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50"
+              href="/#planos"
+              className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
             >
-              {isLandingPage ? 'FAQ' : 'Planos'}
+              Planos
             </a>
           ) : (
             <a
               href={resolvedPrimaryHref}
               onClick={primaryCtaOnClick}
-              className={`md:hidden rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-bold transition-all shadow-lg hover:shadow-xl whitespace-nowrap ${
+              className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold transition-all shadow-lg hover:shadow-xl sm:px-6 sm:py-3 md:hidden ${
                 shouldUseScrolledStyle || isReportPage
                   ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                   : 'bg-white text-emerald-700 hover:bg-emerald-50'

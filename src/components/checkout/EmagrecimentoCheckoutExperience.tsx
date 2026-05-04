@@ -92,8 +92,10 @@ interface EmagrecimentoCheckoutExperienceProps {
   prefillProfile?: PrefillProfile | null;
   allowPlanSelection?: boolean;
   mode?: 'inline' | 'standalone';
+  selectionVariant?: 'full' | 'locked';
   onSelectPlan?: (planId: string) => void;
   onSelectTrack?: (trilha: EmagrecimentoTrilha) => void;
+  onRequestEditSelection?: () => void;
 }
 
 const initialFormData = (prefillProfile?: PrefillProfile | null): CheckoutFormData => ({
@@ -119,8 +121,10 @@ export function EmagrecimentoCheckoutExperience({
   prefillProfile,
   allowPlanSelection = false,
   mode = 'inline',
+  selectionVariant = 'full',
   onSelectPlan,
   onSelectTrack,
+  onRequestEditSelection: _onRequestEditSelection,
 }: EmagrecimentoCheckoutExperienceProps) {
   const resolvedDefaultTrilha =
     defaultTrilha === 'alternativas_clinicas'
@@ -182,6 +186,27 @@ export function EmagrecimentoCheckoutExperience({
         { key: 2 as Step, title: 'Pagamento' },
         { key: 3 as Step, title: 'Confirmacao' },
       ];
+  const selectionLocked = selectionVariant === 'locked';
+  const journeyFrames = [
+    {
+      src: '/images/emagrecimento/medvi/journey-triagem.avif',
+      alt: 'Triagem concluida',
+      title: 'Triagem aproveitada',
+      body: 'Seus dados entram neste checkout e evitam retrabalho no fechamento.',
+    },
+    {
+      src: '/images/emagrecimento/medvi/journey-consulta.avif',
+      alt: 'Consulta medica',
+      title: 'Consulta valida a conduta',
+      body: 'A avaliacao medica confirma ou ajusta trilha, dose e continuidade clinica.',
+    },
+    {
+      src: '/images/emagrecimento/medvi/support-whatsapp.avif',
+      alt: 'Suporte por WhatsApp',
+      title: 'Suporte oficial',
+      body: 'O acompanhamento segue com canal oficial e dashboard apos pagamento confirmado.',
+    },
+  ];
 
   useEffect(() => {
     setSelectedPlan(defaultPlanId);
@@ -573,10 +598,12 @@ export function EmagrecimentoCheckoutExperience({
                 Checkout Me Joy
               </p>
               <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-                Finalize sem sair desta pagina
+                {selectionLocked ? 'Conclua o pagamento do seu fechamento' : 'Finalize sem sair desta pagina'}
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                Seus dados da triagem entram no fluxo, o pagamento acontece aqui e o dashboard so e liberado depois da confirmacao real do Asaas.
+                {selectionLocked
+                  ? 'A trilha e o plano ja vieram escolhidos da pagina do relatorio. Agora voce so confirma dados, paga aqui e entra no dashboard quando o Asaas confirmar.'
+                  : 'Seus dados da triagem entram no fluxo, o pagamento acontece aqui e o dashboard so e liberado depois da confirmacao real do Asaas.'}
               </p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
@@ -617,104 +644,163 @@ export function EmagrecimentoCheckoutExperience({
           )}
 
           <div className="mt-6 space-y-6">
-            <div>
-              <p className="mb-3 text-sm font-semibold text-slate-900">Trilha escolhida</p>
-              <div className="grid gap-3 md:grid-cols-2">
-                {TRACKS.map((track) => {
-                  const selected = selectedTrilha === track.id;
-                  return (
+            {selectionLocked ? (
+              <div className="rounded-[28px] border border-emerald-100 bg-[#f6fbf7] p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                      Fechamento travado nesta pagina
+                    </p>
+                    <h3 className="mt-2 text-2xl font-bold text-slate-950">
+                      {plan.title} com {selectedTrack.title}
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
+                      {selectedTrack.bestFor}
+                    </p>
+                  </div>
+                  {_onRequestEditSelection && (
                     <button
-                      key={track.id}
                       type="button"
-                      onClick={() => updateTrack(track.id)}
-                      className={cn(
-                        'rounded-2xl border p-4 text-left transition-all',
-                        selected
-                          ? 'border-emerald-500 bg-emerald-50 shadow-[0_12px_30px_rgba(5,150,105,0.12)]'
-                          : 'border-zinc-200 bg-white hover:border-emerald-300'
-                      )}
+                      onClick={_onRequestEditSelection}
+                      className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
-                            {track.badge}
-                          </p>
-                          <p className="text-sm font-bold text-slate-900">{track.title}</p>
-                          <p className="mt-1 text-xs leading-relaxed text-slate-600">{track.subtitle}</p>
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800">
-                              {track.potency}
-                            </span>
-                            <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
-                              {track.certainty}
-                            </span>
-                          </div>
-                          <p className="mt-3 text-[11px] leading-relaxed text-slate-600 sm:text-xs">
-                            {track.efficacy}
-                          </p>
-                        </div>
-                        {selected && <CheckCircle2 className="h-5 w-5 text-emerald-600" />}
-                      </div>
+                      Alterar trilha ou plano
                     </button>
-                  );
-                })}
-              </div>
-            </div>
+                  )}
+                </div>
 
-            <div className="rounded-[28px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-5">
-              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div className="mt-4 grid gap-3 md:grid-cols-4">
+                  <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                      Potencia
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-900">{selectedTrack.potency}</p>
+                  </div>
+                  <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                      Previsibilidade
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-900">{selectedTrack.certainty}</p>
+                  </div>
+                  <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                      Faixa media
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                      {selectedTrackEstimate ? selectedTrackEstimate.label : selectedTrack.estimate}
+                    </p>
+                  </div>
+                  <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                      Plano ativo
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-900">{plan.priceMain}</p>
+                    <p className="mt-1 text-xs text-slate-500">{plan.duration}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-                    Leitura clara da trilha selecionada
-                  </p>
-                  <h3 className="mt-2 text-2xl font-bold text-slate-950">{selectedTrack.title}</h3>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
-                    {selectedTrack.bestFor}
-                  </p>
+                  <p className="mb-3 text-sm font-semibold text-slate-900">Trilha escolhida</p>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {TRACKS.map((track) => {
+                      const selected = selectedTrilha === track.id;
+                      return (
+                        <button
+                          key={track.id}
+                          type="button"
+                          onClick={() => updateTrack(track.id)}
+                          className={cn(
+                            'rounded-2xl border p-4 text-left transition-all',
+                            selected
+                              ? 'border-emerald-500 bg-emerald-50 shadow-[0_12px_30px_rgba(5,150,105,0.12)]'
+                              : 'border-zinc-200 bg-white hover:border-emerald-300'
+                          )}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                                {track.badge}
+                              </p>
+                              <p className="text-sm font-bold text-slate-900">{track.title}</p>
+                              <p className="mt-1 text-xs leading-relaxed text-slate-600">{track.subtitle}</p>
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800">
+                                  {track.potency}
+                                </span>
+                                <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                                  {track.certainty}
+                                </span>
+                              </div>
+                              <p className="mt-3 text-[11px] leading-relaxed text-slate-600 sm:text-xs">
+                                {track.efficacy}
+                              </p>
+                            </div>
+                            {selected && <CheckCircle2 className="h-5 w-5 text-emerald-600" />}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm">
-                    {selectedTrack.badge}
-                  </span>
-                  <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
-                    {selectedTrack.potency}
-                  </span>
-                  <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
-                    {selectedTrack.certainty}
-                  </span>
-                </div>
-              </div>
 
-              <div className="mt-4 grid gap-3 md:grid-cols-3">
-                <div className="rounded-[22px] bg-white p-4 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                    Eficacia media observada
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.efficacy}</p>
-                </div>
-                <div className="rounded-[22px] bg-white p-4 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                    Traduzindo em peso
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    {selectedTrackEstimate
-                      ? `Usando o peso atual da sua triagem como referencia, isso pode representar ${selectedTrackEstimate.label}.`
-                      : selectedTrack.estimate}
-                  </p>
-                </div>
-                <div className="rounded-[22px] bg-white p-4 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                    Seguranca clinica
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.safety}</p>
-                </div>
-              </div>
+                <div className="rounded-[28px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-5">
+                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                        Leitura clara da trilha selecionada
+                      </p>
+                      <h3 className="mt-2 text-2xl font-bold text-slate-950">{selectedTrack.title}</h3>
+                      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
+                        {selectedTrack.bestFor}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm">
+                        {selectedTrack.badge}
+                      </span>
+                      <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
+                        {selectedTrack.potency}
+                      </span>
+                      <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm">
+                        {selectedTrack.certainty}
+                      </span>
+                    </div>
+                  </div>
 
-              <p className="mt-4 text-xs leading-relaxed text-slate-500">
-                Essas faixas resumem medias de estudos e pratica clinica. Resultado individual varia por
-                dose, adesao, tolerancia, comorbidades e decisao medica final.
-              </p>
-            </div>
+                  <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                        Eficacia media observada
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.efficacy}</p>
+                    </div>
+                    <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                        Traduzindo em peso
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                        {selectedTrackEstimate
+                          ? `Usando o peso atual da sua triagem como referencia, isso pode representar ${selectedTrackEstimate.label}.`
+                          : selectedTrack.estimate}
+                      </p>
+                    </div>
+                    <div className="rounded-[22px] bg-white p-4 shadow-sm">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                        Seguranca clinica
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.safety}</p>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                    Essas faixas resumem medias de estudos e pratica clinica. Resultado individual varia por
+                    dose, adesao, tolerancia, comorbidades e decisao medica final.
+                  </p>
+                </div>
+              </>
+            )}
 
             {allowPlanSelection && currentStep === 1 && (
               <div className="space-y-4">
@@ -1168,82 +1254,152 @@ export function EmagrecimentoCheckoutExperience({
       </div>
 
       <aside className="space-y-4 lg:sticky lg:top-24">
-        <RefinedCard
-          rounded="xl"
-          padding="lg"
-          className="overflow-hidden border border-[#d9e8df] bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
-        >
-          <div className="rounded-[24px] bg-[linear-gradient(135deg,#0f172a_0%,#0b5c45_55%,#0a8f5b_100%)] p-5 text-white">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
-              Resumo do fechamento
-            </p>
-            <h3 className="mt-2 text-2xl font-bold">{plan.title}</h3>
-            <p className="mt-2 text-sm text-emerald-50">{plan.subtitle}</p>
-          </div>
-
-          <div className="mt-5 space-y-4 text-sm text-slate-700">
-            <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
-              <div>
-                <p className="font-semibold text-slate-900">Trilha</p>
-                <p className="mt-1 text-slate-600">{selectedTrack.title}</p>
-              </div>
-              <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                Ajustavel pelo medico
-              </span>
-            </div>
-
-            <div className="rounded-[22px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-4">
-              <div className="flex flex-wrap gap-2">
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-800">
-                  {selectedTrack.potency}
-                </span>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700">
-                  {selectedTrack.certainty}
-                </span>
-              </div>
-              <p className="mt-3 text-sm font-semibold text-slate-900">Leitura clara</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.bestFor}</p>
-              <p className="mt-3 text-sm font-semibold text-slate-900">Faixa media observada</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.efficacy}</p>
-              <p className="mt-3 text-sm font-semibold text-slate-900">Seguranca clinica</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.safety}</p>
-              <p className="mt-3 text-xs leading-relaxed text-slate-500">
-                Resultado individual varia. A consulta confirma a conduta final antes de qualquer prescricao.
+        {selectionLocked ? (
+          <RefinedCard
+            rounded="xl"
+            padding="lg"
+            className="overflow-hidden border border-[#d9e8df] bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
+          >
+            <div className="rounded-[24px] bg-[#f6fbf7] p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                Frame 3
+              </p>
+              <h3 className="mt-2 text-2xl font-bold text-slate-950">O que acontece depois do pagamento</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                O pagamento confirma o fechamento. A consulta valida a conduta e o dashboard abre so quando o Asaas sinaliza pago.
               </p>
             </div>
 
-            <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
-              <div>
-                <p className="font-semibold text-slate-900">PIX</p>
-                <p className="mt-1 text-slate-600">Desconto imediato na mesma pagina</p>
-              </div>
-              <span className="text-xl font-bold text-emerald-700">{formatCurrency(pixAmount)}</span>
+            <div className="mt-5 grid gap-4">
+              {journeyFrames.map((frame) => (
+                <div
+                  key={frame.src}
+                  className="overflow-hidden rounded-[24px] border border-zinc-200 bg-[#f8faf8] shadow-[0_16px_35px_rgba(15,23,42,0.04)]"
+                >
+                  <div className="relative aspect-[1.4] overflow-hidden">
+                    <Image
+                      src={frame.src}
+                      alt={frame.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 24vw"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-sm font-bold text-slate-900">{frame.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{frame.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
-              <div>
-                <p className="font-semibold text-slate-900">Cartao</p>
-                <p className="mt-1 text-slate-600">Ate {plan.installments}x sem juros</p>
+            <div className="mt-5 rounded-[24px] border border-zinc-200 bg-white p-4 text-sm text-slate-700">
+              <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
+                <div>
+                  <p className="font-semibold text-slate-900">Fechamento ativo</p>
+                  <p className="mt-1 text-slate-600">{plan.title}</p>
+                </div>
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  {plan.duration}
+                </span>
               </div>
-              <span className="text-right text-sm font-semibold text-slate-900">
-                {plan.priceMain}
-                <span className="block text-xs font-normal text-slate-500">{plan.priceDetail}</span>
-              </span>
+              <div className="mt-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-slate-900">PIX</p>
+                  <p className="mt-1 text-slate-600">10% OFF na mesma pagina</p>
+                </div>
+                <span className="text-right text-xl font-bold text-emerald-700">{formatCurrency(pixAmount)}</span>
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-slate-900">Cartao</p>
+                  <p className="mt-1 text-slate-600">Ate {plan.installments}x sem juros</p>
+                </div>
+                <span className="text-right text-sm font-semibold text-slate-900">
+                  {plan.priceMain}
+                  <span className="block text-xs font-normal text-slate-500">{plan.priceDetail}</span>
+                </span>
+              </div>
+            </div>
+          </RefinedCard>
+        ) : (
+          <RefinedCard
+            rounded="xl"
+            padding="lg"
+            className="overflow-hidden border border-[#d9e8df] bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
+          >
+            <div className="rounded-[24px] bg-[linear-gradient(135deg,#0f172a_0%,#0b5c45_55%,#0a8f5b_100%)] p-5 text-white">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                Resumo do fechamento
+              </p>
+              <h3 className="mt-2 text-2xl font-bold">{plan.title}</h3>
+              <p className="mt-2 text-sm text-emerald-50">{plan.subtitle}</p>
             </div>
 
-            <div>
-              <p className="font-semibold text-slate-900">Incluido agora</p>
-              <ul className="mt-3 space-y-2">
-                {plan.bullets.slice(0, 5).map((bullet) => (
-                  <li key={bullet} className="flex items-start gap-2 leading-relaxed">
-                    <span className="mt-0.5 text-emerald-600">✓</span>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="mt-5 space-y-4 text-sm text-slate-700">
+              <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
+                <div>
+                  <p className="font-semibold text-slate-900">Trilha</p>
+                  <p className="mt-1 text-slate-600">{selectedTrack.title}</p>
+                </div>
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  Ajustavel pelo medico
+                </span>
+              </div>
+
+              <div className="rounded-[22px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-4">
+                <div className="flex flex-wrap gap-2">
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-800">
+                    {selectedTrack.potency}
+                  </span>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700">
+                    {selectedTrack.certainty}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm font-semibold text-slate-900">Leitura clara</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.bestFor}</p>
+                <p className="mt-3 text-sm font-semibold text-slate-900">Faixa media observada</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.efficacy}</p>
+                <p className="mt-3 text-sm font-semibold text-slate-900">Seguranca clinica</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrack.safety}</p>
+                <p className="mt-3 text-xs leading-relaxed text-slate-500">
+                  Resultado individual varia. A consulta confirma a conduta final antes de qualquer prescricao.
+                </p>
+              </div>
+
+              <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
+                <div>
+                  <p className="font-semibold text-slate-900">PIX</p>
+                  <p className="mt-1 text-slate-600">Desconto imediato na mesma pagina</p>
+                </div>
+                <span className="text-xl font-bold text-emerald-700">{formatCurrency(pixAmount)}</span>
+              </div>
+
+              <div className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4">
+                <div>
+                  <p className="font-semibold text-slate-900">Cartao</p>
+                  <p className="mt-1 text-slate-600">Ate {plan.installments}x sem juros</p>
+                </div>
+                <span className="text-right text-sm font-semibold text-slate-900">
+                  {plan.priceMain}
+                  <span className="block text-xs font-normal text-slate-500">{plan.priceDetail}</span>
+                </span>
+              </div>
+
+              <div>
+                <p className="font-semibold text-slate-900">Incluido agora</p>
+                <ul className="mt-3 space-y-2">
+                  {plan.bullets.slice(0, 5).map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2 leading-relaxed">
+                      <span className="mt-0.5 text-emerald-600">✓</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        </RefinedCard>
+          </RefinedCard>
+        )}
 
         <RefinedCard
           rounded="xl"

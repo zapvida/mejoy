@@ -3,8 +3,8 @@ declare module 'qrcode';
 
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (..._args: any[]) => void;
+    dataLayer?: any[];
+    gtag?: (..._args: any[]) => void;
   }
 }
 

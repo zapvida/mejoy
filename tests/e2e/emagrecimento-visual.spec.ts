@@ -72,7 +72,7 @@ test.describe('Emagrecimento visual parity', () => {
 
     const hero = page.getByTestId('emagrecimento-hero');
     const headline = hero.getByRole('heading', { level: 1 });
-    const cta = hero.getByRole('link', { name: 'Começar minha triagem' });
+    const cta = hero.getByRole('link', { name: 'Fazer minha triagem' });
     const priceHook = page
       .getByText(
         /Consulte a faixa do programa após a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento/i
@@ -109,10 +109,10 @@ test.describe('Emagrecimento visual parity', () => {
       caret: 'hide',
     });
 
-    const treatments = page.getByTestId('emagrecimento-treatments');
-    await treatments.scrollIntoViewIfNeeded();
-    await waitForSectionImages(treatments);
-    await expect(treatments).toHaveScreenshot(`treatments-${testInfo.project.name}.png`, {
+    const plans = page.getByTestId('emagrecimento-plans');
+    await plans.scrollIntoViewIfNeeded();
+    await waitForSectionImages(plans);
+    await expect(plans).toHaveScreenshot(`plans-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
     });

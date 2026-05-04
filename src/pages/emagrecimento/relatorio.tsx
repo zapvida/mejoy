@@ -1,28 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useState, type ReactNode } from 'react';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
-import { ReportHeroEmagrecimentoEnhanced } from '@/components/zapfarm/report/ReportHeroEmagrecimentoEnhanced';
-import { ReportActionPlanGamified } from '@/components/zapfarm/report/ReportActionPlanGamified';
 import { ReportAnalysisEmagrecimento } from '@/components/zapfarm/report/ReportAnalysisEmagrecimento';
-import { ReportPlanSuggestion } from '@/components/zapfarm/report/ReportPlanSuggestion';
 import { ReportEvidenceEmagrecimento } from '@/components/zapfarm/report/ReportEvidenceEmagrecimento';
 import { ReportCtasEmagrecimento } from '@/components/zapfarm/report/ReportCtasEmagrecimento';
 import { ReportScientificFactsEmagrecimento } from '@/components/zapfarm/report/ReportScientificFactsEmagrecimento';
-import { ReportAIBadge } from '@/components/zapfarm/report/ReportAIBadge';
 import { ReportRedFlagsBanner } from '@/components/zapfarm/report/ReportRedFlagsBanner';
 import { ReportPrePrescription } from '@/components/zapfarm/report/ReportPrePrescription';
-import { ReportWhatsappBanner } from '@/components/zapfarm/emagrecimento/ReportWhatsappBanner';
 import { ReportDecisionFold } from '@/components/zapfarm/emagrecimento/ReportDecisionFold';
 import {
-  buildZapVidaPlantaoUrl,
+  emagrecimentoLegalNote,
   getPlanById,
   planIdMapping,
 } from '@/config/zapfarm/emagrecimento-plans';
-import { isEmagrecimentoReportCompact } from '@/lib/emagrecimento/config';
 import { getMedicationTrackCard } from '@/lib/emagrecimento/medicationCards';
 import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
 import {
@@ -30,7 +25,6 @@ import {
   type EmagrecimentoTrilha,
 } from '@/lib/emagrecimento/checkoutUrls';
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
-import { createClinicalHandoff } from '@/lib/handoff/client';
 import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
 import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
@@ -63,11 +57,32 @@ async function resolveTriageId(
   return reportMatch?.triage_id || id;
 }
 
-export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: RelatorioEmagrecimentoProps) {
-  const [stickyHandoffLoading, setStickyHandoffLoading] = useState(false);
-  const [stickyHandoffError, setStickyHandoffError] = useState<string | null>(null);
-  const reportCompact = isEmagrecimentoReportCompact();
+function ReportAccordionSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <details className="group rounded-[28px] border border-zinc-200 bg-white open:shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 sm:px-6">
+        <div>
+          <p className="text-lg font-bold text-slate-950">{title}</p>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">{description}</p>
+        </div>
+        <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-zinc-200 text-xl font-light text-slate-700 transition group-open:rotate-45">
+          +
+        </span>
+      </summary>
+      <div className="border-t border-zinc-100 px-5 py-5 sm:px-6 sm:py-6">{children}</div>
+    </details>
+  );
+}
 
+export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: RelatorioEmagrecimentoProps) {
   const answers = vm ? (vm as any).answers || {} : {};
   const classification = vm
     ? ((vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined)
@@ -103,36 +118,9 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
     setSelectedPlanId(defaultPlanId);
   }, [defaultPlanId]);
 
-  const handleStickyClinicalHandoff = async () => {
-    if (!reportId || stickyHandoffLoading) return;
-    setStickyHandoffLoading(true);
-    setStickyHandoffError(null);
-
-    trackFunnelEvent('cta_clinical_handoff', {
-      report_id: reportId,
-      origin: 'sticky_report'
-    });
-
-    try {
-      const data = await createClinicalHandoff({
-        triageId: vm?.triageId || reportId,
-        reportId,
-        sourceJourney: 'emagrecimento.report',
-        sourceOrigin: 'sticky_report'
-      });
-
-      trackFunnelEvent('handoff_created', { report_id: reportId });
-      trackFunnelEvent('handoff_opened', { report_id: reportId });
-      window.location.href = data.redirectUrl;
-    } catch (handoffError: any) {
-      trackFunnelEvent('handoff_failed', {
-        report_id: reportId,
-        origin: 'sticky_report',
-        surface: 'relatorio_sticky'
-      });
-      setStickyHandoffError(handoffError?.message || 'Falha ao iniciar avaliação clínica.');
-      setStickyHandoffLoading(false);
-    }
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const openInlineCheckout = () => {
@@ -146,20 +134,20 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
       });
     }
     setCheckoutOpen(true);
+    window.setTimeout(() => scrollToSection('report-inline-checkout'), 80);
+  };
 
-    window.setTimeout(() => {
-      const element = document.getElementById('report-inline-checkout');
-      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
+  const editSelection = () => {
+    window.setTimeout(() => scrollToSection('report-planos'), 80);
   };
 
   if (error || !vm) {
     return (
       <>
         <Head>
-          <title>Relatório não encontrado | Me Joy</title>
+        <title>Relatório não encontrado | Me Joy</title>
         </Head>
-        <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 flex items-center justify-center text-white">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white">
           <div className="text-center">
             <h1 className="text-2xl font-semibold mb-4">Relatório não encontrado</h1>
             <p className="text-emerald-50 mb-6">O relatório solicitado não foi encontrado.</p>
@@ -182,92 +170,65 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
         <meta name="description" content={`Relatório personalizado de emagrecimento para ${vm.basics.firstName}`} />
       </Head>
 
-      <div className="min-h-screen bg-[linear-gradient(180deg,#f6fbf7_0%,#edf7f0_28%,#f8fafc_100%)]">
+      <div className="min-h-screen bg-[#f4f7f2]">
         <div className="relative z-50">
           <HeaderZapfarm
             primaryCtaHref="#report-inline-checkout"
             primaryCtaLabel="Continuar nesta pagina"
+            primaryCtaMobileLabel="Checkout"
             primaryCtaOnClick={openInlineCheckout}
           />
         </div>
 
-        <ReportAIBadge />
-
-        {reportId && (
-          <ReportWhatsappBanner
-            reportId={reportId}
-            firstName={vm.basics.firstName}
-            triageSlug="emagrecimento"
-          />
-        )}
-
-        {reportId && (
-          <ReportDecisionFold
-            vm={vm}
-            reportId={reportId}
-            selectedTrilha={selectedTrilha}
-            onSelectTrack={setSelectedTrilha}
-            onOpenInlineCheckout={openInlineCheckout}
-          />
-        )}
-
-        {vm.context.redFlags && vm.context.redFlags.length > 0 && (
-          <ReportRedFlagsBanner
-            redFlags={vm.context.redFlags.map((r: any) => typeof r === 'string' ? r : r.title || r.message || String(r))}
-            classification={(vm as any).classification}
-          />
-        )}
-
-        <div className="fixed bottom-0 left-0 right-0 z-40 space-y-2 border-t border-emerald-100 bg-white/96 p-3.5 shadow-[0_-12px_40px_rgba(15,23,42,0.16)] backdrop-blur md:hidden">
-          <button
-            type="button"
-            onClick={openInlineCheckout}
-            className="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white shadow-md sm:px-6 sm:py-3 sm:text-base"
-          >
-            Abrir checkout nesta pagina →
-          </button>
-          <a
-            href={buildEmagrecimentoReportWhatsappUrl({
-              reportId: reportId || '',
-              firstName: vm.basics.firstName,
-              triageSlug: 'emagrecimento',
-            })}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() =>
-              trackFunnelEvent('whatsapp_report_cta', { report_id: reportId, surface: 'sticky_mobile' })
-            }
-            className="inline-flex w-full items-center justify-center rounded-full border border-emerald-200 bg-white px-4 py-2.5 text-sm font-semibold text-emerald-800 sm:px-6 sm:py-3 sm:text-base"
-          >
-            WhatsApp oficial — tirar dúvidas →
-          </a>
-          <button
-            type="button"
-            onClick={handleStickyClinicalHandoff}
-            disabled={stickyHandoffLoading}
-            className="inline-flex w-full items-center justify-center rounded-full border border-slate-900 bg-slate-900 px-4 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
-          >
-            {stickyHandoffLoading ? 'Conectando com o ZapVida...' : 'Ou: continuar avaliação clínica →'}
-          </button>
-          {stickyHandoffError && (
-            <div className="mt-1 text-center">
-              <p className="text-xs text-slate-600">{stickyHandoffError}</p>
-              <a
-                href={buildZapVidaPlantaoUrl('relatorio_sticky_fallback')}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackFunnelEvent('clinical_payment_started', { report_id: reportId, source: 'sticky_report_fallback' })}
-                className="inline-block mt-1 text-xs font-semibold text-emerald-700 underline underline-offset-2"
-              >
-                Abrir ZapVida direto
-              </a>
-            </div>
-          )}
+        <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/96 p-3.5 shadow-[0_-12px_40px_rgba(15,23,42,0.16)] backdrop-blur md:hidden">
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={openInlineCheckout}
+              className="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-md"
+            >
+              {checkoutOpen ? 'Voltar ao checkout' : 'Abrir checkout nesta pagina'}
+            </button>
+            <a
+              href={buildEmagrecimentoReportWhatsappUrl({
+                reportId: reportId || '',
+                firstName: vm.basics.firstName,
+                triageSlug: 'emagrecimento',
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackFunnelEvent('whatsapp_report_cta', { report_id: reportId, surface: 'sticky_mobile' })
+              }
+              className="block text-center text-sm font-semibold text-emerald-800 underline underline-offset-2"
+            >
+              WhatsApp oficial
+            </a>
+          </div>
         </div>
 
-        <div className="pb-28 pt-20 sm:pt-16 md:pb-12 md:pt-20">
-          <div className="container mx-auto space-y-8 px-4 py-8 sm:px-6 sm:py-10 md:space-y-10 md:py-12">
-            <div id="cta-clinico">
+        <main className="pb-32 pt-20 sm:pt-24 md:pb-14 md:pt-24">
+          <div className="container mx-auto space-y-8 px-4 py-6 sm:px-6 sm:py-8 md:space-y-10">
+            {reportId && (
+              <ReportDecisionFold
+                vm={vm}
+                reportId={reportId}
+                selectedTrilha={selectedTrilha}
+                onSelectTrack={setSelectedTrilha}
+                onOpenInlineCheckout={openInlineCheckout}
+              />
+            )}
+
+            {vm.context.redFlags && vm.context.redFlags.length > 0 && (
+              <ReportRedFlagsBanner
+                redFlags={vm.context.redFlags.map((r: any) =>
+                  typeof r === 'string' ? r : r.title || r.message || String(r)
+                )}
+                classification={(vm as any).classification}
+              />
+            )}
+
+            <section id="report-planos" className="scroll-mt-28">
               <ReportCtasEmagrecimento
                 reportId={reportId || ''}
                 preferenciaPrincipioAtivo={preferenciaPrincipioAtivo}
@@ -277,52 +238,95 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                 onSelectPlan={setSelectedPlanId}
                 onOpenInlineCheckout={openInlineCheckout}
               />
-            </div>
+            </section>
 
             <section id="report-inline-checkout" className="scroll-mt-28">
               {!checkoutOpen ? (
-                <div className="rounded-[32px] border border-[#d8e9df] bg-white p-6 shadow-[0_30px_90px_rgba(15,23,42,0.08)] sm:p-8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                    Checkout inline
-                  </p>
-                  <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-                    Pagamento no mesmo fluxo do relatorio
-                  </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Ao abrir esta etapa, seus dados da triagem entram no fechamento, o PIX aparece aqui e o dashboard so e liberado depois da confirmacao do pagamento.
-                  </p>
-
-                  <div className="mt-6 grid gap-4 md:grid-cols-3">
-                    <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf9] p-5">
-                      <p className="text-sm font-bold text-slate-900">Plano ativo</p>
-                      <p className="mt-2 text-slate-600">{selectedPlan?.title || selectedPlanId}</p>
-                    </div>
-                    <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf9] p-5">
-                      <p className="text-sm font-bold text-slate-900">Trilha ativa</p>
-                      <p className="mt-2 text-slate-600">{selectedTrackCard.title}</p>
-                      <p className="mt-2 text-xs font-semibold text-emerald-700">
-                        {selectedTrackCard.potencyLabel}
+                <div className="rounded-[32px] border border-[#d7e3da] bg-white p-6 shadow-[0_30px_90px_rgba(15,23,42,0.08)] sm:p-8">
+                  <div className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                        Frame 3
                       </p>
-                    </div>
-                    <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf9] p-5">
-                      <p className="text-sm font-bold text-slate-900">Liberação do dashboard</p>
-                      <p className="mt-2 text-slate-600">Somente apos confirmacao real do pagamento.</p>
-                    </div>
-                  </div>
+                      <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
+                        Checkout inline no mesmo fluxo do relatorio
+                      </h2>
+                      <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                        Seus dados da triagem entram aqui, o PIX aparece nesta mesma tela e o dashboard so libera depois da confirmacao real do pagamento.
+                      </p>
 
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      onClick={openInlineCheckout}
-                      className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
-                    >
-                      Abrir checkout agora
-                    </button>
+                      <div className="mt-6 grid gap-4 md:grid-cols-3">
+                        <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
+                          <p className="text-sm font-bold text-slate-900">Plano ativo</p>
+                          <p className="mt-2 text-slate-600">{selectedPlan?.title || selectedPlanId}</p>
+                        </div>
+                        <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
+                          <p className="text-sm font-bold text-slate-900">Trilha ativa</p>
+                          <p className="mt-2 text-slate-600">{selectedTrackCard.title}</p>
+                          <p className="mt-2 text-xs font-semibold text-emerald-700">
+                            {selectedTrackCard.potencyLabel}
+                          </p>
+                        </div>
+                        <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
+                          <p className="text-sm font-bold text-slate-900">Liberacao do dashboard</p>
+                          <p className="mt-2 text-slate-600">Somente apos confirmacao real do pagamento.</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6">
+                        <button
+                          type="button"
+                          onClick={openInlineCheckout}
+                          className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
+                        >
+                          Abrir checkout agora
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      {[
+                        {
+                          src: '/images/emagrecimento/medvi/journey-triagem.avif',
+                          alt: 'Triagem pronta',
+                          title: 'Triagem aproveitada',
+                        },
+                        {
+                          src: '/images/emagrecimento/medvi/journey-consulta.avif',
+                          alt: 'Consulta medica',
+                          title: 'Consulta valida a conduta',
+                        },
+                        {
+                          src: '/images/emagrecimento/medvi/support-whatsapp.avif',
+                          alt: 'Suporte por WhatsApp',
+                          title: 'Suporte oficial no pos-pagamento',
+                        },
+                      ].map((item) => (
+                        <div
+                          key={item.src}
+                          className="overflow-hidden rounded-[28px] border border-zinc-200 bg-[#f8faf8] shadow-[0_16px_40px_rgba(15,23,42,0.05)]"
+                        >
+                          <div className="relative aspect-[0.92] overflow-hidden">
+                            <Image
+                              src={item.src}
+                              alt={item.alt}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 1024px) 100vw, 18vw"
+                            />
+                          </div>
+                          <div className="p-4">
+                            <p className="text-sm font-bold text-slate-900">{item.title}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
                 <EmagrecimentoCheckoutExperience
                   mode="inline"
+                  selectionVariant="locked"
                   reportId={reportId}
                   triageId={vm.triageId || reportId}
                   defaultPlanId={selectedPlanId}
@@ -332,79 +336,59 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
                     name: vm.basics.name || vm.basics.firstName || '',
                     weightKg: vm.basics.weightKg,
                   }}
-                  onSelectPlan={setSelectedPlanId}
-                  onSelectTrack={setSelectedTrilha}
+                  onRequestEditSelection={editSelection}
                 />
               )}
             </section>
 
-            <ReportHeroEmagrecimentoEnhanced vm={vm} reportId={reportId || undefined} />
+            <section aria-label="Conteudo clinico detalhado" className="space-y-4">
+              <ReportAccordionSection
+                title="Analise detalhada do relatorio"
+                description="Leitura aprofundada do seu caso, mantida fora da zona principal de fechamento."
+              >
+                <ReportAnalysisEmagrecimento vm={vm} />
+              </ReportAccordionSection>
 
-            {reportCompact ? (
-              <details className="group rounded-2xl border border-emerald-100 bg-white/80 p-4 open:bg-white open:shadow-md">
-                <summary className="cursor-pointer list-none text-lg font-bold text-gray-900 after:ml-2 after:text-emerald-500 after:content-['+'] group-open:after:content-['−']">
-                  Ver análise detalhada do relatório
-                </summary>
-                <div className="mt-4">
-                  <ReportAnalysisEmagrecimento vm={vm} />
-                </div>
-              </details>
-            ) : (
-              <ReportAnalysisEmagrecimento vm={vm} />
-            )}
+              <ReportAccordionSection
+                title="Pre-prescricao e criterios clinicos"
+                description="Resumo medico preliminar e pontos de seguranca para consulta."
+              >
+                <ReportPrePrescription vm={vm} />
+              </ReportAccordionSection>
 
-            <ReportPrePrescription vm={vm} />
-            <ReportActionPlanGamified vm={vm} reportId={reportId || ''} />
-
-            {reportCompact ? (
-              <details className="group rounded-2xl border border-emerald-100 bg-white/80 p-4 open:bg-white open:shadow-md">
-                <summary className="cursor-pointer list-none text-lg font-bold text-gray-900 after:ml-2 after:text-emerald-500 after:content-['+'] group-open:after:content-['−']">
-                  Evidências e referências (opcional)
-                </summary>
-                <div className="mt-4 space-y-8">
+              <ReportAccordionSection
+                title="Evidencias e referencias"
+                description="Base cientifica resumida para quem quiser revisar os fundamentos do programa."
+              >
+                <div className="space-y-8">
                   <ReportEvidenceEmagrecimento vm={vm} />
                   <ReportScientificFactsEmagrecimento vm={vm} reportId={reportId || undefined} />
                 </div>
-              </details>
-            ) : (
-              <>
-                <ReportEvidenceEmagrecimento vm={vm} />
-                <ReportScientificFactsEmagrecimento vm={vm} reportId={reportId || undefined} />
-              </>
-            )}
+              </ReportAccordionSection>
+            </section>
 
-            <ReportPlanSuggestion vm={vm} />
+            <section className="rounded-[28px] border border-zinc-200 bg-white px-5 py-5 shadow-[0_16px_40px_rgba(15,23,42,0.05)] sm:px-6">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="max-w-2xl">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Rodape do relatorio
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {emagrecimentoLegalNote}
+                  </p>
+                </div>
+                <a
+                  href={`/api/pdf/report?id=${reportId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
+                >
+                  Baixar PDF do relatorio
+                </a>
+              </div>
+            </section>
           </div>
-
-          <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white">
-            <div className="container mx-auto px-4 sm:px-6 text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white">
-                Seu próximo passo está pronto
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-emerald-50 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-                Escolha a trilha, confirme seus dados e siga com revisão médica obrigatória antes de qualquer prescrição.
-              </p>
-              <a
-                href="#report-inline-checkout"
-                onClick={openInlineCheckout}
-                className="inline-block rounded-full px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 text-sm sm:text-base md:text-lg font-bold text-emerald-800 bg-white shadow-2xl transition-all hover:scale-105 hover:shadow-white/50 w-full sm:w-auto max-w-xs sm:max-w-none"
-              >
-                Ir para o checkout inline →
-              </a>
-            </div>
-          </section>
-
-          <div className="container mx-auto px-4 sm:px-6 pb-8 sm:pb-10 md:pb-12 text-center">
-            <a
-              href={`/api/pdf/report?id=${reportId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 bg-emerald-600 text-white rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
-            >
-              ⬇️ Baixar relatório em PDF
-            </a>
-          </div>
-        </div>
+        </main>
       </div>
     </>
   );
