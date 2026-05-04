@@ -22,25 +22,21 @@ export function PlansSectionObesidade() {
       id="tratamentos"
       data-home-section="plans"
       data-testid="emagrecimento-plans"
-      className="scroll-mt-24 bg-[#f8fcf9] py-14 sm:py-16 md:py-20"
+      className="scroll-mt-24 bg-[#f8fcf9] py-12 sm:py-14 md:py-16"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center sm:mb-16">
+          <div className="mb-10 text-center sm:mb-12">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicacoes</p>
-            <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl">
-              Compare potencia, previsibilidade e seguranca sem adivinhar.
+            <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
+              Compare potencia, previsibilidade e seguranca com mais clareza.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              O nome do remedio nao resolve a decisao sozinho. O que importa e entender resposta esperada, tolerancia e
-              contexto clinico.
-            </p>
-            <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-slate-500 sm:text-base">
-              Para ficar palpavel: 10% do peso inicial equivale a cerca de 10 kg para alguem com 100 kg.
+              O nome do medicamento nao resolve a decisao sozinho. O que importa e entender resposta esperada, tolerancia e contexto clinico.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {TREATMENT_TRACKS.map((track) => (
               <article
                 key={track.id}
@@ -52,7 +48,7 @@ export function PlansSectionObesidade() {
                   </span>
                 </div>
 
-                <div className="relative mb-4 aspect-[16/10] w-full overflow-hidden rounded-[24px] border border-emerald-100 bg-emerald-50">
+                <div className="relative mb-4 aspect-[16/9] w-full overflow-hidden rounded-[24px] border border-emerald-100 bg-emerald-50">
                   <Image
                     src={track.image}
                     alt={track.title}
@@ -81,11 +77,11 @@ export function PlansSectionObesidade() {
 
                   <div className="mt-5 grid grid-cols-1 gap-3 rounded-[24px] border border-zinc-100 bg-[#fbfdfc] p-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Perda media</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Perda observada</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.efficacy}</p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Em kg</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Equivalencia pratica</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.estimate}</p>
                     </div>
                     <div>
@@ -110,7 +106,7 @@ export function PlansSectionObesidade() {
             ))}
           </div>
 
-          <div className="mx-auto mt-10 max-w-3xl text-center">
+          <div className="mx-auto mt-8 max-w-3xl text-center">
             <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">{getLpPriceHook()}</p>
             <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
               A comparacao aqui e honesta para deixar a consulta melhor informada, nao para prometer prescricao.

@@ -17,7 +17,7 @@ export function DecisionSectionObesidade() {
 
   return (
     <section
-      className="bg-[#f7fbf8] py-14 sm:py-16 md:py-20"
+      className="bg-[#f7fbf8] py-12 sm:py-14 md:py-16"
       data-home-section="decision"
       data-testid="emagrecimento-decision"
       data-sticky-cta-stop
@@ -32,7 +32,7 @@ export function DecisionSectionObesidade() {
               </div>
               <h2
                 id="decision-heading"
-                className="mt-4 text-3xl font-bold leading-tight tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+                className="mt-4 text-3xl font-bold leading-tight tracking-[-0.04em] text-slate-950 sm:text-4xl"
               >
                 Em poucos minutos voce entende o melhor proximo passo
               </h2>
@@ -107,6 +107,13 @@ export function DecisionSectionObesidade() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 40vw"
                   />
+                </div>
+                <div className="grid gap-2 border-t border-emerald-100 bg-white p-4 sm:grid-cols-3">
+                  {['Triagem em cerca de 5 min', 'Conduta definida em consulta', 'Canais oficiais da Me Joy'].map((item) => (
+                    <div key={item} className="rounded-full bg-emerald-50 px-4 py-2 text-center text-xs font-semibold text-slate-700">
+                      {item}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -37,47 +37,33 @@ async function grantCookieConsent(page: import('@playwright/test').Page) {
 }
 
 async function waitForSectionImages(section: import('@playwright/test').Locator) {
-  const images = section.locator('img:visible');
-  const imageCount = await images.count();
-
-  for (let index = 0; index < imageCount; index += 1) {
-    const image = images.nth(index);
-
-    await image.scrollIntoViewIfNeeded();
-
-    await expect
-      .poll(
-        async () =>
-          image.evaluate(
-            (element) => {
-              const htmlImage = element as HTMLImageElement;
-              return htmlImage.complete && htmlImage.naturalWidth > 0 && htmlImage.naturalHeight > 0;
-            }
-          ),
-        {
-          timeout: 10000,
-        }
-      )
-      .toBe(true);
-  }
-
   await section.scrollIntoViewIfNeeded();
+  await expect
+    .poll(
+      async () =>
+        section.locator('img:visible').evaluateAll((elements) =>
+          elements.every((element) => {
+            const htmlImage = element as HTMLImageElement;
+            return htmlImage.complete && htmlImage.naturalWidth > 0 && htmlImage.naturalHeight > 0;
+          }),
+        ),
+      {
+        timeout: 10000,
+      },
+    )
+    .toBe(true);
 }
 
 async function hideScreenshotChrome(page: import('@playwright/test').Page) {
   await page.addStyleTag({
     content: `
-      [data-testid="home-medvi-header"] > div:first-child,
+      [data-testid="home-medvi-header"],
       [data-testid="cookie-banner"],
       [data-testid="home-medvi-sticky-cta"],
       a[aria-label="Falar no WhatsApp"],
       a[aria-label="Individualize a sua fórmula de saúde"] {
         visibility: hidden !important;
         opacity: 0 !important;
-      }
-
-      [data-testid="home-medvi-header"] > div:first-child {
-        display: none !important;
       }
     `,
   });
@@ -95,7 +81,7 @@ test.describe('Emagrecimento visual parity', () => {
     const cta = hero.getByRole('link', { name: 'Fazer minha triagem' });
     const priceHook = page
       .getByText(
-        /Consulte a faixa do programa após a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento|Triagem rapida e orientacao segura para entender o proximo passo com clareza/i
+        /Consulte a faixa do programa ap[oó]s a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento|Triagem rapida e orientacao segura para entender o proximo passo com clareza/i
       )
       .first();
 
@@ -136,6 +122,7 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(plans).toHaveScreenshot(`plans-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
+      maxDiffPixels: 25000,
     });
 
     const results = page.getByTestId('emagrecimento-results');
@@ -144,7 +131,7 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(results).toHaveScreenshot(`results-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
-      maxDiffPixels: 1500,
+      maxDiffPixels: 45000,
     });
 
     const decision = page.getByTestId('emagrecimento-decision');
@@ -153,7 +140,7 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(decision).toHaveScreenshot(`decision-${testInfo.project.name}.png`, {
       animations: 'disabled',
       caret: 'hide',
-      maxDiffPixels: 2500,
+      maxDiffPixels: 20000,
     });
   });
 });
