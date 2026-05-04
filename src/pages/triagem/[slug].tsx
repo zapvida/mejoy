@@ -182,9 +182,10 @@ export default function TriageSlugPage() {
     // Não recriar se a sessão já foi concluída ou se estamos finalizando
     if (finalizeState === "running" || finalizeState === "completed") return;
     if (session?.completed) return;
+    if (session) return;
     
     void fetchSession();
-  }, [fetchSession, flow, slug, finalizeState, session?.completed]);
+  }, [fetchSession, flow, slug, finalizeState, session]);
 
   const handleRestart = async () => {
     if (!session) return;
