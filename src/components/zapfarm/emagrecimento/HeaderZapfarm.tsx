@@ -100,7 +100,7 @@ export function HeaderZapfarm({
   const checkoutHref = productSlug ? getCheckoutUrl(productSlug, undefined, reportId) : '/protocolos';
   const resolvedPrimaryHref = primaryCtaHref || (isReportPage ? checkoutHref : triageHref);
   const resolvedPrimaryLabel =
-    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Comecar minha triagem');
+    primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
   const navigationLinks = links?.length
@@ -123,7 +123,7 @@ export function HeaderZapfarm({
       {isJourneyPage && !useMinimalReportHeader && (
         <div className="border-b border-emerald-100/90 bg-white/92 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.08em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2 sm:text-[10px] sm:uppercase sm:tracking-[0.14em]">
           <span className="sm:hidden">Avaliacao medica, privacidade e suporte oficial</span>
-          <span className="hidden sm:inline">Avaliacao medica individual, privacidade e suporte oficial no mesmo fluxo</span>
+          <span className="hidden sm:inline">Avaliacao medica, privacidade e suporte oficial</span>
         </div>
       )}
 
