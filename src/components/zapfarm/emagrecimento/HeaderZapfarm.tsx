@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { getCheckoutUrl, getProductConfig, productExists } from '@/lib/zapfarm/product-loader';
@@ -16,6 +16,14 @@ interface HeaderZapfarmProps {
   brandSubtitle?: string;
   transparentAtTop?: boolean;
 }
+
+const HOME_JOURNEY_LINKS = [
+  { label: 'Programa', href: '/' },
+  { label: 'Como funciona', href: '/#como-funciona' },
+  { label: 'Planos', href: '/#planos' },
+  { label: 'Depoimentos', href: '/#depoimentos' },
+  { label: 'FAQ', href: '/#faq' },
+] as const;
 
 export function HeaderZapfarm({
   links,
@@ -33,13 +41,10 @@ export function HeaderZapfarm({
   const isReportPage = router.pathname.includes('/relatorio');
   const asPath = router.asPath?.split('?')[0] || '';
   const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
-  const isHomeJourney =
-    router.pathname === '/' ||
-    asPath === '/';
-  const useMedviMark =
-    isLandingPage ||
-    isHomeJourney ||
-    asPath.startsWith('/triagem/emagrecimento');
+  const isHomeJourney = router.pathname === '/' || asPath === '/';
+  const isJourneyPage = isLandingPage || isHomeJourney;
+  const useMedviMark = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
+  const useMinimalReportHeader = isReportPage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,88 +96,28 @@ export function HeaderZapfarm({
     primaryCtaLabel || (isReportPage ? 'Ver programa sugerido →' : 'Fazer minha triagem');
   const resolvedPrimaryMobileLabel =
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Iniciar');
-  const navigationLinks =
-    links?.length
-      ? links
-      : [
-          { label: 'Programa', href: '/' },
-          { label: 'Como funciona', href: '/#como-funciona' },
-          { label: 'Planos', href: '/#planos' },
-          { label: 'FAQ', href: '/#faq' },
-        ];
-  const isEmagrecimentoFlow =
-    isLandingPage || asPath.startsWith('/triagem/emagrecimento');
-
-  if (isLandingPage) {
-    return (
-      <header className="fixed inset-x-0 top-0 z-50" data-testid="home-medvi-header">
-        <div className="border-b border-emerald-100 bg-white/95 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.06em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2.5 sm:text-[11px] sm:uppercase sm:tracking-[0.12em]">
-          <span className="sm:hidden">Avaliação médica e suporte oficial no WhatsApp</span>
-          <span className="hidden sm:inline">Programa com avaliação médica individual e suporte oficial no WhatsApp</span>
-        </div>
-        <div
-          className={`border-b border-emerald-100/80 backdrop-blur transition-all duration-300 ${
-            scrolled ? 'bg-white/95 shadow-sm' : 'bg-[#f6fbf7]/92'
-          }`}
-        >
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex h-14 items-center justify-between sm:h-24">
-              <a
-                href="/"
-                className="inline-flex items-center gap-2 rounded-[22px] border border-emerald-100 bg-white/92 px-3 py-2 shadow-sm sm:gap-3 sm:rounded-full sm:px-4"
-                aria-label="Me Joy — início"
-              >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f7efe9] text-xl font-black text-amber-950 sm:h-9 sm:w-9 sm:text-sm">
-                  Me
-                </span>
-                <span className="leading-none sm:leading-tight">
-                  <span className="block text-[15px] font-bold tracking-[-0.03em] text-slate-950 sm:text-xl">MeJoy</span>
-                  <span className="hidden text-[11px] text-slate-500 sm:block">Me cuido. Me amo!</span>
-                </span>
-              </a>
-
-              <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-700 md:flex">
-                <a href="/emagrecimento#programa" className="transition-colors hover:text-emerald-700">
-                  Programa
-                </a>
-                <a href="/emagrecimento#tratamentos" className="transition-colors hover:text-emerald-700">
-                  Tratamentos
-                </a>
-                <a href="/emagrecimento#depoimentos" className="transition-colors hover:text-emerald-700">
-                  Resultados
-                </a>
-                <a href="/emagrecimento#faq" className="transition-colors hover:text-emerald-700">
-                  FAQ
-                </a>
-              </nav>
-
-              <a
-                href="/emagrecimento#faq"
-                className="inline-flex rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.06em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50 md:hidden"
-              >
-                FAQ
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
-
-  const shouldUseScrolledStyle = isReportPage ? true : transparentAtTop === false ? true : scrolled;
+  const navigationLinks = links?.length ? links : HOME_JOURNEY_LINKS;
+  const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
+  const shouldUseScrolledStyle =
+    isJourneyPage || isReportPage ? true : transparentAtTop === false ? true : scrolled;
   const textColor = shouldUseScrolledStyle ? 'text-slate-700' : 'text-white';
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        shouldUseScrolledStyle
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+        shouldUseScrolledStyle ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}
       data-testid="home-medvi-header"
     >
+      {isJourneyPage && !useMinimalReportHeader && (
+        <div className="border-b border-emerald-100/90 bg-white/92 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.08em] text-emerald-800 backdrop-blur sm:px-4 sm:py-2 sm:text-[10px] sm:uppercase sm:tracking-[0.14em]">
+          <span className="sm:hidden">Avaliação médica, privacidade e suporte oficial</span>
+          <span className="hidden sm:inline">Programa com avaliação médica, privacidade e suporte oficial no mesmo fluxo</span>
+        </div>
+      )}
+
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
+        <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[76px]' : 'h-20 sm:h-16 md:h-20'}`}>
           <a href="/" className="flex items-center shrink-0 gap-2" aria-label="Me Joy — início">
             {useMedviMark ? (
               <div className="flex items-center gap-2">
@@ -187,8 +132,8 @@ export function HeaderZapfarm({
                   MEJOY
                 </span>
                 {isEmagrecimentoFlow && (
-                  <span className={`hidden text-xs font-semibold md:inline ${textColor}`}>
-                    Programa de emagrecimento
+                  <span className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}>
+                    Emagrecimento com avaliacao medica
                   </span>
                 )}
                 {!isEmagrecimentoFlow && brandSubtitle && (
@@ -209,12 +154,12 @@ export function HeaderZapfarm({
             )}
           </a>
 
-          <nav className="hidden lg:flex items-center space-x-6">
+          <nav className={`hidden items-center gap-7 text-[13px] font-semibold uppercase tracking-[0.08em] md:flex ${useMinimalReportHeader ? 'md:hidden' : ''}`}>
             {navigationLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:opacity-80 ${textColor}`}
+                className={`transition-colors hover:text-emerald-700 ${textColor}`}
               >
                 {link.label}
               </a>
@@ -222,7 +167,7 @@ export function HeaderZapfarm({
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            {secondaryCtaHref && secondaryCtaLabel && (
+            {!useMinimalReportHeader && secondaryCtaHref && secondaryCtaLabel && (
               <a
                 href={secondaryCtaHref}
                 className={`rounded-full px-5 py-2.5 text-xs font-bold transition-all hover:scale-105 ${
@@ -247,17 +192,26 @@ export function HeaderZapfarm({
             </a>
           </div>
 
-          <a
-            href={resolvedPrimaryHref}
-            onClick={primaryCtaOnClick}
-            className={`md:hidden rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-bold transition-all shadow-lg hover:shadow-xl whitespace-nowrap ${
-              shouldUseScrolledStyle || isReportPage
-                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                : 'bg-white text-emerald-700 hover:bg-emerald-50'
-            }`}
-          >
-            {resolvedPrimaryMobileLabel}
-          </a>
+          {isJourneyPage && !useMinimalReportHeader ? (
+            <a
+              href="/#planos"
+              className="md:hidden rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm transition-colors hover:bg-emerald-50"
+            >
+              Planos
+            </a>
+          ) : (
+            <a
+              href={resolvedPrimaryHref}
+              onClick={primaryCtaOnClick}
+              className={`md:hidden rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-bold transition-all shadow-lg hover:shadow-xl whitespace-nowrap ${
+                shouldUseScrolledStyle || isReportPage
+                  ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                  : 'bg-white text-emerald-700 hover:bg-emerald-50'
+              }`}
+            >
+              {resolvedPrimaryMobileLabel}
+            </a>
+          )}
         </div>
       </div>
     </header>

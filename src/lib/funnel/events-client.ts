@@ -1,5 +1,15 @@
 import { getOrCreateJourneyContext } from "@/lib/analytics/journey";
 
+declare global {
+  interface Window {
+    dataLayer?: Array<Record<string, any>>;
+    gtag?: (...args: any[]) => void;
+    analytics?: {
+      track?: (event: string, payload?: Record<string, any>) => void;
+    };
+  }
+}
+
 export type FunnelEventName =
   | "lp_view"
   | "cta_start_triage"

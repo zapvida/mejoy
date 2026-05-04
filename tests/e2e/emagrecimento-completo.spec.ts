@@ -168,27 +168,22 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
       console.log('⚠️ Timeout aguardando relatório, continuando...');
     });
 
-    // Verificar se relatório carregou (aguardar até 30s com polling)
-    let reportLoaded = false;
-    for (let i = 0; i < 30; i++) {
-      const reportContent = page.locator('text=Relatório, text=Análise, text=Recomendação').first();
-      if (await reportContent.isVisible({ timeout: 1000 }).catch(() => false)) {
-        reportLoaded = true;
-        console.log('✅ Relatório carregado');
-        break;
-      }
-      await page.waitForTimeout(1000);
-    }
+    // Verificar se relatório carregou no novo layout
+    const decisionFoldTitle = page.getByText('Seu programa pode ser fechado agora, nesta mesma pagina').first();
+    await expect(decisionFoldTitle).toBeVisible({ timeout: 30000 });
+    const planSectionTitle = page.getByText('Escolha o plano do seu fechamento').first();
+    await expect(planSectionTitle).toBeVisible({ timeout: 10000 });
+    const inlineIntroTitle = page.getByText('Checkout inline no mesmo fluxo do relatorio').first();
+    await expect(inlineIntroTitle).toBeVisible({ timeout: 10000 });
+    const reportLoaded = true;
+    console.log('✅ Relatório carregado no layout final');
 
-    if (!reportLoaded) {
-      console.log('⚠️ Relatório não carregou completamente, mas continuando teste...');
-    }
-
-    // 4. Verificar CTAs de planos no relatório
-    const planoCta = page.locator('button:has-text("Escolher e seguir nesta pagina"), button:has-text("Continuar nesta pagina"), button:has-text("Abrir checkout agora")').first();
-    if (await planoCta.isVisible({ timeout: 10000 }).catch(() => false)) {
-      console.log('✅ CTAs de planos encontrados no relatório');
-    }
+    // 4. Validar remoção explícita dos blocos legados
+    await expect(page.locator('text=Plano de Ações')).toHaveCount(0);
+    await expect(page.locator('text=Plano Recomendado Me Joy')).toHaveCount(0);
+    await expect(page.locator('text=Consulta médica já!')).toHaveCount(0);
+    await expect(page.locator('text=Conhecer Planos!')).toHaveCount(0);
+    console.log('✅ Blocos legados não aparecem na composição aberta do relatório');
 
     // 5. Abrir checkout inline no relatório
     console.log('🔍 Testando checkout inline...');
@@ -199,11 +194,13 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
       await page.waitForTimeout(1200);
       const inlineCheckout = page.locator('#report-inline-checkout');
       await expect(inlineCheckout).toBeVisible({ timeout: 10000 });
-      const checkoutTitle = page.locator('text=Finalize sem sair desta pagina').first();
+      const checkoutTitle = page.locator('text=Conclua o pagamento do seu fechamento').first();
       if (await checkoutTitle.isVisible({ timeout: 10000 }).catch(() => false)) {
         checkoutLoaded = true;
         console.log('✅ Checkout inline carregado no relatório');
       }
+      await expect(page.locator('text=Alterar trilha ou plano')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('text=Trilha escolhida')).toHaveCount(0);
     }
 
     // 6. Fallback standalone continua operacional
@@ -235,7 +232,7 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
       }
     }
 
-    const paymentForm = page.locator('input[aria-label="Nome completo"]').first();
+    const paymentForm = page.getByLabel('Nome completo').first();
     if (await paymentForm.isVisible({ timeout: 5000 }).catch(() => false)) {
       console.log('✅ Formulário inline presente');
     }
