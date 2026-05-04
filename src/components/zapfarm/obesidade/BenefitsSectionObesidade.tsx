@@ -8,17 +8,17 @@ const proofCards = [
   {
     icon: ShieldCheckIcon,
     title: 'Avaliação médica individual',
-    text: 'O fluxo organiza seus dados para o médico decidir com critério, sem promessa automática de prescrição.',
+    text: 'Se houver indicação, a decisão acontece em consulta, com critério clínico e sem prescrição automática.',
   },
   {
     icon: DevicePhoneMobileIcon,
-    title: 'Jornada digital enxuta',
-    text: 'Triagem, próximos passos e suporte ficam na mesma experiência, com menos fricção entre decidir e avançar.',
+    title: 'Fluxo digital enxuto',
+    text: 'Triagem, próximos passos e suporte ficam no mesmo caminho, com menos fricção para avançar.',
   },
   {
     icon: UserGroupIcon,
-    title: 'Suporte oficial e acompanhamento',
-    text: 'Você entende o que acontece depois da triagem e mantém contato pelos canais oficiais da Me Joy.',
+    title: 'Suporte oficial',
+    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da MeJoy.',
   },
 ] as const;
 
@@ -48,17 +48,16 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              O programa precisa parecer simples sem perder rigor clínico
+              Simples na leitura, criterioso na decisão.
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              A decisão vem com contexto, transparência e canais oficiais. Sem exagerar nos claims e sem transformar a
-              landing em e-commerce genérico.
+              O objetivo aqui é reduzir ruído: você entende elegibilidade, fluxo e suporte sem transformar a LP em catálogo genérico.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
               {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 shadow-sm"
+                  className="rounded-full border border-emerald-100 bg-white px-4 py-2 shadow-sm"
                 >
                   {item}
                 </span>
@@ -70,13 +69,13 @@ export function BenefitsSectionObesidade() {
             {proofCards.map(({ icon: Icon, title, text }) => (
               <div
                 key={title}
-                className="rounded-[28px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_20px_45px_rgba(15,23,42,0.05)]"
+                className="rounded-[28px] border border-emerald-100 bg-[#fcfffd] p-6 shadow-[0_16px_36px_rgba(15,23,42,0.05)]"
               >
                 <div className="inline-flex rounded-2xl bg-emerald-100 p-3 text-emerald-800 ring-1 ring-emerald-200">
                   <Icon className="h-6 w-6" aria-hidden />
                 </div>
                 <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
-                <p className="mt-3 text-base leading-relaxed text-slate-600">{text}</p>
+                <p className="mt-3 text-[15px] leading-relaxed text-slate-600">{text}</p>
               </div>
             ))}
           </div>

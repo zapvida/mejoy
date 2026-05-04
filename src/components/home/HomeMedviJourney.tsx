@@ -1,4 +1,5 @@
-import { Manrope, Sora } from 'next/font/google';
+import type { CSSProperties } from 'react';
+
 import Seo from '@/components/Seo';
 import { EmagrecimentoMedviLanding } from '@/components/zapfarm/obesidade/EmagrecimentoMedviLanding';
 import { ObesidadeImageGlobalStyles } from '@/components/zapfarm/obesidade/ObesidadeImageGlobalStyles';
@@ -7,18 +8,6 @@ import { SITE } from '@/lib/seo';
 
 const DESCRIPTION =
   'Emagrecimento com triagem online, avaliacao medica quando indicada e acompanhamento continuo para seguir com mais clareza, seguranca e constancia.';
-
-const sora = Sora({
-  subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-emagrecimento-display',
-});
-
-const manrope = Manrope({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-emagrecimento-body',
-});
 
 export function HomeMedviJourney({
   page = 'home',
@@ -45,7 +34,17 @@ export function HomeMedviJourney({
         ]}
       />
 
-      <div className={`${sora.variable} ${manrope.variable} emagrecimento-lp`}>
+      <div
+        className="emagrecimento-lp"
+        style={
+          {
+            '--font-emagrecimento-display':
+              '"Avenir Next", "Segoe UI", system-ui, sans-serif',
+            '--font-emagrecimento-body':
+              '"Avenir Next", "Helvetica Neue", system-ui, sans-serif',
+          } as CSSProperties
+        }
+      >
         <ObesidadeImageGlobalStyles />
         <EmagrecimentoMedviLanding page={page} />
       </div>
