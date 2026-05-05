@@ -33,32 +33,32 @@ export function FaqSectionObesidade() {
     {
       question: 'Como sei se sou elegível ao programa?',
       answer:
-        'Você começa pela triagem online. Com base nas respostas e nos critérios clínicos, o médico avalia se o programa faz sentido para o seu caso e quais estratégias podem ser consideradas.',
+        'Você começa pela triagem online. Suas respostas ajudam a identificar perfil, histórico, objetivos e pontos de atenção. Quando indicado, o médico avalia se o programa faz sentido para o seu caso.',
     },
     {
       question: 'O que acontece depois que eu inicio a triagem?',
       answer:
-        'Sua triagem é organizada para consulta e definição de conduta. Depois, você recebe os próximos passos do plano e orientações de acompanhamento no app/WhatsApp.',
+        'Você recebe uma leitura inicial com próximos passos. Se houver indicação, segue para avaliação médica. Depois da conduta definida, o acompanhamento continua pelo app e WhatsApp oficial.',
     },
     {
       question: 'Meus dados estão seguros?',
       answer:
-        'Tratamos dados de saúde com base na LGPD e boas práticas de segurança. Você pode consultar nossos avisos de privacidade e políticas no site para detalhes sobre uso e armazenamento.',
+        'Sim. Dados de saúde são tratados com sigilo, boas práticas de segurança e base na LGPD. As políticas do site explicam como os dados são usados, armazenados e protegidos.',
     },
     {
       question: 'Preciso de receita? Como funciona a medicação?',
       answer:
-        'Quando houver indicacao medica, o profissional responsavel prescreve e orienta o uso. Nao existe liberacao automatica de medicamento, e a receita continua sendo obrigatoria.',
+        'Sim, medicamentos sujeitos a prescrição exigem receita. Quando houver indicação médica, o profissional responsável prescreve e orienta o uso. Não existe liberação automática.',
     },
     {
       question: 'O programa inclui medicamentos GLP-1 (ou similares)?',
       answer:
-        'Pode incluir, sim, mas so quando fizer sentido para o seu perfil. Em alguns casos o medico pode considerar tirzepatida, semaglutida ou uma alternativa oral; em outros, o caminho mais seguro e comecar por ajustes de rotina, exames ou outra estrategia.',
+        'Pode incluir, mas somente quando fizer sentido para o seu perfil. Em alguns casos o médico pode considerar tirzepatida, semaglutida ou alternativa oral; em outros, o melhor caminho pode ser rotina, exames ou outra estratégia.',
     },
     {
       question: 'Quanto custa e posso cancelar?',
       answer:
-        'Os valores dependem do plano e da conduta indicada na avaliação médica. Políticas de cancelamento e reembolso seguem os termos vigentes e a legislação aplicável.',
+        'Os valores dependem do plano e da conduta indicada. Você vê as etapas e custos antes de avançar. Cancelamento e reembolso seguem os termos vigentes e a legislação aplicável.',
     },
   ];
 
@@ -79,10 +79,10 @@ export function FaqSectionObesidade() {
               id="faq-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Ainda tem dúvidas?
+              Antes de começar, tire as dúvidas certas
             </h2>
             <p className="mt-4 text-base text-slate-600 sm:text-lg">
-              Respostas diretas sobre elegibilidade, privacidade e como funciona o cuidado na Me Joy.
+              Respostas objetivas sobre elegibilidade, medicação, receita, privacidade, preço e próximos passos.
             </p>
           </div>
 

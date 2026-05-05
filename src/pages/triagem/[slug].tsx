@@ -52,6 +52,15 @@ const resolveSlugFromLocation = () => {
   return extractSlugFromPath(window.location.pathname);
 };
 
+/** Evita novo objeto `initialAnswers` a cada polling de sessão (quebrava o intake com setAnswers em loop). */
+function buildEmagrecimentoServerSeedAnswers(answers?: Record<string, any> | null) {
+  const a = { ...(answers ?? {}) };
+  if (a.name && !a.primeiro_nome) a.primeiro_nome = a.name;
+  if (a.dob && !a.data_nascimento) a.data_nascimento = a.dob;
+  if (a.sex && !a.sexo) a.sexo = a.sex;
+  return a;
+}
+
 export default function TriageSlugPage() {
   const router = useRouter();
   const slugFromQuery = router.query.slug;
@@ -78,14 +87,36 @@ export default function TriageSlugPage() {
     (((session.progress ?? 0) > 0) ||
       (session.answers ? Object.keys(session.answers).length > 0 : false));
 
-  const emagrecimentoInitialAnswers = useMemo(() => {
-    const a = { ...(session?.answers ?? {}) };
-    if (slug !== "emagrecimento") return a;
-    if (a.name && !a.primeiro_nome) a.primeiro_nome = a.name;
-    if (a.dob && !a.data_nascimento) a.data_nascimento = a.dob;
-    if (a.sex && !a.sexo) a.sexo = a.sex;
-    return a;
-  }, [session?.answers, slug]);
+  /** Congelado por `triageId`: polls de sessão não devem disparar novo merge no EmagrecimentoOnePageIntake. */
+  const emagrecimentoSeedRef = useRef<{
+    triageId: string;
+    answers: Record<string, any>;
+  } | null>(null);
+  const lastSlugRef = useRef<string | undefined>(slug);
+
+  if (lastSlugRef.current !== slug) {
+    lastSlugRef.current = slug;
+    emagrecimentoSeedRef.current = null;
+  }
+
+  if (slug === "emagrecimento" && session?.triageId) {
+    const tid = session.triageId;
+    if (!emagrecimentoSeedRef.current || emagrecimentoSeedRef.current.triageId !== tid) {
+      emagrecimentoSeedRef.current = {
+        triageId: tid,
+        answers: buildEmagrecimentoServerSeedAnswers(session.answers ?? undefined),
+      };
+    }
+  } else if (slug !== "emagrecimento") {
+    emagrecimentoSeedRef.current = null;
+  }
+
+  const emagrecimentoInitialAnswers =
+    slug === "emagrecimento" &&
+    session?.triageId &&
+    emagrecimentoSeedRef.current?.triageId === session.triageId
+      ? emagrecimentoSeedRef.current.answers
+      : {};
 
   const fetchSession = useCallback(
     async (forceNew = false, options: { silent?: boolean } = {}) => {
@@ -281,7 +312,7 @@ export default function TriageSlugPage() {
         setFinalizeError(runError ?? "Não foi possível gerar o relatório automaticamente.");
       }
     },
-    [fetchSession, scheduleSessionRefresh, session, slug]
+    [fetchSession, scheduleSessionRefresh, slug]
   );
 
   const handleViewReport = () => {

@@ -37,18 +37,18 @@ export function TailoredSectionObesidade() {
             {/* Right - Content */}
             <div className="flex-1 space-y-6 sm:space-y-8">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Um plano que respeita seu corpo, sua rotina e sua meta
+                Um plano feito para caber na sua rotina, não só no papel
               </h2>
 
               <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-                Aqui você não recebe uma receita genérica. Cada etapa é construída com base no seu contexto clínico
-                para aumentar adesão e reduzir tentativas frustradas.
+                Emagrecimento sustentável depende de decisão clínica, adesão e acompanhamento. A Me Joy organiza essas
+                três partes em uma jornada simples.
               </p>
 
               <ul className="space-y-3 text-base sm:text-lg text-slate-700">
                 {[
-                  'Estratégia alinhada ao seu histórico e ao seu momento de vida',
-                  'Metas semanais claras para gerar progresso contínuo',
+                  'Estratégia alinhada ao seu histórico, rotina e momento de vida',
+                  'Metas claras para transformar intenção em consistência',
                   'Ajustes orientados por acompanhamento, não por achismo',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
@@ -75,7 +75,7 @@ export function TailoredSectionObesidade() {
                     "hover:shadow-2xl hover:scale-105 active:scale-100"
                   )}
                 >
-                  Ver minha elegibilidade
+                  Ver se sou elegível
                 </a>
                 <a
                   href="/triagem/emagrecimento"
@@ -89,7 +89,7 @@ export function TailoredSectionObesidade() {
                     "transition-all duration-200"
                   )}
                 >
-                  Ver próximos passos do programa
+                  Entender os próximos passos
                 </a>
               </div>
             </div>

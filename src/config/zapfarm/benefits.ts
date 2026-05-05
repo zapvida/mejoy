@@ -43,11 +43,11 @@ export const mainBenefits: Benefit[] = [
  */
 export const appFeatures: string[] = [
   'Check-ins de peso, rotina e adesão em poucos toques',
-  'Canal de suporte para dúvidas do dia a dia',
-  'Plano organizado por etapas com próximos passos claros',
+  'Canal oficial para dúvidas do dia a dia',
+  'Plano organizado por etapas, sem perder o próximo passo',
   'Resumo de evolução para consulta e tomada de decisão clínica',
-  'Lembretes e acompanhamento de metas semanais',
-  'Histórico centralizado para você não perder contexto',
+  'Lembretes para transformar plano em consistência',
+  'Histórico centralizado para você não recomeçar do zero',
 ];
 
 /**
@@ -88,7 +88,7 @@ export const planTotalFeatures: PlanFeature[] = [
 export const programDescription = {
   title: 'Programa de Emagrecimento com Direção Médica',
   subtitle:
-    'Triagem inteligente, avaliação clínica e acompanhamento contínuo no mesmo fluxo para decisões seguras e consistentes.',
+    'Triagem inteligente, avaliação clínica quando indicada e acompanhamento contínuo para decisões mais seguras e consistentes.',
 };
 
 /**

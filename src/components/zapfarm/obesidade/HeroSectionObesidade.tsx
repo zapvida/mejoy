@@ -7,11 +7,11 @@ import { MedviTrustMarquee } from '@/components/medvi/MedviTrustMarquee';
 import { MEDVI_GLP } from '@/lib/medvi-parity-tokens';
 
 const proofBullets = [
-  'Evolução de composição corporal com acompanhamento médico contínuo.',
-  'Garantia Me Joy no programa — suporte oficial no mesmo fluxo.',
-  'Sem mensalidade escondida: o essencial incluso na jornada apresentada.',
-  'Comece pela triagem: valores e conduta após avaliação individual no Brasil.',
-  'Pagamento com opções transparentes (cartões nas etapas autorizadas).',
+  'Triagem em poucos minutos para entender seu perfil antes de decidir.',
+  'Avaliação médica com CRM quando houver indicação clínica.',
+  'Plano com próximos passos claros, sem promessa automática de prescrição.',
+  'Acompanhamento pelo app e WhatsApp oficial para manter consistência.',
+  'Valores e etapas apresentados com transparência durante a jornada.',
 ] as const;
 
 const heroPhotos = [
@@ -48,15 +48,15 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               className="text-[14px] font-medium leading-5 sm:text-[15px] sm:leading-[22px]"
               style={{ color: MEDVI_GLP.subheadGray }}
             >
-              Junte-se a milhares de pacientes Me Joy em telemedicina
+              Emagrecimento online com avaliação médica quando indicada
             </p>
 
             <h1
               className="mx-auto mt-5 max-w-[36rem] text-[1.625rem] font-bold leading-[1.18] tracking-[-0.02em] sm:mt-5 sm:text-[2.05rem] sm:leading-[1.14] md:text-[2.35rem] md:leading-[1.12]"
               style={{ color: MEDVI_GLP.charcoal }}
             >
-              Sério com emagrecimento? Nós também. Perda de gordura{' '}
-              <span style={{ color: MEDVI_GLP.sage }}>com mais clareza</span> com cuidado personalizado e critério médico.
+              Emagreça com uma estratégia mais inteligente do que tentar de novo sozinho.
+              <span style={{ color: MEDVI_GLP.sage }}> Comece entendendo seu caso.</span>
             </h1>
 
             <ul className="mx-auto mt-7 max-w-lg space-y-2.5 text-left sm:mt-8 sm:max-w-xl">
@@ -90,7 +90,7 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
                 boxShadow: '0 14px 36px rgba(112,136,105,0.38)',
               }}
             >
-              Sou elegível?
+              Ver se sou elegível
             </a>
           </div>
 

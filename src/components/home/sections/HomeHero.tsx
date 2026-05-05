@@ -71,18 +71,17 @@ export function HomeHero() {
               className="text-[14px] font-medium leading-5 sm:text-[15px] sm:leading-[22px]"
               style={{ color: MEDVI_HOME.heroTextMuted }}
             >
-              Junte-se a milhares de pacientes Me Joy em telemedicina no Brasil
+              Saúde online com triagem inteligente e suporte oficial
             </p>
             <h1 className="mt-5 text-[1.75rem] font-bold leading-[1.12] tracking-[-0.03em] sm:mt-6 sm:text-[2rem] sm:leading-[1.1] md:text-[2.5rem] md:leading-[1.08]">
-              Cuide da sua saúde com telemedicina{' '}
-              <span style={{ color: MEDVI_HOME.mintAccent }}>redefinida</span> para a vida real.
+              O jeito mais simples de entender seu próximo passo em saúde.
             </h1>
             <p
               className="mx-auto mt-5 max-w-xl text-[15px] leading-6 sm:text-[16px] sm:leading-7"
               style={{ color: MEDVI_HOME.heroTextMuted }}
             >
-              Atendimento médico online — simples, direto e conduzido por profissionais habilitados. Sem filas
-              desnecessárias. Sem etapas em excesso. Só cuidado que funciona.
+              Comece por uma triagem rápida. A Me Joy organiza seu contexto, mostra caminhos possíveis e conecta você
+              à avaliação médica quando fizer sentido.
             </p>
           </div>
 
@@ -144,7 +143,7 @@ export function HomeHero() {
                 onClick={handlePrimary}
                 className="mt-3 flex h-12 w-full items-center justify-center rounded-[18px] border border-slate-200/80 bg-slate-50 text-[14px] font-semibold text-emerald-900 transition hover:bg-slate-100 sm:mt-3.5"
               >
-                Começar minha triagem
+                Fazer minha triagem agora
               </a>
             </div>
           </div>

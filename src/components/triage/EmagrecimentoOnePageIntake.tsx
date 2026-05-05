@@ -212,9 +212,12 @@ export function EmagrecimentoOnePageIntake({
   onComplete,
 }: Props) {
   const steps = useMemo(() => flow.steps.filter(step => step.type !== 'info'), [flow.steps]);
+  /** Conteúdo estável vs referência: evita re-merge e setAnswers em loop quando o pai refaz `{...session.answers}` a cada polling. */
+  const initialAnswersSnapshot = JSON.stringify(initialAnswers ?? {});
   const mergedInitialAnswers = useMemo(
     () => normalizeAnswersForSteps(steps, getStoredAnswers(triageId, initialAnswers)),
-    [initialAnswers, steps, triageId]
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- snapshot acima representa o conteúdo de initialAnswers
+    [initialAnswersSnapshot, steps, triageId]
   );
   const stepsByKey = useMemo(() => new Map(steps.map(step => [step.key, step])), [steps]);
 

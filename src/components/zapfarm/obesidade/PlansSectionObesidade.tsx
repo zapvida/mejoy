@@ -27,12 +27,13 @@ export function PlansSectionObesidade() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 text-center sm:mb-12">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicacoes</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicações</p>
             <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-              Compare potencia, previsibilidade e seguranca sem adivinhar.
+              Compare opções com contexto, não por impulso.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              O nome do medicamento sozinho nao basta. O que importa e entender resposta esperada, tolerancia e contexto clinico.
+              O nome do medicamento não basta. O que importa é entender perfil, tolerância, riscos, resposta esperada e
+              indicação médica.
             </p>
           </div>
 
@@ -81,11 +82,11 @@ export function PlansSectionObesidade() {
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.efficacy}</p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Equivalencia pratica</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Equivalência prática</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.estimate}</p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Seguranca clinica</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Segurança clínica</p>
                       <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.safety}</p>
                     </div>
                     <div>
@@ -109,7 +110,8 @@ export function PlansSectionObesidade() {
           <div className="mx-auto mt-8 max-w-3xl text-center">
             <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">{getLpPriceHook()}</p>
             <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
-              A comparacao aqui e honesta para deixar a consulta melhor informada, nao para prometer prescricao.
+              A comparação ajuda você a chegar mais informado na avaliação. Ela não substitui consulta nem promete
+              prescrição.
             </p>
           </div>
         </div>

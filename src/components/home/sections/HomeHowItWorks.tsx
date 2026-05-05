@@ -10,23 +10,23 @@ const STEPS = [
   {
     number: '01',
     icon: ClipboardDocumentCheckIcon,
-    title: 'Faça sua triagem online',
+    title: 'Responda a triagem',
     description:
-      'Responde em poucos minutos pelo celular ou computador. Seus dados ficam organizados para a próxima etapa.',
+      'Em poucos minutos você informa histórico, rotina e objetivo. O fluxo separa o que importa para a próxima etapa.',
   },
   {
     number: '02',
     icon: UserCircleIcon,
-    title: 'Receba uma análise inicial',
+    title: 'Entenda o caminho',
     description:
-      'Um relatório personalizado mostra elegibilidade, próximos passos e, quando indicado, abre a consulta com médico.',
+      'Você recebe uma leitura inicial com elegibilidade, pontos de atenção e próximos passos antes de decidir.',
   },
   {
     number: '03',
     icon: ChatBubbleLeftRightIcon,
-    title: 'Tenha suporte oficial pelo WhatsApp',
+    title: 'Siga com suporte',
     description:
-      'Acompanhamento contínuo pelo canal oficial da Me Joy, com clareza sobre o que vem antes e depois de cada etapa.',
+      'Quando houver indicação, a avaliação médica e o acompanhamento continuam pelo canal oficial da Me Joy.',
   },
 ] as const;
 
@@ -46,11 +46,10 @@ export function HomeHowItWorks() {
               id="home-how-it-works-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Três passos simples para começar com clareza
+              Uma jornada curta para sair da dúvida
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Sem fricção, sem fórmulas mágicas e sem promessa automática de prescrição. A jornada respeita o seu tempo
-              e a decisão clínica final é sempre médica.
+              Você entende o que faz sentido para o seu caso sem fila, sem ruído e sem promessa automática de prescrição.
             </p>
           </div>
 

@@ -16,14 +16,14 @@ const TREATMENTS: Treatment[] = [
   {
     slug: 'saude',
     title: 'Saúde & bem-estar',
-    description: 'Suporte funcional para rotina saudável, com avaliação médica quando indicada.',
+    description: 'Uma entrada simples para organizar sinais, rotina e próximos passos de cuidado.',
     href: '/triagem/saude',
     icon: HeartIcon,
   },
   {
     slug: 'detox',
     title: 'Detox & fígado',
-    description: 'Apoio hepático e digestivo com cuidado contínuo e orientação clínica.',
+    description: 'Triagem para entender hábitos, desconfortos digestivos e apoio hepático com mais critério.',
     href: '/triagem/detox',
     icon: ShieldCheckIcon,
   },
@@ -50,16 +50,16 @@ export function HomeTreatmentGrid() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-emerald-800 sm:text-sm">
-              Mais linhas
+              Outras jornadas
             </p>
             <h2
               id="home-treatments-heading"
               className="mt-3 text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-slate-950 sm:text-4xl md:text-[2.25rem]"
             >
-              Outras jornadas com triagem e suporte oficial
+              Cuidado organizado para diferentes objetivos
             </h2>
             <p className="mt-4 text-[15px] leading-7 text-slate-600 sm:text-lg">
-              Protocolos complementares com o mesmo padrão de privacidade e avaliação médica quando indicada.
+              O mesmo padrão Me Joy: triagem objetiva, linguagem clara, privacidade e suporte pelo canal oficial.
             </p>
           </div>
 

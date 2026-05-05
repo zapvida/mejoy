@@ -9,7 +9,7 @@ import { appFeatures } from '@/config/zapfarm/benefits';
 const quickStats = [
   { label: 'Triagem', value: '5 min' },
   { label: 'Canal oficial', value: 'WhatsApp' },
-  { label: 'Resposta médica', value: 'Quando indicada' },
+  { label: 'Avaliação médica', value: 'Quando indicada' },
 ];
 
 export function AppFeaturesSectionObesidade() {
@@ -39,11 +39,11 @@ export function AppFeaturesSectionObesidade() {
                 id="app-portal-heading"
                 className="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl md:text-5xl"
               >
-                Seu acompanhamento em tempo real, no app e no WhatsApp
+                Acompanhamento para não deixar o plano morrer na rotina
               </h2>
               <p className="max-w-xl text-lg text-gray-600 sm:text-xl">
-                Você acompanha evolução, recebe orientação e mantém o plano ativo com menos fricção no
-                dia a dia.
+                Depois da decisão inicial, o que sustenta resultado é constância. Por isso a jornada continua com
+                check-ins, lembretes e suporte oficial.
               </p>
 
               <div className="grid grid-cols-3 gap-3 sm:max-w-xl">
@@ -84,7 +84,7 @@ export function AppFeaturesSectionObesidade() {
                     'hover:shadow-2xl hover:scale-105 active:scale-100'
                   )}
                 >
-                  Ver minha elegibilidade
+                  Ver se sou elegível
                 </a>
                 <a
                   href="/#como-funciona"
@@ -98,7 +98,7 @@ export function AppFeaturesSectionObesidade() {
                     'transition-all duration-200'
                   )}
                 >
-                  Ver fluxo completo
+                  Ver como funciona
                 </a>
               </div>
             </div>
@@ -136,7 +136,7 @@ export function AppFeaturesSectionObesidade() {
                           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
                             Próximo passo
                           </p>
-                          <p className="mt-1 text-sm font-semibold text-slate-900">Resumo da triagem + orientação inicial</p>
+                          <p className="mt-1 text-sm font-semibold text-slate-900">Resumo da triagem + próximo passo</p>
                         </div>
                       </div>
 
@@ -145,7 +145,7 @@ export function AppFeaturesSectionObesidade() {
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200">Canal oficial</p>
                           <p className="mt-2 text-sm font-semibold">WhatsApp Me Joy</p>
                           <p className="mt-2 text-sm leading-6 text-white/78">
-                            Relatório inicial, próximos passos e lembretes no mesmo canal.
+                            Relatório inicial, próximos passos e lembretes no mesmo canal oficial.
                           </p>
                         </div>
 

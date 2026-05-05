@@ -10,21 +10,21 @@ const steps = [
   {
     icon: ClipboardDocumentListIcon,
     title: 'Triagem inteligente',
-    text: 'Em poucos minutos você informa histórico, rotina e objetivos. A plataforma organiza tudo para a avaliação clínica.',
+    text: 'Você informa histórico, rotina, apetite, tentativas anteriores e objetivo. A plataforma organiza o que importa.',
     image: '/images/emagrecimento/medvi/journey-triagem.avif',
     imageAlt: 'Pessoa preenchendo triagem de elegibilidade',
   },
   {
     icon: ChatBubbleLeftRightIcon,
-    title: 'Consulta e decisão médica',
-    text: 'Médico com CRM analisa seu caso, define conduta e orienta próximos passos. Prescrição somente quando indicada.',
+    title: 'Avaliação e conduta',
+    text: 'Quando indicado, médico com CRM analisa seu caso, define a conduta e explica limites, riscos e próximos passos.',
     image: '/images/emagrecimento/medvi/journey-consulta.avif',
     imageAlt: 'Consulta médica online para avaliação de emagrecimento',
   },
   {
     icon: UserGroupIcon,
-    title: 'Suporte contínuo',
-    text: 'Acompanhamento via app e WhatsApp para adesão diária, ajustes de rotina e evolução com consistência.',
+    title: 'Acompanhamento contínuo',
+    text: 'Você segue com app e WhatsApp oficial para check-ins, dúvidas e ajustes de rotina com mais consistência.',
     image: '/images/emagrecimento/medvi/journey-acompanhamento.avif',
     imageAlt: 'Acompanhamento contínuo de rotina e resultados',
   },
@@ -55,10 +55,10 @@ export function HowItWorksSectionObesidade() {
               id="how-it-works-heading"
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4"
             >
-              Como funciona seu plano na prática
+              Como sua jornada sai do improviso
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Um fluxo claro para você sair da dúvida e entrar em ação com segurança.
+              Primeiro entendemos seu contexto. Depois, você decide com orientação, critério e próximos passos claros.
             </p>
           </div>
 

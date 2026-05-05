@@ -15,15 +15,14 @@ export function EmagrecimentoLegalDisclaimerSection() {
             Informações importantes sobre o programa
           </h2>
           <p className="text-gray-700 leading-relaxed">
-            A Me Joy não substitui consulta presencial quando indicada. O check-up e a triagem não criam, por si
-            sós, vínculo médico-paciente; a prescrição e a conduta clínica são de responsabilidade do médico
-            habilitado que avaliar seu caso. Medicamentos para obesidade só são utilizados quando indicados e
-            prescritos, com dispensação em farmácias regulares e acompanhamento conforme normas da ANVISA e do
-            CFM.
+            A Me Joy não substitui atendimento presencial quando ele for necessário. A triagem organiza informações,
+            mas não cria, por si só, vínculo médico-paciente; prescrição e conduta clínica são responsabilidade do
+            profissional habilitado que avaliar o caso. Medicamentos para obesidade só são utilizados quando indicados
+            e prescritos, com dispensação em canais regulares e acompanhamento conforme normas aplicáveis.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Prescrição somente quando indicada em consulta médica. Dados tratados com boas práticas de privacidade,
-            segurança e governança no fluxo inteiro.
+            Prescrição somente quando indicada em consulta médica. Dados são tratados com boas práticas de privacidade,
+            segurança e governança em todo o fluxo.
           </p>
           <p className="text-gray-700 leading-relaxed">
             Resultados variam conforme perfil clínico, aderência e orientação médica. Não prometemos resultado

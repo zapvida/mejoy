@@ -6,7 +6,7 @@ import { ObesidadeImageGlobalStyles } from '@/components/zapfarm/obesidade/Obesi
 import { SITE } from '@/lib/seo';
 
 const DESCRIPTION =
-  'Programa de emagrecimento com triagem online, avaliação médica e acompanhamento contínuo, com clareza, segurança e suporte oficial pela Me Joy.';
+  'Emagrecimento online com triagem inteligente, avaliação médica quando indicada, plano personalizado e suporte oficial para decidir com mais clareza.';
 
 const redHat = Red_Hat_Text({
   subsets: ['latin', 'latin-ext'],
@@ -28,7 +28,7 @@ export function EmagrecimentoLpacPage({
   return (
     <>
       <Seo
-        title="Emagrecimento com avaliação médica e acompanhamento contínuo | Me Joy"
+        title="Emagrecimento online com triagem inteligente e avaliação médica | Me Joy"
         description={DESCRIPTION}
         path={canonicalPath}
         ogImage={ogImage}

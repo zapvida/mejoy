@@ -4,27 +4,27 @@ const FAQ_ITEMS = [
   {
     question: 'A consulta com médico é obrigatória?',
     answer:
-      'A triagem é online e gratuita. Quando indicada, abrimos a consulta com médico para avaliar seu caso com critério clínico antes de qualquer prescrição.',
+      'Você começa pela triagem online. Quando há indicação clínica, a próxima etapa é a avaliação com médico habilitado antes de qualquer prescrição ou conduta.',
   },
   {
     question: 'Quanto custa começar?',
     answer:
-      'A triagem online é gratuita e gera um relatório personalizado. Os planos com acompanhamento médico são apresentados após o relatório, com transparência de preços.',
+      'A triagem inicial é gratuita. Valores de plano, acompanhamento e eventuais próximas etapas são apresentados com transparência antes de você avançar.',
   },
   {
     question: 'O que é o relatório personalizado?',
     answer:
-      'É um resumo organizado dos seus dados, com elegibilidade preliminar e próximos passos sugeridos. Ele orienta a conversa com o médico sem antecipar prescrição.',
+      'É uma leitura organizada das suas respostas, com elegibilidade preliminar, alertas relevantes e próximos passos. Ele ajuda a transformar suas informações em contexto útil para a decisão clínica.',
   },
   {
     question: 'Como funciona o acompanhamento?',
     answer:
-      'Pelo canal oficial da Me Joy no WhatsApp, com clareza sobre cada etapa: triagem, consulta, plano e suporte contínuo durante o programa.',
+      'Você segue pelo canal oficial da Me Joy, com orientação sobre triagem, avaliação, plano e suporte. A ideia é reduzir dúvida e manter o cuidado em movimento.',
   },
   {
     question: 'Meus dados estão protegidos?',
     answer:
-      'Sim. Tratamos seus dados com sigilo, criptografia e em conformidade com a LGPD. Você controla seus dados e pode solicitar exclusão a qualquer momento.',
+      'Sim. Dados de saúde são tratados com sigilo, boas práticas de segurança e conformidade com a LGPD. Você pode consultar as políticas do site para detalhes sobre uso e direitos.',
   },
 ] as const;
 
@@ -44,7 +44,7 @@ export function HomeFAQ() {
               id="home-faq-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Tire suas dúvidas antes de começar
+              O que você precisa saber antes de começar
             </h2>
           </div>
 

@@ -5,18 +5,18 @@ import { DevicePhoneMobileIcon, ShieldCheckIcon, UserGroupIcon } from '@heroicon
 const proofCards = [
   {
     icon: ShieldCheckIcon,
-    title: 'Avaliacao individual',
-    text: 'Prescricao nao e automatica. A decisao depende do caso e da consulta.',
+    title: 'Avaliação individual',
+    text: 'Prescrição não é automática. A decisão depende do seu perfil, histórico e consulta.',
   },
   {
     icon: DevicePhoneMobileIcon,
-    title: 'Fluxo simples',
-    text: 'Triagem, proximos passos e suporte ficam no mesmo caminho, sem excesso de atrito.',
+    title: 'Menos atrito',
+    text: 'Triagem, próximos passos e suporte ficam no mesmo caminho, sem você repetir tudo a cada etapa.',
   },
   {
     icon: UserGroupIcon,
     title: 'Suporte oficial',
-    text: 'Voce entende o que acontece depois da triagem e segue pelos canais oficiais da Me Joy.',
+    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da Me Joy.',
   },
 ] as const;
 
@@ -36,14 +36,14 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Por que o programa funciona, com clareza médica
+              Por que a Me Joy aumenta sua chance de seguir
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              Avaliação médica individual, jornada digital simples e suporte oficial pelos canais da Me Joy.
-              Você decide com contexto, transparência e segurança.
+              O programa reduz a parte mais difícil: começar sem direção. Você ganha contexto clínico, plano organizado
+              e suporte para manter constância.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
-              {['Medicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Proximos passos claros'].map((item) => (
+              {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
                 <span
                   key={item}
                   className="rounded-full border border-emerald-100 bg-white px-4 py-2 shadow-sm"

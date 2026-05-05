@@ -13,23 +13,23 @@ import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 const inclusions = [
   {
     icon: UserCircleIcon,
-    title: 'Avaliação médica',
-    text: 'Consulta online com profissional habilitado para entender seu histórico, rotina e objetivos.',
+    title: 'Leitura clínica do perfil',
+    text: 'Histórico, rotina, objetivo e pontos de atenção organizados para orientar a avaliação.',
   },
   {
     icon: ClipboardDocumentCheckIcon,
-    title: 'Plano personalizado',
-    text: 'Conduta alinhada ao seu perfil com foco em adesão, rotina e segurança clínica.',
+    title: 'Plano com direção',
+    text: 'Próximos passos pensados para adesão, segurança e consistência, não para tentativa aleatória.',
   },
   {
     icon: ChatBubbleLeftRightIcon,
-    title: 'Canal de suporte',
-    text: 'Orientação contínua para dúvidas de hábitos, rotina e próximos passos do programa.',
+    title: 'Suporte no dia a dia',
+    text: 'Canal oficial para dúvidas de rotina, check-ins e orientação sobre cada etapa do programa.',
   },
   {
     icon: TruckIcon,
-    title: 'Fluxo completo',
-    text: 'Quando houver prescrição, orientamos o caminho operacional com parceiros regulares.',
+    title: 'Caminho operacional claro',
+    text: 'Quando houver prescrição, você recebe orientação sobre os próximos passos pelos canais regulares.',
   },
 ] as const;
 
@@ -86,11 +86,11 @@ export function ZeroCostSectionObesidade() {
               id="inclusions-heading"
               className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3 sm:mb-4"
             >
-              O que você recebe no programa, sem surpresa
+              O que entra no programa antes de você avançar
             </h2>
             <p className="text-base sm:text-lg text-gray-700 text-center leading-relaxed mb-8 sm:mb-10 max-w-3xl mx-auto">
-              Você entende o que está incluso antes de decidir. Tudo o que depende de avaliação médica
-              é tratado com transparência na consulta, inclusive eventual indicação de medicação.
+              A Me Joy transforma suas respostas em uma jornada prática: triagem, avaliação quando indicada, plano e
+              suporte. O que depender de decisão médica é tratado com transparência na consulta.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-10">
@@ -124,7 +124,7 @@ export function ZeroCostSectionObesidade() {
                   'hover:shadow-2xl hover:scale-105 active:scale-100'
                 )}
               >
-                Iniciar minha triagem agora
+                Começar minha triagem agora
               </a>
             </div>
           </div>

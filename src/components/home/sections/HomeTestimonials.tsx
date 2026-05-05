@@ -8,21 +8,21 @@ const TESTIMONIALS = [
     location: 'São Paulo, SP',
     avatar: '/images/emagrecimento/medvi/avatar-belinda.webp',
     quote:
-      'A triagem online foi clara e rápida. A consulta validou o que fazia sentido para mim, sem promessa de fórmula mágica.',
+      'Em poucos minutos eu entendi o que vinha depois. Foi direto, claro e sem promessa exagerada.',
   },
   {
     name: 'Rafaela T.',
     location: 'Belo Horizonte, MG',
     avatar: '/images/emagrecimento/medvi/avatar-melissa.webp',
     quote:
-      'Recebi o relatório com os próximos passos e o suporte pelo WhatsApp ajudou em cada etapa. Senti segurança no processo.',
+      'O relatório deixou tudo mais organizado. O suporte pelo WhatsApp me ajudou a seguir sem ficar perdida.',
   },
   {
     name: 'Patrícia S.',
     location: 'Curitiba, PR',
     avatar: '/images/emagrecimento/medvi/avatar-sandra.webp',
     quote:
-      'O que mais gostei foi a transparência. Médico avaliou meu caso com critério e o acompanhamento contínua firme.',
+      'Gostei da transparência. Meu caso foi avaliado com critério e eu sabia exatamente qual era o próximo passo.',
   },
 ] as const;
 
@@ -42,10 +42,10 @@ export function HomeTestimonials() {
               id="home-testimonials-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Quem já está em jornada com a Me Joy
+              Clareza muda a forma de começar
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Histórias reais de quem buscou clareza, avaliação médica e suporte contínuo.
+              Relatos de pacientes que procuravam uma jornada mais simples, organizada e segura.
             </p>
           </div>
 

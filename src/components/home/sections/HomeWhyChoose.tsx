@@ -10,27 +10,27 @@ import {
 const REASONS = [
   {
     icon: ShieldCheckIcon,
-    title: 'Avaliação médica individual',
+    title: 'Decisão clínica individual',
     description:
-      'Médicos com CRM avaliam seu caso quando indicado. Sem prescrição automática nem promessa antes da decisão clínica.',
+      'A plataforma organiza o contexto, mas a conduta depende da avaliação de profissional habilitado.',
   },
   {
     icon: AcademicCapIcon,
-    title: 'Base científica transparente',
+    title: 'Critério antes de conduta',
     description:
-      'Conteúdo educativo claro, com referências para você entender o que sustenta cada protocolo recomendado.',
+      'Você entende por que cada próximo passo pode fazer sentido antes de avançar no programa.',
   },
   {
     icon: LockClosedIcon,
     title: 'Privacidade e LGPD',
     description:
-      'Seus dados de saúde tratados com sigilo, criptografia e conformidade com a legislação aplicável.',
+      'Dados de saúde tratados com sigilo, segurança e conformidade com a legislação aplicável.',
   },
   {
     icon: ChatBubbleLeftRightIcon,
-    title: 'Suporte oficial e contínuo',
+    title: 'Canal oficial contínuo',
     description:
-      'Atendimento pelo canal oficial da Me Joy no WhatsApp, com clareza sobre cada próximo passo da jornada.',
+      'Orientações, lembretes e próximos passos ficam centralizados no WhatsApp oficial da Me Joy.',
   },
 ] as const;
 
@@ -49,11 +49,11 @@ export function HomeWhyChoose() {
               id="home-why-choose-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Cuidado com critério, sem promessa fácil
+              Confiança vem de clareza, não de promessa
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Cada decisão é orientada por avaliação médica e suporte oficial, com privacidade preservada e suporte
-              contínuo.
+              A Me Joy foi desenhada para reduzir tentativa e erro: contexto organizado, linguagem simples e decisão
+              clínica quando indicada.
             </p>
           </div>
 

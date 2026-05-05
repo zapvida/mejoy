@@ -17,7 +17,7 @@ import { HomeCtaBanner } from './sections/HomeCtaBanner';
 import { HomeFAQ } from './sections/HomeFAQ';
 
 const DESCRIPTION =
-  'Telemedicina personalizada com triagem online, avaliação médica quando indicada e suporte contínuo pelo WhatsApp oficial. Cuidado em saúde com clareza, privacidade e acompanhamento.';
+  'Comece seu cuidado em saúde com triagem online, próximos passos claros, avaliação médica quando indicada e suporte oficial pelo WhatsApp da Me Joy.';
 
 const redHat = Red_Hat_Text({
   subsets: ['latin', 'latin-ext'],
@@ -37,7 +37,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
   return (
     <>
       <Seo
-        title="Telemedicina personalizada com avaliação médica e suporte contínuo | Me Joy"
+          title="Triagem online e cuidado em saúde com clareza | Me Joy"
         description={DESCRIPTION}
         path={canonicalPath}
         ogImage={ogImage}

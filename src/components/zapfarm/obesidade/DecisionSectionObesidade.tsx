@@ -34,17 +34,18 @@ export function DecisionSectionObesidade() {
                 id="decision-heading"
                 className="mt-4 text-3xl font-bold leading-tight tracking-[-0.04em] text-slate-950 sm:text-4xl"
               >
-                Em poucos minutos voce entende o melhor proximo passo
+                Em poucos minutos, você sabe se faz sentido avançar
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-                Triagem rapida, avaliacao medica quando indicada e um caminho mais claro para decidir sem tentativa e erro.
+                A triagem mostra o caminho provável, organiza suas informações e evita que você comece uma jornada sem
+                direção.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm sm:text-base">
                 {[
                   'Leva cerca de 5 minutos para concluir a triagem',
-                  'A conduta e definida em avaliacao individual',
-                  'Voce entende o processo antes de decidir',
+                  'A conduta é definida em avaliação individual',
+                  'Você entende etapas e valores antes de decidir',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-slate-700">
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">
@@ -64,7 +65,7 @@ export function DecisionSectionObesidade() {
                   Fazer minha triagem
                 </a>
                 <span className="text-xs text-slate-500 sm:text-sm">
-                  Prescricao somente quando indicada em consulta medica.
+                  Prescrição somente quando indicada em consulta médica.
                 </span>
               </div>
             </div>
@@ -80,8 +81,8 @@ export function DecisionSectionObesidade() {
                     sizes="40px"
                   />
                 </div>
-                <h3 className="text-base font-bold text-slate-950">Transparencia total</h3>
-                <p className="mt-1 text-sm text-slate-600">Voce sabe o processo e os criterios antes de avancar.</p>
+                <h3 className="text-base font-bold text-slate-950">Transparência total</h3>
+                <p className="mt-1 text-sm text-slate-600">Você sabe o processo e os critérios antes de avançar.</p>
               </div>
 
               <div className="rounded-2xl border border-emerald-100 bg-[#fbfefc] p-4">
@@ -94,8 +95,8 @@ export function DecisionSectionObesidade() {
                     sizes="96px"
                   />
                 </div>
-                <h3 className="text-base font-bold text-slate-950">Confianca construida</h3>
-                <p className="mt-1 text-sm text-slate-600">Acompanhamento focado em constancia, nao em ansiedade.</p>
+                <h3 className="text-base font-bold text-slate-950">Confiança construída</h3>
+                <p className="mt-1 text-sm text-slate-600">Acompanhamento focado em constância, não em ansiedade.</p>
               </div>
 
               <div className="overflow-hidden rounded-[28px] border border-emerald-100 bg-white sm:col-span-2">
