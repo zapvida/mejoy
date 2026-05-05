@@ -61,6 +61,12 @@ function buildEmagrecimentoServerSeedAnswers(answers?: Record<string, any> | nul
   return a;
 }
 
+type SessionFlight = {
+  readonly key: string;
+  readonly controller: AbortController;
+  readonly done: Promise<void>;
+};
+
 export default function TriageSlugPage() {
   const router = useRouter();
   const slugFromQuery = router.query.slug;
@@ -81,8 +87,9 @@ export default function TriageSlugPage() {
   const finalizeStateRef = useRef<RunnerCompletionStatus | "idle">("idle");
   const triageStartedTrackedRef = useRef(false);
 
-  /** Aborta POST /session anterior (Strict Mode ou troca rápida de slug) para evitar `setSession` fora de ordem. */
-  const sessionAbortRef = useRef<AbortController | null>(null);
+  /** Um voo POST ativo por slug: resume coalesce; novo `forceNew` aborta o anterior. */
+  const sessionFlightRef = useRef<SessionFlight | null>(null);
+  const forceNewSeqRef = useRef(0);
 
   const slugRef = useRef(slug);
   slugRef.current = slug;
@@ -130,15 +137,31 @@ export default function TriageSlugPage() {
     async (forceNew = false, options: { silent?: boolean } = {}) => {
       if (!slug) return;
 
-      /** Troca de slug durante o POST: resultado descartado. */
       const slugStarted = slug;
+      const silent = options.silent ?? false;
+      const resumeKey = `${slugStarted}|resume`;
+      const inflight = sessionFlightRef.current;
 
-      sessionAbortRef.current?.abort();
+      if (!forceNew && inflight?.key === resumeKey) {
+        await inflight.done;
+        return;
+      }
+
+      if (inflight) {
+        inflight.controller.abort();
+        sessionFlightRef.current = null;
+      }
+
+      const flightKey = forceNew ? `${slugStarted}|new:${++forceNewSeqRef.current}` : resumeKey;
       const controller = new AbortController();
-      sessionAbortRef.current = controller;
+      let resolveDone!: () => void;
+      const done = new Promise<void>(r => {
+        resolveDone = r;
+      });
+      sessionFlightRef.current = { key: flightKey, controller, done };
+
       let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-      const silent = options.silent ?? false;
       if (!silent) setState("loading");
       setError(null);
       try {
@@ -184,7 +207,8 @@ export default function TriageSlugPage() {
         if (timeoutId !== undefined) clearTimeout(timeoutId);
 
         const supersededSilent =
-          controller.signal.aborted && sessionAbortRef.current !== controller;
+          controller.signal.aborted &&
+          (sessionFlightRef.current === null || sessionFlightRef.current.controller !== controller);
         if (supersededSilent) {
           return;
         }
@@ -207,8 +231,9 @@ export default function TriageSlugPage() {
         setError(errorMessage);
         setState("error");
       } finally {
-        if (sessionAbortRef.current === controller) {
-          sessionAbortRef.current = null;
+        resolveDone();
+        if (sessionFlightRef.current?.controller === controller) {
+          sessionFlightRef.current = null;
         }
       }
     },
@@ -279,7 +304,8 @@ export default function TriageSlugPage() {
       return undefined;
     }
 
-    sessionAbortRef.current?.abort();
+    sessionFlightRef.current?.controller.abort();
+    sessionFlightRef.current = null;
 
     const prevNav = triageSlugNavPrevRef.current;
     if (prevNav !== undefined && prevNav !== slug) {
@@ -298,26 +324,31 @@ export default function TriageSlugPage() {
     triageSlugNavPrevRef.current = slug;
 
     return () => {
-      sessionAbortRef.current?.abort();
+      sessionFlightRef.current?.controller.abort();
+      sessionFlightRef.current = null;
     };
   }, [slug]);
 
   useEffect(() => {
     if (!slug) return;
-    
+
     // Verificar se o flow existe
     if (!flow) {
       setError(`Triagem "${slug}" não encontrada.`);
       setState("error");
       return;
     }
-    
+
     // Não recriar se a sessão já foi concluída ou se estamos finalizando
     if (finalizeState === "running" || finalizeState === "completed") return;
     if (session?.completed) return;
     if (session) return;
-    
-    void fetchSession();
+
+    /** Colapsa disparos no mesmo frame (Strict Mode / efeitos duplicados) num único POST. */
+    const raf = requestAnimationFrame(() => {
+      void fetchSession();
+    });
+    return () => cancelAnimationFrame(raf);
   }, [fetchSession, flow, slug, finalizeState, session]);
 
   const handleRestart = async () => {
