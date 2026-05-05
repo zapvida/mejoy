@@ -56,7 +56,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
           <LandingPageViewTracker />
           <div className="min-h-screen bg-white" data-testid="home-medvi-journey">
             <HeaderZapfarm />
-            <main>
+            <div className="home-hub-body">
               <HomeHero />
               <HomeTreatmentGrid />
               <HomeHowItWorks />
@@ -64,7 +64,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
               <HomeTestimonials />
               <HomeCtaBanner />
               <HomeFAQ />
-            </main>
+            </div>
             <FooterZapfarm />
           </div>
         </LandingAnalyticsProvider>

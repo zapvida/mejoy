@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { track } from '@/lib/analytics';
 
@@ -14,10 +14,12 @@ function getViewportHeight(): number {
 export function EmagrecimentoStickyCta() {
   const page = useLandingPageKey();
   const [isVisible, setIsVisible] = useState(false);
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     const HYST = 80;
     let raf = 0;
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 
     const updateVisibility = () => {
       const heroSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-hero"]');
@@ -31,11 +33,14 @@ export function EmagrecimentoStickyCta() {
       const y = window.scrollY;
 
       const stopGate = stopTop - 140;
-      setIsVisible((prev) => {
-        const scrolledPastHero = prev ? y > revealBase - HYST : y > revealBase + HYST;
-        const stillInRange = prev ? y < stopGate + HYST : y < stopGate;
-        return scrolledPastHero && stillInRange;
-      });
+      const next =
+        (visibleRef.current ? y > revealBase - HYST : y > revealBase + HYST) &&
+        (visibleRef.current ? y < stopGate + HYST : y < stopGate);
+
+      if (next !== visibleRef.current) {
+        visibleRef.current = next;
+        setIsVisible(next);
+      }
     };
 
     const scheduleUpdate = () => {
@@ -46,18 +51,27 @@ export function EmagrecimentoStickyCta() {
       });
     };
 
+    const scheduleResize = () => {
+      if (resizeTimer !== undefined) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeTimer = undefined;
+        scheduleUpdate();
+      }, 120);
+    };
+
     updateVisibility();
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleResize, { passive: true });
     const vv = window.visualViewport;
-    vv?.addEventListener('resize', scheduleUpdate, { passive: true } as AddEventListenerOptions);
-    vv?.addEventListener('scroll', scheduleUpdate, { passive: true } as AddEventListenerOptions);
+    /* Não escutar visualViewport "scroll": no iOS/Android isso dispara em paralelo ao scroll da página e
+       altera getViewportHeight() a cada frame — pode alternar visibilidade do CTA e “brigar” com scroll anchoring. */
+    vv?.addEventListener('resize', scheduleResize, { passive: true } as AddEventListenerOptions);
     return () => {
+      if (resizeTimer !== undefined) clearTimeout(resizeTimer);
       if (raf !== 0) cancelAnimationFrame(raf);
       window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
-      vv?.removeEventListener('resize', scheduleUpdate);
-      vv?.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleResize);
+      vv?.removeEventListener('resize', scheduleResize);
     };
   }, []);
 

@@ -27,8 +27,9 @@
   margin: 0;
 }
 
+/* auto: scroll “suave” global costuma brigar com scroll anchoring + layout dinâmico em LPs longas */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   color-scheme: light dark;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -1035,8 +1036,14 @@ html, body {
 
 .medvi-marquee-track {
   animation: medvi-marquee-scroll 38s linear infinite;
+  overflow-anchor: none;
   /* GPU layer sem will-change permanente (evita memória alta e repaint estranho no mobile) */
   transform: translate3d(0, 0, 0);
+}
+
+[data-testid='medvi-trust-marquee'] {
+  overflow-anchor: none;
+  contain: layout style;
 }
 
 @media (prefers-reduced-motion: reduce) {

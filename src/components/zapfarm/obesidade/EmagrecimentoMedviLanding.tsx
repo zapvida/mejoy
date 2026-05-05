@@ -27,7 +27,8 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
       <div className="min-h-screen bg-white" data-testid="home-medvi-journey">
         <HeaderZapfarm />
         <EmagrecimentoStickyCta />
-        <main className="pb-24 md:pb-0">
+        {/* AppLayout já envolve a página em <main>; evitar <main> aninhado (HTML inválido / glitches de scroll). */}
+        <div className="lpac-landing-body pb-24 md:pb-0">
           <HeroSectionObesidade variant="emagrecimento" />
           <TrustBarSectionObesidade />
           <ZeroCostSectionObesidade />
@@ -40,7 +41,7 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
           <DecisionSectionObesidade />
           <FaqSectionObesidade />
           <EmagrecimentoLegalDisclaimerSection />
-        </main>
+        </div>
         <FooterZapfarm />
       </div>
     </LandingAnalyticsProvider>
