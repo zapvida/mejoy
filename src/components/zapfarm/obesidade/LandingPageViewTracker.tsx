@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 
 /**
@@ -10,6 +10,7 @@ export function LandingPageViewTracker() {
   const page = useLandingPageKey();
   const [mounted, setMounted] = useState(false);
   const isHomepage = page === 'home';
+  const firedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -17,6 +18,8 @@ export function LandingPageViewTracker() {
 
   useEffect(() => {
     if (!mounted || typeof window === 'undefined') return;
+    if (firedRef.current) return;
+    firedRef.current = true;
     const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
     if (gtag) {
       gtag('event', 'zapfarm_lp_view', {

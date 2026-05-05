@@ -17,7 +17,7 @@ export function EmagrecimentoStickyCta() {
   const visibleRef = useRef(false);
 
   useEffect(() => {
-    const HYST = 80;
+    const HYST = 110;
     let raf = 0;
     let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 

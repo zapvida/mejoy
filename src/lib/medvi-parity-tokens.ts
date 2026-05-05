@@ -35,6 +35,8 @@ export const MEDVI_GLP = {
   bodyLeadingPx: 20,
   ctaHeightPx: 52,
   photoRadiusPx: 32,
+  /** Retângulos arredondados no hero (glp.medvi.org — não capsule / óvalo) */
+  heroProofPhotoRadiusPx: 14,
   /** Header CTA escuro estilo “Get approved” */
   headerCtaDark: '#2D2926',
 } as const;

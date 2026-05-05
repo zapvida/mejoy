@@ -47,6 +47,11 @@ function bindLifecycleOnce() {
 export function reportWebVitals(metric: NextWebVitalsMetric) {
   bindLifecycleOnce();
 
+  /** Métrica interna do Next 15; em dev dispara a cada HMR/remount e polui `/api/analytics/vitals`. */
+  if (process.env.NODE_ENV === 'development' && metric.name === 'Next.js-hydration') {
+    return;
+  }
+
   if (metric.name !== 'CLS') {
     sendToApi(metric);
     return;

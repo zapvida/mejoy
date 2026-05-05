@@ -20,9 +20,12 @@ const heroPhotos = [
   { src: '/images/emagrecimento/medvi/reviews-03.avif', alt: 'Paciente em jornada de saúde' },
 ] as const;
 
-/** Hero GLP — checks simples (sem círculo), CTA, 3 fotos calibradas, faixa branca tipo MedVi. */
+const photoR = MEDVI_GLP.heroProofPhotoRadiusPx;
+
+/** Hero GLP — paridade glp.medvi.org: CTA, 3 retratos alinhados em retângulos com arco moderado, faixa ticker. */
 export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: string }) {
   const page = useLandingPageKey();
+  const hasPromoOffset = variant === 'emagrecimento';
 
   const handlePrimaryCta = () => {
     track('cta_click', {
@@ -39,11 +42,15 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
         id="programa"
         data-home-section="hero"
         data-testid="home-medvi-hero"
-        className="relative overflow-hidden pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.75rem]"
+        className={
+          hasPromoOffset
+            ? 'relative overflow-x-hidden overflow-y-visible pt-[6.5rem] sm:pt-[6.75rem] lg:pt-[7rem]'
+            : 'relative overflow-x-hidden overflow-y-visible pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.75rem]'
+        }
         style={{ backgroundColor: MEDVI_GLP.pageBg }}
       >
         <div className="container relative mx-auto max-w-[1100px] px-4 sm:px-6 lg:px-8" data-testid="emagrecimento-hero">
-          <div className="mx-auto max-w-xl pb-7 text-center sm:max-w-2xl md:pb-9">
+          <div className="mx-auto max-w-xl pb-6 text-center sm:max-w-2xl md:pb-8">
             <p
               className="text-[14px] font-medium leading-5 sm:text-[15px] sm:leading-[22px]"
               style={{ color: MEDVI_GLP.subheadGray }}
@@ -52,14 +59,14 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
             </p>
 
             <h1
-              className="mx-auto mt-5 max-w-[36rem] text-[1.625rem] font-bold leading-[1.18] tracking-[-0.02em] sm:mt-5 sm:text-[2.05rem] sm:leading-[1.14] md:text-[2.35rem] md:leading-[1.12]"
+              className="mx-auto mt-4 max-w-[36rem] text-[1.625rem] font-bold leading-[1.18] tracking-[-0.02em] sm:mt-5 sm:text-[2.05rem] sm:leading-[1.14] md:text-[2.35rem] md:leading-[1.12]"
               style={{ color: MEDVI_GLP.charcoal }}
             >
               Emagreça com uma estratégia mais inteligente do que tentar de novo sozinho.
               <span style={{ color: MEDVI_GLP.sage }}> Comece entendendo seu caso.</span>
             </h1>
 
-            <ul className="mx-auto mt-7 max-w-lg space-y-2.5 text-left sm:mt-8 sm:max-w-xl">
+            <ul className="mx-auto mt-6 max-w-lg space-y-2.5 text-left sm:mt-8 sm:max-w-xl">
               {proofBullets.map((item) => (
                 <li key={item} className="flex gap-3">
                   <span
@@ -94,52 +101,25 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
             </a>
           </div>
 
-          <div className="relative mx-auto flex max-w-[min(100%,22rem)] items-end justify-center gap-1.5 pb-5 sm:max-w-[21.5rem] sm:gap-2 md:pb-8">
-            <div className="relative w-[30%] max-w-[100px] -translate-y-1.5 sm:max-w-[106px] sm:-translate-y-2">
-              <div
-                className="relative aspect-[3/4] overflow-hidden shadow-md sm:shadow-lg"
-                style={{ borderRadius: MEDVI_GLP.photoRadiusPx }}
-              >
-                <Image
-                  src={heroPhotos[0].src}
-                  alt={heroPhotos[0].alt}
-                  fill
-                  className="object-cover"
-                  sizes="106px"
-                  priority
-                />
+          {/* Três retratos: mesma base, larguras iguais — paridade visual com glp.medvi.org (sem escada / óvalo) */}
+          <div className="mx-auto mt-2 flex w-full max-w-[min(26rem,calc(100%-0.5rem))] items-start justify-center gap-2 pb-6 sm:mt-1 sm:max-w-xl sm:gap-3 md:max-w-2xl md:pb-10">
+            {heroPhotos.map((photo) => (
+              <div key={photo.src} className="min-w-0 flex-1" style={{ maxWidth: 132 }}>
+                <div
+                  className="relative aspect-[3/4] w-full overflow-hidden shadow-md sm:shadow-lg"
+                  style={{ borderRadius: photoR }}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 33vw, 132px"
+                    priority
+                  />
+                </div>
               </div>
-            </div>
-            <div className="relative z-10 w-[34%] max-w-[112px] translate-y-2 sm:max-w-[118px] sm:translate-y-3">
-              <div
-                className="relative aspect-[3/4] overflow-hidden shadow-lg"
-                style={{ borderRadius: MEDVI_GLP.photoRadiusPx }}
-              >
-                <Image
-                  src={heroPhotos[1].src}
-                  alt={heroPhotos[1].alt}
-                  fill
-                  className="object-cover"
-                  sizes="118px"
-                  priority
-                />
-              </div>
-            </div>
-            <div className="relative w-[30%] max-w-[100px] -translate-y-6 sm:max-w-[106px] sm:-translate-y-8">
-              <div
-                className="relative aspect-[3/4] overflow-hidden shadow-md sm:shadow-lg"
-                style={{ borderRadius: MEDVI_GLP.photoRadiusPx }}
-              >
-                <Image
-                  src={heroPhotos[2].src}
-                  alt={heroPhotos[2].alt}
-                  fill
-                  className="object-cover"
-                  sizes="106px"
-                  priority
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

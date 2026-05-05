@@ -139,6 +139,8 @@ export function HeaderZapfarm({
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
   const navigationLinks = links?.length ? links : isLandingPage ? EMAGRECIMENTO_LANDING_LINKS : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
+  /** LP `/emagrecimento` espelha glp.medvi.org: faixa promo + header logo|menu apenas. */
+  const isGlpStyleLanding = isLandingPage;
 
   const shouldUseScrolledStyle =
     isReportPage ||
@@ -151,15 +153,23 @@ export function HeaderZapfarm({
   const medviShell = isHomeHub || isLandingPage;
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        shouldUseScrolledStyle ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]' : 'bg-transparent'
-      }`}
-      data-testid="home-medvi-header"
-    >
-      <div className="container mx-auto max-w-[1100px] px-4 sm:px-6">
-        <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[60px]' : 'h-20 sm:h-16 md:h-20'}`}>
-          <a href="/" className="flex min-w-0 shrink-0 items-center gap-2" aria-label="Me Joy — inicio">
+    <header className="fixed top-0 left-0 right-0 z-50" data-testid="home-medvi-header">
+      {isGlpStyleLanding && (
+        <div
+          className="border-b border-emerald-900/10 bg-emerald-50 px-2 py-1.5 text-center text-[10px] font-semibold uppercase leading-snug tracking-[0.07em] text-emerald-900 sm:px-3 sm:text-[11px] sm:tracking-[0.09em]"
+          data-testid="lpac-promo-bar"
+        >
+          Condições transparentes · triagem online · suporte oficial Me Joy
+        </div>
+      )}
+      <div
+        className={`transition-all duration-300 ${
+          shouldUseScrolledStyle ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]' : 'bg-transparent'
+        }`}
+      >
+        <div className="container mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[60px]' : 'h-20 sm:h-16 md:h-20'}`}>
+            <a href="/" className="flex min-w-0 shrink-0 items-center gap-2" aria-label="Me Joy — inicio">
             {useMedviMark ? (
               <div className="flex min-w-0 items-center gap-2">
                 {medviShell ? (
@@ -204,17 +214,21 @@ export function HeaderZapfarm({
                 priority
               />
             )}
-          </a>
+            </a>
 
-          <nav className={`hidden items-center gap-7 text-[11px] font-semibold uppercase tracking-[0.11em] md:flex ${useMinimalReportHeader ? 'md:hidden' : ''}`}>
+            <nav
+            className={`items-center gap-7 text-[11px] font-semibold uppercase tracking-[0.11em] ${
+              isGlpStyleLanding || useMinimalReportHeader ? 'hidden' : 'hidden md:flex'
+            }`}
+          >
             {navigationLinks.map((link) => (
               <a key={link.href} href={link.href} className={`transition-colors hover:opacity-80 ${textColor}`}>
                 {link.label}
               </a>
             ))}
-          </nav>
+            </nav>
 
-          <div className="hidden items-center gap-3 md:flex">
+            <div className={`items-center gap-3 ${isGlpStyleLanding ? 'hidden' : 'hidden md:flex'}`}>
             {isLandingPage && !useMinimalReportHeader && (
               <a
                 href={resolvedPrimaryHref}
@@ -267,57 +281,74 @@ export function HeaderZapfarm({
                 {resolvedPrimaryLabel}
               </a>
             )}
-          </div>
-
-          {medviShell && !useMinimalReportHeader ? (
-            <div className="flex items-center gap-2 md:hidden">
-              {isLandingPage && (
-                <a
-                  href={resolvedPrimaryHref}
-                  onClick={primaryCtaOnClick}
-                  className="rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-[0.07em] text-white"
-                  style={{ backgroundColor: MEDVI_GLP.headerCtaDark }}
-                >
-                  Começar
-                </a>
-              )}
-              <button
-                type="button"
-                className={`rounded-lg p-2 ${shouldUseScrolledStyle ? 'text-[#1f2937]' : 'text-white'}`}
-                aria-expanded={menuOpen}
-                aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
-                onClick={() => setMenuOpen((o) => !o)}
-              >
-                {menuOpen ? <XMarkIcon className="h-7 w-7" /> : <IconMenuTwoLines className="h-7 w-7" />}
-              </button>
             </div>
-          ) : isJourneyPage && !useMinimalReportHeader ? (
-            <a
-              href="/emagrecimento#tratamentos"
-              className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm md:hidden"
-            >
-              {isLandingPage ? 'Tratamentos' : 'Planos'}
-            </a>
-          ) : (
-            <a
-              href={resolvedPrimaryHref}
-              onClick={primaryCtaOnClick}
-              className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold transition sm:px-6 md:hidden ${
-                shouldUseScrolledStyle || isReportPage ? 'text-white' : 'bg-white text-emerald-700 shadow-lg'
-              }`}
-              style={
-                shouldUseScrolledStyle || isReportPage ? { backgroundColor: MEDVI_GLP.sage } : undefined
-              }
-            >
-              {resolvedPrimaryMobileLabel}
-            </a>
-          )}
+
+            {medviShell && !useMinimalReportHeader ? (
+              isGlpStyleLanding ? (
+                <div className="flex items-center">
+                  <button
+                    type="button"
+                    className={`rounded-lg p-2 ${shouldUseScrolledStyle ? 'text-[#1f2937]' : 'text-slate-800'}`}
+                    aria-expanded={menuOpen}
+                    aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+                    onClick={() => setMenuOpen((o) => !o)}
+                  >
+                    {menuOpen ? <XMarkIcon className="h-7 w-7" /> : <IconMenuTwoLines className="h-7 w-7" />}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 md:hidden">
+                  {isLandingPage && (
+                    <a
+                      href={resolvedPrimaryHref}
+                      onClick={primaryCtaOnClick}
+                      className="rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-[0.07em] text-white"
+                      style={{ backgroundColor: MEDVI_GLP.headerCtaDark }}
+                    >
+                      Começar
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    className={`rounded-lg p-2 ${shouldUseScrolledStyle ? 'text-[#1f2937]' : 'text-white'}`}
+                    aria-expanded={menuOpen}
+                    aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+                    onClick={() => setMenuOpen((o) => !o)}
+                  >
+                    {menuOpen ? <XMarkIcon className="h-7 w-7" /> : <IconMenuTwoLines className="h-7 w-7" />}
+                  </button>
+                </div>
+              )
+            ) : isJourneyPage && !useMinimalReportHeader ? (
+              <a
+                href="/emagrecimento#tratamentos"
+                className="rounded-full border border-emerald-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-800 shadow-sm md:hidden"
+              >
+                {isLandingPage ? 'Tratamentos' : 'Planos'}
+              </a>
+            ) : (
+              <a
+                href={resolvedPrimaryHref}
+                onClick={primaryCtaOnClick}
+                className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold transition sm:px-6 md:hidden ${
+                  shouldUseScrolledStyle || isReportPage ? 'text-white' : 'bg-white text-emerald-700 shadow-lg'
+                }`}
+                style={
+                  shouldUseScrolledStyle || isReportPage ? { backgroundColor: MEDVI_GLP.sage } : undefined
+                }
+              >
+                {resolvedPrimaryMobileLabel}
+              </a>
+            )}
+          </div>
         </div>
       </div>
 
       {medviShell && menuOpen && (
         <div
-          className="fixed inset-x-0 bottom-0 top-14 z-[60] overflow-y-auto bg-white md:hidden"
+          className={`fixed inset-x-0 bottom-0 z-[60] overflow-y-auto bg-white ${
+            isGlpStyleLanding ? 'top-[5.25rem]' : 'top-14 md:hidden'
+          }`}
           role="dialog"
           aria-modal="true"
         >
