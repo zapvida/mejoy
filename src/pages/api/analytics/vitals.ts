@@ -17,4 +17,5 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withRateLimit(handler, { limit: 120, windowSec: 60 });
+/** Limite alto: métricas legítimas × abas/dispositivos; CLS já é debounced no cliente. */
+export default withRateLimit(handler, { limit: 480, windowSec: 60 });

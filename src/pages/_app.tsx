@@ -5,7 +5,7 @@ import "@/styles/theme.css";
 import "@/styles/print.css";
 import "@/lib/report/print.css";
 import { Analytics } from '@vercel/analytics/react';
-import type { AppProps, NextWebVitalsMetric } from "next/app";
+import type { AppProps } from "next/app";
 import Head from 'next/head';
 import { useRouter } from "next/router";
 import Script from 'next/script';
@@ -42,6 +42,7 @@ import { toCssVars } from '@/lib/tenancy/theme';
 import { captureUtms } from '@/lib/utm';
 import { isZapFarmDomain } from '@/lib/host';
 import { deriveBrand, applyBrandVars, type Hex } from '@/lib/theme/brand';
+import { reportWebVitals } from '@/lib/analytics/webVitalsReporter';
 
 function ConversionModalWithTriggers() {
   const { shouldShow, setShouldShow } = useConversionTriggers(true)
@@ -199,16 +200,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-  try {
-    // Envia INP/LCP/CLS/FID/TTFB para nosso endpoint
-    fetch('/api/analytics/vitals', {
-      method: 'POST',
-      keepalive: true,
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(metric)
-    }).catch(() => {});
-  } catch {}
-}
+export { reportWebVitals };
 
 export default MyApp;

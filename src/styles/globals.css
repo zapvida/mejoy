@@ -1035,7 +1035,8 @@ html, body {
 
 .medvi-marquee-track {
   animation: medvi-marquee-scroll 38s linear infinite;
-  will-change: transform;
+  /* GPU layer sem will-change permanente (evita memória alta e repaint estranho no mobile) */
+  transform: translate3d(0, 0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
