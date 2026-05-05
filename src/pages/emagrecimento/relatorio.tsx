@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
@@ -89,15 +89,27 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
     : undefined;
   const preferenciaPrincipioAtivo = answers.preferencia_principio_ativo as string | undefined;
   const impactoVida = answers.impacto_vida;
-  const comorbidades = Array.isArray(answers.comorbidades)
-    ? answers.comorbidades.filter((item: string) => item !== 'nenhuma')
-    : [];
-  const defaultTrilha = trilhaFromPreferencia(preferenciaPrincipioAtivo);
-  const recommendedPlanLegacy = classification
-    ? getRecommendedPlan(classification, impactoVida, comorbidades)
-    : 'trimestral';
-  const defaultPlanId =
-    planIdMapping[recommendedPlanLegacy as keyof typeof planIdMapping] || 'programa-3m';
+  const comorbidadesRaw = answers.comorbidades;
+  const comorbidades = useMemo(
+    () =>
+      Array.isArray(comorbidadesRaw)
+        ? comorbidadesRaw.filter((item: string) => item !== 'nenhuma')
+        : [],
+    [comorbidadesRaw]
+  );
+  const defaultTrilha = useMemo(
+    () => trilhaFromPreferencia(preferenciaPrincipioAtivo),
+    [preferenciaPrincipioAtivo]
+  );
+  const recommendedPlanLegacy = useMemo(
+    () =>
+      classification ? getRecommendedPlan(classification, impactoVida, comorbidades) : 'trimestral',
+    [classification, impactoVida, comorbidades]
+  );
+  const defaultPlanId = useMemo(
+    () => planIdMapping[recommendedPlanLegacy as keyof typeof planIdMapping] || 'programa-3m',
+    [recommendedPlanLegacy]
+  );
 
   const [selectedTrilha, setSelectedTrilha] = useState<EmagrecimentoTrilha>(defaultTrilha);
   const [selectedPlanId, setSelectedPlanId] = useState<string>(defaultPlanId);
@@ -110,13 +122,12 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
     trackFunnelEvent('report_viewed', { report_id: reportId });
   }, [reportId]);
 
+  /** Defaults estáveis (useMemo) evitam reset da seleção a cada render; reportId inclui troca de relatório. */
   useEffect(() => {
+    if (!reportId) return;
     setSelectedTrilha(defaultTrilha);
-  }, [defaultTrilha]);
-
-  useEffect(() => {
     setSelectedPlanId(defaultPlanId);
-  }, [defaultPlanId]);
+  }, [reportId, defaultTrilha, defaultPlanId]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);

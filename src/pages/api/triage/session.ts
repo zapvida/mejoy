@@ -1,3 +1,6 @@
+import { appendFileSync, mkdirSync } from "node:fs";
+import path from "node:path";
+
 import { createClient } from "@supabase/supabase-js";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -102,6 +105,20 @@ const shouldAllowMockSession = (req: NextApiRequest) => {
   return isLocalHost(req.headers.host);
 };
 
+const AGENT_DEBUG_LOG = path.join(process.cwd(), ".cursor", "debug-6c2dc6.log");
+function ndjsonSrv(payload: Record<string, unknown>) {
+  const line = `${JSON.stringify({ sessionId: "6c2dc6", ...payload })}\n`;
+  try {
+    mkdirSync(path.dirname(AGENT_DEBUG_LOG), { recursive: true });
+    appendFileSync(AGENT_DEBUG_LOG, line);
+  } catch {
+    /* ignore disk */
+  }
+  if (process.env.NODE_ENV !== "production") {
+    console.info("[debug-6c2dc6]", line.trimEnd());
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SessionPayload | { error: string }>) {
   const requestId = Math.random().toString(36).substring(7);
   const startTime = Date.now();
@@ -171,6 +188,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       console.error(`[${requestId}] Missing triageSlug`);
       return res.status(400).json({ error: "triageSlug é obrigatório." });
     }
+
+    ndjsonSrv({
+      runId: "post-fix-verify",
+      hypothesisId: "srv-POST-count",
+      location: "api/triage/session.ts:POST",
+      message: "triage POST received",
+      data: { apiRequestId: requestId, triageSlug, forceNew: !!forceNew },
+      timestamp: Date.now()
+    });
 
     console.log(`[${requestId}] Starting session creation for triage: ${triageSlug}`);
     

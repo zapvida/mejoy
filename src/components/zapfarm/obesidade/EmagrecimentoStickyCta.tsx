@@ -7,6 +7,9 @@ import { track } from '@/lib/analytics';
 /** Abaixo do header fixo (~h-14 / 60px): sentinela só conta como “passou” quando entra nessa margem. */
 const HERO_IO_ROOT_MARGIN = '-72px 0px 0px 0px';
 
+/** Evita “tremor”: não alterna visibilidade mais de uma vez neste intervalo. */
+const VISIBILITY_DEBOUNCE_MS = 180;
+
 /**
  * CTA fixo no mobile: visível depois do hero, oculto perto do fim da página.
  * IntersectionObserver na sentinela do hero (evita loop quando altura muda com fonte/imagem).
@@ -18,8 +21,10 @@ export function EmagrecimentoStickyCta() {
   const visibleRef = useRef(false);
   const pastHeroRef = useRef(false);
   const rafStop = useRef(0);
+  const pendingVisibleRef = useRef<boolean | null>(null);
 
   useEffect(() => {
+    let debounceTimer: number | undefined;
     const sentinel = document.querySelector<HTMLElement>('[data-sticky-hero-sentinel]');
     if (!sentinel) return undefined;
 
@@ -29,9 +34,27 @@ export function EmagrecimentoStickyCta() {
       if (!last) return true;
       const top = last.getBoundingClientRect().top;
       const h = window.innerHeight;
-      const hideWhenTopAbove = visibleRef.current ? h - 100 : h - 40;
+      /** Faixa fixa (sem alternar limiar com visibleRef) reduz oscilação no scroll. */
+      const hideWhenTopAbove = h - 88;
       return top > hideWhenTopAbove;
     };
+
+    function applyVisibility(next: boolean) {
+      if (next === visibleRef.current) return;
+      if (pendingVisibleRef.current === next) return;
+      pendingVisibleRef.current = next;
+      if (debounceTimer !== undefined) {
+        clearTimeout(debounceTimer);
+      }
+      debounceTimer = window.setTimeout(() => {
+        debounceTimer = undefined;
+        pendingVisibleRef.current = null;
+        const latest = next;
+        if (latest === visibleRef.current) return;
+        visibleRef.current = latest;
+        setIsVisible(latest);
+      }, VISIBILITY_DEBOUNCE_MS);
+    }
 
     function syncVisibility() {
       if (window.innerWidth >= 768) {
@@ -43,10 +66,7 @@ export function EmagrecimentoStickyCta() {
       }
       const beforeStop = readBeforeStop();
       const next = pastHeroRef.current && beforeStop;
-      if (next !== visibleRef.current) {
-        visibleRef.current = next;
-        setIsVisible(next);
-      }
+      applyVisibility(next);
     }
 
     const heroObserver = new IntersectionObserver(
@@ -81,6 +101,7 @@ export function EmagrecimentoStickyCta() {
 
     return () => {
       if (resizeTimer !== undefined) clearTimeout(resizeTimer);
+      if (debounceTimer !== undefined) clearTimeout(debounceTimer);
       heroObserver.disconnect();
       window.removeEventListener('scroll', scheduleStopCheck);
       window.removeEventListener('resize', onResizeDebounced);

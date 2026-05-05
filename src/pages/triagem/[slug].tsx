@@ -1,6 +1,15 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type MutableRefObject,
+  type SetStateAction
+} from "react";
 
 import PartnerCTAGroup from "@/components/cta/PartnerCTAGroup";
 import { EmagrecimentoOnePageIntake } from "@/components/triage/EmagrecimentoOnePageIntake";
@@ -52,6 +61,8 @@ const resolveSlugFromLocation = () => {
   return extractSlugFromPath(window.location.pathname);
 };
 
+const EMPTY_SEED_ANSWERS: Record<string, never> = {};
+
 /** Evita novo objeto `initialAnswers` a cada polling de sessão (quebrava o intake com setAnswers em loop). */
 function buildEmagrecimentoServerSeedAnswers(answers?: Record<string, any> | null) {
   const a = { ...(answers ?? {}) };
@@ -67,6 +78,37 @@ type SessionFlight = {
   readonly done: Promise<void>;
 };
 
+type ResumeFlightEntry = { controller: AbortController; promise: Promise<SessionResponse> };
+const resumeSessionBySlug = new Map<string, ResumeFlightEntry>();
+
+function abortResumeSessionForSlug(triageSlug: string) {
+  const e = resumeSessionBySlug.get(triageSlug);
+  if (!e) return;
+  e.controller.abort();
+  resumeSessionBySlug.delete(triageSlug);
+}
+
+function applyTriageSessionSuccess(
+  json: SessionResponse,
+  slugStarted: string,
+  slugRef: MutableRefObject<string | undefined>,
+  setSession: Dispatch<SetStateAction<SessionResponse | null>>,
+  setState: Dispatch<SetStateAction<FetchState>>,
+  setShowRunner: Dispatch<SetStateAction<boolean>>
+) {
+  if (slugStarted !== slugRef.current) return;
+  setSession(json);
+  setState("ready");
+  const progressValue = json.progress ?? 0;
+  const hasAnswers = json.answers ? Object.keys(json.answers).length > 0 : false;
+  const shouldHoldRunner =
+    slugStarted !== "emagrecimento" &&
+    !json.completed &&
+    progressValue < 100 &&
+    (progressValue > 0 || hasAnswers);
+  setShowRunner(!shouldHoldRunner);
+}
+
 export default function TriageSlugPage() {
   const router = useRouter();
   const slugFromQuery = router.query.slug;
@@ -75,7 +117,32 @@ export default function TriageSlugPage() {
     if (Array.isArray(slugFromQuery) && slugFromQuery[0]) return slugFromQuery[0];
     return undefined;
   });
-  const flow: TriageFlow | undefined = useMemo(() => (slug ? flowsMap[slug] : undefined), [slug]);
+
+  const querySlugResolved = useMemo(
+    () =>
+      typeof slugFromQuery === "string" && slugFromQuery
+        ? slugFromQuery
+        : Array.isArray(slugFromQuery) && slugFromQuery[0]
+          ? slugFromQuery[0]
+          : undefined,
+    [slugFromQuery]
+  );
+
+  const pathSlugFromAsPath = useMemo(
+    () => extractSlugFromPath(router.asPath),
+    [router.asPath]
+  );
+
+  /** Uma identidade estável: query → asPath → estado (sincronizado no effect). Sem refs no render. */
+  const displaySlug = useMemo(
+    () => querySlugResolved || pathSlugFromAsPath || slug,
+    [querySlugResolved, pathSlugFromAsPath, slug]
+  );
+
+  const flow: TriageFlow | undefined = useMemo(
+    () => (displaySlug ? flowsMap[displaySlug] : undefined),
+    [displaySlug]
+  );
 
   const [state, setState] = useState<FetchState>("idle");
   const [session, setSession] = useState<SessionResponse | null>(null);
@@ -91,10 +158,13 @@ export default function TriageSlugPage() {
   const sessionFlightRef = useRef<SessionFlight | null>(null);
   const forceNewSeqRef = useRef(0);
 
-  const slugRef = useRef(slug);
-  slugRef.current = slug;
+  const slugRef = useRef(displaySlug);
+  slugRef.current = displaySlug;
 
   const triageSlugNavPrevRef = useRef<string | undefined>(undefined);
+
+  const sessionRef = useRef<SessionResponse | null>(null);
+  sessionRef.current = session;
 
   const hasProgress =
     !!session &&
@@ -107,14 +177,14 @@ export default function TriageSlugPage() {
     triageId: string;
     answers: Record<string, any>;
   } | null>(null);
-  const lastSlugRef = useRef<string | undefined>(slug);
+  const lastSlugRef = useRef<string | undefined>(displaySlug);
 
-  if (lastSlugRef.current !== slug) {
-    lastSlugRef.current = slug;
+  if (lastSlugRef.current !== displaySlug) {
+    lastSlugRef.current = displaySlug;
     emagrecimentoSeedRef.current = null;
   }
 
-  if (slug === "emagrecimento" && session?.triageId) {
+  if (displaySlug === "emagrecimento" && session?.triageId) {
     const tid = session.triageId;
     if (!emagrecimentoSeedRef.current || emagrecimentoSeedRef.current.triageId !== tid) {
       emagrecimentoSeedRef.current = {
@@ -122,24 +192,48 @@ export default function TriageSlugPage() {
         answers: buildEmagrecimentoServerSeedAnswers(session.answers ?? undefined),
       };
     }
-  } else if (slug !== "emagrecimento") {
+  } else if (displaySlug !== "emagrecimento") {
     emagrecimentoSeedRef.current = null;
   }
 
   const emagrecimentoInitialAnswers =
-    slug === "emagrecimento" &&
+    displaySlug === "emagrecimento" &&
     session?.triageId &&
     emagrecimentoSeedRef.current?.triageId === session.triageId
       ? emagrecimentoSeedRef.current.answers
-      : {};
+      : EMPTY_SEED_ANSWERS;
 
   const fetchSession = useCallback(
     async (forceNew = false, options: { silent?: boolean } = {}) => {
-      if (!slug) return;
-
-      const slugStarted = slug;
+      const slugStarted = slugRef.current;
+      if (!slugStarted) return;
       const silent = options.silent ?? false;
       const resumeKey = `${slugStarted}|resume`;
+
+      if (!silent) setState("loading");
+      setError(null);
+
+      if (!forceNew) {
+        let sharedTry = resumeSessionBySlug.get(slugStarted);
+        while (sharedTry) {
+          try {
+            const joined = await sharedTry.promise;
+            if (slugStarted !== slugRef.current) return;
+            applyTriageSessionSuccess(
+              joined,
+              slugStarted,
+              slugRef,
+              setSession,
+              setState,
+              setShowRunner
+            );
+            return;
+          } catch {
+            sharedTry = resumeSessionBySlug.get(slugStarted);
+          }
+        }
+      }
+
       const inflight = sessionFlightRef.current;
 
       if (!forceNew && inflight?.key === resumeKey) {
@@ -152,6 +246,10 @@ export default function TriageSlugPage() {
         sessionFlightRef.current = null;
       }
 
+      if (forceNew) {
+        abortResumeSessionForSlug(slugStarted);
+      }
+
       const flightKey = forceNew ? `${slugStarted}|new:${++forceNewSeqRef.current}` : resumeKey;
       const controller = new AbortController();
       let resolveDone!: () => void;
@@ -160,52 +258,61 @@ export default function TriageSlugPage() {
       });
       sessionFlightRef.current = { key: flightKey, controller, done };
 
-      let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-      if (!silent) setState("loading");
-      setError(null);
-      try {
-        timeoutId = setTimeout(() => controller.abort(), 30000);
-
-        const response = await fetch("/api/triage/session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ triageSlug: slugStarted, forceNew }),
-          signal: controller.signal,
-        });
-
-        if (timeoutId !== undefined) {
-          clearTimeout(timeoutId);
-          timeoutId = undefined;
-        }
-
-        let json: SessionResponse & { error?: string };
+      const runPost = async (): Promise<SessionResponse> => {
+        const tid = setTimeout(() => controller.abort(), 30000);
         try {
-          json = await response.json();
-        } catch {
-          throw new Error("Resposta inválida do servidor. Tente novamente.");
+          const response = await fetch("/api/triage/session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ triageSlug: slugStarted, forceNew }),
+            signal: controller.signal,
+          });
+
+          let json: SessionResponse & { error?: string };
+          try {
+            json = await response.json();
+          } catch {
+            throw new Error("Resposta inválida do servidor. Tente novamente.");
+          }
+
+          if (!response.ok) {
+            const errorMessage = json?.error || `Erro ${response.status}: ${response.statusText}`;
+            throw new Error(errorMessage);
+          }
+
+          return json;
+        } finally {
+          clearTimeout(tid);
         }
+      };
+
+      try {
+        const execPromise = !forceNew
+          ? Promise.resolve()
+              .then(() => runPost())
+              .finally(() => {
+                const ent = resumeSessionBySlug.get(slugStarted);
+                if (ent?.controller === controller) resumeSessionBySlug.delete(slugStarted);
+              })
+          : runPost();
+
+        if (!forceNew) {
+          resumeSessionBySlug.set(slugStarted, { controller, promise: execPromise });
+        }
+
+        const json = await execPromise;
 
         if (slugStarted !== slugRef.current) return;
 
-        if (!response.ok) {
-          const errorMessage = json?.error || `Erro ${response.status}: ${response.statusText}`;
-          throw new Error(errorMessage);
-        }
-
-        setSession(json);
-        setState("ready");
-        const progressValue = json.progress ?? 0;
-        const hasAnswers = json.answers ? Object.keys(json.answers).length > 0 : false;
-        const shouldHoldRunner =
-          slugStarted !== "emagrecimento" &&
-          !json.completed &&
-          progressValue < 100 &&
-          (progressValue > 0 || hasAnswers);
-        setShowRunner(!shouldHoldRunner);
+        applyTriageSessionSuccess(
+          json,
+          slugStarted,
+          slugRef,
+          setSession,
+          setState,
+          setShowRunner
+        );
       } catch (err) {
-        if (timeoutId !== undefined) clearTimeout(timeoutId);
-
         const supersededSilent =
           controller.signal.aborted &&
           (sessionFlightRef.current === null || sessionFlightRef.current.controller !== controller);
@@ -237,7 +344,7 @@ export default function TriageSlugPage() {
         }
       }
     },
-    [slug]
+    []
   );
 
   const scheduleSessionRefresh = useCallback(() => {
@@ -276,39 +383,63 @@ export default function TriageSlugPage() {
   }, [session?.completed]);
 
   useEffect(() => {
-    if (!slug || !session?.triageId || triageStartedTrackedRef.current) return;
+    if (!displaySlug || !session?.triageId || triageStartedTrackedRef.current) return;
     trackFunnelEvent("triage_started", {
-      triage_slug: slug,
+      triage_slug: displaySlug,
       triage_id: session.triageId
     });
     triageStartedTrackedRef.current = true;
-  }, [slug, session?.triageId]);
+  }, [displaySlug, session?.triageId]);
 
   useEffect(() => {
-    const nextSlug =
-      (typeof slugFromQuery === "string" && slugFromQuery) ||
-      (Array.isArray(slugFromQuery) ? slugFromQuery[0] : undefined) ||
-      resolveSlugFromLocation() ||
-      extractSlugFromPath(router.asPath);
+    const querySlug =
+      typeof slugFromQuery === "string" && slugFromQuery
+        ? slugFromQuery
+        : Array.isArray(slugFromQuery) && slugFromQuery[0]
+          ? slugFromQuery[0]
+          : undefined;
 
-    setSlug(current => (current === nextSlug ? current : nextSlug));
+    const pathSlug =
+      extractSlugFromPath(router.asPath) ??
+      (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined);
+
+    const resolved = querySlug || pathSlug;
+
+    setSlug(current => {
+      if (resolved !== undefined) {
+        return current === resolved ? current : resolved;
+      }
+      if (current !== undefined && pathSlug !== undefined && pathSlug === current) {
+        return current;
+      }
+      if (typeof window !== "undefined") {
+        const locSlug = resolveSlugFromLocation();
+        if (locSlug !== undefined) {
+          return current === locSlug ? current : locSlug;
+        }
+      }
+      return current === undefined ? current : undefined;
+    });
   }, [router.asPath, slugFromQuery]);
 
   /**
-   * Navegar entre slugs (/triagem/gastro → …/emagrecimento) sem resetar página: descarta estado e POST antigos.
-   * Primeira montagem não limpa finalize/completed — Strict Mode apenas aborta rede no cleanup.
+   * Troca de slug (/triagem/gastro → …/emagrecimento): cancela POST do slug anterior.
+   * Não aborta no cleanup (Strict remount do mesmo slug reutiliza o POST global `resumeSessionBySlug`).
    */
   useEffect(() => {
-    if (!slug) {
+    if (!displaySlug) {
       triageSlugNavPrevRef.current = undefined;
       return undefined;
     }
 
-    sessionFlightRef.current?.controller.abort();
-    sessionFlightRef.current = null;
-
     const prevNav = triageSlugNavPrevRef.current;
-    if (prevNav !== undefined && prevNav !== slug) {
+    if (prevNav !== undefined && prevNav !== displaySlug) {
+      abortResumeSessionForSlug(prevNav);
+      const stale = sessionFlightRef.current;
+      if (stale?.key.startsWith(`${prevNav}|`)) {
+        stale.controller.abort();
+        sessionFlightRef.current = null;
+      }
       if (pollTimeoutRef.current) {
         clearTimeout(pollTimeoutRef.current);
         pollTimeoutRef.current = null;
@@ -321,35 +452,25 @@ export default function TriageSlugPage() {
       setFinalizeError(null);
       triageStartedTrackedRef.current = false;
     }
-    triageSlugNavPrevRef.current = slug;
+    triageSlugNavPrevRef.current = displaySlug;
 
-    return () => {
-      sessionFlightRef.current?.controller.abort();
-      sessionFlightRef.current = null;
-    };
-  }, [slug]);
+    return undefined;
+  }, [displaySlug]);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!displaySlug) return;
 
-    // Verificar se o flow existe
     if (!flow) {
-      setError(`Triagem "${slug}" não encontrada.`);
-      setState("error");
       return;
     }
 
-    // Não recriar se a sessão já foi concluída ou se estamos finalizando
     if (finalizeState === "running" || finalizeState === "completed") return;
-    if (session?.completed) return;
-    if (session) return;
+    const sess = sessionRef.current;
+    if (sess?.completed) return;
+    if (sess) return;
 
-    /** Colapsa disparos no mesmo frame (Strict Mode / efeitos duplicados) num único POST. */
-    const raf = requestAnimationFrame(() => {
-      void fetchSession();
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [fetchSession, flow, slug, finalizeState, session]);
+    void fetchSession();
+  }, [fetchSession, flow, displaySlug, finalizeState]);
 
   const handleRestart = async () => {
     if (!session) return;
@@ -376,7 +497,7 @@ export default function TriageSlugPage() {
         setFinalizeError(null);
         const finalId = reportId ?? triageId;
         trackFunnelEvent("triage_completed", {
-          triage_slug: slug,
+          triage_slug: displaySlug,
           triage_id: triageId,
           report_id: finalId
         });
@@ -409,7 +530,7 @@ export default function TriageSlugPage() {
         setFinalizeError(runError ?? "Não foi possível gerar o relatório automaticamente.");
       }
     },
-    [fetchSession, scheduleSessionRefresh, slug]
+    [fetchSession, scheduleSessionRefresh, displaySlug]
   );
 
   const handleViewReport = () => {
@@ -421,15 +542,24 @@ export default function TriageSlugPage() {
     }
     
     const redirectPath = ZAPFARM_TRIAGE_SLUGS_WITH_PRODUCT_RELATORIO.includes(
-      (slug || '') as (typeof ZAPFARM_TRIAGE_SLUGS_WITH_PRODUCT_RELATORIO)[number]
+      (displaySlug || '') as (typeof ZAPFARM_TRIAGE_SLUGS_WITH_PRODUCT_RELATORIO)[number]
     )
-      ? `/${slug}/relatorio?id=${reportContextId}`
+      ? `/${displaySlug}/relatorio?id=${reportContextId}`
       : `/relatorio/${reportContextId}`;
     
     void router.push(redirectPath);
   };
 
-  if (!slug) return null;
+  if (!displaySlug) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-4 text-white">
+        <div className="space-y-4 text-center">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-emerald-400" />
+          <p className="text-sm text-white/70">Carregando triagem…</p>
+        </div>
+      </main>
+    );
+  }
 
   if (!flow) {
     return (
@@ -550,7 +680,7 @@ export default function TriageSlugPage() {
                   Seu relatório está pronto e ficou salvo com segurança. Você pode acessá-lo quando quiser.
                 </p>
 
-                {slug !== 'emagrecimento' && (
+                {displaySlug !== 'emagrecimento' && (
                   <div className="mt-6">
                     <PartnerCTAGroup
                       partners={['zapvida', 'zapfarm']}
@@ -619,7 +749,7 @@ export default function TriageSlugPage() {
               )}
 
               {showRunner &&
-                (slug === "emagrecimento" ? (
+                (displaySlug === "emagrecimento" ? (
                   <EmagrecimentoOnePageIntake
                     key={session.triageId}
                     triageId={session.triageId}
