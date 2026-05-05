@@ -18,7 +18,7 @@ export function ObesidadeImageGlobalStyles() {
       .emagrecimento-lp h2,
       .emagrecimento-lp h3,
       .emagrecimento-lp h4 {
-        font-family: var(--font-emagrecimento-display), system-ui, sans-serif;
+        font-family: var(--font-medvi), var(--font-emagrecimento-display), system-ui, sans-serif;
         letter-spacing: -0.02em;
       }
       .emagrecimento-lp,
@@ -26,7 +26,7 @@ export function ObesidadeImageGlobalStyles() {
       .emagrecimento-lp li,
       .emagrecimento-lp a,
       .emagrecimento-lp span {
-        font-family: var(--font-emagrecimento-body), system-ui, sans-serif;
+        font-family: var(--font-medvi), var(--font-emagrecimento-body), system-ui, sans-serif;
       }
       img[src*='images/emagrecimento/medvi/'] {
         object-fit: cover !important;

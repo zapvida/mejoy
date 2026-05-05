@@ -1,4 +1,4 @@
-import { Manrope, Sora } from 'next/font/google';
+import { Red_Hat_Text } from 'next/font/google';
 
 import Seo from '@/components/Seo';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
@@ -19,16 +19,10 @@ import { HomeFAQ } from './sections/HomeFAQ';
 const DESCRIPTION =
   'Telemedicina personalizada com triagem online, avaliação médica quando indicada e suporte contínuo pelo WhatsApp oficial. Cuidado em saúde com clareza, privacidade e acompanhamento.';
 
-const sora = Sora({
-  subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-emagrecimento-display',
-});
-
-const manrope = Manrope({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-emagrecimento-body',
+const redHat = Red_Hat_Text({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-medvi',
 });
 
 /**
@@ -56,7 +50,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
         ]}
       />
 
-      <div className={`${sora.variable} ${manrope.variable} emagrecimento-lp`}>
+      <div className={`${redHat.variable} emagrecimento-lp`}>
         <ObesidadeImageGlobalStyles />
         <LandingAnalyticsProvider page="home">
           <LandingPageViewTracker />

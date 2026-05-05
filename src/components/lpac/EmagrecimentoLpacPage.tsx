@@ -1,4 +1,4 @@
-import { Manrope, Sora } from 'next/font/google';
+import { Red_Hat_Text } from 'next/font/google';
 
 import Seo from '@/components/Seo';
 import { EmagrecimentoMedviLanding } from '@/components/zapfarm/obesidade/EmagrecimentoMedviLanding';
@@ -8,16 +8,10 @@ import { SITE } from '@/lib/seo';
 const DESCRIPTION =
   'Programa de emagrecimento com triagem online, avaliação médica e acompanhamento contínuo, com clareza, segurança e suporte oficial pela Me Joy.';
 
-const sora = Sora({
-  subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-emagrecimento-display',
-});
-
-const manrope = Manrope({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-emagrecimento-body',
+const redHat = Red_Hat_Text({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-medvi',
 });
 
 /**
@@ -47,7 +41,7 @@ export function EmagrecimentoLpacPage({
         ]}
       />
 
-      <div className={`${sora.variable} ${manrope.variable} emagrecimento-lp`}>
+      <div className={`${redHat.variable} emagrecimento-lp`}>
         <ObesidadeImageGlobalStyles />
         <EmagrecimentoMedviLanding page="emagrecimento" />
       </div>

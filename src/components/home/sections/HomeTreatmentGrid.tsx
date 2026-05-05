@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  HeartIcon,
-  MoonIcon,
-  ScaleIcon,
-  SparklesIcon,
-  ShieldCheckIcon,
-  HandRaisedIcon,
-} from '@heroicons/react/24/outline';
+import { HeartIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 
 import { track } from '@/lib/analytics';
 
@@ -16,58 +9,23 @@ type Treatment = {
   title: string;
   description: string;
   href: string;
-  icon: typeof ScaleIcon;
-  available: boolean;
+  icon: typeof HeartIcon;
 };
 
 const TREATMENTS: Treatment[] = [
   {
-    slug: 'emagrecimento',
-    title: 'Emagrecimento & Metabolismo',
-    description: 'Programa com avaliação médica e acompanhamento contínuo para evolução estável.',
-    href: '/emagrecimento',
-    icon: ScaleIcon,
-    available: true,
-  },
-  {
-    slug: 'sono',
-    title: 'Sono & Recuperação',
-    description: 'Rotina noturna, suplementação orientada e suporte para noites mais estáveis.',
-    href: '/triagem/sono',
-    icon: MoonIcon,
-    available: true,
-  },
-  {
-    slug: 'articulacoes',
-    title: 'Articulações & Mobilidade',
-    description: 'Conforto articular e mobilidade no dia a dia com acompanhamento orientado.',
-    href: '/triagem/articulacoes',
-    icon: HandRaisedIcon,
-    available: true,
-  },
-  {
-    slug: 'cabelo',
-    title: 'Cabelo & Couro Cabeludo',
-    description: 'Cuidado capilar com protocolo orientado e suporte clínico para a rotina.',
-    href: '/triagem/cabelo',
-    icon: SparklesIcon,
-    available: true,
-  },
-  {
     slug: 'saude',
-    title: 'Saúde & Bem-estar',
+    title: 'Saúde & bem-estar',
     description: 'Suporte funcional para rotina saudável, com avaliação médica quando indicada.',
     href: '/triagem/saude',
     icon: HeartIcon,
-    available: true,
   },
   {
     slug: 'detox',
-    title: 'Detox & Fígado',
+    title: 'Detox & fígado',
     description: 'Apoio hepático e digestivo com cuidado contínuo e orientação clínica.',
     href: '/triagem/detox',
     icon: ShieldCheckIcon,
-    available: true,
   },
 ];
 
@@ -91,35 +49,38 @@ export function HomeTreatmentGrid() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos</p>
+            <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-emerald-800 sm:text-sm">
+              Mais linhas
+            </p>
             <h2
               id="home-treatments-heading"
-              className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+              className="mt-3 text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-slate-950 sm:text-4xl md:text-[2.25rem]"
             >
-              Escolha por onde começar seu cuidado
+              Outras jornadas com triagem e suporte oficial
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Cada jornada começa por uma triagem online, com avaliação médica quando indicada e suporte oficial pelo
-              WhatsApp.
+            <p className="mt-4 text-[15px] leading-7 text-slate-600 sm:text-lg">
+              Protocolos complementares com o mesmo padrão de privacidade e avaliação médica quando indicada.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
             {TREATMENTS.map(({ slug, title, description, href, icon: Icon }) => (
               <a
                 key={slug}
                 href={href}
                 onClick={() => handleClick(slug)}
-                className="group flex h-full flex-col rounded-[28px] border border-emerald-100 bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-[0_28px_60px_rgba(15,23,42,0.08)]"
+                className="group flex h-full flex-col rounded-[26px] border border-emerald-100/90 bg-white p-6 shadow-[0_18px_42px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5 hover:border-emerald-200/80 hover:shadow-[0_24px_56px_rgba(15,23,42,0.08)]"
               >
-                <span className="inline-flex w-fit rounded-2xl bg-emerald-100 p-3 text-emerald-800 ring-1 ring-emerald-200">
+                <span className="inline-flex w-fit rounded-2xl bg-emerald-50 p-3 text-emerald-800 ring-1 ring-emerald-100/80">
                   <Icon className="h-6 w-6" aria-hidden />
                 </span>
-                <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
-                <p className="mt-3 flex-1 text-base leading-relaxed text-slate-600">{description}</p>
-                <span className="mt-5 inline-flex items-center text-sm font-bold text-emerald-700 transition group-hover:translate-x-1">
+                <h3 className="mt-4 text-lg font-bold text-slate-950 sm:text-xl">{title}</h3>
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate-600">{description}</p>
+                <span className="mt-5 inline-flex items-center text-sm font-bold text-emerald-700 transition group-hover:translate-x-0.5">
                   Saiba mais
-                  <span aria-hidden className="ml-1">→</span>
+                  <span aria-hidden className="ml-1">
+                    →
+                  </span>
                 </span>
               </a>
             ))}

@@ -84,7 +84,7 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
     const cta = page.getByTestId('home-primary-cta');
     const fallbackCta = page
       .locator(
-        'a[href*="triagem/emagrecimento"]:visible, a:has-text("Ver minha elegibilidade"), a:has-text("Iniciar minha triagem agora"), a:has-text("Fazer minha triagem agora")',
+        'a[href*="triagem/emagrecimento"]:visible, a:has-text("Ver minha elegibilidade"), a:has-text("Iniciar minha triagem agora"), a:has-text("Fazer minha triagem agora"), a:has-text("Sou elegível")',
       )
       .first();
     const ctaVisible = await cta.isVisible({ timeout: 5000 }).catch(() => false);
