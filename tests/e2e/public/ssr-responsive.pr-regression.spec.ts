@@ -23,12 +23,18 @@ test.describe('MeJoy SSR and responsive parity @pr-regression', () => {
     const rawPrimaryHref =
       html.match(/<a[^>]*data-testid="home-primary-cta"[^>]*href="([^"]*)"/i)?.[1] ??
       html.match(/<a[^>]*href="([^"]*)"[^>]*data-testid="home-primary-cta"/i)?.[1] ??
+      html.match(/<a[^>]*data-testid="home-primary-cta-desktop"[^>]*href="([^"]*)"/i)?.[1] ??
+      html.match(/<a[^>]*href="([^"]*)"[^>]*data-testid="home-primary-cta-desktop"/i)?.[1] ??
       '';
 
     await page.goto('/');
     const domTitle = await page.title();
     const domH1 = normalizeText(await page.getByRole('heading', { level: 1 }).textContent());
-    const domPrimaryHref = await page.getByTestId('home-primary-cta').getAttribute('href');
+    const domPrimaryHref = await page
+      .locator('[data-testid="home-primary-cta"], [data-testid="home-primary-cta-desktop"]')
+      .filter({ visible: true })
+      .first()
+      .getAttribute('href');
 
     expect(rawTitle).toBe(domTitle);
     expect(rawH1).toBe(domH1);
