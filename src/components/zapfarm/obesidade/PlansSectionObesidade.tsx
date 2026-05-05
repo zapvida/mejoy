@@ -21,7 +21,7 @@ export function PlansSectionObesidade() {
     <section
       id="tratamentos"
       data-home-section="plans"
-      data-testid="emagrecimento-plans"
+      data-testid="emagrecimento-treatments"
       className="scroll-mt-24 bg-[#f8fcf9] py-12 sm:py-14 md:py-16"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

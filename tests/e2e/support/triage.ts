@@ -31,7 +31,7 @@ export const DEFAULT_EMAGRECIMENTO_ANSWERS: Record<string, unknown> = {
 export async function ensureEmagrecimentoTriageShell(page: Page) {
   await page.goto('/triagem/emagrecimento');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Qual é sua altura, peso e objetivo?',
+    'Vamos começar pelo seu perfil clínico.',
   );
 }
 

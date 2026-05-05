@@ -110,7 +110,7 @@ test.describe('Emagrecimento visual parity', () => {
       caret: 'hide',
     });
 
-    const plans = page.getByTestId('emagrecimento-plans');
+    const plans = page.getByTestId('emagrecimento-treatments');
     await plans.scrollIntoViewIfNeeded();
     await waitForSectionImages(plans);
     await expect(plans).toHaveScreenshot(`plans-${testInfo.project.name}.png`, {

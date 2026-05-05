@@ -9,11 +9,17 @@ export const MEDVI_HOME = {
   /** Destaque no título (mint) */
   mintAccent: '#A3E635',
   heroTextMuted: 'rgba(255,255,255,0.9)',
+  /** Painel branco — lista vertical de filas (home.medvi.org) */
+  stackOuterRadiusTop: 32,
+  stackRowRadius: 18,
+  /** Área da imagem — quadrado exato (paridade ~home.medvi.org) */
+  stackThumbPx: 80,
+  /** Raio canto direito do thumb; esquerda herda flush com a fila */
+  stackThumbInnerRadius: 12,
+  stackRowMinH: 80,
+  stackCardBg: '#f0f2f1',
+  /** Sombra do painel branco sobre o hero */
   cardShadow: '0 24px 80px rgba(0,0,0,0.18)',
-  /** Cards horizontais — imagem em pad colorido */
-  cardImageH: 120,
-  cardMinW: 228,
-  cardRadius: 20,
 } as const;
 
 export const MEDVI_GLP = {

@@ -10,13 +10,16 @@ test.describe('MeJoy report flow @pr-regression', () => {
     await expect(
       page.getByText('Seu programa pode ser fechado agora, nesta mesma pagina').first(),
     ).toBeVisible();
-    await expect(page.getByText('Escolha o plano do seu fechamento').first()).toBeVisible();
+    await expect(page.getByText('Escolha o plano do seu programa').first()).toBeVisible();
     await expect(page.locator('#report-inline-checkout')).toBeVisible();
     await expect(
-      page.getByText('Checkout inline no mesmo fluxo do relatorio').first(),
+      page.getByText('Continue seu plano sem sair desta página').first(),
     ).toBeVisible();
 
-    await page.getByRole('button', { name: /Abrir checkout agora|Continuar nesta pagina/i }).first().click();
+    await page
+      .getByRole('button', { name: /Abrir checkout agora|Continuar nesta pagina|Continuar com meu plano/i })
+      .first()
+      .click();
     await expect(page.getByText('Alterar trilha ou plano')).toBeVisible();
   });
 

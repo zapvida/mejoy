@@ -16,15 +16,15 @@ test.describe('MeJoy triage shell @pr-regression', () => {
     await page.getByRole('button', {
       name: /Confirmo que li os documentos essenciais da jornada/i,
     }).click();
-    await page.getByLabel('Qual sua altura?').fill('168');
-    await page.getByLabel('Qual seu peso atual?').fill('82');
-    await page.getByLabel('Qual seu peso-meta (objetivo)?').fill('70');
+    await page.locator('[data-step-key="altura"] input').fill('168');
+    await page.locator('[data-step-key="peso"] input').fill('82');
+    await page.locator('[data-step-key="peso_meta"] input').fill('70');
     await page.getByRole('button', { name: 'Masculino' }).click();
-    await page.getByLabel('Data de nascimento').fill('1990-01-01');
+    await page.locator('[data-step-key="data_nascimento"] input[type="date"]').fill('1990-01-01');
 
     await page.getByRole('button', { name: 'Próximo' }).click();
     await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'Existe alguma contraindicação importante para a linha GLP-1?',
+      'Agora precisamos do seu histórico de saúde.',
     );
   });
 });

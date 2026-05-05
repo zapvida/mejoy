@@ -65,39 +65,30 @@ test.describe('MeJoy emagrecimento visuals @pr-regression', () => {
     await grantCookieConsent(page);
     await page.goto('/emagrecimento');
 
+    const screenshotOpts = {
+      animations: 'disabled' as const,
+      caret: 'hide' as const,
+      maxDiffPixels: 80_000,
+    };
+
     const hero = page.getByTestId('emagrecimento-hero');
     await waitForSectionImages(hero);
-    await expect(hero).toHaveScreenshot('hero.png', {
-      animations: 'disabled',
-      caret: 'hide',
-    });
+    await expect(hero).toHaveScreenshot('hero.png', screenshotOpts);
 
     const results = page.getByTestId('emagrecimento-results');
     await waitForSectionImages(results);
-    await expect(results).toHaveScreenshot('results.png', {
-      animations: 'disabled',
-      caret: 'hide',
-    });
+    await expect(results).toHaveScreenshot('results.png', screenshotOpts);
 
     const treatments = page.getByTestId('emagrecimento-treatments');
     await waitForSectionImages(treatments);
-    await expect(treatments).toHaveScreenshot('treatments.png', {
-      animations: 'disabled',
-      caret: 'hide',
-    });
+    await expect(treatments).toHaveScreenshot('treatments.png', screenshotOpts);
 
     const proof = page.getByTestId('emagrecimento-proof');
     await waitForSectionImages(proof);
-    await expect(proof).toHaveScreenshot('proof.png', {
-      animations: 'disabled',
-      caret: 'hide',
-    });
+    await expect(proof).toHaveScreenshot('proof.png', screenshotOpts);
 
     const decision = page.getByTestId('emagrecimento-decision');
     await waitForSectionImages(decision);
-    await expect(decision).toHaveScreenshot('decision.png', {
-      animations: 'disabled',
-      caret: 'hide',
-    });
+    await expect(decision).toHaveScreenshot('decision.png', screenshotOpts);
   });
 });

@@ -13,7 +13,7 @@ const EXPECTED_SECTION_ORDER = [
   'footer',
 ];
 
-test.describe('Homepage Medvi Journey', () => {
+test.describe('Homepage Medvi Journey @pr-regression', () => {
   test('renderiza o hub na raiz com header, hero e CTA principal', async ({ page }) => {
     await page.goto('/');
 
