@@ -81,6 +81,14 @@ export default function TriageSlugPage() {
   const finalizeStateRef = useRef<RunnerCompletionStatus | "idle">("idle");
   const triageStartedTrackedRef = useRef(false);
 
+  /** Aborta POST /session anterior (Strict Mode ou troca rápida de slug) para evitar `setSession` fora de ordem. */
+  const sessionAbortRef = useRef<AbortController | null>(null);
+
+  const slugRef = useRef(slug);
+  slugRef.current = slug;
+
+  const triageSlugNavPrevRef = useRef<string | undefined>(undefined);
+
   const hasProgress =
     !!session &&
     !session.completed &&
@@ -121,62 +129,87 @@ export default function TriageSlugPage() {
   const fetchSession = useCallback(
     async (forceNew = false, options: { silent?: boolean } = {}) => {
       if (!slug) return;
+
+      /** Troca de slug durante o POST: resultado descartado. */
+      const slugStarted = slug;
+
+      sessionAbortRef.current?.abort();
+      const controller = new AbortController();
+      sessionAbortRef.current = controller;
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
       const silent = options.silent ?? false;
       if (!silent) setState("loading");
       setError(null);
       try {
-        // Criar AbortController para timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos
-        
+        timeoutId = setTimeout(() => controller.abort(), 30000);
+
         const response = await fetch("/api/triage/session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ triageSlug: slug, forceNew }),
-          signal: controller.signal
+          body: JSON.stringify({ triageSlug: slugStarted, forceNew }),
+          signal: controller.signal,
         });
-        
-        clearTimeout(timeoutId);
-        
-        // Verificar se a resposta é JSON válido
+
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId);
+          timeoutId = undefined;
+        }
+
         let json: SessionResponse & { error?: string };
         try {
           json = await response.json();
-        } catch (parseError) {
+        } catch {
           throw new Error("Resposta inválida do servidor. Tente novamente.");
         }
-        
+
+        if (slugStarted !== slugRef.current) return;
+
         if (!response.ok) {
           const errorMessage = json?.error || `Erro ${response.status}: ${response.statusText}`;
           throw new Error(errorMessage);
         }
-        
+
         setSession(json);
         setState("ready");
         const progressValue = json.progress ?? 0;
         const hasAnswers = json.answers ? Object.keys(json.answers).length > 0 : false;
         const shouldHoldRunner =
-          slug !== "emagrecimento" &&
+          slugStarted !== "emagrecimento" &&
           !json.completed &&
           progressValue < 100 &&
           (progressValue > 0 || hasAnswers);
         setShowRunner(!shouldHoldRunner);
       } catch (err) {
+        if (timeoutId !== undefined) clearTimeout(timeoutId);
+
+        const supersededSilent =
+          controller.signal.aborted && sessionAbortRef.current !== controller;
+        if (supersededSilent) {
+          return;
+        }
+
         let errorMessage = "Erro ao carregar triagem.";
-        
         if (err instanceof Error) {
-          if (err.name === 'AbortError' || err.message.includes('timeout')) {
-            errorMessage = "A requisição demorou muito. Verifique sua conexão e tente novamente.";
-          } else if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+          if (err.name === "AbortError" || err.message.includes("timeout")) {
+            errorMessage =
+              "A requisição demorou muito. Verifique sua conexão e tente novamente.";
+          } else if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
             errorMessage = "Erro de conexão. Verifique sua internet e tente novamente.";
           } else {
             errorMessage = err.message;
           }
         }
-        
+
+        if (slugStarted !== slugRef.current) return;
+
         console.error("[TriagePage] Error fetching session:", err);
         setError(errorMessage);
         setState("error");
+      } finally {
+        if (sessionAbortRef.current === controller) {
+          sessionAbortRef.current = null;
+        }
       }
     },
     [slug]
@@ -235,6 +268,39 @@ export default function TriageSlugPage() {
 
     setSlug(current => (current === nextSlug ? current : nextSlug));
   }, [router.asPath, slugFromQuery]);
+
+  /**
+   * Navegar entre slugs (/triagem/gastro → …/emagrecimento) sem resetar página: descarta estado e POST antigos.
+   * Primeira montagem não limpa finalize/completed — Strict Mode apenas aborta rede no cleanup.
+   */
+  useEffect(() => {
+    if (!slug) {
+      triageSlugNavPrevRef.current = undefined;
+      return undefined;
+    }
+
+    sessionAbortRef.current?.abort();
+
+    const prevNav = triageSlugNavPrevRef.current;
+    if (prevNav !== undefined && prevNav !== slug) {
+      if (pollTimeoutRef.current) {
+        clearTimeout(pollTimeoutRef.current);
+        pollTimeoutRef.current = null;
+      }
+      setSession(null);
+      setState("idle");
+      setError(null);
+      setShowRunner(false);
+      setFinalizeState("idle");
+      setFinalizeError(null);
+      triageStartedTrackedRef.current = false;
+    }
+    triageSlugNavPrevRef.current = slug;
+
+    return () => {
+      sessionAbortRef.current?.abort();
+    };
+  }, [slug]);
 
   useEffect(() => {
     if (!slug) return;

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { appFeatures } from '@/config/zapfarm/benefits';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 const quickStats = [
   { label: 'Triagem', value: '5 min' },
@@ -124,7 +125,7 @@ export function AppFeaturesSectionObesidade() {
                       <div className="rounded-[24px] bg-white p-3 shadow-sm">
                         <div className="relative aspect-[4/3] overflow-hidden rounded-[20px]">
                           <Image
-                            src="/images/emagrecimento/medvi/support-whatsapp.avif"
+                            src={EMAGRECIMENTO_LP.storyPortraitA}
                             alt="Acompanhamento contínuo com suporte humano"
                             fill
                             className="object-cover"
@@ -170,7 +171,7 @@ export function AppFeaturesSectionObesidade() {
                 <div className="absolute -bottom-5 right-3 w-44 rounded-[24px] border border-white/90 bg-white p-3 shadow-xl sm:right-0 sm:w-52">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
                     <Image
-                      src="/images/emagrecimento/medvi/metabolism-habits.avif"
+                      src={EMAGRECIMENTO_LP.appContext}
                       alt="Monitoramento de hábitos e evolução"
                       fill
                       className="object-cover"

@@ -4,6 +4,8 @@ import { expect, test } from '@playwright/test';
 const EXPECTED_SECTION_ORDER = [
   'hero',
   'trust-marquee',
+  'weight_loss_feature',
+  'editorial_triptych',
   'treatments',
   'how_it_works',
   'why_choose',
@@ -17,11 +19,11 @@ test.describe('Homepage Medvi Journey @pr-regression', () => {
   test('renderiza o hub na raiz com header, hero e CTA principal', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/Telemedicina personalizada/i);
+    await expect(page).toHaveTitle(/Triagem online|Me Joy/i);
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
     await expect(page.getByTestId('home-medvi-header')).toBeVisible();
     await expect(page.getByTestId('home-hub-hero')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Cuide da sua saúde');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/vida real/i);
     await expect(page.getByTestId('home-primary-cta')).toHaveAttribute('href', '/triagem/emagrecimento');
   });
 
@@ -35,19 +37,18 @@ test.describe('Homepage Medvi Journey @pr-regression', () => {
     expect(sections).toEqual(EXPECTED_SECTION_ORDER);
   });
 
-  test('usa ancoras da raiz no header desktop e navega para as secoes corretas', async ({ page }) => {
+  test('menu (header minimal) abre dialog com ancora para secoes', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
 
-    const desktopNav = page.locator('header nav');
-    await expect(desktopNav).toBeVisible();
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/#tratamentos');
+    await expect(dialog.getByRole('link', { name: 'Como funciona' })).toHaveAttribute('href', '/#como-funciona');
+    await expect(dialog.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/emagrecimento#tratamentos');
+    await expect(dialog.getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
 
-    await expect(desktopNav.getByRole('link', { name: 'Programa' })).toHaveAttribute('href', '/#tratamentos');
-    await expect(desktopNav.getByRole('link', { name: 'Como funciona' })).toHaveAttribute('href', '/#como-funciona');
-    await expect(desktopNav.getByRole('link', { name: 'Planos' })).toHaveAttribute('href', '/emagrecimento#tratamentos');
-    await expect(desktopNav.getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
-
-    await desktopNav.getByRole('link', { name: 'Como funciona' }).click();
+    await dialog.getByRole('link', { name: 'Como funciona' }).click();
     await expect(page).toHaveURL(/#como-funciona$/);
     await expect(page.locator('#como-funciona')).toBeInViewport();
   });
@@ -64,7 +65,10 @@ test.describe('Homepage Medvi Journey @pr-regression', () => {
 
     await Promise.all([
       page.waitForURL(/\/triagem\/emagrecimento/),
-      page.getByTestId('home-primary-cta').click(),
+      page
+        .locator('[data-testid="home-primary-cta"], [data-testid="home-primary-cta-desktop"]')
+        .filter({ visible: true })
+        .click(),
     ]);
 
     await expect(page).toHaveURL(/\/triagem\/emagrecimento/);

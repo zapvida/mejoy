@@ -4,74 +4,87 @@ import { useEffect, useRef, useState } from 'react';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { track } from '@/lib/analytics';
 
-/** Altura estável ao rolar mobile (Safari/Chrome escondendo barra altera innerHeight sem “scroll” perceptível). */
-function getViewportHeight(): number {
-  if (typeof window === 'undefined') return 0;
-  const vv = window.visualViewport;
-  return Math.round(vv?.height ?? window.innerHeight ?? 0);
-}
+/** Abaixo do header fixo (~h-14 / 60px): sentinela só conta como “passou” quando entra nessa margem. */
+const HERO_IO_ROOT_MARGIN = '-72px 0px 0px 0px';
 
+/**
+ * CTA fixo no mobile: visível depois do hero, oculto perto do fim da página.
+ * IntersectionObserver na sentinela do hero (evita loop quando altura muda com fonte/imagem).
+ * Zona final via último [data-sticky-cta-stop] + histerese em getBoundingClientRect.
+ */
 export function EmagrecimentoStickyCta() {
   const page = useLandingPageKey();
   const [isVisible, setIsVisible] = useState(false);
   const visibleRef = useRef(false);
+  const pastHeroRef = useRef(false);
+  const rafStop = useRef(0);
 
   useEffect(() => {
-    const HYST = 110;
-    let raf = 0;
-    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+    const sentinel = document.querySelector<HTMLElement>('[data-sticky-hero-sentinel]');
+    if (!sentinel) return undefined;
 
-    const updateVisibility = () => {
-      const heroSection = document.querySelector<HTMLElement>('[data-testid="emagrecimento-hero"]');
-      const stopSections = Array.from(document.querySelectorAll<HTMLElement>('[data-sticky-cta-stop]'));
-      const stopSection = stopSections.at(-1);
-      const heroBottom = heroSection ? heroSection.offsetTop + heroSection.offsetHeight : 760;
-      const stopTop = stopSection ? stopSection.offsetTop : Number.POSITIVE_INFINITY;
-      const viewportH = getViewportHeight() || window.innerHeight;
-      const mobileRevealOffset = window.innerWidth < 768 ? 260 : -120;
-      const revealBase = Math.max(heroBottom - viewportH - mobileRevealOffset, 460);
-      const y = window.scrollY;
+    const readBeforeStop = (): boolean => {
+      const stops = document.querySelectorAll<HTMLElement>('[data-sticky-cta-stop]');
+      const last = stops[stops.length - 1];
+      if (!last) return true;
+      const top = last.getBoundingClientRect().top;
+      const h = window.innerHeight;
+      const hideWhenTopAbove = visibleRef.current ? h - 100 : h - 40;
+      return top > hideWhenTopAbove;
+    };
 
-      const stopGate = stopTop - 140;
-      const next =
-        (visibleRef.current ? y > revealBase - HYST : y > revealBase + HYST) &&
-        (visibleRef.current ? y < stopGate + HYST : y < stopGate);
-
+    function syncVisibility() {
+      if (window.innerWidth >= 768) {
+        if (visibleRef.current) {
+          visibleRef.current = false;
+          setIsVisible(false);
+        }
+        return;
+      }
+      const beforeStop = readBeforeStop();
+      const next = pastHeroRef.current && beforeStop;
       if (next !== visibleRef.current) {
         visibleRef.current = next;
         setIsVisible(next);
       }
-    };
+    }
 
-    const scheduleUpdate = () => {
-      if (raf !== 0) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        updateVisibility();
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        pastHeroRef.current = !entry.isIntersecting;
+        syncVisibility();
+      },
+      { root: null, rootMargin: HERO_IO_ROOT_MARGIN, threshold: 0 }
+    );
+    heroObserver.observe(sentinel);
+
+    const scheduleStopCheck = () => {
+      if (rafStop.current !== 0) return;
+      rafStop.current = requestAnimationFrame(() => {
+        rafStop.current = 0;
+        syncVisibility();
       });
     };
 
-    const scheduleResize = () => {
+    let resizeTimer: number | undefined;
+    const onResizeDebounced = () => {
       if (resizeTimer !== undefined) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
+      resizeTimer = window.setTimeout(() => {
         resizeTimer = undefined;
-        scheduleUpdate();
-      }, 120);
+        syncVisibility();
+      }, 280);
     };
 
-    updateVisibility();
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleResize, { passive: true });
-    const vv = window.visualViewport;
-    /* Não escutar visualViewport "scroll": no iOS/Android isso dispara em paralelo ao scroll da página e
-       altera getViewportHeight() a cada frame — pode alternar visibilidade do CTA e “brigar” com scroll anchoring. */
-    vv?.addEventListener('resize', scheduleResize, { passive: true } as AddEventListenerOptions);
+    syncVisibility();
+    window.addEventListener('scroll', scheduleStopCheck, { passive: true });
+    window.addEventListener('resize', onResizeDebounced, { passive: true });
+
     return () => {
       if (resizeTimer !== undefined) clearTimeout(resizeTimer);
-      if (raf !== 0) cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleResize);
-      vv?.removeEventListener('resize', scheduleResize);
+      heroObserver.disconnect();
+      window.removeEventListener('scroll', scheduleStopCheck);
+      window.removeEventListener('resize', onResizeDebounced);
+      if (rafStop.current !== 0) cancelAnimationFrame(rafStop.current);
     };
   }, []);
 

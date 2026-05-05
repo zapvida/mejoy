@@ -1,33 +1,9 @@
 'use client';
 
-import { HeartIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 import { track } from '@/lib/analytics';
-
-type Treatment = {
-  slug: string;
-  title: string;
-  description: string;
-  href: string;
-  icon: typeof HeartIcon;
-};
-
-const TREATMENTS: Treatment[] = [
-  {
-    slug: 'saude',
-    title: 'Saúde & bem-estar',
-    description: 'Uma entrada simples para organizar sinais, rotina e próximos passos de cuidado.',
-    href: '/triagem/saude',
-    icon: HeartIcon,
-  },
-  {
-    slug: 'detox',
-    title: 'Detox & fígado',
-    description: 'Triagem para entender hábitos, desconfortos digestivos e apoio hepático com mais critério.',
-    href: '/triagem/detox',
-    icon: ShieldCheckIcon,
-  },
-];
+import { HOME_HUB_SECONDARY_TREATMENTS } from '@/lib/home-hub-assets';
 
 export function HomeTreatmentGrid() {
   const handleClick = (slug: string) => {
@@ -42,46 +18,47 @@ export function HomeTreatmentGrid() {
   return (
     <section
       id="tratamentos"
-      className="bg-[#f7faf7] py-14 sm:py-16 md:py-20"
+      className="bg-white py-12 sm:py-14 md:py-[3.75rem]"
       data-home-section="treatments"
       aria-labelledby="home-treatments-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-emerald-800 sm:text-sm">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-emerald-800 sm:text-sm">
               Outras jornadas
             </p>
             <h2
               id="home-treatments-heading"
-              className="mt-3 text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-slate-950 sm:text-4xl md:text-[2.25rem]"
+              className="mt-2 text-[1.5rem] font-bold leading-tight tracking-[-0.03em] text-slate-950 sm:text-3xl md:text-4xl"
             >
-              Cuidado organizado para diferentes objetivos
+              Mais objetivos, mesmo cuidado
             </h2>
-            <p className="mt-4 text-[15px] leading-7 text-slate-600 sm:text-lg">
-              O mesmo padrão Me Joy: triagem objetiva, linguagem clara, privacidade e suporte pelo canal oficial.
-            </p>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
-            {TREATMENTS.map(({ slug, title, description, href, icon: Icon }) => (
+          <div className="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-2 sm:gap-5 md:mt-10">
+            {HOME_HUB_SECONDARY_TREATMENTS.map(({ slug, title, href, image }) => (
               <a
                 key={slug}
                 href={href}
                 onClick={() => handleClick(slug)}
-                className="group flex h-full flex-col rounded-[26px] border border-emerald-100/90 bg-white p-6 shadow-[0_18px_42px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5 hover:border-emerald-200/80 hover:shadow-[0_24px_56px_rgba(15,23,42,0.08)]"
+                className="group overflow-hidden rounded-[22px] border border-emerald-100/80 bg-[#fafcfb] shadow-[0_14px_36px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5 hover:border-emerald-200"
               >
-                <span className="inline-flex w-fit rounded-2xl bg-emerald-50 p-3 text-emerald-800 ring-1 ring-emerald-100/80">
-                  <Icon className="h-6 w-6" aria-hidden />
-                </span>
-                <h3 className="mt-4 text-lg font-bold text-slate-950 sm:text-xl">{title}</h3>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate-600">{description}</p>
-                <span className="mt-5 inline-flex items-center text-sm font-bold text-emerald-700 transition group-hover:translate-x-0.5">
-                  Saiba mais
-                  <span aria-hidden className="ml-1">
+                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                </div>
+                <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
+                  <h3 className="text-base font-bold text-slate-950 sm:text-lg">{title}</h3>
+                  <span className="text-sm font-bold text-emerald-700" aria-hidden>
                     →
                   </span>
-                </span>
+                </div>
               </a>
             ))}
           </div>

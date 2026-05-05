@@ -12,14 +12,13 @@ export function HomeCtaBanner() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl rounded-[36px] bg-gradient-to-br from-emerald-700 to-emerald-900 p-8 text-center shadow-[0_30px_90px_rgba(5,150,105,0.25)] sm:p-12 md:p-14">
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-emerald-200 sm:text-sm">
-            Comece com clareza
+            Comece quando quiser
           </p>
-          <h2 className="mt-3 text-3xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-4xl md:text-5xl">
-            Em poucos minutos, você entende o próximo passo
+          <h2 className="mt-3 text-2xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-3xl md:text-4xl">
+            Triagem clara, em poucos minutos
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-emerald-50 sm:text-lg">
-            A triagem organiza seu contexto e mostra o caminho mais provável. Se fizer sentido, você segue com avaliação
-            médica e suporte oficial.
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-emerald-50 sm:text-base">
+            Organizamos seu contexto e o próximo passo possível — com avaliação médica quando fizer sentido.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a

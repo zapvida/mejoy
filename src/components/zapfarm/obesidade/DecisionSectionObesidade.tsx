@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 export function DecisionSectionObesidade() {
   const page = useLandingPageKey();
@@ -88,10 +89,10 @@ export function DecisionSectionObesidade() {
               <div className="rounded-2xl border border-emerald-100 bg-[#fbfefc] p-4">
                 <div className="relative mb-3 h-10 w-24 overflow-hidden">
                   <Image
-                    src="/images/emagrecimento/medvi/social-proof-rating.webp"
+                    src={EMAGRECIMENTO_LP.ratingBadge}
                     alt="Prova social de avaliação"
                     fill
-                    className="object-contain"
+                    className="object-contain object-left"
                     sizes="96px"
                   />
                 </div>
@@ -102,7 +103,7 @@ export function DecisionSectionObesidade() {
               <div className="overflow-hidden rounded-[28px] border border-emerald-100 bg-white sm:col-span-2">
                 <div className="relative aspect-[16/8] w-full">
                   <Image
-                    src="/images/emagrecimento/medvi/support-whatsapp.avif"
+                    src={EMAGRECIMENTO_LP.storyWideA}
                     alt="Suporte oficial do programa Me Joy"
                     fill
                     className="object-cover"

@@ -14,7 +14,7 @@ test.describe('MeJoy production public smoke @prod-smoke', () => {
     );
 
     const publicChecks: Array<{ path: string; match: RegExp | string }> = [
-      { path: '/', match: /próximo passo em saúde|Cuide da sua saúde|Telemedicina personalizada/i },
+      { path: '/', match: /vida real|repensada|Telemedicina personalizada/i },
       { path: '/emagrecimento', match: /Emagrecimento com|avaliação médica/i },
       { path: '/triagem/emagrecimento', match: /perfil clínico|Qual é sua altura|Antes de começar/i },
       {

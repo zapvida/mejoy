@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 export function TestimonialsSectionObesidade() {
   const testimonials = [
@@ -42,10 +43,11 @@ export function TestimonialsSectionObesidade() {
             </p>
             <div className="mx-auto mt-5 w-fit rounded-full border border-amber-100 bg-amber-50 px-4 py-2 shadow-sm">
               <Image
-                src="/images/emagrecimento/medvi/social-proof-rating.webp"
+                src={EMAGRECIMENTO_LP.ratingBadge}
                 alt="Faixa de prova social com avaliações"
-                width={160}
-                height={15}
+                width={180}
+                height={41}
+                className="h-auto max-h-[18px] w-auto max-w-[160px] object-contain sm:max-h-[22px] sm:max-w-[200px]"
               />
             </div>
           </div>
@@ -72,10 +74,10 @@ export function TestimonialsSectionObesidade() {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { src: '/images/emagrecimento/medvi/reviews-01.webp', alt: 'Paciente em retrato editorial', className: 'aspect-[4/5]' },
-                { src: '/images/emagrecimento/medvi/reviews-03.avif', alt: 'Paciente sorrindo em acompanhamento', className: 'aspect-[4/5]' },
-                { src: '/images/emagrecimento/medvi/reviews-04.avif', alt: 'Paciente em etapa de acompanhamento', className: 'col-span-2 aspect-[16/10]' },
-                { src: '/images/emagrecimento/medvi/support-whatsapp.avif', alt: 'Profissional do suporte do programa', className: 'col-span-2 aspect-[16/10]' },
+                { src: EMAGRECIMENTO_LP.storyPortraitA, alt: 'Paciente em retrato editorial', className: 'aspect-[4/5]' },
+                { src: EMAGRECIMENTO_LP.storyPortraitB, alt: 'Paciente sorrindo em acompanhamento', className: 'aspect-[4/5]' },
+                { src: EMAGRECIMENTO_LP.storyWideA, alt: 'Paciente em etapa de acompanhamento', className: 'col-span-2 aspect-[16/10]' },
+                { src: EMAGRECIMENTO_LP.storyWideB, alt: 'Momento de acompanhamento no programa', className: 'col-span-2 aspect-[16/10]' },
               ].map((image) => (
                 <div
                   key={image.src}

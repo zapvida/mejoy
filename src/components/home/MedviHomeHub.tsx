@@ -8,6 +8,7 @@ import { ObesidadeImageGlobalStyles } from '@/components/zapfarm/obesidade/Obesi
 import { LandingPageViewTracker } from '@/components/zapfarm/obesidade/LandingPageViewTracker';
 import { SITE } from '@/lib/seo';
 
+import { HomeEditorialTriptych } from './sections/HomeEditorialTriptych';
 import { HomeHero } from './sections/HomeHero';
 import { HomeTreatmentGrid } from './sections/HomeTreatmentGrid';
 import { HomeHowItWorks } from './sections/HomeHowItWorks';
@@ -15,6 +16,7 @@ import { HomeWhyChoose } from './sections/HomeWhyChoose';
 import { HomeTestimonials } from './sections/HomeTestimonials';
 import { HomeCtaBanner } from './sections/HomeCtaBanner';
 import { HomeFAQ } from './sections/HomeFAQ';
+import { HomeWeightLossFeature } from './sections/HomeWeightLossFeature';
 
 const DESCRIPTION =
   'Comece seu cuidado em saúde com triagem online, próximos passos claros, avaliação médica quando indicada e suporte oficial pelo WhatsApp da Me Joy.';
@@ -32,7 +34,7 @@ const redHat = Red_Hat_Text({
  * da LPAC `/emagrecimento`. Mantém header e footer compartilhados com o resto do site.
  */
 export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string } = {}) {
-  const ogImage = `${SITE.baseUrl}/images/emagrecimento/medvi/hero-main.webp`;
+  const ogImage = `${SITE.baseUrl}/imagensmedvimejoyhome/me31.jpg`;
 
   return (
     <>
@@ -58,6 +60,8 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
             <HeaderZapfarm />
             <div className="home-hub-body">
               <HomeHero />
+              <HomeWeightLossFeature />
+              <HomeEditorialTriptych />
               <HomeTreatmentGrid />
               <HomeHowItWorks />
               <HomeWhyChoose />

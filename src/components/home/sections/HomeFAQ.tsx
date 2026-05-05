@@ -42,9 +42,9 @@ export function HomeFAQ() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Dúvidas frequentes</p>
             <h2
               id="home-faq-heading"
-              className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
+              className="mt-3 text-2xl font-bold tracking-[-0.04em] text-slate-950 sm:text-3xl md:text-4xl"
             >
-              O que você precisa saber antes de começar
+              Perguntas comuns
             </h2>
           </div>
 

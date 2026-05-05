@@ -75,12 +75,20 @@ export function HeaderZapfarm({
   const useMedviMark = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const useMinimalReportHeader = isReportPage;
 
+  /** Só em rotas com hero transparente (ex.: home) o scroll altera o estilo do header; em `/emagrecimento` o header já é sólido — ouvir scroll aqui gerava setState a cada frame perto do limiar e “tremor”. */
+  const headerScrollDrivesStyle =
+    !isLandingPage &&
+    !isReportPage &&
+    !(isJourneyPage && !isHomeHub) &&
+    transparentAtTop !== false;
+
   useEffect(() => {
+    if (!headerScrollDrivesStyle) return;
     const handleScroll = () => setScrolled(window.scrollY > 16);
     handleScroll();
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [headerScrollDrivesStyle]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -139,8 +147,10 @@ export function HeaderZapfarm({
     primaryCtaMobileLabel || (isReportPage ? resolvedPrimaryLabel.replace(' →', '') : 'Triagem');
   const navigationLinks = links?.length ? links : isLandingPage ? EMAGRECIMENTO_LANDING_LINKS : HOME_JOURNEY_LINKS;
   const isEmagrecimentoFlow = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
-  /** LP `/emagrecimento` espelha glp.medvi.org: faixa promo + header logo|menu apenas. */
+  /** LP `/emagrecimento` espelha glp.medvi.org: header logo|menu (sem faixa promo). */
   const isGlpStyleLanding = isLandingPage;
+  /** Home `/` — mesmo shell minimalista (logo + menu em todos os breakpoints). */
+  const isMedViMinimalHeader = isGlpStyleLanding || isHomeHub;
 
   const shouldUseScrolledStyle =
     isReportPage ||
@@ -154,14 +164,6 @@ export function HeaderZapfarm({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50" data-testid="home-medvi-header">
-      {isGlpStyleLanding && (
-        <div
-          className="border-b border-emerald-900/10 bg-emerald-50 px-2 py-1.5 text-center text-[10px] font-semibold uppercase leading-snug tracking-[0.07em] text-emerald-900 sm:px-3 sm:text-[11px] sm:tracking-[0.09em]"
-          data-testid="lpac-promo-bar"
-        >
-          Condições transparentes · triagem online · suporte oficial Me Joy
-        </div>
-      )}
       <div
         className={`transition-all duration-300 ${
           shouldUseScrolledStyle ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]' : 'bg-transparent'
@@ -218,7 +220,7 @@ export function HeaderZapfarm({
 
             <nav
             className={`items-center gap-7 text-[11px] font-semibold uppercase tracking-[0.11em] ${
-              isGlpStyleLanding || useMinimalReportHeader ? 'hidden' : 'hidden md:flex'
+              isMedViMinimalHeader || useMinimalReportHeader ? 'hidden' : 'hidden md:flex'
             }`}
           >
             {navigationLinks.map((link) => (
@@ -228,7 +230,7 @@ export function HeaderZapfarm({
             ))}
             </nav>
 
-            <div className={`items-center gap-3 ${isGlpStyleLanding ? 'hidden' : 'hidden md:flex'}`}>
+            <div className={`items-center gap-3 ${isMedViMinimalHeader ? 'hidden' : 'hidden md:flex'}`}>
             {isLandingPage && !useMinimalReportHeader && (
               <a
                 href={resolvedPrimaryHref}
@@ -284,11 +286,17 @@ export function HeaderZapfarm({
             </div>
 
             {medviShell && !useMinimalReportHeader ? (
-              isGlpStyleLanding ? (
+              isMedViMinimalHeader ? (
                 <div className="flex items-center">
                   <button
                     type="button"
-                    className={`rounded-lg p-2 ${shouldUseScrolledStyle ? 'text-[#1f2937]' : 'text-slate-800'}`}
+                    className={`rounded-lg p-2 ${
+                      shouldUseScrolledStyle || isReportPage
+                        ? 'text-[#1f2937]'
+                        : isHomeHub
+                          ? 'text-white'
+                          : 'text-slate-800'
+                    }`}
                     aria-expanded={menuOpen}
                     aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
                     onClick={() => setMenuOpen((o) => !o)}
@@ -347,7 +355,7 @@ export function HeaderZapfarm({
       {medviShell && menuOpen && (
         <div
           className={`fixed inset-x-0 bottom-0 z-[60] overflow-y-auto bg-white ${
-            isGlpStyleLanding ? 'top-[5.25rem]' : 'top-14 md:hidden'
+            isMedViMinimalHeader ? 'top-14 sm:top-[60px]' : 'top-14 md:hidden'
           }`}
           role="dialog"
           aria-modal="true"

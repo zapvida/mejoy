@@ -10,9 +10,21 @@ function isHtml(req: NextRequest) {
   return a.includes('text/html');
 }
 
+/** Defina DEBUG_PAGE_NAV=1 no .env.local para diagnosticar rajadas de GET (Document) em LP/triagem. */
+function debugPageNav(pathname: string, req: NextRequest) {
+  if (process.env.DEBUG_PAGE_NAV !== '1') return;
+  const watch = pathname === '/emagrecimento' || pathname.startsWith('/triagem');
+  if (!watch || !isHtml(req)) return;
+  const mode = req.headers.get('sec-fetch-mode') ?? '';
+  const purpose = req.headers.get('purpose') ?? req.headers.get('sec-purpose') ?? '';
+  console.log('[mj-debug-nav]', new Date().toISOString(), pathname, { mode, purpose });
+}
+
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const host = req.headers.get('host') || '';
+
+  debugPageNav(url.pathname, req);
 
   if (/(^|:)(localhost|127\.0\.0\.1)/.test(host)) {
     return NextResponse.next();

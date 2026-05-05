@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 export function TailoredSectionObesidade() {
   const page = useLandingPageKey();
@@ -24,7 +25,7 @@ export function TailoredSectionObesidade() {
             <div className="flex-1 w-full max-w-md mx-auto lg:mx-0">
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/emagrecimento/medvi/metabolism-results.avif"
+                  src={EMAGRECIMENTO_LP.tailoredMetabolism}
                   alt="Acompanhamento de hábitos e evolução metabólica"
                   fill
                   className="object-cover object-center"

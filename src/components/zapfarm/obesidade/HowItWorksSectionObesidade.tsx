@@ -5,27 +5,28 @@ import { ClipboardDocumentListIcon, ChatBubbleLeftRightIcon, UserGroupIcon } fro
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { cn } from '@/lib/utils';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 const steps = [
   {
     icon: ClipboardDocumentListIcon,
     title: 'Triagem inteligente',
     text: 'Você informa histórico, rotina, apetite, tentativas anteriores e objetivo. A plataforma organiza o que importa.',
-    image: '/images/emagrecimento/medvi/journey-triagem.avif',
+    image: EMAGRECIMENTO_LP.howTriagem,
     imageAlt: 'Pessoa preenchendo triagem de elegibilidade',
   },
   {
     icon: ChatBubbleLeftRightIcon,
     title: 'Avaliação e conduta',
     text: 'Quando indicado, médico com CRM analisa seu caso, define a conduta e explica limites, riscos e próximos passos.',
-    image: '/images/emagrecimento/medvi/journey-consulta.avif',
+    image: EMAGRECIMENTO_LP.howConsulta,
     imageAlt: 'Consulta médica online para avaliação de emagrecimento',
   },
   {
     icon: UserGroupIcon,
     title: 'Acompanhamento contínuo',
     text: 'Você segue com app e WhatsApp oficial para check-ins, dúvidas e ajustes de rotina com mais consistência.',
-    image: '/images/emagrecimento/medvi/journey-acompanhamento.avif',
+    image: EMAGRECIMENTO_LP.howAcompanhamento,
     imageAlt: 'Acompanhamento contínuo de rotina e resultados',
   },
 ] as const;

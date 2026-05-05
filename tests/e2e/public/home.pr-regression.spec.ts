@@ -7,7 +7,7 @@ test.describe('MeJoy public acquisition @pr-regression', () => {
     await dismissCookieBanner(page);
 
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('próximo passo em saúde');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/vida real/i);
 
     const primaryCta = page
       .locator('[data-testid="home-primary-cta"], [data-testid="home-primary-cta-desktop"]')

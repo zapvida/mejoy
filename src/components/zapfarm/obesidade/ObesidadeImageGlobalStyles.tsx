@@ -13,6 +13,10 @@ export function ObesidadeImageGlobalStyles() {
         --lp-ink: #0f172a;
         --lp-muted: #475569;
         --lp-accent: #d97706;
+        overflow-anchor: none;
+      }
+      .emagrecimento-lp .lpac-landing-body {
+        overflow-anchor: none;
       }
       .emagrecimento-lp h1,
       .emagrecimento-lp h2,
@@ -28,7 +32,8 @@ export function ObesidadeImageGlobalStyles() {
       .emagrecimento-lp span {
         font-family: var(--font-medvi), var(--font-emagrecimento-body), system-ui, sans-serif;
       }
-      img[src*='images/emagrecimento/medvi/'] {
+      img[src*='images/emagrecimento/medvi/'],
+      img[src*='images/emagrecimento/lp-pdf/'] {
         object-fit: cover !important;
         transition: opacity 0.3s ease;
       }

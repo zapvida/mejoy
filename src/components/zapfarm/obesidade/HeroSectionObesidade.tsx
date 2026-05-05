@@ -1,9 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { MedviTrustMarquee } from '@/components/medvi/MedviTrustMarquee';
+import { HeroProofPhoto } from '@/components/zapfarm/obesidade/HeroProofPhoto';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 import { MEDVI_GLP } from '@/lib/medvi-parity-tokens';
 
 const proofBullets = [
@@ -14,18 +15,15 @@ const proofBullets = [
   'Valores e etapas apresentados com transparência durante a jornada.',
 ] as const;
 
-const heroPhotos = [
-  { src: '/images/emagrecimento/medvi/reviews-01.webp', alt: 'Paciente no programa de emagrecimento' },
-  { src: '/images/emagrecimento/medvi/avatar-melissa.webp', alt: 'Paciente sorrindo em acompanhamento' },
-  { src: '/images/emagrecimento/medvi/reviews-03.avif', alt: 'Paciente em jornada de saúde' },
-] as const;
+const heroPhotos = EMAGRECIMENTO_LP.hero;
 
 const photoR = MEDVI_GLP.heroProofPhotoRadiusPx;
+const photoMax = MEDVI_GLP.heroProofPhotoMaxPx;
 
 /** Hero GLP — paridade glp.medvi.org: CTA, 3 retratos alinhados em retângulos com arco moderado, faixa ticker. */
 export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: string }) {
   const page = useLandingPageKey();
-  const hasPromoOffset = variant === 'emagrecimento';
+  const isEmagrecimentoLp = variant === 'emagrecimento';
 
   const handlePrimaryCta = () => {
     track('cta_click', {
@@ -43,8 +41,9 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
         data-home-section="hero"
         data-testid="home-medvi-hero"
         className={
-          hasPromoOffset
-            ? 'relative overflow-x-hidden overflow-y-visible pt-[6.5rem] sm:pt-[6.75rem] lg:pt-[7rem]'
+          isEmagrecimentoLp
+            ? // padding-top alinhado a MEDVI_GLP.heroPaddingTop{Base,Sm,Lg}rem (header fixo sem faixa promo)
+              'relative overflow-x-hidden overflow-y-visible pt-[4.75rem] sm:pt-[5rem] lg:pt-[5.25rem]'
             : 'relative overflow-x-hidden overflow-y-visible pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.75rem]'
         }
         style={{ backgroundColor: MEDVI_GLP.pageBg }}
@@ -101,27 +100,30 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
             </a>
           </div>
 
-          {/* Três retratos: mesma base, larguras iguais — paridade visual com glp.medvi.org (sem escada / óvalo) */}
+          {/* Três retratos: gaps 8px / 12px (tokens heroProofRowGap*) — paridade glp.medvi.org */}
           <div className="mx-auto mt-2 flex w-full max-w-[min(26rem,calc(100%-0.5rem))] items-start justify-center gap-2 pb-6 sm:mt-1 sm:max-w-xl sm:gap-3 md:max-w-2xl md:pb-10">
             {heroPhotos.map((photo) => (
-              <div key={photo.src} className="min-w-0 flex-1" style={{ maxWidth: 132 }}>
+              <div key={photo.src} className="min-w-0 flex-1" style={{ maxWidth: photoMax }}>
                 <div
                   className="relative aspect-[3/4] w-full overflow-hidden shadow-md sm:shadow-lg"
                   style={{ borderRadius: photoR }}
                 >
-                  <Image
+                  <HeroProofPhoto
                     src={photo.src}
                     alt={photo.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 33vw, 132px"
-                    priority
+                    sizes={`(max-width: 640px) 33vw, ${photoMax}px`}
                   />
                 </div>
               </div>
             ))}
           </div>
         </div>
+        {/* Sentinela para CTA móvel: evita cálculo por offsetTop (muda com fonte/imagem e oscila). */}
+        <span
+          data-sticky-hero-sentinel
+          aria-hidden
+          className="pointer-events-none absolute bottom-[1px] left-0 right-0 block h-px w-full opacity-0"
+        />
       </section>
       <MedviTrustMarquee variant="bordered" />
     </>
