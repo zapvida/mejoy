@@ -5,12 +5,12 @@ export const MEDVI_HOME = {
   /** Verde profundo hero */
   heroBg: '#0B3D2E',
   /** Gradiente vertical hero (top → bottom) */
-  heroGradient: 'linear-gradient(180deg, #0B3D2E 0%, #0d4536 38%, #124d3e 100%)',
+  heroGradient: 'linear-gradient(180deg, #1a4731 0%, #1e4432 42%, #235d3d 100%)',
   /** Destaque no título (mint) */
   mintAccent: '#A3E635',
   heroTextMuted: 'rgba(255,255,255,0.9)',
   /** Painel branco — lista vertical de filas (home.medvi.org) */
-  stackOuterRadiusTop: 32,
+  stackOuterRadiusTop: 36,
   stackRowRadius: 18,
   /** Área da imagem — quadrado (mobile full-bleed MedVi) */
   stackThumbPx: 88,

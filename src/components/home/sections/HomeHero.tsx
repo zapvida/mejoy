@@ -10,9 +10,11 @@ import { HOME_HUB_TREATMENT_ROWS } from '@/lib/home-hub-assets';
 import { MEDVI_HOME } from '@/lib/medvi-parity-tokens';
 
 /**
- * home.medvi.org — paridade responsiva:
- * - mobile: painel branco full-bleed (largura total), filas verticais; texto do hero continua com padding lateral.
- * - desktop (md+): cartões horizontais no container central.
+ * home.medvi.org — primeiro frame mobile:
+ * - texto central com coluna estreita;
+ * - stack de cards com padding mínimo (cartões quase colados ao branco do painel);
+ * - overlap do painel com margin-top negativo (evita buraco de layout do transform);
+ * - faixa de confiança como último filho da mesma section (primeiro frame contínuo).
  */
 export function HomeHero() {
   const handleRow = (slug: string, layout: 'mobile_stack' | 'desktop_card') => {
@@ -41,31 +43,29 @@ export function HomeHero() {
         data-home-section="hero"
       >
         <div className="relative z-10 mx-auto w-full max-w-[min(1100px,calc(100%-2rem))] px-4 sm:px-5 md:px-8">
-          <div className="mx-auto max-w-[520px] text-center md:mx-0 md:max-w-none">
-            <div
-              className="mx-auto pb-1 md:max-w-3xl md:pb-0"
-              style={{ maxWidth: `${MEDVI_HOME.heroHeadlineMaxWidthPx}px` }}
-            >
+          <div className="mx-auto max-w-[min(22.5rem,calc(100%-0.5rem))] text-center sm:max-w-xl md:mx-0 md:max-w-none">
+            <div className="mx-auto pb-0.5 md:max-w-3xl md:pb-0" style={{ maxWidth: `${MEDVI_HOME.heroHeadlineMaxWidthPx}px` }}>
               <p
-                className="mx-auto mb-1 text-[13px] font-medium sm:mb-2 sm:text-[14px]"
+                className="mx-auto mb-0 text-[14px] font-medium leading-snug sm:mb-1 sm:text-[15px]"
                 style={{ color: MEDVI_HOME.heroTextMuted }}
               >
                 Milhares de pacientes já confiaram na Me Joy
               </p>
               <h1
                 data-testid="home-hub-hero-title"
-                className="mt-3 text-[1.75rem] font-bold leading-[1.12] tracking-[-0.03em] sm:mt-4 sm:text-[2rem] sm:leading-[1.1] md:text-[2.5rem] md:leading-[1.08]"
+                className="mt-3 text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-4 sm:text-[2.125rem] sm:leading-[1.05] md:text-[2.5rem] md:leading-[1.08]"
               >
-                Saúde online,{' '}
-                <span style={{ color: MEDVI_HOME.mintAccent }}>repensada</span>
-                <br className="hidden sm:block" /> para a vida real.
+                <span className="block md:inline">Saúde online,</span>
+                <span className="mt-1 block md:mt-0 md:inline">
+                  <span style={{ color: MEDVI_HOME.mintAccent }}>repensada</span> para a vida real.
+                </span>
               </h1>
               <p
-                className="mx-auto mt-4 max-w-xl text-[15px] leading-[1.55] sm:mt-5 sm:text-[16px] sm:leading-relaxed"
+                className="mx-auto mt-[1.15rem] max-w-[19.5rem] text-[16px] font-normal leading-[1.54] sm:mt-5 sm:max-w-xl sm:text-[17px] sm:leading-[1.55] md:max-w-xl md:text-[16px]"
                 style={{ color: MEDVI_HOME.heroTextMuted }}
               >
-                Atendimento médico à distância — simples, direto e com profissionais habilitados. Sem sala de espera.
-                Sem passos desnecessários. Só cuidado que funciona.
+                Atendimento médico à distância — simples, direto e com profissionais habilitados. Sem sala de espera. Sem
+                passos desnecessários. Só cuidado que funciona.
               </p>
             </div>
           </div>
@@ -117,15 +117,18 @@ export function HomeHero() {
           </div>
         </div>
 
-        {/* Mobile: painel branco 100% da largura (sem faixa verde lateral) — fora do container com padding */}
-        <div className="relative z-20 mt-9 w-full md:hidden sm:mt-10" data-testid="home-hero-stack">
+        {/* Mobile: cards full-bleed — padding mínimo (sem “meia-lua” branca em volta dos cinzas); overlap com margin (não transform) para o fluxo colar na faixa */}
+        <div
+          className="relative left-1/2 z-20 mt-10 w-screen max-w-[100vw] -translate-x-1/2 md:hidden sm:mt-[2.65rem]"
+          data-testid="home-hero-stack"
+        >
           <div
-            className="relative bg-white px-3 pb-3 pt-3 sm:px-4 sm:pb-3.5 sm:pt-3.5"
+            className="relative bg-white px-2 pt-2 pb-0 sm:px-2.5 sm:pt-2.5"
             style={{
               borderTopLeftRadius: MEDVI_HOME.stackOuterRadiusTop,
               borderTopRightRadius: MEDVI_HOME.stackOuterRadiusTop,
               boxShadow: MEDVI_HOME.cardShadow,
-              transform: `translateY(-${MEDVI_HOME.stackPanelOverlapRem}rem)`,
+              marginTop: `-${MEDVI_HOME.stackPanelOverlapRem}rem`,
             }}
           >
             <div className="flex flex-col" style={{ gap: `${rowGap}px` }}>
@@ -137,13 +140,13 @@ export function HomeHero() {
                     row.slug === 'emagrecimento' ? 'home-primary-cta' : `home-hero-card-${row.slug}`
                   }
                   onClick={() => handleRow(row.slug, 'mobile_stack')}
-                  className="flex items-center gap-3 py-2.5 transition active:opacity-90 sm:gap-3.5 sm:py-3"
+                  className="flex items-center gap-2.5 py-2.5 transition active:opacity-90 sm:gap-3 sm:py-[0.85rem]"
                   style={{
                     borderRadius: MEDVI_HOME.stackRowRadius,
                     backgroundColor: MEDVI_HOME.stackCardBg,
                     minHeight: MEDVI_HOME.stackRowMinH,
-                    paddingLeft: '0.65rem',
-                    paddingRight: '0.65rem',
+                    paddingLeft: '0.625rem',
+                    paddingRight: '0.625rem',
                   }}
                 >
                   <div
@@ -159,7 +162,7 @@ export function HomeHero() {
                   >
                     <Image src={row.image} alt="" fill className="object-cover" sizes={`${thumbPx}px`} />
                   </div>
-                  <span className="min-w-0 flex-1 text-left text-[15px] font-semibold leading-snug tracking-[-0.015em] text-[#111827] sm:text-[16px]">
+                  <span className="min-w-0 flex-1 text-left text-[16px] font-semibold leading-snug tracking-[-0.015em] text-[#111827] sm:text-[17px] md:text-[16px]">
                     {row.title}
                   </span>
                   <ChevronRightIcon
@@ -172,8 +175,10 @@ export function HomeHero() {
             </div>
           </div>
         </div>
+
+        {/* Faixa no primeiro frame: último filho da section = colada aos cards (sem section verde entre stack e faixa) */}
+        <MedviTrustMarquee variant="belowHero" className="max-md:-mt-px" />
       </section>
-      <MedviTrustMarquee variant="bordered" />
     </>
   );
 }
