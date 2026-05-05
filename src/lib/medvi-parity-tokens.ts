@@ -12,14 +12,14 @@ export const MEDVI_HOME = {
   /** Painel branco — lista vertical de filas (home.medvi.org) */
   stackOuterRadiusTop: 32,
   stackRowRadius: 18,
-  /** Área da imagem — quadrado exato (paridade ~home.medvi.org) */
-  stackThumbPx: 80,
+  /** Área da imagem — quadrado (mobile full-bleed MedVi) */
+  stackThumbPx: 88,
   /** Raio canto direito do thumb; esquerda herda flush com a fila */
   stackThumbInnerRadius: 12,
-  stackRowMinH: 80,
+  stackRowMinH: 88,
   stackCardBg: '#f0f2f1',
   /** Gap entre linhas do painel mobile (px) */
-  stackRowGapPx: 10,
+  stackRowGapPx: 12,
   /** Sombra do painel branco sobre o hero */
   cardShadow: '0 24px 80px rgba(0,0,0,0.18)',
   /** Medidas espelhando home.medvi.org (Framer) — revisar com DevTools se necessário */
@@ -29,8 +29,8 @@ export const MEDVI_HOME = {
   heroPaddingBottomMobileRem: 0.5,
   heroPaddingBottomMdRem: 3,
   heroHeadlineMaxWidthPx: 680,
-  stackPanelOverlapRem: 1,
-  stackPanelOverlapSmRem: 1.25,
+  /** Sobreposição do painel branco no verde (mobile); ~0.75rem espelha MedVi */
+  stackPanelOverlapRem: 0.75,
   /** Espaçamento vertical “respirado” entre blocos principais */
   sectionStackGapPx: 60,
   desktopCardWidthPx: 180,
