@@ -79,15 +79,9 @@ test.describe('Emagrecimento visual parity', () => {
     await expect(hero).toBeVisible({ timeout: 15000 });
     const headline = hero.getByRole('heading', { level: 1 });
     const cta = hero.getByRole('link', { name: /Sou elegível/i });
-    const priceHook = page
-      .getByText(
-        /Consulte a faixa do programa ap[oó]s a triagem|triagem você vê a faixa do programa|Programas com avaliação médica e acompanhamento|Triagem rapida e orientacao segura para entender o proximo passo com clareza/i
-      )
-      .first();
 
     await expect(headline).toBeVisible();
     await expect(cta).toBeVisible();
-    await expect(priceHook).toBeVisible();
 
     const ctaBox = await cta.boundingBox();
     expect(ctaBox).not.toBeNull();

@@ -1022,3 +1022,24 @@ html, body {
 .animate-pulse-glow-outer {
   animation: pulse-glow-outer 2s ease-in-out infinite;
 }
+
+/* MedVi — faixa de confiança em scroll infinito */
+@keyframes medvi-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.medvi-marquee-track {
+  animation: medvi-marquee-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medvi-marquee-track {
+    animation: none;
+  }
+}

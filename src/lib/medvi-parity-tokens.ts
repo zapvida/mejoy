@@ -1,29 +1,34 @@
 /**
  * Tokens alinhados a home.medvi.org (Framer) e glp.medvi.org (Webflow).
- * Referência: hero verde escuro + cartão branco; GLP fundo neutro + sage + check ouro.
  */
 export const MEDVI_HOME = {
-  heroBg: '#143d32',
-  heroTextMuted: 'rgba(255,255,255,0.88)',
+  /** Verde profundo hero */
+  heroBg: '#0B3D2E',
+  /** Gradiente vertical hero (top → bottom) */
+  heroGradient: 'linear-gradient(180deg, #0B3D2E 0%, #0d4536 38%, #124d3e 100%)',
+  /** Destaque no título (mint) */
+  mintAccent: '#A3E635',
+  heroTextMuted: 'rgba(255,255,255,0.9)',
   cardShadow: '0 24px 80px rgba(0,0,0,0.18)',
-  rowImage: 72,
-  rowRadius: 16,
-  cardTopRadius: 32,
+  /** Cards horizontais — imagem em pad colorido */
+  cardImageH: 120,
+  cardMinW: 228,
+  cardRadius: 20,
 } as const;
 
 export const MEDVI_GLP = {
-  pageBg: '#f4f5f2',
-  charcoal: '#2b2b2b',
-  charcoalSoft: '#3d3d3d',
-  subheadGray: '#4a4a4a',
-  sage: '#6d8472',
-  sageHover: '#5f7464',
-  promoBg: '#d8e8dc',
-  promoText: '#1a3328',
-  promoBorder: '#aec9b4',
-  checkGold: '#c5a057',
+  pageBg: '#f6f6f4',
+  charcoal: '#1a1a1a',
+  charcoalSoft: '#303030',
+  subheadGray: '#525252',
+  /** Sage botão / destaque MedVi Webflow */
+  sage: '#708869',
+  sageHover: '#5f7460',
+  checkGold: '#C4A574',
   bodySizePx: 14,
   bodyLeadingPx: 20,
   ctaHeightPx: 52,
-  photoRadiusPx: 28,
+  photoRadiusPx: 32,
+  /** Header CTA escuro estilo “Get approved” */
+  headerCtaDark: '#2D2926',
 } as const;

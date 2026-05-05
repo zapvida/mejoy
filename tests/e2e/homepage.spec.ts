@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 /** Ordem das seções em `MedviHomeHub` (hub multi-tratamento na raiz). */
 const EXPECTED_SECTION_ORDER = [
   'hero',
+  'trust-marquee',
   'treatments',
   'how_it_works',
   'why_choose',
