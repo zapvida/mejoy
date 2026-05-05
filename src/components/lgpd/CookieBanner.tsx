@@ -62,26 +62,31 @@ export function CookieBanner() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (!isVisible || !isSensitiveFlow || window.innerWidth >= 768) return;
+    if (typeof window === 'undefined' || !isVisible) return;
 
     const previousBodyPaddingBottom = document.body.style.paddingBottom;
     const previousScrollPaddingBottom = document.documentElement.style.scrollPaddingBottom;
     const previousOverscrollBehavior = document.documentElement.style.overscrollBehaviorY;
-    const offset = showSettings ? '23rem' : '15rem';
 
-    // On mobile triage/checkout/report flows, reserve space for the floating banner
-    // so it never sits on top of the primary CTA or input fields.
-    document.body.style.paddingBottom = offset;
-    document.documentElement.style.scrollPaddingBottom = offset;
-    document.documentElement.style.overscrollBehaviorY = 'contain';
+    let offset: string | null = null;
+    if (isCompactLanding) {
+      offset = showSettings ? 'min(22rem, 40vh)' : 'min(14rem, 28vh)';
+    } else if (isSensitiveFlow && window.innerWidth < 768) {
+      offset = showSettings ? '23rem' : '15rem';
+    }
+
+    if (offset) {
+      document.body.style.paddingBottom = offset;
+      document.documentElement.style.scrollPaddingBottom = offset;
+      document.documentElement.style.overscrollBehaviorY = 'contain';
+    }
 
     return () => {
       document.body.style.paddingBottom = previousBodyPaddingBottom;
       document.documentElement.style.scrollPaddingBottom = previousScrollPaddingBottom;
       document.documentElement.style.overscrollBehaviorY = previousOverscrollBehavior;
     };
-  }, [isSensitiveFlow, isVisible, showSettings]);
+  }, [isCompactLanding, isSensitiveFlow, isVisible, showSettings]);
 
   const applyCookiePreferences = (prefs: CookiePreferences) => {
     if (typeof window === 'undefined' || !(window as any).gtag) return;
@@ -243,18 +248,20 @@ export function CookieBanner() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-[9999] animate-fade-in-up px-3 pb-3 sm:px-4 sm:pb-4 ${
-        isCompactLanding ? '' : 'md:inset-x-auto md:left-auto md:right-4 md:w-[min(360px,calc(100vw-2rem))]'
+      className={`pointer-events-none fixed inset-x-0 bottom-0 z-[9999] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4 sm:pb-[max(1rem,env(safe-area-inset-bottom))] ${
+        isCompactLanding
+          ? ''
+          : 'animate-fade-in-up md:inset-x-auto md:left-auto md:right-4 md:w-[min(360px,calc(100vw-2rem))]'
       }`}
       data-testid="cookie-banner"
     >
       <div
-        className={`safe-area-bottom overflow-hidden border border-zinc-200 bg-white/98 backdrop-blur-lg ${
+        className={`pointer-events-auto safe-area-bottom overflow-hidden border shadow-[0_-4px_24px_rgba(15,23,42,0.08)] ${
           isCompactLanding
-            ? 'mx-auto max-w-5xl rounded-[24px] shadow-[0_20px_48px_rgba(15,23,42,0.12)]'
+            ? 'mx-auto max-w-5xl rounded-2xl border-zinc-200/90 bg-white ring-1 ring-zinc-200/60'
             : isSensitiveCompact
-              ? 'rounded-[24px] shadow-[0_18px_40px_rgba(15,23,42,0.12)]'
-              : 'rounded-[30px] shadow-[0_24px_60px_rgba(15,23,42,0.14)]'
+              ? 'rounded-[24px] border-zinc-200 bg-white/98 shadow-[0_18px_40px_rgba(15,23,42,0.12)] backdrop-blur-lg'
+              : 'rounded-[30px] border-zinc-200 bg-white/98 shadow-[0_24px_60px_rgba(15,23,42,0.14)] backdrop-blur-lg'
         }`}
         data-testid={isCompactLanding ? 'cookie-banner-compact' : 'cookie-banner-default'}
       >
@@ -262,56 +269,54 @@ export function CookieBanner() {
           {showSettings ? (
             settingsView
           ) : isCompactLanding ? (
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
               <div className="flex min-w-0 items-start gap-3">
                 <div className="shrink-0 rounded-full bg-[color:var(--brand-50)] p-2">
                   <Cookie className="h-4 w-4 text-[color:var(--brand-600)]" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-zinc-900">Cookies essenciais e opcionais</p>
-                  <p className="mt-1 text-[11px] leading-relaxed text-zinc-500 sm:text-xs">
-                    Mantêm a navegação estável. Você pode aceitar, recusar opcionais ou personalizar.
+                  <p className="mr-1 mt-1 text-[12px] leading-snug text-zinc-600 sm:text-[13px] sm:leading-relaxed">
+                    Usamos cookies para o funcionamento do site e, com seu consentimento, para medição e marketing.
+                    Você pode aceitar tudo, recusar o que não for essencial ou personalizar.
                   </p>
+                  <a
+                    href="/politicas-lgpd#cookies"
+                    className="mt-2 inline-block text-[12px] font-medium text-[color:var(--brand-600)] underline underline-offset-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Política de cookies
+                  </a>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
-                <a
-                  href="/politicas-lgpd#cookies"
-                  className="text-[11px] text-zinc-500 underline underline-offset-2 transition-colors hover:text-[color:var(--brand-600)]"
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
+                <RefinedButton
+                  onClick={() => setShowSettings(true)}
+                  variant="outline"
+                  size="sm"
+                  className="h-10 rounded-full border-2 border-zinc-300 bg-white px-4 text-[13px] font-semibold text-zinc-900 !shadow-none hover:bg-zinc-50"
                 >
-                  Política de cookies
-                </a>
-                <div className="grid grid-cols-3 gap-2 sm:flex">
-                  <RefinedButton
-                    onClick={() => setShowSettings(true)}
-                    variant="outline"
-                    size="sm"
-                    className="h-9 rounded-full border-zinc-300 px-3 text-[12px] text-zinc-800"
-                  >
-                    <Settings className="mr-1 h-3 w-3" />
-                    Ajustar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={handleRejectAll}
-                    variant="ghost"
-                    size="sm"
-                    disabled={isLoading}
-                    className="h-9 px-3 text-[12px]"
-                  >
-                    Recusar
-                  </RefinedButton>
-                  <RefinedButton
-                    onClick={handleAcceptAll}
-                    disabled={isLoading}
-                    size="sm"
-                    className="h-9 rounded-full px-4 text-[12px]"
-                  >
-                    Aceitar
-                  </RefinedButton>
-                </div>
+                  <Settings className="h-3.5 w-3.5" />
+                  Ajustar
+                </RefinedButton>
+                <button
+                  type="button"
+                  onClick={handleRejectAll}
+                  disabled={isLoading}
+                  className="h-10 min-h-[2.5rem] px-2 text-[13px] font-semibold text-zinc-600 underline decoration-zinc-400 underline-offset-4 transition hover:text-zinc-900 disabled:opacity-50"
+                >
+                  Recusar opcionais
+                </button>
+                <RefinedButton
+                  onClick={handleAcceptAll}
+                  disabled={isLoading}
+                  size="sm"
+                  className="h-10 rounded-full px-6 text-[13px]"
+                >
+                  Aceitar todos
+                </RefinedButton>
               </div>
             </div>
           ) : isSensitiveCompact ? (

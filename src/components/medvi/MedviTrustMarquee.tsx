@@ -19,7 +19,7 @@ const items = [
     ),
   },
   {
-    label: 'PROFISSIONAIS CREDENCIADOS',
+    label: 'MÉDICOS CREDENCIADOS',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
         <path d="M4.5 12.5c0-2.5 2-4.5 4.5-4.5V6a6 6 0 016 6v2M9 14v4M9 14h6" strokeLinecap="round" strokeLinejoin="round" />

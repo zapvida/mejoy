@@ -39,7 +39,7 @@ const TREATMENT_ROWS = [
   },
 ] as const;
 
-/** home.medvi.org — hero verde sólido, stack vertical num painel branco, thumbs 80×80, faixa ticker. */
+/** home.medvi.org — hero verde, fila horizontal de cartões (imagem em cima, título + seta), faixa ticker. */
 export function HomeHero() {
   const handlePrimary = () => {
     track('cta_click', { page: 'home', position: 'hero', section: 'home_hero' });
@@ -48,25 +48,25 @@ export function HomeHero() {
   const handleRow = (slug: string) => {
     track('cta_click', {
       page: 'home',
-      position: 'treatment_row',
-      section: 'home_hero_stack',
+      position: 'treatment_card',
+      section: 'home_hero_cards',
       treatment: slug,
     });
   };
 
-  const thumbPx = MEDVI_HOME.stackThumbPx;
-  const rowR = MEDVI_HOME.stackRowRadius;
+  const cardRadius = 22;
+  const imageAspect = 'aspect-[4/3]';
 
   return (
     <>
       <section
-        className="relative overflow-x-hidden pb-10 pt-[5.25rem] text-white sm:pb-12 sm:pt-[5.75rem] md:pb-14 md:pt-24"
+        className="relative overflow-x-hidden pb-8 pt-[5.25rem] text-white sm:pb-10 sm:pt-[5.75rem] md:pb-12 md:pt-24"
         style={{ backgroundColor: MEDVI_HOME.heroBg }}
         data-testid="home-hub-hero"
         data-home-section="hero"
       >
-        <div className="container relative z-10 mx-auto w-full max-w-[430px] px-4 sm:max-w-[480px] sm:px-5 md:max-w-[520px] md:px-6">
-          <div className="mx-auto text-center">
+        <div className="relative z-10 mx-auto w-full max-w-[min(1100px,calc(100%-2rem))] px-4 sm:px-5 md:px-8">
+          <div className="mx-auto max-w-[520px] text-center md:max-w-3xl">
             <p
               className="text-[14px] font-medium leading-5 sm:text-[15px] sm:leading-[22px]"
               style={{ color: MEDVI_HOME.heroTextMuted }}
@@ -86,66 +86,52 @@ export function HomeHero() {
           </div>
 
           <div
-            className="relative z-20 mx-auto mt-9 w-full -translate-y-5 sm:mt-10 sm:-translate-y-6 md:mt-11 md:-translate-y-7"
+            className="relative z-20 mx-auto mt-9 w-full max-w-[920px] md:mt-11"
             data-testid="home-hero-stack"
           >
             <div
-              className="rounded-t-[28px] bg-white px-2 pb-2.5 pt-2 sm:rounded-t-[32px] sm:px-2.5 sm:pb-3 sm:pt-2.5"
-              style={{
-                borderTopLeftRadius: MEDVI_HOME.stackOuterRadiusTop,
-                borderTopRightRadius: MEDVI_HOME.stackOuterRadiusTop,
-                boxShadow: MEDVI_HOME.cardShadow,
-              }}
+              className={
+                '-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pt-0.5 sm:-mx-0 sm:justify-center sm:overflow-visible sm:pb-0 sm:pt-0 ' +
+                '[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'
+              }
             >
-              <div className="flex flex-col gap-2.5 sm:gap-3">
-                {TREATMENT_ROWS.map((row) => (
-                  <a
-                    key={row.slug}
-                    href={row.href}
-                    onClick={() => handleRow(row.slug)}
-                    className="flex min-h-[76px] items-center gap-3 px-2.5 py-2 transition active:opacity-90 sm:min-h-[80px] sm:gap-4 sm:px-3 sm:py-2.5"
-                    style={{
-                      borderRadius: MEDVI_HOME.stackRowRadius,
-                      backgroundColor: MEDVI_HOME.stackCardBg,
-                      minHeight: MEDVI_HOME.stackRowMinH,
-                    }}
-                  >
-                    <div
-                      className={`relative shrink-0 overflow-hidden ${row.pad}`}
-                      style={{
-                        width: thumbPx,
-                        height: thumbPx,
-                        borderTopLeftRadius: rowR,
-                        borderBottomLeftRadius: rowR,
-                        borderTopRightRadius: MEDVI_HOME.stackThumbInnerRadius,
-                        borderBottomRightRadius: MEDVI_HOME.stackThumbInnerRadius,
-                      }}
-                    >
-                      <Image
-                        src={row.image}
-                        alt={row.title}
-                        fill
-                        className="object-cover"
-                        sizes={`${thumbPx}px`}
-                      />
-                    </div>
-                    <span className="min-w-0 flex-1 text-left text-[15px] font-semibold leading-snug tracking-[-0.01em] text-[#111827] sm:text-[16px]">
+              {TREATMENT_ROWS.map((row) => (
+                <a
+                  key={row.slug}
+                  href={row.href}
+                  onClick={() => handleRow(row.slug)}
+                  className={
+                    'snap-center shrink-0 overflow-hidden transition active:opacity-95 sm:snap-none ' +
+                    'w-[148px] sm:w-[min(22.5%,168px)] md:w-[180px]'
+                  }
+                  style={{
+                    borderRadius: cardRadius,
+                    backgroundColor: MEDVI_HOME.stackCardBg,
+                    boxShadow: '0 16px 48px rgba(0,0,0,0.14)',
+                  }}
+                  data-testid={`home-hero-card-${row.slug}`}
+                >
+                  <div className={`relative w-full ${imageAspect} overflow-hidden ${row.pad}`}>
+                    <Image src={row.image} alt={row.title} fill className="object-cover" sizes="180px" />
+                  </div>
+                  <div className="flex items-start gap-1.5 px-3 py-2.5 sm:px-3.5 sm:py-3">
+                    <span className="min-w-0 flex-1 text-left text-[12px] font-semibold leading-snug tracking-[-0.01em] text-[#111827] sm:text-[13px] md:text-[14px]">
                       {row.title}
                     </span>
-                    <ChevronRightIcon className="h-5 w-5 shrink-0 text-[#0a0a0a]" strokeWidth={2} aria-hidden />
-                  </a>
-                ))}
-              </div>
-
-              <a
-                href="/triagem/emagrecimento"
-                data-testid="home-primary-cta"
-                onClick={handlePrimary}
-                className="mt-3 flex h-12 w-full items-center justify-center rounded-[18px] border border-slate-200/80 bg-slate-50 text-[14px] font-semibold text-emerald-900 transition hover:bg-slate-100 sm:mt-3.5"
-              >
-                Fazer minha triagem agora
-              </a>
+                    <ChevronRightIcon className="mt-0.5 h-4 w-4 shrink-0 text-[#0a0a0a] sm:h-5 sm:w-5" strokeWidth={2} />
+                  </div>
+                </a>
+              ))}
             </div>
+
+            <a
+              href="/triagem/emagrecimento"
+              data-testid="home-primary-cta"
+              onClick={handlePrimary}
+              className="mx-auto mt-5 flex h-12 w-full max-w-md items-center justify-center rounded-[18px] border border-slate-200/80 bg-slate-50 text-[14px] font-semibold text-emerald-900 transition hover:bg-slate-100 sm:mt-6"
+            >
+              Fazer minha triagem agora
+            </a>
           </div>
         </div>
       </section>
