@@ -48,12 +48,17 @@ export function middleware(req: NextRequest) {
   }
 
   if (isHtml(req)) {
+    /**
+     * Report-Only — não bloqueia o browser; antes listava só Stripe em script-src mas a LP/triagem
+     * carregam GTM/GA/Meta/Clarity/Bing, gerando dezenas de avisos falsos (“página quebrando”).
+     * `unsafe-inline` cobre snippets do Next/GTM até migrar para nonce.
+     */
     const csp = [
       "default-src 'self'",
       "base-uri 'self'",
       "img-src 'self' data: blob: https:",
       "style-src 'self' 'unsafe-inline' https:",
-      "script-src 'self' 'unsafe-eval' https://js.stripe.com",
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://connect.facebook.net https://scripts.clarity.ms https://www.clarity.ms https://scripts.bing.com",
       "connect-src 'self' https: wss:",
       "frame-src 'self' https://js.stripe.com https://checkout.stripe.com",
       "form-action 'self' https://checkout.stripe.com",
