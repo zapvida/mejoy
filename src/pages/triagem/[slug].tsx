@@ -514,8 +514,6 @@ export default function TriageSlugPage() {
   useEffect(() => {
     const slugKey = displaySlug;
     if (!slugKey) return;
-    /** Evita POST duplicado: query/asPath oscilam antes de `isReady` em produção. */
-    if (!router.isReady) return;
 
     const flowForSlug = flowsMap[slugKey];
     if (!flowForSlug) {
@@ -533,7 +531,7 @@ export default function TriageSlugPage() {
     if (sess) return;
 
     void fetchSession();
-  }, [fetchSession, displaySlug, router.isReady]);
+  }, [fetchSession, displaySlug]);
 
   const handleRestart = async () => {
     if (!session) return;
@@ -652,7 +650,8 @@ export default function TriageSlugPage() {
         />
       </Head>
 
-      {state === "loading" && (
+      {/** idle + sem sessão deixava o fragmento vazio (tela branca) até o primeiro setState("loading") */}
+      {(state === "loading" || (state === "idle" && !session)) && (
         <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 px-4 text-white">
           <div className="space-y-6 text-center">
             {/* Spinner animado com gradiente */}
