@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 import MobileTabBar from '@/components/mobile/MobileTabBar';
 import MobileTopBar from '@/components/mobile/MobileTopBar';
+import LogoWithName from '@/components/ui/LogoWithName';
 import { listaTriagens } from '@/forms';
 import { track } from '@/lib/analytics';
 import { intelligentSearch, getSearchSuggestions } from '@/lib/search/intelligent-search';
@@ -107,8 +108,11 @@ export default function TriagemIndex() {
         data-testid="page-triage"
       >
         {/* Navigation Bar - Desktop Only */}
-        <div className="hidden px-4 py-3 md:block">
-            <div className="flex items-center justify-between max-w-6xl mx-auto">
+        <div className="hidden border-b border-gray-100 bg-white/88 px-4 py-3 backdrop-blur md:block">
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <LogoWithName size="small" className="shrink-0 translate-y-px" />
+                <div className="h-8 w-px bg-gray-200" />
               <button
                 onClick={() => router.push('/')}
                 className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 text-gray-700 text-sm"
@@ -116,9 +120,10 @@ export default function TriagemIndex() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                <span className="hidden sm:inline">Voltar ao Dashboard</span>
+                <span className="hidden sm:inline">Voltar ao início</span>
                 <span className="sm:hidden">Voltar</span>
               </button>
+              </div>
               
               <div className="text-gray-700 text-sm">
                 <span className="text-gray-500">Acesso:</span>

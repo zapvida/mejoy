@@ -1,11 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import { useTenant } from '@/components/providers/TenantProvider';
 
-const DEFAULT_LOGO_PRIMARY = '/logosmejoy/logomejoy.svg';
-const DEFAULT_LOGO_INVERSE = '/logosmejoy/logomejoy-inverse.svg';
+import BrandLogo from '@/components/ui/BrandLogo';
+import { useTenant } from '@/components/providers/TenantProvider';
+import {
+  BRAND_NAME,
+  getBrandHorizontalLogoSrc,
+} from '@/lib/brand/assets';
+
+const DEFAULT_LOGO_PRIMARY = getBrandHorizontalLogoSrc('primary');
+const DEFAULT_LOGO_INVERSE = getBrandHorizontalLogoSrc('inverse');
+const DEFAULT_LOGO_DARK = getBrandHorizontalLogoSrc('dark');
+const DEFAULT_LOGO_MONO = '/brand/logo-horizontal-mono.png';
+const DEFAULT_LOGO_OLD_PRIMARY = '/logosmejoy/logomejoy.svg';
+const DEFAULT_LOGO_OLD_INVERSE = '/logosmejoy/logomejoy-inverse.svg';
 const DEFAULT_LOGO_LEGACY = '/logosmejoy/logomejoy.png';
 
 interface LogoWithNameProps {
@@ -24,11 +33,11 @@ interface LogoWithNameProps {
 }
 
 const sizeMap = {
-  small: { logoWidth: 142, logoHeight: 32, heightClass: 'h-8 sm:h-9', fontSize: 'text-lg', gap: 'gap-2.5', taglineSize: 'text-base' },
-  medium: { logoWidth: 164, logoHeight: 38, heightClass: 'h-9 sm:h-10', fontSize: 'text-xl', gap: 'gap-3', taglineSize: 'text-lg' },
-  large: { logoWidth: 204, logoHeight: 48, heightClass: 'h-10 sm:h-12', fontSize: 'text-2xl', gap: 'gap-4', taglineSize: 'text-xl' },
-  xlarge: { logoWidth: 292, logoHeight: 68, heightClass: 'h-16 sm:h-[4.5rem]', fontSize: 'text-2xl', gap: 'gap-3', taglineSize: 'text-lg sm:text-xl' },
-  header: { logoWidth: 184, logoHeight: 42, heightClass: 'h-9 sm:h-10', fontSize: 'text-xl', gap: 'gap-2.5', taglineSize: 'text-[10px] sm:text-[11px]' },
+  small: { brandSize: 'sm' as const, logoWidth: 128, logoHeight: 40, fontSize: 'text-base', gap: 'gap-2.5', taglineSize: 'text-[11px] sm:text-xs' },
+  medium: { brandSize: 'md' as const, logoWidth: 144, logoHeight: 44, fontSize: 'text-lg', gap: 'gap-3', taglineSize: 'text-sm' },
+  large: { brandSize: 'lg' as const, logoWidth: 164, logoHeight: 52, fontSize: 'text-xl', gap: 'gap-3.5', taglineSize: 'text-sm sm:text-base' },
+  xlarge: { brandSize: 'xl' as const, logoWidth: 208, logoHeight: 64, fontSize: 'text-2xl', gap: 'gap-4', taglineSize: 'text-base sm:text-lg' },
+  header: { brandSize: 'header' as const, logoWidth: 138, logoHeight: 42, fontSize: 'text-lg', gap: 'gap-2.5', taglineSize: 'text-[10px] sm:text-[11px]' },
 };
 
 const LogoWithName: React.FC<LogoWithNameProps> = ({
@@ -42,10 +51,17 @@ const LogoWithName: React.FC<LogoWithNameProps> = ({
   taglineContent,
   taglineBelow = false,
 }) => {
-  const [imageError, setImageError] = useState(false);
   const tenant = useTenant();
-  const displayName = tenant?.name || 'MeJoy';
-  const isLegacyDefaultLogo = tenant?.logoUrl === DEFAULT_LOGO_LEGACY;
+  const displayName = tenant?.name || BRAND_NAME;
+  const isLegacyDefaultLogo = [
+    DEFAULT_LOGO_PRIMARY,
+    DEFAULT_LOGO_INVERSE,
+    DEFAULT_LOGO_DARK,
+    DEFAULT_LOGO_MONO,
+    DEFAULT_LOGO_OLD_PRIMARY,
+    DEFAULT_LOGO_OLD_INVERSE,
+    DEFAULT_LOGO_LEGACY,
+  ].includes(tenant?.logoUrl || '');
   const isCustomLogo = Boolean(tenant?.logoUrl && !isLegacyDefaultLogo);
   const logoUrl = isCustomLogo
     ? tenant?.logoUrl
@@ -56,36 +72,24 @@ const LogoWithName: React.FC<LogoWithNameProps> = ({
   const showName = showNameProp ?? isCustomLogo;
   const dimensions = sizeMap[size];
 
-  if (imageError) {
-    return (
-      <div className={`flex items-center ${dimensions.gap} ${className}`}>
-        <div
-          className={`${dimensions.heightClass} flex min-w-[80px] flex-shrink-0 items-center justify-center rounded-[1rem] px-3 ${
-            variant === 'inverse' ? 'bg-white/15 text-white' : 'bg-black text-white'
-          }`}
-        >
-          <span className="text-sm font-bold">MeJoy</span>
-        </div>
-        {showName && (
-          <span className={`font-bold text-fg ${dimensions.fontSize} ${nameClassName}`}>{displayName}</span>
-        )}
-      </div>
-    );
-  }
-
   const logoBlock = (
     <>
-      <div className={`relative flex-shrink-0 ${dimensions.heightClass} w-auto min-w-0`}>
+      {isCustomLogo ? (
         <Image
           src={logoUrl}
-          alt="MeJoy"
+          alt={displayName}
           width={dimensions.logoWidth}
           height={dimensions.logoHeight}
           priority={priority}
-          className="object-contain w-full h-full"
-          onError={() => setImageError(true)}
+          className="h-auto w-auto max-h-full object-contain"
         />
-      </div>
+      ) : (
+        <BrandLogo
+          variant={variant === 'inverse' ? 'inverse' : 'default'}
+          size={dimensions.brandSize}
+          priority={priority}
+        />
+      )}
       {showName && (
         <span
           className={`font-semibold text-fg ${dimensions.fontSize} ${nameClassName} whitespace-nowrap`}
@@ -106,12 +110,12 @@ const LogoWithName: React.FC<LogoWithNameProps> = ({
 
   if (tagline && taglineBelow) {
     return (
-      <div className={`flex flex-col items-center justify-center shrink-0 ${className}`}>
+      <div className={`flex shrink-0 flex-col items-center justify-center ${className}`}>
         <div className={`flex items-center ${dimensions.gap}`}>
           {logoBlock}
         </div>
         <span
-          className={`font-bold ${dimensions.taglineSize} ${nameClassName} -mt-0.5 text-center leading-tight block`}
+          className={`mt-1 block text-center font-semibold leading-tight ${dimensions.taglineSize} ${nameClassName}`}
           style={{ letterSpacing: '0.03em' }}
         >
           {taglineContent ?? tagline}

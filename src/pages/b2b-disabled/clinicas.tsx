@@ -39,8 +39,8 @@ export default function Home() {
           property="og:description"
           content="Triagens inteligentes, relatórios clínicos instantâneos e mais tempo para cuidar de seus pacientes. Integre IA com facilidade."
         />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       {/* Google Analytics */}
@@ -333,7 +333,7 @@ export default function Home() {
           {/* Logo animado */}
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.svg"
+              src="/brand/logo-horizontal-primary.png"
               alt="Logo MeJoy"
               width={240}
               height={240}

@@ -38,8 +38,8 @@ export default function Home() {
         <meta name="description" content="Transforme seu laboratório com inteligência artificial. Ofereça triagens digitais inteligentes com o MeJoy." />
         <meta property="og:title" content="MeJoy para Laboratórios" />
         <meta property="og:description" content="Triagens com IA para exames mais completos e personalizados. Inove com o MeJoy." />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
       <main className="min-h-screen bg-bg text-fg">
         <Navbar />
@@ -319,7 +319,7 @@ export default function Home() {
 
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.svg"
+              src="/brand/logo-horizontal-primary.png"
               alt="Logo MeJoy"
               width={240}
               height={240}

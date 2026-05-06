@@ -167,7 +167,7 @@ const PricingPage = () => {
           property="og:description"
           content="Assinatura pronta para presente e equipes. Stripe e GHL integrados automaticamente."
         />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
         <link rel="canonical" href="https://zapfarm.com.br/pricing" />
       </Head>
 

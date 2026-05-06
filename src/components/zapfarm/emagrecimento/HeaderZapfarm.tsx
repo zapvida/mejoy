@@ -170,13 +170,13 @@ export function HeaderZapfarm({
         }`}
       >
         <div className="container mx-auto max-w-[1100px] px-4 sm:px-6">
-          <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[60px]' : 'h-20 sm:h-16 md:h-20'}`}>
+          <div className={`flex items-center justify-between ${isJourneyPage ? 'h-[60px] sm:h-16' : 'h-20 sm:h-16 md:h-20'}`}>
             <a href="/" className="flex min-w-0 shrink-0 items-center gap-3" aria-label="MeJoy - início">
               <LogoWithName
-                size={medviShell ? 'small' : 'header'}
+                size="header"
                 variant={logoVariant}
                 priority
-                className="min-w-0"
+                className="min-w-0 translate-y-px"
               />
               {!medviShell && isEmagrecimentoFlow && (
                 <span

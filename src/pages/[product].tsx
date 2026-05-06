@@ -155,7 +155,7 @@ export default function ProductPage({ productConfig, pricesReais }: ProductPageP
       />
       
       <Head>
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <div className="min-h-screen bg-white">

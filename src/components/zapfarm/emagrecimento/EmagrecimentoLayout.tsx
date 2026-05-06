@@ -35,6 +35,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
   ];
 
   const textColor = scrolled ? 'text-emerald-700' : 'text-white';
+  const logoVariant = scrolled ? 'primary' : 'inverse';
 
   return (
     <div className="min-h-screen bg-white">
@@ -49,21 +50,12 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
             <Link href="/emagrecimento" className="flex items-center shrink-0">
-              <div className="rounded-full bg-white/95 px-3 py-2 shadow-sm ring-1 ring-black/5">
-                <LogoWithName
-                  size="small"
-                  priority
-                  tagline="Me cuido. Me amo!"
-                  taglineBelow
-                  nameClassName="text-slate-950"
-                  taglineContent={
-                    <>
-                      <span style={{ color: '#1f2937' }}>Me cuido. </span>
-                      <span style={{ color: '#2f6a49' }}>Me amo!</span>
-                    </>
-                  }
-                />
-              </div>
+              <LogoWithName
+                size="header"
+                variant={logoVariant}
+                priority
+                className="translate-y-px"
+              />
             </Link>
 
             {/* Navigation Links - Desktop */}

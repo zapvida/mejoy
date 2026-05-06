@@ -35,7 +35,7 @@ export default function Seo({
   const canonical = buildCanonical(path);
   const t = buildTitle(title);
   const desc = description || SITE.defaultDescription;
-  const image = ogImage || `${SITE.baseUrl}/og-default.png`;
+  const image = ogImage || SITE.ogImage;
   const keywordsStr = Array.isArray(keywords) ? keywords.join(', ') : keywords;
 
   return (
@@ -50,7 +50,9 @@ export default function Seo({
           <meta name="description" content={desc} />
           {keywordsStr && <meta name="keywords" content={keywordsStr} />}
           {author && <meta name="author" content={author} />}
-          <meta name="theme-color" content="#10b981" />
+          <meta name="application-name" content={SITE.applicationName} />
+          <meta name="theme-color" content={SITE.themeColor} />
+          <meta name="apple-mobile-web-app-title" content={SITE.applicationName} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
 
           {/* Open Graph */}

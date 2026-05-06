@@ -32,10 +32,10 @@ export default function PreviewFrame() {
           {/* logo */}
           <img
             alt="Logo da clínica"
-            src={data.logoUrl || "/logosmejoy/logomejoy.svg"}
+            src={data.logoUrl || "/brand/logo-horizontal-primary.png"}
             className="h-10 w-10 rounded-lg object-contain ring-1 ring-gray-200"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/logosmejoy/logomejoy.svg";
+              (e.target as HTMLImageElement).src = "/brand/logo-horizontal-primary.png";
             }}
           />
           <div className="text-lg font-semibold tracking-tight text-gray-900">

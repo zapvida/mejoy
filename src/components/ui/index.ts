@@ -49,5 +49,6 @@ export { default as RelatorioContainer } from './RelatorioContainer';
 export { default as Timeline } from './Timeline';
 
 // Logo components
+export { default as BrandLogo } from './BrandLogo';
 export { default as Logo } from './Logo';
 export { default as LogoLarge } from './LogoLarge';

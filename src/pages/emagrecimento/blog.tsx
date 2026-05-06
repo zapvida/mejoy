@@ -13,7 +13,7 @@ export default function BlogPage() {
           content="Guias e dicas sobre emagrecimento com ciência e bom senso. Conteúdo educativo baseado em evidências científicas, escrito por especialistas. Não substitui consulta médica."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <EmagrecimentoLayout>

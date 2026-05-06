@@ -46,9 +46,9 @@ const ALL: Tenant[] = [
     name: 'MeJoy',
     hostnameMatch: (h) => /(^|\.)mejoy\.com\.br$/.test(h),
     brand: {
-      primary: '#10b981',
-      secondary: '#059669',
-      logoPath: '/logosmejoy/logomejoy.svg'
+      primary: '#004c2e',
+      secondary: '#0b6b46',
+      logoPath: '/brand/logo-horizontal-primary.png'
     },
     stripe: {
       prices: SHARED_PRICES

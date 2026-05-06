@@ -18,12 +18,12 @@ export const BRAND_CONFIG: Record<BrandId, BrandConfig> = {
     id: 'zapfarm',
     name: 'MeJoy',
     colors: {
-      primary: '#4C1D95',   // roxo profundo
-      secondary: '#F97316', // laranja
-      accent: '#10B981',    // verde confiança
-      gradient: 'from-purple-700 via-orange-500 to-amber-400',
+      primary: '#004c2e',
+      secondary: '#0b6b46',
+      accent: '#0f8a59',
+      gradient: 'from-[#003522] via-[#004c2e] to-[#0b6b46]',
     },
-    logo: '/logosmejoy/logomejoy.svg',
+    logo: '/brand/logo-horizontal-primary.png',
     theme: 'zapfarm',
   },
 };

@@ -5,18 +5,26 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#00b894",
+  "theme_color": "#004c2e",
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "/logosmejoy/me-mark.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/logosmejoy/faviconmejoy.png",
+      "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

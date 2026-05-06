@@ -17,7 +17,7 @@ export default function ComoFuncionaPage() {
           content="Passo a passo completo do tratamento de emagrecimento: triagem online, avaliação médica, prescrição quando indicada e acompanhamento contínuo. 100% online com endocrinologista."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <EmagrecimentoLayout>

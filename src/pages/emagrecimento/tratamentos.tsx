@@ -18,7 +18,7 @@ export default function TratamentosPage() {
           content="Tratamentos modernos de emagrecimento com segurança: medicações GLP-1 quando indicadas, mudança de estilo de vida e acompanhamento médico contínuo. Conforme normas ANVISA."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <EmagrecimentoLayout>

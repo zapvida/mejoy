@@ -38,8 +38,8 @@ export default function Home() {
         <meta name="description" content="Ofereça check-up digital gratuito em sua farmácia e fidelize clientes com tecnologia baseada em IA." />
         <meta property="og:title" content="MeJoy para Farmácias" />
         <meta property="og:description" content="Check-up digital gratuito para seus clientes. Rápido, científico e com inteligência artificial." />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
       <main className="min-h-screen bg-bg text-fg">
         <Navbar />
@@ -303,7 +303,7 @@ export default function Home() {
 
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.svg"
+              src="/brand/logo-horizontal-primary.png"
               alt="Logo MeJoy"
               width={240}
               height={240}

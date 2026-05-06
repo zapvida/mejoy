@@ -43,6 +43,7 @@ import { captureUtms } from '@/lib/utm';
 import { isZapFarmDomain } from '@/lib/host';
 import { deriveBrand, applyBrandVars, type Hex } from '@/lib/theme/brand';
 import { reportWebVitals } from '@/lib/analytics/webVitalsReporter';
+import { BRAND_ASSETS, BRAND_THEME_COLOR } from '@/lib/brand/assets';
 
 function ConversionModalWithTriggers() {
   const { shouldShow, setShouldShow } = useConversionTriggers(true)
@@ -177,7 +178,8 @@ function MyApp({ Component, pageProps }: AppProps) {
               renderMeta={false}
             />
             <Head>
-              <link rel="icon" type="image/png" href="/logosmejoy/faviconmejoy.png" />
+              <link rel="icon" href={BRAND_ASSETS.meta.favicon32} />
+              <meta name="theme-color" content={BRAND_THEME_COLOR} />
             </Head>
             
             {/* Tracking global (fallback para GTM global) */}

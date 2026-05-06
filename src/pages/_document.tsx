@@ -1,5 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
+import { BRAND_ASSETS, BRAND_NAME, BRAND_THEME_COLOR } from '@/lib/brand/assets';
+
 class MyDocument extends Document {
   render() {
     return (
@@ -16,20 +18,23 @@ class MyDocument extends Document {
           {/* Ícones básicos - removido duplicata */}
           
           {/* Manifest (se houver) */}
-          <link rel="manifest" href="/manifest.webmanifest" />
+          <link rel="manifest" href={BRAND_ASSETS.meta.manifest} />
 
           {/* Meta globais */}
-          <meta name="author" content="MeJoy" />
-          <meta name="copyright" content="© 2025 MeJoy" />
+          <meta name="author" content={BRAND_NAME} />
+          <meta name="application-name" content={BRAND_NAME} />
+          <meta name="apple-mobile-web-app-title" content={BRAND_NAME} />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="theme-color" content={BRAND_THEME_COLOR} />
+          <meta name="copyright" content="© 2026 MeJoy" />
 
           {/* 🔥 Favicon - MeJoy */}
-          <link rel="icon" type="image/svg+xml" href="/logosmejoy/me-mark.svg" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="icon" type="image/png" sizes="96x96" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="icon" type="image/png" sizes="192x192" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/logosmejoy/faviconmejoy.png" />
-          <link rel="icon" type="image/png" href="/logosmejoy/faviconmejoy.png" />
+          <link rel="shortcut icon" href={BRAND_ASSETS.meta.faviconIco} />
+          <link rel="icon" type="image/png" sizes="16x16" href={BRAND_ASSETS.meta.favicon16} />
+          <link rel="icon" type="image/png" sizes="32x32" href={BRAND_ASSETS.meta.favicon32} />
+          <link rel="icon" type="image/png" sizes="48x48" href={BRAND_ASSETS.meta.icon48} />
+          <link rel="icon" type="image/png" sizes="96x96" href={BRAND_ASSETS.meta.icon96} />
+          <link rel="apple-touch-icon" sizes="180x180" href={BRAND_ASSETS.meta.appleTouch} />
 
           {/* 🔥 Fonts */}
           <link

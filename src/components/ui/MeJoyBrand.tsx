@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import BrandLogo from '@/components/ui/BrandLogo';
 import { cn } from '@/lib/utils';
 
 interface MeJoyBrandProps {
@@ -24,22 +24,17 @@ export function MeJoyBrand({
 
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
-      <span
+      <BrandLogo
+        variant={inverse ? 'icon-inverse' : 'icon'}
+        size="sm"
+        priority
+        alt=""
         className={cn(
-          'relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[1.05rem]',
-          inverse ? 'ring-1 ring-white/15' : 'shadow-[0_12px_28px_rgba(16,24,40,0.10)] ring-1 ring-white/60',
+          'h-10 w-10 shrink-0',
+          inverse ? 'drop-shadow-none' : 'drop-shadow-[0_12px_28px_rgba(16,24,40,0.10)]',
           iconClassName
         )}
-      >
-        <Image
-          src={inverse ? '/logosmejoy/me-mark-inverse.svg' : '/logosmejoy/me-mark.svg'}
-          alt=""
-          fill
-          className="object-contain"
-          sizes="40px"
-          priority
-        />
-      </span>
+      />
       <span className="flex min-w-0 flex-col leading-none">
         <span
           className={cn(

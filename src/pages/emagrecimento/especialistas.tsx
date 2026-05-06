@@ -16,7 +16,7 @@ export default function EspecialistasPage() {
           content="Time completo de especialistas em emagrecimento: endocrinologistas credenciados, nutricionistas, farmacêuticos e enfermeiros. Suporte diário via WhatsApp. ⭐ 4,9/5 em avaliações."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <EmagrecimentoLayout>

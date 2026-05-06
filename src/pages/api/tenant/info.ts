@@ -5,9 +5,9 @@ import { isRootB2BDomain } from '@/lib/flags';
 
 const FALLBACK = {
   name: 'MeJoy',
-  logoUrl: '/logosmejoy/logomejoy.svg',
-  primaryColor: '#10b981',
-  secondaryColor: '#0ea5e9',
+  logoUrl: '/brand/logo-horizontal-primary.png',
+  primaryColor: '#004c2e',
+  secondaryColor: '#0b6b46',
   ctaPrimaryUrl: process.env.ZAPVIDA_FALLBACK_CTA || 'https://zapvida.com/',
   ctaLabel: 'Atendimento imediato',
 };

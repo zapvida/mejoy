@@ -16,7 +16,7 @@ export default function ObesidadePage() {
         <title>{buildTitle('Gestão de peso e bem-estar')}</title>
         <meta name="description" content={DESCRIPTION} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
         <link rel="canonical" href={canonical} />
 
         <meta property="og:title" content={buildTitle('Gestão de peso e bem-estar')} />

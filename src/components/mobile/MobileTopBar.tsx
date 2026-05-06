@@ -77,7 +77,7 @@ export default function MobileTopBar({ onOpenMenu, title }: MobileTopBarProps) {
             className="flex min-w-0 items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-black"
             aria-label={`${BRAND_NAME} - Início`}
           >
-            <LogoWithName size="small" variant="inverse" className="shrink-0" />
+            <LogoWithName size="small" variant="inverse" className="shrink-0 translate-y-px" />
             {title && title !== BRAND_NAME ? (
               <span className="min-w-0 truncate rounded-full border border-white/12 bg-white/8 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/82">
                 {title}
@@ -142,7 +142,7 @@ export default function MobileTopBar({ onOpenMenu, title }: MobileTopBarProps) {
             {/* Footer */}
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
               <div className="flex justify-center">
-                <LogoWithName size="small" variant="inverse" className="opacity-80" />
+                <LogoWithName size="small" variant="inverse" className="translate-y-px opacity-80" />
               </div>
             </div>
           </div>

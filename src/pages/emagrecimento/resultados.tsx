@@ -17,7 +17,7 @@ export default function ResultadosPage() {
           content="Pessoas reais, resultados reais – com segurança. Centenas de pessoas já transformaram sua saúde com o programa de emagrecimento. Depoimentos verificados e estatísticas baseadas em dados."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <EmagrecimentoLayout>

@@ -130,7 +130,7 @@ export default function B2CLanding() {
       />
       
       <Head>
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       {isCheckingAuth ? (

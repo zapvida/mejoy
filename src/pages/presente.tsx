@@ -160,7 +160,7 @@ const GiftPage = () => {
         <meta name="description" content="Presenteie alguém especial com acesso ao MeJoy Plus. Crie um token de presente personalizado." />
         <meta property="og:title" content="Presentear - MeJoy Plus" />
         <meta property="og:description" content="Presenteie alguém especial com acesso ao MeJoy Plus. Crie um token de presente personalizado." />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
         <link rel="canonical" href="https://zapfarm.com.br/presente" />
       </Head>
 

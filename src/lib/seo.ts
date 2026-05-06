@@ -1,16 +1,22 @@
 // src/lib/seo.ts
+import { BRAND_ASSETS, BRAND_NAME, BRAND_OG_IMAGE_URL } from '@/lib/brand/assets';
+
 type U = string | undefined;
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.mejoy.com.br';
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'MeJoy';
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || BRAND_NAME;
 
 export const SITE = {
   name: SITE_NAME,
   baseUrl: BASE_URL,
-  defaultTitle: `${SITE_NAME} — Protocolos de Saúde com Curadoria Médica`,
+  defaultTitle: `${SITE_NAME} | Saúde online, repensada`,
   defaultDescription:
-    'Produtos de saúde selecionados por médicos. Emagrecimento, sono, intestino, imunidade e mais. Check-up gratuito. Entrega em todo Brasil.',
-  twitter: '@mejoy'
+    'MeJoy une triagem online, curadoria médica e protocolos de saúde com acabamento premium, humano e confiável para cuidar de você de ponta a ponta.',
+  twitter: '@mejoy',
+  applicationName: BRAND_NAME,
+  themeColor: '#004c2e',
+  icon: BRAND_ASSETS.meta.favicon32,
+  ogImage: BRAND_OG_IMAGE_URL,
 };
 
 export function buildCanonical(path: U) {
@@ -35,8 +41,8 @@ export function orgJsonLd() {
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.baseUrl,
-    logo: `${SITE.baseUrl}/android-chrome-512x512.png`,
-    description: 'Protocolos de saúde com curadoria médica. Produtos manipulados e suplementos selecionados por médicos especialistas.',
+    logo: `${SITE.baseUrl}${BRAND_ASSETS.meta.android512}`,
+    description: 'Saúde online com triagem inteligente, curadoria médica e protocolos pensados para uma jornada mais humana e segura.',
     foundingDate: '2024',
     contactPoint: {
       '@type': 'ContactPoint',

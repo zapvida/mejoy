@@ -110,7 +110,7 @@ export default function RemediosPage() {
       />
       
       <Head>
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
         <link rel="canonical" href="https://zapfarm.com.br/remedios" />
       </Head>
 

@@ -34,8 +34,8 @@ export default function Home() {
         <meta name="description" content="Descubra como está sua saúde em minutos com inteligência artificial. 100% gratuito e baseado em ciência." />
         <meta property="og:title" content="MeJoy - Descubra Sua Saúde" />
         <meta property="og:description" content="Triagem gratuita com relatório personalizado. Baseado em ciência, com IA." />
-        <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
       <main className="min-h-screen bg-bg text-fg">
         <Navbar />
@@ -298,7 +298,7 @@ export default function Home() {
 
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.svg"
+              src="/brand/logo-horizontal-primary.png"
               alt="Logo MeJoy"
               width={240}
               height={240}

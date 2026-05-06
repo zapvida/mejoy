@@ -21,10 +21,10 @@ type Store = {
 };
 
 const defaultData: BrandingDraft = {
-  logoUrl: "/logosmejoy/logomejoy.svg",
+  logoUrl: "/brand/logo-horizontal-primary.png",
   logoFile: null,
-  primary: "#10b981",
-  secondary: "#34d399",
+  primary: "#004c2e",
+  secondary: "#0b6b46",
   fantasyName: "MeJoy",
   ctaText: "Falar com médico",
   ctaUrl: "https://wa.me/5511999999999",

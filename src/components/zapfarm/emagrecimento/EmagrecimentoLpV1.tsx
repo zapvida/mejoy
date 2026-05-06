@@ -107,7 +107,7 @@ export default function EmagrecimentoLpV1() {
           content="Programa de emagrecimento 100% online com médicos especialistas, estratégias modernas quando indicadas e suporte contínuo. Triagem inteligente e avaliação clínica."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
+        <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
       <div className="min-h-screen bg-white">
