@@ -142,19 +142,28 @@ function MyApp({ Component, pageProps }: AppProps) {
     const onStart = () => resetGADeDup();
     router.events.on("routeChangeStart", onStart);
     return () => router.events.off("routeChangeStart", onStart);
-  }, [router.events]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- listener único; evita remount repetido do Router
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     captureUtms();
     initPixels();
 
-    // Pageview on route change
     const onRoute = (url: string) => track('page_view', { page_location: url });
-    onRoute(window.location.pathname + window.location.search);
+
+    /**
+     * Com GTM, page_view já vem das tags GA4 (load + SPA). Não empurrar de novo nem re-registrar listener.
+     * Com `[router.events]` o efeito re-montava, repetia page_view inicial e inundava `/g/collect`.
+     */
+    if (env.NEXT_PUBLIC_GTM_ID) return undefined;
+
     router.events.on('routeChangeComplete', onRoute);
-    return () => { router.events.off('routeChangeComplete', onRoute); };
-  }, [router.events]);
+    return () => {
+      router.events.off('routeChangeComplete', onRoute);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- registro único; router.events é singleton
+  }, []);
 
   return (
     <ErrorBoundary>

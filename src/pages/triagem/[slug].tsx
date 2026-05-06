@@ -514,6 +514,8 @@ export default function TriageSlugPage() {
   useEffect(() => {
     const slugKey = displaySlug;
     if (!slugKey) return;
+    /** Evita POST duplicado: query/asPath oscilam antes de `isReady` em produção. */
+    if (!router.isReady) return;
 
     const flowForSlug = flowsMap[slugKey];
     if (!flowForSlug) {
@@ -531,7 +533,7 @@ export default function TriageSlugPage() {
     if (sess) return;
 
     void fetchSession();
-  }, [fetchSession, displaySlug]);
+  }, [fetchSession, displaySlug, router.isReady]);
 
   const handleRestart = async () => {
     if (!session) return;

@@ -115,6 +115,15 @@ export function initPixels() {
 
 export function track(event: TrackEvent, params: Record<string, any> = {}) {
   if (typeof window === 'undefined') return;
+
+  /**
+   * Em produção Me Joy o GTM já dispara GA4 (config + History Change). Empurrar `page_view` no
+   * dataLayer a partir do app dispara de novo a tag GA4 e explodiu requisições a /g/collect.
+   */
+  if (event === 'page_view' && env.NEXT_PUBLIC_GTM_ID) {
+    return;
+  }
+
   const payload = { event, ...params };
 
   // dataLayer

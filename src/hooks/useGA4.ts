@@ -10,6 +10,7 @@ import {
   trackTriageStart,
   track
 } from '@/lib/ga4';
+import { env } from '@/lib/env';
 
 export function useGA4() {
   const router = useRouter();
@@ -23,6 +24,8 @@ export function useGA4() {
 
   // Trackear mudanças de página
   useEffect(() => {
+    if (env.NEXT_PUBLIC_GTM_ID) return undefined;
+
     const handleRouteChange = (url: string) => {
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('config', process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID, {
