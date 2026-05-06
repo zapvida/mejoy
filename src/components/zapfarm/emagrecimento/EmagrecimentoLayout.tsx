@@ -75,6 +75,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
             {/* CTA Button - Desktop */}
             <Link
               href="/triagem/emagrecimento"
+              prefetch={false}
               className={`hidden md:inline-block rounded-full px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-bold transition-all hover:scale-105 ${
                 scrolled
                   ? 'bg-gradient-to-r from-emerald-600 to-emerald-800 text-white shadow-lg'
@@ -124,6 +125,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
               ))}
               <Link
                 href="/triagem/emagrecimento"
+                prefetch={false}
                 className="inline-flex items-center justify-center mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-800 text-white font-bold transition-all hover:scale-105"
               >
                 Começar avaliação
@@ -209,6 +211,7 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-emerald-600 to-emerald-800 p-3.5 sm:p-4 shadow-2xl md:hidden">
           <Link
             href="/triagem/emagrecimento"
+            prefetch={false}
             className="inline-flex items-center justify-center w-full rounded-full bg-white text-emerald-700 font-bold py-2.5 sm:py-3 px-4 sm:px-6 hover:bg-emerald-50 transition-colors text-sm sm:text-base"
           >
             Fazer minha triagem agora →

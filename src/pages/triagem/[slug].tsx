@@ -38,7 +38,8 @@ const clearLocalCache = (triageId?: string) => {
   window.localStorage.removeItem(pendingKey(triageId));
 };
 
-const LOCALE_PREFIX_PATTERN = /^\/[a-z]{2}(?:-[A-Z]{2})?(?=\/|$)/;
+/** Next.locale pode aparecer como `pt-BR` ou `pt-br` no pathname; só `[A-Z]{2}` quebrava o strip do prefixo. */
+const LOCALE_PREFIX_PATTERN = /^\/[a-z]{2}(?:-[A-Za-z]{2})?(?=\/|$)/;
 const DYNAMIC_SEGMENT_PATTERN = /^\[[^/]+\]$/;
 
 const extractSlugFromPath = (path: string | undefined) => {
@@ -180,6 +181,10 @@ export default function TriageSlugPage() {
   const slugRef = useRef(displaySlug);
   slugRef.current = displaySlug;
 
+  /** Slug efetivo do flow renderizado (`flowsMap[slug].slug`): imune a hacks de pathname em timers. */
+  const flowSlugRef = useRef<string | undefined>(undefined);
+  flowSlugRef.current = flow?.slug;
+
   const triageSlugNavPrevRef = useRef<string | undefined>(undefined);
 
   const sessionRef = useRef<SessionResponse | null>(null);
@@ -229,6 +234,8 @@ export default function TriageSlugPage() {
         (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ?? slugRef.current;
       if (!slugStarted) return;
       const silent = options.silent ?? false;
+      /** Intake já polla /finalize; silent + session só gerava rajada ~4s (scheduleSessionRefresh). */
+      if (silent && slugStarted === "emagrecimento") return;
       const resumeKey = `${slugStarted}|resume`;
 
       if (!silent) setState("loading");
@@ -367,16 +374,38 @@ export default function TriageSlugPage() {
   );
 
   const scheduleSessionRefresh = useCallback(() => {
+    if (flowSlugRef.current === "emagrecimento") return;
+
+    const pathSlugGuard =
+      (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ??
+      extractSlugFromPath(router.asPath) ??
+      slugRef.current;
+    if (pathSlugGuard === "emagrecimento") return;
+
     if (pollTimeoutRef.current) {
       clearTimeout(pollTimeoutRef.current);
     }
     pollTimeoutRef.current = setTimeout(async () => {
+      if (flowSlugRef.current === "emagrecimento") {
+        if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
+        pollTimeoutRef.current = null;
+        return;
+      }
+      const slugNow =
+        (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ??
+        extractSlugFromPath(router.asPath) ??
+        slugRef.current;
+      if (slugNow === "emagrecimento") {
+        if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
+        pollTimeoutRef.current = null;
+        return;
+      }
       await fetchSession(false, { silent: true });
       if (finalizeStateRef.current === "running") {
         scheduleSessionRefresh();
       }
     }, 4000);
-  }, [fetchSession]);
+  }, [fetchSession, router.asPath]);
 
   useEffect(() => {
     finalizeStateRef.current = finalizeState;
@@ -483,19 +512,26 @@ export default function TriageSlugPage() {
   }, [displaySlug]);
 
   useEffect(() => {
-    if (!displaySlug) return;
+    const slugKey = displaySlug;
+    if (!slugKey) return;
 
-    if (!flow) {
+    const flowForSlug = flowsMap[slugKey];
+    if (!flowForSlug) {
       return;
     }
 
-    if (finalizeState === "running" || finalizeState === "completed") return;
+    /**
+     * Não liste `finalizeState` nas deps: mudanças (idle↔running) re-disparavam o bootstrap com
+     * `session` ainda null e geravam rajadas extras de POST. O ref atualiza no efeito acima antes
+     * deste (ordem no arquivo): 388 sync → aqui bootstrap.
+     */
+    if (finalizeStateRef.current === "running" || finalizeStateRef.current === "completed") return;
     const sess = sessionRef.current;
     if (sess?.completed) return;
     if (sess) return;
 
     void fetchSession();
-  }, [fetchSession, flow, displaySlug, finalizeState]);
+  }, [fetchSession, displaySlug]);
 
   const handleRestart = async () => {
     if (!session) return;
@@ -548,7 +584,7 @@ export default function TriageSlugPage() {
         await fetchSession(false, { silent: true });
         /* EmagrecimentoOnePageIntake já faz poll de /api/triage/finalize (5s). Poll duplicado em
            /api/triage/session (4s) gerava rajadas nos logs Vercel e re-renders sem necessidade. */
-        if ((displaySlug || slugRef.current) !== "emagrecimento") {
+        if (flowSlugRef.current !== "emagrecimento") {
           scheduleSessionRefresh();
         }
         return;
