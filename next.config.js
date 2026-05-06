@@ -80,23 +80,57 @@ function getEntrypointFiles(entrypoint) {
   );
 }
 
+function readJsonFileSafe(filePath, fallback) {
+  try {
+    if (!fs.existsSync(filePath)) return fallback;
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+function uniqueFiles(...groups) {
+  return [...new Set(groups.flat().filter((file) => typeof file === 'string' && file.length > 0))];
+}
+
 class EnsureBuildManifestPlugin {
   apply(compiler) {
     compiler.hooks.afterEmit.tap('EnsureBuildManifestPlugin', (compilation) => {
       const entrypoints = compilation.entrypoints;
-      const mainFiles = new Set(getEntrypointFiles(entrypoints.get(CLIENT_STATIC_FILES_RUNTIME_MAIN)));
+      const mainFiles = getEntrypointFiles(entrypoints.get(CLIENT_STATIC_FILES_RUNTIME_MAIN));
       const buildManifestPath = path.join(compiler.outputPath, 'build-manifest.json');
+      const existingManifest = readJsonFileSafe(buildManifestPath, {});
       const assetMap = {
-        polyfillFiles: [],
-        devFiles: [],
-        ampDevFiles: [],
-        lowPriorityFiles: [],
-        rootMainFiles: [],
-        rootMainFilesTree: {},
+        ...existingManifest,
+        polyfillFiles: Array.isArray(existingManifest.polyfillFiles) ? existingManifest.polyfillFiles : [],
+        devFiles: Array.isArray(existingManifest.devFiles) ? existingManifest.devFiles : [],
+        ampDevFiles: Array.isArray(existingManifest.ampDevFiles) ? existingManifest.ampDevFiles : [],
+        /**
+         * Next injeta `_buildManifest.js` e `_ssgManifest.js` a partir daqui.
+         * Se zerar esse campo, o router fica esperando `__BUILD_MANIFEST`,
+         * entra em timeout (~3.8s) e cai em hard reload contínuo.
+         */
+        lowPriorityFiles: Array.isArray(existingManifest.lowPriorityFiles)
+          ? existingManifest.lowPriorityFiles
+          : [],
+        rootMainFiles: Array.isArray(existingManifest.rootMainFiles)
+          ? existingManifest.rootMainFiles
+          : [],
+        rootMainFilesTree:
+          existingManifest.rootMainFilesTree &&
+          typeof existingManifest.rootMainFilesTree === 'object' &&
+          !Array.isArray(existingManifest.rootMainFilesTree)
+            ? existingManifest.rootMainFilesTree
+            : {},
         pages: {
-          '/_app': [...mainFiles],
+          ...(existingManifest.pages && typeof existingManifest.pages === 'object'
+            ? existingManifest.pages
+            : {}),
+          '/_app': uniqueFiles(existingManifest.pages?.['/_app'] ?? [], mainFiles),
         },
-        ampFirstPages: [],
+        ampFirstPages: Array.isArray(existingManifest.ampFirstPages)
+          ? existingManifest.ampFirstPages
+          : [],
       };
 
       for (const entrypoint of entrypoints.values()) {
@@ -105,9 +139,11 @@ class EnsureBuildManifestPlugin {
         const pagePath = getRouteFromEntrypoint(entrypoint.name);
         if (!pagePath) continue;
 
-        assetMap.pages[pagePath] = [
-          ...new Set([...mainFiles, ...getEntrypointFiles(entrypoint)]),
-        ];
+        assetMap.pages[pagePath] = uniqueFiles(
+          assetMap.pages[pagePath] ?? [],
+          mainFiles,
+          getEntrypointFiles(entrypoint),
+        );
       }
 
       fs.writeFileSync(buildManifestPath, `${JSON.stringify(assetMap, null, 2)}\n`, 'utf8');
