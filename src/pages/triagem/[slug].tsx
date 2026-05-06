@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
   type Dispatch,
-  type MutableRefObject,
   type SetStateAction
 } from "react";
 
@@ -70,6 +69,18 @@ function browserIsOnExplicitTriagePath(): boolean {
   return segs.length >= 2 && segs[0] === "triagem";
 }
 
+/**
+ * Quando usar: descartar resposta de `/api/triage/session` apenas se **a URL** já foi para OUTRA slug
+ * de triagem. Comparar contra `slugRef.current` causava rajadas POST: `displaySlug`/`router.query`
+ * pode oscilar durante hidratação e anular respostas válidas ⇒ `session` nunca ficava definido.
+ */
+function sessionResponseStillRelevant(slugStarted: string): boolean {
+  if (typeof window === "undefined") return true;
+  const pathSlug = resolveSlugFromLocation();
+  if (!pathSlug) return true;
+  return pathSlug === slugStarted;
+}
+
 const EMPTY_SEED_ANSWERS: Record<string, never> = {};
 
 /** Evita novo objeto `initialAnswers` a cada polling de sessão (quebrava o intake com setAnswers em loop). */
@@ -100,12 +111,11 @@ function abortResumeSessionForSlug(triageSlug: string) {
 function applyTriageSessionSuccess(
   json: SessionResponse,
   slugStarted: string,
-  slugRef: MutableRefObject<string | undefined>,
   setSession: Dispatch<SetStateAction<SessionResponse | null>>,
   setState: Dispatch<SetStateAction<FetchState>>,
   setShowRunner: Dispatch<SetStateAction<boolean>>
 ) {
-  if (slugStarted !== slugRef.current) return;
+  if (!sessionResponseStillRelevant(slugStarted)) return;
   setSession(json);
   setState("ready");
   const progressValue = json.progress ?? 0;
@@ -214,7 +224,9 @@ export default function TriageSlugPage() {
 
   const fetchSession = useCallback(
     async (forceNew = false, options: { silent?: boolean } = {}) => {
-      const slugStarted = slugRef.current;
+      /** Congela pelo pathname real; fallback ao ref apenas em edge SSR/hidratação. */
+      const slugStarted =
+        (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ?? slugRef.current;
       if (!slugStarted) return;
       const silent = options.silent ?? false;
       const resumeKey = `${slugStarted}|resume`;
@@ -227,11 +239,10 @@ export default function TriageSlugPage() {
         while (sharedTry) {
           try {
             const joined = await sharedTry.promise;
-            if (slugStarted !== slugRef.current) return;
+            if (!sessionResponseStillRelevant(slugStarted)) return;
             applyTriageSessionSuccess(
               joined,
               slugStarted,
-              slugRef,
               setSession,
               setState,
               setShowRunner
@@ -311,12 +322,11 @@ export default function TriageSlugPage() {
 
         const json = await execPromise;
 
-        if (slugStarted !== slugRef.current) return;
+        if (!sessionResponseStillRelevant(slugStarted)) return;
 
         applyTriageSessionSuccess(
           json,
           slugStarted,
-          slugRef,
           setSession,
           setState,
           setShowRunner
@@ -341,7 +351,7 @@ export default function TriageSlugPage() {
           }
         }
 
-        if (slugStarted !== slugRef.current) return;
+        if (!sessionResponseStillRelevant(slugStarted)) return;
 
         console.error("[TriagePage] Error fetching session:", err);
         setError(errorMessage);
