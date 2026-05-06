@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { EnhancedInput, NumericInput } from '@/components/ui/EnhancedInput';
+import LogoWithName from '@/components/ui/LogoWithName';
 import { RefinedButton } from '@/components/ui/RefinedButton';
 import { trackMejoyConversionEvent } from '@/lib/funnel/events-client';
 import { validateBrazilPhoneInput } from '@/lib/phone/normalize';
@@ -70,7 +71,7 @@ const INLINE_CONSENT_COPY: Record<string, string> = {
   aceita_termos:
     'Confirmo que li os documentos essenciais da jornada, incluindo privacidade, uso de IA nos relatórios e telemedicina.',
   consentimento_whatsapp:
-    'Autorizo o envio do meu resultado inicial, orientações e próximos passos pelo canal oficial da Me Joy no WhatsApp.',
+    'Autorizo o envio do meu resultado inicial, orientações e próximos passos pelo canal oficial da MeJoy no WhatsApp.',
 };
 
 const NUMERIC_UNITS_BY_KEY: Record<string, string> = {
@@ -1338,7 +1339,7 @@ export function EmagrecimentoOnePageIntake({
 
         {renderStageSection(
           'Entrega do resultado',
-          'Seu resultado inicial e os próximos passos seguem pelo canal oficial da Me Joy.',
+          'Seu resultado inicial e os próximos passos seguem pelo canal oficial da MeJoy.',
           <div className="space-y-5">
             <div className="grid gap-5 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
               {primeiroNome ? renderTextField(primeiroNome) : null}
@@ -1425,14 +1426,7 @@ export function EmagrecimentoOnePageIntake({
         <header className="mb-6 pt-2 sm:pt-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <Image
-                src="/logosmejoy/logomejoy.png"
-                alt="Me Joy"
-                width={208}
-                height={56}
-                priority
-                className="h-auto w-[176px] sm:w-[208px]"
-              />
+              <LogoWithName size="medium" priority />
             </div>
             <div className="inline-flex w-fit items-center rounded-full border border-[#d8ddd5] bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
               Excelente 4,8
@@ -1501,7 +1495,7 @@ export function EmagrecimentoOnePageIntake({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-xs leading-6 text-slate-500">
-                {currentPage.note ?? 'Suas respostas seguem para a avaliação clínica inicial da Me Joy.'}
+                {currentPage.note ?? 'Suas respostas seguem para a avaliação clínica inicial da MeJoy.'}
               </div>
 
               <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">

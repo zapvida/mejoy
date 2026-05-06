@@ -15,7 +15,7 @@ export function HomeWhyChoose() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-emerald-700 sm:text-sm">
-              Por que Me Joy
+              Por que MeJoy
             </p>
             <h2
               id="home-why-choose-heading"

@@ -112,11 +112,11 @@ function main() {
       seoDescription: '',
     };
     // Prefer Supabase quando preenchido; senão usa pricing existente
-    const shortBenefit = !isEmpty(r.shortBenefit) ? (r.shortBenefit || '').replace(/Moonjoy/gi, 'Me Joy') : pricing.shortBenefit;
-    const description = !isEmpty(r.description) ? (r.description || '').replace(/Moonjoy/gi, 'Me Joy') : pricing.description;
-    const seoTitle = !isEmpty(r.seoTitle) ? (r.seoTitle || '').replace(/Moonjoy/gi, 'Me Joy') : pricing.seoTitle;
-    const seoDescription = !isEmpty(r.seoDescription) ? (r.seoDescription || '').replace(/Moonjoy/gi, 'Me Joy') : pricing.seoDescription;
-    const nome = (seoTitle || '').replace(/\s*\|\s*Me Joy\s*$/i, '').trim() || (pricing.seoTitle || '').replace(/\s*\|\s*Me Joy\s*$/i, '').trim();
+    const shortBenefit = !isEmpty(r.shortBenefit) ? (r.shortBenefit || '').replace(/MeJoy/gi, 'MeJoy') : pricing.shortBenefit;
+    const description = !isEmpty(r.description) ? (r.description || '').replace(/MeJoy/gi, 'MeJoy') : pricing.description;
+    const seoTitle = !isEmpty(r.seoTitle) ? (r.seoTitle || '').replace(/MeJoy/gi, 'MeJoy') : pricing.seoTitle;
+    const seoDescription = !isEmpty(r.seoDescription) ? (r.seoDescription || '').replace(/MeJoy/gi, 'MeJoy') : pricing.seoDescription;
+    const nome = (seoTitle || '').replace(/\s*\|\s*MeJoy\s*$/i, '').trim() || (pricing.seoTitle || '').replace(/\s*\|\s*MeJoy\s*$/i, '').trim();
     lines.push(
       [
         sku,
@@ -125,8 +125,8 @@ function main() {
         pricing.compareAtCents,
         escapeCsv(shortBenefit || 'Fórmula manipulada com qualidade. Entrega nacional.'),
         escapeCsv(description || shortBenefit || 'Fórmula manipulada. Use conforme orientação profissional.'),
-        escapeCsv(seoTitle || `${sku} | Me Joy`),
-        escapeCsv(seoDescription || 'Fórmula manipulada. Entrega em todo Brasil. Me Joy.'),
+        escapeCsv(seoTitle || `${sku} | MeJoy`),
+        escapeCsv(seoDescription || 'Fórmula manipulada. Entrega em todo Brasil. MeJoy.'),
       ].join(',')
     );
   }

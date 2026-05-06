@@ -215,7 +215,7 @@ function buildKeywords(productName: string, primaryActive: string, niche: string
     productName.toLowerCase(),
     primaryActive.toLowerCase(),
     ...parts.slice(0, 3).map((p) => p.toLowerCase()),
-    'me joy',
+    'mejoy',
     'manipulado',
   ].filter((v, i, a) => a.indexOf(v) === i);
 
@@ -305,7 +305,7 @@ function main() {
 
     const shortBenefit = priceRow.shortBenefit ?? '';
     const description = priceRow.description ?? '';
-    const seoTitle = priceRow.seoTitle ?? `${productName} | Me Joy`;
+    const seoTitle = priceRow.seoTitle ?? `${productName} | MeJoy`;
     let seoDescription = priceRow.seoDescription ?? '';
     seoDescription = sentenceCase(seoDescription);
     seoDescription = truncateAtWord(seoDescription, 155);

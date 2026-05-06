@@ -37,9 +37,9 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* Sistema de Cores Me Joy - Laranja, Preto, Branco */
+/* Sistema de Cores MeJoy - Laranja, Preto, Branco */
 :root {
-  /* Laranja Me Joy - Paleta brand */
+  /* Laranja MeJoy - Paleta brand */
   --brand: 24 95% 47%; /* #EA580C laranja forte */
   --brand-50: 24 95% 98%;
   --brand-100: 24 95% 95%;

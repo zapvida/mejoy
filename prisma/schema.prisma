@@ -337,7 +337,7 @@ model BrandingDraft {
   @@map("BrandingDraft")
 }
 
-// ========== STORE V2 — E-commerce 200 SKUs (Me Joy) ==========
+// ========== STORE V2 — E-commerce 200 SKUs (MeJoy) ==========
 
 model Product {
   id                      String   @id @default(cuid())

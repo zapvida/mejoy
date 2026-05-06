@@ -6,7 +6,7 @@ import LpacCard from './LpacCard';
 
 const cases = [
   {
-    client: 'Me Joy',
+    client: 'MeJoy',
     url: 'https://zapfarm.com.br',
     desc: 'White-label nutricional + triagem GI com CTAs e métricas.',
     metric: '+37%',

@@ -4,8 +4,8 @@ import { getPrisma } from '@/lib/prisma';
 import { isRootB2BDomain } from '@/lib/flags';
 
 const FALLBACK = {
-  name: 'Me Joy',
-  logoUrl: '/logo.svg',
+  name: 'MeJoy',
+  logoUrl: '/logosmejoy/logomejoy.svg',
   primaryColor: '#10b981',
   secondaryColor: '#0ea5e9',
   ctaPrimaryUrl: process.env.ZAPVIDA_FALLBACK_CTA || 'https://zapvida.com/',
@@ -57,4 +57,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json(FALLBACK);
   }
 }
-

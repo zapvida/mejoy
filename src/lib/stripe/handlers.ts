@@ -50,7 +50,7 @@ export async function handleCheckoutCompleted(session: Stripe.Checkout.Session) 
       await sendPaymentConfirmedEmail(email, {
         name,
         firstName: name?.split(' ')[0],
-        productName: meta?.plan ? `Plano ${meta.plan}` : 'Acesso Me Joy',
+        productName: meta?.plan ? `Plano ${meta.plan}` : 'Acesso MeJoy',
         amount,
         orderId: session.id,
         paymentMethod: session.payment_method_types?.[0] || 'Cartão de crédito',

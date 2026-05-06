@@ -29,12 +29,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Me Joy para Clínicas – Mais produtividade com IA Médica</title>
+        <title>MeJoy para Clínicas – Mais produtividade com IA Médica</title>
         <meta
           name="description"
           content="Automatize a triagem, reduza o tempo de consulta e aumente a produtividade da sua clínica com IA médica. Solicite uma demonstração gratuita."
         />
-        <meta property="og:title" content="Me Joy para Clínicas – IA Médica na Sua Rotina" />
+        <meta property="og:title" content="MeJoy para Clínicas – IA Médica na Sua Rotina" />
         <meta
           property="og:description"
           content="Triagens inteligentes, relatórios clínicos instantâneos e mais tempo para cuidar de seus pacientes. Integre IA com facilidade."
@@ -101,10 +101,10 @@ export default function Home() {
                     Você sabia que 80% dos pacientes esquecem sua clínica após 30 dias?
                   </motion.h1>
                   <h2 className="text-xl font-bold text-white/90 mb-4">
-                    Me Joy ajuda você a manter o contato, gerar valor e reconquistar a confiança com inteligência artificial.
+                    MeJoy ajuda você a manter o contato, gerar valor e reconquistar a confiança com inteligência artificial.
                   </h2>
                   <p className="text-lg text-white/70 mb-2">
-                    O Me Joy coleta sintomas e hábitos antes mesmo do paciente entrar no consultório.
+                    O MeJoy coleta sintomas e hábitos antes mesmo do paciente entrar no consultório.
                   </p>
                   <p className="text-lg text-white/70 mb-4">
                     Relatórios claros, baseados em evidência, prontos para te apoiar na decisão clínica.
@@ -182,7 +182,7 @@ export default function Home() {
           {/* Missão / Visão / Valores */}
           <section className="py-14 px-4 sm:px-6 lg:px-8 bg-black/20 backdrop-blur-md mt-10">
             <div className="max-w-7xl mx-auto text-center space-y-12">
-              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o Me Joy foi criado?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o MeJoy foi criado?</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-bg border border-border p-6 rounded-2xl shadow-lg">
@@ -223,7 +223,7 @@ export default function Home() {
                 {[
                   { nome: 'Carla, 32 anos', texto: '“Nunca tive uma visão tão clara sobre minha saúde. Mudou minha vida!”' },
                   { nome: 'João, 45 anos', texto: '“Em poucos minutos entendi coisas que médicos nunca me explicaram.”' },
-                  { nome: 'Dra. Mariana, Clínica Vida Plena', texto: '"Desde que começamos a usar o Me Joy, economizamos tempo e melhoramos a qualidade do atendimento."' },
+                  { nome: 'Dra. Mariana, Clínica Vida Plena', texto: '"Desde que começamos a usar o MeJoy, economizamos tempo e melhoramos a qualidade do atendimento."' },
                   { nome: 'José, 61 anos', texto: '“Fiquei impressionado com a clareza do relatório. Levei para meu médico e agilizou meu tratamento.”' },
                 ].map((d, i) => (
                   <div key={i} className="bg-white/10 p-6 rounded-xl shadow-md">
@@ -240,7 +240,7 @@ export default function Home() {
             <div className="max-w-6xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6">🔬 Autoridade e Confiança</h2>
               <p className="text-white/80 mb-8 text-lg max-w-3xl mx-auto">
-                O Me Joy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
+                O MeJoy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
               </p>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 {/* Considerar otimizar imagens para webp ou usar <Image priority /> */}
@@ -333,8 +333,8 @@ export default function Home() {
           {/* Logo animado */}
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.png"
-              alt="Logo Me Joy Animada"
+              src="/logosmejoy/logomejoy.svg"
+              alt="Logo MeJoy"
               width={240}
               height={240}
               className="object-contain animate-pulse"

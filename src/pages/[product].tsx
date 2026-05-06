@@ -114,7 +114,7 @@ export default function ProductPage({ productConfig, pricesReais }: ProductPageP
     price: recommendedPlan.unitPrice,
     currency: 'BRL',
     image: `${SITE.baseUrl}${productConfig.image}`,
-    brand: 'Me Joy',
+    brand: 'MeJoy',
     sku: productConfig.slug,
     category: productConfig.category
   });
@@ -134,7 +134,7 @@ export default function ProductPage({ productConfig, pricesReais }: ProductPageP
   // JSON-LD para HowTo (Como Funciona)
   const howToSchema = howToJsonLd({
     name: `Como funciona o ${productConfig.commercialName}`,
-    description: `Processo completo para adquirir e usar o ${productConfig.commercialName} na Me Joy`,
+    description: `Processo completo para adquirir e usar o ${productConfig.commercialName} na MeJoy`,
     steps: lpac.howItWorks.map(step => ({
       name: step.title,
       text: step.description,
@@ -179,7 +179,7 @@ export default function ProductPage({ productConfig, pricesReais }: ProductPageP
         <ProductBenefitsSection 
           config={lpac.benefits}
           colors={colors}
-          title="Por que escolher a Me Joy?"
+          title="Por que escolher a MeJoy?"
           subtitle={`Um programa completo de ${productConfig.displayName.toLowerCase()} com acompanhamento médico especializado`}
         />
         

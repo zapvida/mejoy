@@ -1,6 +1,6 @@
 # 🚀 SETUP COMPLETO - COPIAR E COLAR (ZERO ERRO)
 
-**MonJoy · mejoy.com.br** — Use este documento como única fonte. Tudo que falta configurar manualmente está aqui. Validado para lançamento contínuo.
+**MeJoy · mejoy.com.br** — Use este documento como única fonte. Tudo que falta configurar manualmente está aqui. Validado para lançamento contínuo.
 
 ---
 
@@ -209,13 +209,13 @@ CREATE INDEX IF NOT EXISTS reports_status_idx ON public.reports(status);
 | `OPENAI_API_KEY` | [OBTER] | `sk-proj-xxxx` |
 | `AI_REPORT_ENABLED` | `1` | `1` |
 | `RESEND_API_KEY` | [OBTER] | `re_xxxx` |
-| `EMAIL_FROM` | `MonJoy <noreply@mejoy.com.br>` | ou `onboarding@resend.dev` (sem domínio) |
+| `EMAIL_FROM` | `MeJoy <noreply@mejoy.com.br>` | ou `onboarding@resend.dev` (sem domínio) |
 | `EMAIL_REPLY_TO` | `contato@mejoy.com.br` | seu email |
 | `NEXTAUTH_URL` | `https://www.mejoy.com.br` | seu domínio |
 | `NEXTAUTH_SECRET` | [GERAR] | `openssl rand -base64 32` |
 | `NEXT_PUBLIC_BASE_URL` | `https://www.mejoy.com.br` | seu domínio |
 | `NEXT_PUBLIC_SITE_URL` | `https://www.mejoy.com.br` | seu domínio |
-| `NEXT_PUBLIC_SITE_NAME` | `MonJoy` | marca |
+| `NEXT_PUBLIC_SITE_NAME` | `MeJoy` | marca |
 | `NODE_ENV` | `production` | `production` |
 | `WEBHOOK_ASAAS_URL` | `https://www.mejoy.com.br/api/asaas/webhook` | seu domínio |
 
@@ -298,7 +298,7 @@ ASAAS_PRICE_IMUNIDADE_PREMIUM=27800
 
 | Campo | Valor |
 |-------|-------|
-| **Nome** | `MonJoy - Pagamentos` |
+| **Nome** | `MeJoy - Pagamentos` |
 | **URL** | `https://www.mejoy.com.br/api/asaas/webhook` |
 | **E-mail** | `contato@mejoy.com.br` |
 | **Versão API** | `v3` |

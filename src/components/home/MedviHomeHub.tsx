@@ -19,7 +19,7 @@ import { HomeFAQ } from './sections/HomeFAQ';
 import { HomeWeightLossFeature } from './sections/HomeWeightLossFeature';
 
 const DESCRIPTION =
-  'Comece seu cuidado em saúde com triagem online, próximos passos claros, avaliação médica quando indicada e suporte oficial pelo WhatsApp da Me Joy.';
+  'Comece seu cuidado em saúde com triagem online, próximos passos claros, avaliação médica quando indicada e suporte oficial pelo WhatsApp da MeJoy.';
 
 const redHat = Red_Hat_Text({
   subsets: ['latin', 'latin-ext'],
@@ -28,7 +28,7 @@ const redHat = Red_Hat_Text({
 });
 
 /**
- * Home institucional Me Joy — hub multi-tratamento.
+ * Home institucional MeJoy — hub multi-tratamento.
  *
  * Renderiza a página inicial em mejoy.com.br como hub de tratamentos, separada
  * da LPAC `/emagrecimento`. Mantém header e footer compartilhados com o resto do site.
@@ -39,7 +39,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
   return (
     <>
       <Seo
-          title="Triagem online e cuidado em saúde com clareza | Me Joy"
+          title="Triagem online e cuidado em saúde com clareza | MeJoy"
         description={DESCRIPTION}
         path={canonicalPath}
         ogImage={ogImage}
@@ -48,7 +48,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
           'avaliação médica online',
           'cuidado em saúde',
           'triagem online',
-          'me joy',
+          'mejoy',
         ]}
       />
 

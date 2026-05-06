@@ -208,7 +208,7 @@
 
 ## ⚖️ DISCLAIMER IMPORTANTE
 
-**Este protocolo é um guia clínico interno para a equipe médica Me Joy.**
+**Este protocolo é um guia clínico interno para a equipe médica MeJoy.**
 
 **A prescrição final, incluindo dose exata, apresentação e esquema de titulação, deve ser sempre definida pelo médico endocrinologista após:**
 - Avaliação individual completa do paciente
@@ -224,5 +224,5 @@
 **Documento criado em:** 2025-01-27  
 **Última atualização:** 2025-01-27  
 **Versão:** 1.0  
-**Aprovado por:** Equipe Médica Me Joy
+**Aprovado por:** Equipe Médica MeJoy
 

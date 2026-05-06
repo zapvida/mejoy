@@ -5,12 +5,14 @@ interface LogoProps {
   size?: 'small' | 'medium' | 'large';
   className?: string;
   priority?: boolean;
+  variant?: 'primary' | 'inverse';
 }
 
 const Logo: React.FC<LogoProps> = ({ 
   size = 'medium', 
   className = '', 
-  priority = false 
+  priority = false,
+  variant = 'primary',
 }) => {
   const [imageError, setImageError] = useState(false);
   
@@ -31,8 +33,12 @@ const Logo: React.FC<LogoProps> = ({
   if (imageError) {
     return (
       <div className={`flex items-center ${className}`}>
-        <div className={`${sizeClasses[size]} rounded-lg bg-brand/20 flex items-center justify-center`}>
-          <span className="text-brand font-bold text-xs">Me</span>
+        <div
+          className={`${sizeClasses[size]} flex items-center justify-center rounded-[1rem] ${
+            variant === 'inverse' ? 'bg-white/15 text-white' : 'bg-black text-white'
+          }`}
+        >
+          <span className="text-xs font-bold">Me</span>
         </div>
       </div>
     );
@@ -40,8 +46,8 @@ const Logo: React.FC<LogoProps> = ({
   
   return (
     <Image
-      src="/logosmejoy/faviconmejoy.png"
-      alt="Me Joy Farma"
+      src={variant === 'inverse' ? '/logosmejoy/me-mark-inverse.svg' : '/logosmejoy/me-mark.svg'}
+      alt="MeJoy"
       width={dimensions.width}
       height={dimensions.height}
       priority={priority}

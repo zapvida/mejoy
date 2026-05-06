@@ -1,4 +1,4 @@
-# Relatório Executivo Final — Lançamento Controlado Me Joy
+# Relatório Executivo Final — Lançamento Controlado MeJoy
 
 > **Data:** 2026-03-07  
 > **Status:** PRONTO PARA SOFT LAUNCH (com lote âncora)

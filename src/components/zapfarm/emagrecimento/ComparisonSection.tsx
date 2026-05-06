@@ -24,7 +24,7 @@ export function ComparisonSection() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 tracking-tight">
-              Por que escolher a Me Joy?
+              Por que escolher a MeJoy?
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Compare o caminho tradicional com nossa abordagem completa
@@ -32,7 +32,7 @@ export function ComparisonSection() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {/* Com Me Joy */}
+            {/* Com MeJoy */}
             <RefinedCard
               padding="lg"
               rounded="xl"
@@ -43,7 +43,7 @@ export function ComparisonSection() {
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center shadow-sm">
                   <span className="text-white text-2xl font-bold">✓</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-foreground">Com Me Joy</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold text-foreground">Com MeJoy</h3>
               </div>
               <ul className="space-y-4">
                 {withZapfarm.map((item, index) => (
@@ -55,7 +55,7 @@ export function ComparisonSection() {
               </ul>
             </RefinedCard>
 
-            {/* Sem Me Joy */}
+            {/* Sem MeJoy */}
             <RefinedCard
               padding="lg"
               rounded="xl"

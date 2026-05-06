@@ -74,7 +74,7 @@ export default function ObrigadoPage({ productConfig }: ObrigadoPageProps) {
   return (
     <>
       <Head>
-        <title>Obrigado! - {productConfig.displayName} | Me Joy</title>
+        <title>Obrigado! - {productConfig.displayName} | MeJoy</title>
         <meta name="description" content={`Pagamento confirmado para ${productConfig.displayName.toLowerCase()}`} />
       </Head>
 

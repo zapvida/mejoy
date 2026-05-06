@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 export default function Footer() {
   return (
@@ -9,9 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo e descrição */}
           <div className="md:col-span-2">
-            <Logo size="small" className="mb-4" />
+            <LogoWithName size="small" variant="inverse" className="mb-4" />
             <p className="text-white/70 mb-4 max-w-md">
-              Me Joy - Transformando a saúde através da inteligência artificial. 
+              MeJoy - Transformando a saúde através da inteligência artificial. 
               Relatórios personalizados baseados em evidências científicas.
             </p>
           </div>
@@ -58,14 +58,14 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-8 pt-6">
           <div className="bg-gradient-to-r from-brand/10 to-brand/5 border border-brand/20 rounded-xl p-6 mb-6">
             <p className="text-white/90 text-center leading-relaxed">
-              <strong>Me Joy é oferecido gratuitamente pela Me Joy e pela ZapVida</strong><br />
+              <strong>MeJoy é oferecido gratuitamente pela MeJoy e pela ZapVida</strong><br />
               Bem-estar e educação em saúde • LGPD • Política de reembolso por SLA
             </p>
           </div>
           
           <div className="text-center">
             <p className="text-white/50">
-              © 2025 Me Joy. Todos os direitos reservados.
+              © 2025 MeJoy. Todos os direitos reservados.
             </p>
           </div>
         </div>

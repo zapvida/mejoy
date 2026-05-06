@@ -10,11 +10,11 @@ export default function FormulasPage() {
   return (
     <>
       <Seo
-        title="33 Fórmulas MonJoy — Transparência Total | Componentes, Doses e Custos"
-        description="Catálogo completo das 33 fórmulas MonJoy: componentes, doses e custos (BOM) por SKU. Emagrecimento, calvície, sono, ansiedade, intestino, fígado, libido, menopausa, articulações, imunidade e tirzepatida."
+        title="33 Fórmulas MeJoy — Transparência Total | Componentes, Doses e Custos"
+        description="Catálogo completo das 33 fórmulas MeJoy: componentes, doses e custos (BOM) por SKU. Emagrecimento, calvície, sono, ansiedade, intestino, fígado, libido, menopausa, articulações, imunidade e tirzepatida."
         path="/formulas"
         keywords={[
-          'fórmulas MonJoy',
+          'fórmulas MeJoy',
           '33 SKUs',
           'suplementos manipulação',
           'BOM custos',
@@ -30,7 +30,7 @@ export default function FormulasPage() {
         data-lpac="formulas"
         className="min-h-screen bg-bg pb-safe"
         role="main"
-        aria-label="Tabela de fórmulas MonJoy"
+        aria-label="Tabela de fórmulas MeJoy"
       >
         <Navbar />
 
@@ -42,7 +42,7 @@ export default function FormulasPage() {
           </div>
           <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-4 leading-tight">
-              33 Fórmulas MonJoy
+              33 Fórmulas MeJoy
             </h1>
             <p className="text-lg sm:text-xl text-fg/80 mb-6 max-w-2xl mx-auto">
               Transparência total: componentes, doses e custos (BOM) por SKU. Edite os valores e

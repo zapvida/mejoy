@@ -1,4 +1,4 @@
-# Relatório Launch Runner — Me Joy
+# Relatório Launch Runner — MeJoy
 
 **Data:** 2026-03-05  
 **Objetivo:** GO/NO-GO pré-deploy + passos manuais finais

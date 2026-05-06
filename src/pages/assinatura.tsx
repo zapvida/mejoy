@@ -61,7 +61,7 @@ export default function AssinaturaPage() {
   return (
     <>
       <Head>
-        <title>Liberar Todas as Triagens - Me Joy</title>
+        <title>Liberar Todas as Triagens - MeJoy</title>
         <meta name="description" content="Acesso completo a todas as triagens médicas por 30 dias" />
       </Head>
 
@@ -157,7 +157,7 @@ export default function AssinaturaPage() {
 
           {/* Footer */}
           <div className="mt-16 text-center text-sm text-muted-foreground">
-            <p>Me Joy é oferecido gratuitamente pela Me Joy e pela ZapVida.</p>
+            <p>MeJoy é oferecido gratuitamente pela MeJoy e pela ZapVida.</p>
           </div>
         </div>
       </div>

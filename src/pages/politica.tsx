@@ -7,8 +7,8 @@ export default function Politica() {
   return (
     <>
       <Head>
-        <title>Política de Privacidade | Me Joy</title>
-        <meta name="description" content="Política de privacidade do Me Joy - Como protegemos seus dados pessoais." />
+        <title>Política de Privacidade | MeJoy</title>
+        <meta name="description" content="Política de privacidade do MeJoy - Como protegemos seus dados pessoais." />
       </Head>
       <main className="min-h-screen bg-black text-white">
         <Navbar />
@@ -16,7 +16,7 @@ export default function Politica() {
           <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">Política de Privacidade</h1>
 
           <p className="mb-4 leading-relaxed text-muted-foreground">
-            A sua privacidade é fundamental para nós. Esta Política de Privacidade explica como coletamos, usamos e protegemos seus dados pessoais quando você utiliza a plataforma Me Joy.
+            A sua privacidade é fundamental para nós. Esta Política de Privacidade explica como coletamos, usamos e protegemos seus dados pessoais quando você utiliza a plataforma MeJoy.
           </p>
 
           <div className="space-y-8">

@@ -1,4 +1,4 @@
-# Relatório Executivo Final — Go-Live Me Joy
+# Relatório Executivo Final — Go-Live MeJoy
 
 > **Data:** 2026-03-07  
 > **Veredicto:** **PRONTO PARA SOFT LAUNCH**

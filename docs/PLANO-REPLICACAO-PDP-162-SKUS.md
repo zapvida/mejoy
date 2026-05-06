@@ -197,7 +197,7 @@ Antes de considerar um produto "pronto para venda":
 
 ## 8. Diferenciação vs Concorrentes
 
-| Aspecto | Concorrentes típicos | Me Joy (nosso padrão) |
+| Aspecto | Concorrentes típicos | MeJoy (nosso padrão) |
 |---------|----------------------|------------------------|
 | Benefícios | 3 genéricos | 6 com mecanismo + benefício |
 | O que é | 1 frase | Parágrafo completo com ativo, dose, benefícios |

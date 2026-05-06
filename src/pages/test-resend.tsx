@@ -37,7 +37,7 @@ export default function TestResendPage() {
   return (
     <>
       <Head>
-        <title>Teste Resend - Me Joy</title>
+        <title>Teste Resend - MeJoy</title>
       </Head>
 
       <div className="min-h-screen bg-gray-900 text-white p-8">

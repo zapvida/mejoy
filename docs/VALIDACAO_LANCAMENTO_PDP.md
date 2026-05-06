@@ -1,4 +1,4 @@
-# Validação Lançamento PDP — Me Joy
+# Validação Lançamento PDP — MeJoy
 
 **Data:** 2026-03-05  
 **Status:** ✅ Validado e pronto para deploy

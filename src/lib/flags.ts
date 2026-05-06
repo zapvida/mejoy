@@ -15,7 +15,7 @@ export const ROOT_LOJA_DOMAINS = (process.env.NEXT_PUBLIC_ROOT_LOJA_DOMAINS ?? '
   .split(',')
   .map(s => s.trim().toLowerCase());
 
-export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'Me Joy';
+export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? 'MeJoy';
 export const SHOW_SALES_ASSISTANT = (process.env.NEXT_PUBLIC_SHOW_SALES_ASSISTANT ?? '1') === '1';
 
 export type HomeVariant = 'medvi_journey' | 'store_v2';
@@ -67,7 +67,7 @@ export function getHomeVariant(): HomeVariant {
   return HOME_VARIANT;
 }
 
-// Store V2 — Loja nova com 200 SKUs (Me Joy e-commerce 1P)
+// Store V2 — Loja nova com 200 SKUs (MeJoy e-commerce 1P)
 // Quando ativo: Home por objetivos, /c/[objetivo], /p/[slug], cart, checkout Pagar.me
 // Rollback: STORE_V2=0 volta para loja/protocolos legado sem deploy
 export const STORE_V2 =

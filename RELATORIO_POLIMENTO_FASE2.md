@@ -92,23 +92,23 @@
 
 #### ✅ Titles e Meta Descriptions Otimizados
 - **Como Funciona:**
-  - Title: "Como funciona o tratamento de emagrecimento da MonJoy | Check-up online e GLP-1 com segurança"
+  - Title: "Como funciona o tratamento de emagrecimento da MeJoy | Check-up online e GLP-1 com segurança"
   - Description: Focada em passo a passo, check-up online, avaliação médica
 
 - **Tratamentos:**
-  - Title: "Tratamentos de emagrecimento com GLP-1 e suporte médico | MonJoy"
+  - Title: "Tratamentos de emagrecimento com GLP-1 e suporte médico | MeJoy"
   - Description: Focada em tratamentos modernos, GLP-1, normas ANVISA
 
 - **Especialistas:**
-  - Title: "Time de especialistas em emagrecimento | Endocrinologistas e nutricionistas | MonJoy"
+  - Title: "Time de especialistas em emagrecimento | Endocrinologistas e nutricionistas | MeJoy"
   - Description: Focada em time completo, avaliações 4,9/5
 
 - **Resultados:**
-  - Title: "Resultados reais de emagrecimento | Depoimentos e estatísticas | MonJoy"
+  - Title: "Resultados reais de emagrecimento | Depoimentos e estatísticas | MeJoy"
   - Description: Focada em resultados reais, depoimentos verificados
 
 - **Blog:**
-  - Title: "Blog de emagrecimento | Guias e dicas com ciência | MonJoy"
+  - Title: "Blog de emagrecimento | Guias e dicas com ciência | MeJoy"
   - Description: Focada em conteúdo educativo, não substitui consulta
 
 #### ✅ Internal Linking Inteligente

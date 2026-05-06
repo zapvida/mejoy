@@ -1,6 +1,6 @@
-# MISSÃO: Checkout Me Joy — Layout Zapvida + Máxima Confiança
+# MISSÃO: Checkout MeJoy — Layout Zapvida + Máxima Confiança
 
-Refatore o checkout do Me Joy para replicar fielmente o layout dos anexos Zapvida (assets/Captura_de_Tela_*.png), adaptando ao contexto e-commerce (carrinho, endereço, frete). Gateway Asaas (PIX + Cartão). Objetivo: layout lindo, confiante e responsivo ao máximo.
+Refatore o checkout do MeJoy para replicar fielmente o layout dos anexos Zapvida (assets/Captura_de_Tela_*.png), adaptando ao contexto e-commerce (carrinho, endereço, frete). Gateway Asaas (PIX + Cartão). Objetivo: layout lindo, confiante e responsivo ao máximo.
 
 ---
 
@@ -69,7 +69,7 @@ Consulte as imagens em assets/ para replicar:
 ## PARTE 4 — HEADER E PROGRESSO
 
 ### Header
-- Logo Me Joy (link /) à esquerda.
+- Logo MeJoy (link /) à esquerda.
 - Direita: Lock + "Ambiente seguro" (text-gray-600).
 - sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100.
 

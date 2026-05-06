@@ -595,7 +595,7 @@ export function EmagrecimentoCheckoutExperience({
           <div className="flex flex-col gap-4 border-b border-zinc-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                Checkout Me Joy
+                Checkout MeJoy
               </p>
               <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
                 {selectionLocked ? 'Conclua o pagamento do seu fechamento' : 'Finalize sem sair desta pagina'}
@@ -1162,7 +1162,7 @@ export function EmagrecimentoCheckoutExperience({
                       {paymentMethod === 'PIX' ? 'Seu PIX esta pronto' : 'Estamos validando o cartao'}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                      Assim que o Asaas confirmar, voce segue automaticamente para o dashboard Me Joy.
+                      Assim que o Asaas confirmar, voce segue automaticamente para o dashboard MeJoy.
                     </p>
                   </div>
                   <div className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-emerald-800 shadow-sm">

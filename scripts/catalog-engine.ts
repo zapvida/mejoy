@@ -191,7 +191,7 @@ function main() {
       priceCents,
       shortBenefit: priceRow?.shortBenefit ?? '',
       description: priceRow?.description ?? '',
-      seoTitle: priceRow?.seoTitle ?? `${name} | Me Joy`,
+      seoTitle: priceRow?.seoTitle ?? `${name} | MeJoy`,
       seoDescription: seoDesc,
       requiresRx: isSensitive,
       whatsappFlow: isSensitive ? 'rx_upload' : 'none',

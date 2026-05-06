@@ -26,7 +26,7 @@ export default function StickyBar() {
           Personalizar grátis
         </Link>
         <a
-          href="https://wa.me/5547999009923?text=Quero%20saber%20mais%20sobre%20o%20Me Joy"
+          href="https://wa.me/5547999009923?text=Quero%20saber%20mais%20sobre%20o%20MeJoy"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Falar no WhatsApp"

@@ -121,7 +121,7 @@ export default function CartPage() {
   if (loading) {
     return (
       <>
-        <Seo title="Carrinho | Me Joy" description="Seu carrinho" path="/cart" />
+        <Seo title="Carrinho | MeJoy" description="Seu carrinho" path="/cart" />
         <StorefrontHeader />
         <main className="min-h-screen py-16 flex flex-col items-center justify-center">
           <p className="text-gray-500">Carregando...</p>
@@ -145,7 +145,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Seo title="Carrinho | Me Joy" description="Seu carrinho de compras" path="/cart" />
+      <Seo title="Carrinho | MeJoy" description="Seu carrinho de compras" path="/cart" />
       <Head>
         <meta name="robots" content="noindex" />
       </Head>

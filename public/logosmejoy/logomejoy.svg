@@ -1,0 +1,35 @@
+<svg width="356" height="80" viewBox="0 0 356 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>MeJoy</title>
+  <rect x="2" y="4" width="72" height="72" rx="24" fill="#131313" />
+  <text
+    x="38"
+    y="43"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    fill="#FFFFFF"
+    font-family="'Avenir Next', 'Segoe UI', sans-serif"
+    font-size="39"
+    font-weight="600"
+    letter-spacing="-0.06em"
+  >
+    Me
+  </text>
+  <path
+    d="M20 55C28.6 63.3 47 63.4 56 55"
+    stroke="#FFFFFF"
+    stroke-width="4.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <text
+    x="92"
+    y="45"
+    fill="#131313"
+    font-family="'Avenir Next', 'Segoe UI', sans-serif"
+    font-size="57"
+    font-weight="500"
+    letter-spacing="-0.075em"
+  >
+    MeJoy
+  </text>
+</svg>

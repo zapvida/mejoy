@@ -163,7 +163,7 @@ def create_wordmark(width: int = 1800, height: int = 620) -> Image.Image:
     d = ImageDraw.Draw(base)
     title_font = get_font(238, heavy=True)
     sub_font = get_font(86, heavy=False)
-    d.text((560, 150), "Me Joy", font=title_font, fill=BLACK)
+    d.text((560, 150), "MeJoy", font=title_font, fill=BLACK)
     d.text((572, 395), "Me Cuido. Me Amo!", font=sub_font, fill=ORANGE_DARK)
     d.rounded_rectangle((570, 515, 1080, 532), radius=8, fill=ORANGE)
     return base
@@ -183,7 +183,7 @@ def create_cover(width: int = 1640, height: int = 624) -> Image.Image:
     slogan_font = get_font(72, heavy=False)
     accent_font = get_font(72, heavy=True)
 
-    d.text((430, 154), "Me Joy,", font=title_font, fill=ORANGE)
+    d.text((430, 154), "MeJoy,", font=title_font, fill=ORANGE)
     d.text((436, 306), "Me Cuido.", font=slogan_font, fill="#FFB05A")
     d.text((840, 306), "Me Amo!", font=accent_font, fill=ORANGE)
     d.rounded_rectangle((436, 430, 1138, 444), radius=7, fill=ORANGE_DARK)
@@ -233,7 +233,7 @@ def write_svg_files() -> None:
     <circle cx="512" cy="512" r="500" fill="url(#orangeGrad)" stroke="rgba(0,0,0,0.45)" stroke-width="8"/>
     <text x="512" y="560" text-anchor="middle" fill="{BLACK}" font-size="348" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me</text>
   </g>
-  <text x="430" y="272" fill="{ORANGE}" font-size="142" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me Joy,</text>
+  <text x="430" y="272" fill="{ORANGE}" font-size="142" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">MeJoy,</text>
   <text x="436" y="378" fill="#FFB05A" font-size="72" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif">Me Cuido.</text>
   <text x="840" y="378" fill="{ORANGE}" font-size="72" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me Amo!</text>
   <rect x="436" y="430" width="702" height="14" rx="7" fill="{ORANGE_DARK}"/>
@@ -254,7 +254,7 @@ def create_preview(avatar: Image.Image, cover: Image.Image, wordmark: Image.Imag
     d = ImageDraw.Draw(preview)
     title = get_font(74, heavy=True)
     label = get_font(36, heavy=False)
-    d.text((70, 52), "Me Joy - kit preto e laranja", font=title, fill=BLACK)
+    d.text((70, 52), "MeJoy - kit preto e laranja", font=title, fill=BLACK)
     d.text((70, 150), "Perfil", font=label, fill=BLACK_SOFT)
     d.text((700, 150), "Capa", font=label, fill=BLACK_SOFT)
     d.text((70, 930), "Wordmark", font=label, fill=BLACK_SOFT)

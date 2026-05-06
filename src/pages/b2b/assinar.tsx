@@ -9,7 +9,7 @@ export default function B2BAssinar() {
   return (
     <>
       <Head>
-        <title>Assinar em 2 min | Me Joy</title>
+        <title>Assinar em 2 min | MeJoy</title>
         <meta name="description" content="Assine o plano B2B e ative seu ambiente white-label em minutos." />
       </Head>
       <main className="min-h-screen bg-muted px-4 py-10">

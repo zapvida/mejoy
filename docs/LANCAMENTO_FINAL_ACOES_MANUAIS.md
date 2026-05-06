@@ -1,4 +1,4 @@
-# 🚀 Lançamento oficial Me Joy Farma — Ações manuais
+# 🚀 Lançamento oficial MeJoy Farma — Ações manuais
 
 **Status:** Código pronto. Build e typecheck OK. Falta apenas executar estes passos manuais.
 

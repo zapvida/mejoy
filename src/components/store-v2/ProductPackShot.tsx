@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-const FALLBACK_TITLE = 'Me Joy Farma';
+const FALLBACK_TITLE = 'MeJoy';
 
 /**
  * Detecta se a imagem é placeholder (pílula, ícone genérico) e devemos usar a embalagem.

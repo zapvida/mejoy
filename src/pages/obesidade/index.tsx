@@ -4,7 +4,7 @@ import { ObesidadeImageGlobalStyles } from '@/components/zapfarm/obesidade/Obesi
 import { buildCanonical, buildTitle, SITE } from '@/lib/seo';
 
 const DESCRIPTION =
-  'Programa de gestão de peso online com médicos, triagem, app Me Joy e acompanhamento. Verifique sua elegibilidade.';
+  'Programa de gestão de peso online com médicos, triagem, app MeJoy e acompanhamento. Verifique sua elegibilidade.';
 
 export default function ObesidadePage() {
   const canonical = buildCanonical('/obesidade');

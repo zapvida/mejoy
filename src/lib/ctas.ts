@@ -4,7 +4,7 @@ type Tenant = {
 };
 
 export function getPrimaryCTA(tenant: Tenant) {
-  const isRoot = tenant.name === 'Me Joy';
+  const isRoot = tenant.name === 'MeJoy';
   
   if (isRoot) {
     return {

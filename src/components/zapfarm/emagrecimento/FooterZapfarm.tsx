@@ -22,7 +22,7 @@ export function FooterZapfarm() {
             </h3>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">Me amo. Me cuido!</p>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Triagem online, avaliação médica quando indicada e acompanhamento contínuo com suporte oficial da Me Joy.
+              Triagem online, avaliação médica quando indicada e acompanhamento contínuo com suporte oficial da MeJoy.
             </p>
           </div>
           <div>

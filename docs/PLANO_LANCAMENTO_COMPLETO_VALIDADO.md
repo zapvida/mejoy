@@ -1,4 +1,4 @@
-# Plano Completo — Lançamento Me Joy | Melhor E-commerce de Farmácia de Manipulação do Brasil
+# Plano Completo — Lançamento MeJoy | Melhor E-commerce de Farmácia de Manipulação do Brasil
 
 **Objetivo:** Lançamento contínuo, estável e validado — front e backend funcionando, alta conversão, início das vendas garantido.
 

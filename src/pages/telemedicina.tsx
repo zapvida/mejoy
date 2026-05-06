@@ -6,14 +6,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FiArrowLeft, FiVideo, FiShield, FiFileText, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 export default function TelemedicinaPage() {
   return (
     <>
       <Head>
-        <title>Telemedicina | Me Joy</title>
-        <meta name="description" content="Informações sobre atendimentos por Telemedicina no Me Joy, conforme normas vigentes." />
+        <title>Telemedicina | MeJoy</title>
+        <meta name="description" content="Informações sobre atendimentos por Telemedicina no MeJoy, conforme normas vigentes." />
       </Head>
 
       <main className="min-h-screen bg-gradient-to-br from-[#000000] via-[#000000] to-[#000000] text-white">
@@ -25,7 +25,7 @@ export default function TelemedicinaPage() {
           className="bg-black/20 backdrop-blur-md border-b border-white/10 py-4"
         >
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <Logo size="small" />
+            <LogoWithName size="small" variant="inverse" />
             <Link href="/" className="inline-flex items-center text-brand hover:text-brand/80 transition-colors">
               <FiArrowLeft className="mr-2" />
               <span className="hidden sm:inline">Voltar ao início</span>
@@ -54,7 +54,7 @@ export default function TelemedicinaPage() {
                   Conformidade Legal
                 </h2>
                 <p className="text-white/80 leading-relaxed text-sm sm:text-base">
-                  O Me Joy realiza atendimentos por Telemedicina em conformidade com a Resolução CFM nº 2.227/2018, que regulamenta a telemedicina no Brasil, e demais normas vigentes do Conselho Federal de Medicina (CFM) e da Agência Nacional de Vigilância Sanitária (ANVISA).
+                  O MeJoy realiza atendimentos por Telemedicina em conformidade com a Resolução CFM nº 2.227/2018, que regulamenta a telemedicina no Brasil, e demais normas vigentes do Conselho Federal de Medicina (CFM) e da Agência Nacional de Vigilância Sanitária (ANVISA).
                 </p>
               </section>
 
@@ -220,4 +220,3 @@ export default function TelemedicinaPage() {
     </>
   );
 }
-

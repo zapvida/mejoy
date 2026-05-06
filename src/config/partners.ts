@@ -1,5 +1,5 @@
 // src/config/partners.ts
-// Configuração centralizada dos parceiros Me Joy e ZapVida
+// Configuração centralizada dos parceiros MeJoy e ZapVida
 
 import { getOrCreateJourneyContext } from '@/lib/analytics/journey';
 import { getUtms } from '@/lib/utm';
@@ -30,7 +30,7 @@ const PARTNER_BASE_URLS = {
 export const PARTNERS: Record<string, PartnerConfig> = {
   zapfarm: {
     id: 'zapfarm',
-    name: 'Me Joy',
+    name: 'MeJoy',
     url: PARTNER_BASE_URLS.zapfarm,
     utmParams: {
       utm_source: 'mejoy',
@@ -121,8 +121,8 @@ export function getPartnerLabel(partnerId: string, context: string): string {
   
   const labels: Record<string, Record<string, string>> = {
     zapfarm: {
-      landing: 'Conhecer o Me Joy',
-      triage_start: 'Continuar com o Me Joy',
+      landing: 'Conhecer o MeJoy',
+      triage_start: 'Continuar com o MeJoy',
       triage_done: 'Ver protocolos digestivos',
       gi_report: 'Soluções para saúde GI',
     },

@@ -7,8 +7,8 @@ export default function FAQ() {
   return (
     <>
       <Head>
-        <title>Perguntas Frequentes | Me Joy</title>
-        <meta name="description" content="Tire suas dúvidas sobre o Me Joy - Perguntas frequentes sobre nossa plataforma de saúde." />
+        <title>Perguntas Frequentes | MeJoy</title>
+        <meta name="description" content="Tire suas dúvidas sobre o MeJoy - Perguntas frequentes sobre nossa plataforma de saúde." />
       </Head>
       <main className="min-h-screen bg-black text-white py-16 px-4 sm:px-6 lg:px-8">
         <Navbar />
@@ -18,7 +18,7 @@ export default function FAQ() {
           <div className="space-y-8">
             {/* 1 */}
             <section aria-labelledby="faq1" className="bg-background/50 p-6 rounded-xl border border-border">
-              <h2 id="faq1" className="text-2xl font-bold mb-4 text-white">🩺 O que é o Me Joy?</h2>
+              <h2 id="faq1" className="text-2xl font-bold mb-4 text-white">🩺 O que é o MeJoy?</h2>
               <p className="text-muted-foreground">
                 Somos uma plataforma de saúde preditiva que utiliza inteligência artificial, medicina de precisão e dados científicos para gerar diagnósticos preditivos, relatórios inteligentes e planos de longevidade. Tudo 100% online, rápido e seguro.
               </p>
@@ -26,9 +26,9 @@ export default function FAQ() {
 
             {/* 2 */}
             <section aria-labelledby="faq2" className="bg-background/50 p-6 rounded-xl border border-border">
-              <h2 id="faq2" className="text-2xl font-bold mb-4 text-white">📄 O Me Joy substitui consultas médicas presenciais?</h2>
+              <h2 id="faq2" className="text-2xl font-bold mb-4 text-white">📄 O MeJoy substitui consultas médicas presenciais?</h2>
               <p className="text-muted-foreground">
-                Não. O Me Joy oferece triagens inteligentes e relatórios preditivos que auxiliam na prevenção e no monitoramento da saúde. As consultas médicas online complementam seu cuidado, mas não substituem atendimentos presenciais quando necessários.
+                Não. O MeJoy oferece triagens inteligentes e relatórios preditivos que auxiliam na prevenção e no monitoramento da saúde. As consultas médicas online complementam seu cuidado, mas não substituem atendimentos presenciais quando necessários.
               </p>
             </section>
 
@@ -74,9 +74,9 @@ export default function FAQ() {
 
             {/* 8 */}
             <section aria-labelledby="faq8" className="bg-background/50 p-6 rounded-xl border border-border">
-              <h2 id="faq8" className="text-2xl font-bold mb-4 text-white">👨‍⚕️ Quem são os médicos do Me Joy?</h2>
+              <h2 id="faq8" className="text-2xl font-bold mb-4 text-white">👨‍⚕️ Quem são os médicos do MeJoy?</h2>
               <p className="text-muted-foreground">
-                Todos os médicos do Me Joy são profissionais registrados, experientes em saúde integrativa, preventiva, preditiva e longevidade. Você fala diretamente com eles dentro do seu plano contratado.
+                Todos os médicos do MeJoy são profissionais registrados, experientes em saúde integrativa, preventiva, preditiva e longevidade. Você fala diretamente com eles dentro do seu plano contratado.
               </p>
             </section>
 

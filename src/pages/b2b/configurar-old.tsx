@@ -124,7 +124,7 @@ export default function B2BConfigurar() {
   return (
     <>
       <Head>
-        <title>Personalizar sua marca | Me Joy</title>
+        <title>Personalizar sua marca | MeJoy</title>
         <meta name="description" content="Configure logo, cores e CTAs para sua clínica. Preview em tempo real." />
       </Head>
       <main className="min-h-screen bg-muted">

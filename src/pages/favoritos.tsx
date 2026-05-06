@@ -10,7 +10,7 @@ export default function FavoritosPage() {
 
   return (
     <>
-      <Seo title="Favoritos | Me Joy" description="Seus produtos favoritos" path="/favoritos" />
+      <Seo title="Favoritos | MeJoy" description="Seus produtos favoritos" path="/favoritos" />
       <StorefrontHeader />
       <main className="min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

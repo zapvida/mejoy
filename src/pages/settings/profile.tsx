@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
 
 const ProfileSettingsPage = () => {
@@ -37,7 +38,7 @@ const ProfileSettingsPage = () => {
 
   useEffect(() => {
     trackEvent('page_view', {
-      page_title: 'Profile Settings - Me Joy Plus',
+      page_title: 'Profile Settings - MeJoy Plus',
       page_location: window.location.href
     });
 
@@ -114,9 +115,9 @@ const ProfileSettingsPage = () => {
   return (
     <>
       <Head>
-        <title>Configurações do Perfil - Me Joy Plus</title>
+        <title>Configurações do Perfil - MeJoy Plus</title>
         <meta name="description" content="Gerencie suas informações pessoais e configurações de privacidade." />
-        <meta property="og:title" content="Configurações do Perfil - Me Joy Plus" />
+        <meta property="og:title" content="Configurações do Perfil - MeJoy Plus" />
         <meta property="og:description" content="Gerencie suas informações pessoais e configurações de privacidade." />
         <link rel="canonical" href="https://zapfarm.com.br/settings/profile" />
       </Head>
@@ -133,8 +134,8 @@ const ProfileSettingsPage = () => {
                 >
                   <ArrowLeftIcon className="h-6 w-6" />
                 </button>
-                <img src="/logosmejoy/logomejoy.png" alt="Me Joy Farma" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">Me Joy Plus</span>
+                <LogoWithName size="small" variant="inverse" priority />
+                <span className="text-xl font-bold text-white">MeJoy Plus</span>
               </div>
               <button
                 onClick={() => router.push('/dashboard')}

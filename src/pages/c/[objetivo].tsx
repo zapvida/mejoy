@@ -20,7 +20,7 @@ export default function CategoryPage({ products, objetivo, objectiveName }: Prop
   return (
     <>
       <Seo
-        title={`${objectiveName} | Me Joy`}
+        title={`${objectiveName} | MeJoy`}
         description={`Fórmulas manipuladas para ${objectiveName}. Curadoria médica e entrega em todo Brasil.`}
         path={`/c/${objetivo}`}
       />

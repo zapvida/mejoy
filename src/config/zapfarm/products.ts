@@ -303,7 +303,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Emagreça com Segurança: MetaboSlim com Tirzepatida | Me Joy',
+      title: 'Emagreça com Segurança: MetaboSlim com Tirzepatida | MeJoy',
       description: 'Programa de emagrecimento com avaliacao medica, estrategias modernas quando indicadas, acompanhamento continuo e suporte oficial. Entenda sua elegibilidade em poucos minutos.',
       keywords: ['emagrecer rápido', 'tirzepatida', 'perda de peso', 'emagrecimento médico', 'obesidade tratamento', 'endocrinologista online', 'emagrecer com segurança', 'metaboslim', 'protocolo emagrecimento'],
     },
@@ -481,7 +481,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Pare a Queda de Cabelo Agora: CapilMax com Minoxidil | Me Joy',
+      title: 'Pare a Queda de Cabelo Agora: CapilMax com Minoxidil | MeJoy',
       description: 'Recupere seus fios com CapilMax. Tratamento médico para calvície com minoxidil, suplementação personalizada e acompanhamento tricologista. Resultados em 3-6 meses. Check-up gratuito.',
       keywords: ['queda de cabelo', 'calvície tratamento', 'minoxidil', 'alopecia', 'cabelo crescer', 'tricologista online', 'calvície masculina', 'calvície feminina', 'capilmax'],
     },
@@ -655,7 +655,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Durma Bem Todas as Noites: SonoZen para Insônia | Me Joy',
+      title: 'Durma Bem Todas as Noites: SonoZen para Insônia | MeJoy',
       description: 'Acabe com a insônia em 2 semanas. SonoZen com melatonina e fitoterápicos, acompanhamento médico especializado e plano de higiene do sono. Durma 8h por noite. Check-up gratuito.',
       keywords: ['insônia', 'dormir melhor', 'melatonina', 'distúrbio do sono', 'sono reparador', 'neurologista online', 'sonozen', 'tratamento insônia', 'dormir rápido'],
     },
@@ -829,7 +829,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Controle sua Ansiedade Naturalmente: ZenDay Fitoterápico | Me Joy',
+      title: 'Controle sua Ansiedade Naturalmente: ZenDay Fitoterápico | MeJoy',
       description: 'Reduza ansiedade e estresse em 4 semanas. ZenDay com fitoterápicos comprovados, acompanhamento psiquiátrico e técnicas práticas. Sem dependência. Check-up gratuito.',
       keywords: ['ansiedade', 'controlar ansiedade', 'estresse', 'fitoterápicos ansiedade', 'psiquiatra online', 'ansiolítico natural', 'zenday', 'tratamento ansiedade', 'ansiedade tratamento natural'],
     },
@@ -1003,7 +1003,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Regule seu Intestino: FloraBalance Probióticos + Fibras | Me Joy',
+      title: 'Regule seu Intestino: FloraBalance Probióticos + Fibras | MeJoy',
       description: 'Acabe com constipação e inchaço em 2-4 semanas. FloraBalance com probióticos de alta qualidade, fibras personalizadas e acompanhamento gastroenterologista. Intestino regulado. Check-up gratuito.',
       keywords: ['intestino preso', 'constipação', 'probióticos', 'microbiota', 'inchaço abdominal', 'gastroenterologista online', 'florabalance', 'intestino regulado', 'probióticos manipulado'],
     },
@@ -1177,7 +1177,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Cuide do seu Fígado: HepaDetox para Fígado Gorduroso | Me Joy',
+      title: 'Cuide do seu Fígado: HepaDetox para Fígado Gorduroso | MeJoy',
       description: 'Recupere a saúde do seu fígado em 3-6 meses. HepaDetox com silimarina e alcachofra, acompanhamento hepatologista e plano nutricional. Reduza esteatose hepática. Check-up gratuito.',
       keywords: ['fígado gorduroso', 'esteatose hepática', 'silimarina', 'detox fígado', 'hepatologista online', 'hepadetox', 'fígado saudável', 'sobrecarga hepática', 'tratamento fígado'],
     },
@@ -1351,7 +1351,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Recupere sua Libido e Energia: VigorMax Testosterona | Me Joy',
+      title: 'Recupere sua Libido e Energia: VigorMax Testosterona | MeJoy',
       description: 'Aumente libido e energia em 3-4 semanas. VigorMax com suplementos para testosterona, acompanhamento urologista/endocrinologista e exames hormonais. Recupere sua vitalidade. Check-up gratuito.',
       keywords: ['libido masculina', 'testosterona baixa', 'energia masculina', 'disposição', 'urologista online', 'vigormax', 'libido tratamento', 'testosterona natural', 'saúde masculina'],
     },
@@ -1525,7 +1525,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Alivie Menopausa e TPM: FemBalance 360 Fitormônios | Me Joy',
+      title: 'Alivie Menopausa e TPM: FemBalance 360 Fitormônios | MeJoy',
       description: 'Reduza fogachos, insônia e alterações de humor em 4-6 semanas. FemBalance 360 com fitormônios naturais, acompanhamento ginecologista e exames hormonais. Menopausa sem sofrimento. Check-up gratuito.',
       keywords: ['menopausa', 'TPM', 'fogachos', 'fitormônios', 'ginecologista online', 'fembalance', 'sintomas menopausa', 'menopausa tratamento', 'isoflavonas'],
     },
@@ -1699,7 +1699,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Reduza Dores Articulares: ArticFlex Colágeno Tipo II | Me Joy',
+      title: 'Reduza Dores Articulares: ArticFlex Colágeno Tipo II | MeJoy',
       description: 'Diminua dores nas articulações e coluna em 4-6 semanas. ArticFlex com colágeno tipo II, anti-inflamatórios naturais e acompanhamento ortopedista. Melhore sua mobilidade. Check-up gratuito.',
       keywords: ['dor articular', 'artrose', 'colágeno', 'dor nas articulações', 'ortopedista online', 'articflex', 'dor coluna', 'mobilidade', 'articulações saudáveis'],
     },
@@ -1873,7 +1873,7 @@ export const ZAPFARM_PRODUCTS: Record<string, ZapfarmProductConfig> = {
     },
     
     seo: {
-      title: 'Fortalça sua Imunidade: Imuno360 Vitaminas + Probióticos | Me Joy',
+      title: 'Fortalça sua Imunidade: Imuno360 Vitaminas + Probióticos | MeJoy',
       description: 'Reduza gripes e infecções recorrentes em 4-6 semanas. Imuno360 com vitamina C, D, Zinco e probióticos, acompanhamento imunologista e exames. Sistema imune fortalecido. Check-up gratuito.',
       keywords: ['imunidade baixa', 'gripes recorrentes', 'vitamina D', 'probióticos imunidade', 'imunologista online', 'imuno360', 'fortalecer imunidade', 'infecções recorrentes', 'sistema imune'],
     },

@@ -18,7 +18,7 @@ O workflow cria um commit com o email autorizado quando você faz push com outro
 | `VERCEL_DEPLOY_HOOK` | `https://api.vercel.com/v1/integrations/deploy/prj_HxEANEHVT9ixnoCJp43uZKAMHgST/OZ657hY5nr` |
 | `DEPLOYER_EMAIL` | Email de quem **já tem acesso** ao time Vercel (monjoy-mejoy) |
 
-3. (Opcional) `DEPLOYER_NAME` – nome para o commit (ex: `Me Joy Deploy`). Se não definir, usa `Deploy Bot`.
+3. (Opcional) `DEPLOYER_NAME` – nome para o commit (ex: `MeJoy Deploy`). Se não definir, usa `Deploy Bot`.
 
 ### 2. Descobrir o DEPLOYER_EMAIL
 

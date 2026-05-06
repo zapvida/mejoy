@@ -1,6 +1,6 @@
-# MISSÃO: Checkout Me Joy — Layout Zapvida + UX de Alta Conversão
+# MISSÃO: Checkout MeJoy — Layout Zapvida + UX de Alta Conversão
 
-Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao) e implemente as práticas de UX abaixo para reduzir fricção, minimizar cliques e maximizar conversão.
+Alinhe o checkout do MeJoy ao layout visual do Zapvida (zapvida.com/pay/plantao) e implemente as práticas de UX abaixo para reduzir fricção, minimizar cliques e maximizar conversão.
 
 ---
 
@@ -23,7 +23,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 ## PARTE 2 — LAYOUT VISUAL (IDÊNTICO AO ZAPVIDA)
 
 ### Header
-- Logo Me Joy à esquerda (link para home).
+- Logo MeJoy à esquerda (link para home).
 - À direita: ícone de cadeado + "Ambiente seguro".
 - Sticky top-0, fundo branco com backdrop-blur.
 
@@ -114,7 +114,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 
 ---
 
-## PARTE 6 — ARQUIVOS ME JOY (CONTEXTO)
+## PARTE 6 — ARQUIVOS MEJOY (CONTEXTO)
 
 ### Modificar
 - src/pages/checkout/index.tsx — página principal
@@ -129,7 +129,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 - src/components/store-v2/checkout/AddressForm.tsx (com ViaCEP)
 - src/components/store-v2/checkout/PaymentForm.tsx (PIX + Cartão)
 
-### Referência Zapvida (estrutura visual, adaptar ao Me Joy)
+### Referência Zapvida (estrutura visual, adaptar ao MeJoy)
 - checkout-header.tsx, checkout-steps.tsx, atendimento-rapido-banner.tsx
 - customer-form.tsx, payment-form.tsx, checkout-footer.tsx, checkout-summary-card.tsx
 

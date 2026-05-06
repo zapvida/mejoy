@@ -1,4 +1,4 @@
-# Relatório Executivo — Lançamento Oficial Me Joy
+# Relatório Executivo — Lançamento Oficial MeJoy
 
 > **Data:** 2026-03-07  
 > **Status:** Código pronto. Execução manual conforme roteiro.

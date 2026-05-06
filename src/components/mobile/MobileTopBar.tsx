@@ -3,7 +3,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-import Logo from "@/components/ui/Logo";
+import LogoWithName from "@/components/ui/LogoWithName";
 import { useHapticFeedback, useDeviceCapabilities } from "@/hooks/useHapticFeedback";
 import { trackMobileMenuOpen } from "@/lib/analytics/nav";
 import { BRAND_NAME, resolveRoute } from "@/lib/nav/routes";
@@ -74,13 +74,15 @@ export default function MobileTopBar({ onOpenMenu, title }: MobileTopBarProps) {
         <div className="flex items-center justify-between px-4 h-16">
           <Link 
             href="/" 
-            className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-black rounded-lg" 
+            className="flex min-w-0 items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-black"
             aria-label={`${BRAND_NAME} - Início`}
           >
-            <div className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">
-              <Logo size="small" className="w-6 h-6" />
-            </div>
-            <span className="text-white font-semibold text-lg">{title || BRAND_NAME}</span>
+            <LogoWithName size="small" variant="inverse" className="shrink-0" />
+            {title && title !== BRAND_NAME ? (
+              <span className="min-w-0 truncate rounded-full border border-white/12 bg-white/8 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/82">
+                {title}
+              </span>
+            ) : null}
           </Link>
           
           <button
@@ -139,8 +141,8 @@ export default function MobileTopBar({ onOpenMenu, title }: MobileTopBarProps) {
 
             {/* Footer */}
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-              <div className="text-center text-white/50 text-sm">
-                Me Joy
+              <div className="flex justify-center">
+                <LogoWithName size="small" variant="inverse" className="opacity-80" />
               </div>
             </div>
           </div>

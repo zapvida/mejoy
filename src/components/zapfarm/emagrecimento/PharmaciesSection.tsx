@@ -37,7 +37,7 @@ export function PharmaciesSection() {
             className="mb-8 bg-white border-yellow-200"
           >
             <p className="text-base sm:text-lg text-foreground leading-relaxed text-center">
-              <strong>A Me Joy não é uma farmácia.</strong> As consultas são realizadas por clínicas e profissionais parceiros, e os medicamentos, quando prescritos, são dispensados por farmácias com CNPJ regular e responsável técnico (CRF) registrado, seguindo normas da ANVISA.
+              <strong>A MeJoy não é uma farmácia.</strong> As consultas são realizadas por clínicas e profissionais parceiros, e os medicamentos, quando prescritos, são dispensados por farmácias com CNPJ regular e responsável técnico (CRF) registrado, seguindo normas da ANVISA.
             </p>
             <p className="mt-3 text-center text-xs sm:text-sm text-muted-foreground">
               Lista representativa de parceiros operacionais. A farmácia efetiva pode variar conforme região e disponibilidade.

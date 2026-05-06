@@ -1,4 +1,4 @@
-# Passos Manuais — Lançamento Checkout Me Joy
+# Passos Manuais — Lançamento Checkout MeJoy
 
 **Data:** 05/03/2025  
 **Contexto:** Checkout refatorado (layout Zapvida, PIX + Cartão, validação robusta) — você ainda não executou nada manualmente.

@@ -16,7 +16,7 @@ const proofCards = [
   {
     icon: UserGroupIcon,
     title: 'Suporte oficial',
-    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da Me Joy.',
+    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da MeJoy.',
   },
 ] as const;
 
@@ -36,7 +36,7 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Por que a Me Joy aumenta sua chance de seguir
+              Por que a MeJoy aumenta sua chance de seguir
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
               O programa reduz a parte mais difícil: começar sem direção. Você ganha contexto clínico, plano organizado

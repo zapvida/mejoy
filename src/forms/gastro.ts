@@ -280,7 +280,7 @@ export const gastro: TForm = {
           ref: 'Recomendações práticas de uso',
           options: [
             { value: 'nao', label: 'Não' },
-            { value: 'zapfarm', label: 'Sim, uso ou já usei Me Joy' },
+            { value: 'zapfarm', label: 'Sim, uso ou já usei MeJoy' },
             { value: 'outro', label: 'Sim, outro' },
           ],
         },
@@ -441,7 +441,7 @@ export const gastro: TForm = {
         // NOVO CTA penúltimo (curto, simpático)
         {
           id: 'cta_zapfarm',
-          label: 'Você já conhece o Me Joy (suplemento para conforto intestinal)?',
+          label: 'Você já conhece o MeJoy (suplemento para conforto intestinal)?',
           type: 'radio',
           saveAs: 'cta_alloezil',
           why: 'Se já usa, evitamos repetir orientação; se não, mostramos opções.',

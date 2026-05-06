@@ -1,5 +1,5 @@
 /**
- * Sistema de envio de emails da Me Joy
+ * Sistema de envio de emails da MeJoy
  * 
  * Usa Resend como provedor de email transacional.
  * 
@@ -34,7 +34,7 @@ export async function sendTriageCompletedEmail(
 
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Triagem recebida - Me Joy',
+    subject: 'Triagem recebida - MeJoy',
     template: 'triage-completed',
     data: {
       ...data,
@@ -59,7 +59,7 @@ export async function sendReportReadyEmail(
 
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Seu relatório Me Joy está pronto 📄',
+    subject: 'Seu relatório MeJoy está pronto 📄',
     template: 'report-ready',
     data: {
       ...data,
@@ -91,7 +91,7 @@ export async function sendPaymentConfirmedEmail(
 
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Pagamento confirmado - Me Joy ✅',
+    subject: 'Pagamento confirmado - MeJoy ✅',
     template: 'payment-confirmed',
     data: {
       ...data,
@@ -112,7 +112,7 @@ export async function sendWelcomeEmail(email: string, data: { name?: string; fir
 
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Bem-vindo(a) à Me Joy! 🎉',
+    subject: 'Bem-vindo(a) à MeJoy! 🎉',
     template: 'welcome',
     data: {
       ...data,
@@ -228,7 +228,7 @@ export async function sendStoreV2OrderConfirmedEmail(
 
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Compra confirmada! ✅ Me Joy',
+    subject: 'Compra confirmada! ✅ MeJoy',
     template: 'store-v2-order-confirmed',
     data: {
       ...data,
@@ -248,7 +248,7 @@ export async function sendStoreV2OrderShippedEmail(
   if (!email || !email.includes('@')) return { success: false, error: 'Email inválido' };
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Seu pedido foi enviado! 🚚 Me Joy',
+    subject: 'Seu pedido foi enviado! 🚚 MeJoy',
     template: 'store-v2-order-shipped',
     data: {
       ...data,
@@ -268,7 +268,7 @@ export async function sendStoreV2OrderDeliveredEmail(
   if (!email || !email.includes('@')) return { success: false, error: 'Email inválido' };
   return sendEmail({
     to: email.trim().toLowerCase(),
-    subject: 'Pedido entregue! 🏠 Me Joy',
+    subject: 'Pedido entregue! 🏠 MeJoy',
     template: 'store-v2-order-delivered',
     data: {
       ...data,

@@ -15,7 +15,7 @@ export function EmagrecimentoLegalDisclaimerSection() {
             Informações importantes sobre o programa
           </h2>
           <p className="text-gray-700 leading-relaxed">
-            A Me Joy não substitui atendimento presencial quando ele for necessário. A triagem organiza informações,
+            A MeJoy não substitui atendimento presencial quando ele for necessário. A triagem organiza informações,
             mas não cria, por si só, vínculo médico-paciente; prescrição e conduta clínica são responsabilidade do
             profissional habilitado que avaliar o caso. Medicamentos para obesidade só são utilizados quando indicados
             e prescritos, com dispensação em canais regulares e acompanhamento conforme normas aplicáveis.

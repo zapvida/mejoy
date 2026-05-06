@@ -9,7 +9,7 @@ BASE_URL="${BASE_URL:-https://www.mejoy.com.br}"
 curl_check() { curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 --max-time 10 "$@"; }
 
 echo "============================================"
-echo "  GO-LIVE CHECK — Me Joy Store V2"
+echo "  GO-LIVE CHECK — MeJoy Store V2"
 echo "  URL: $BASE_URL | $(date)"
 echo "============================================"
 echo ""

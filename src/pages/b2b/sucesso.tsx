@@ -47,7 +47,7 @@ export default function SucessoPage() {
   return (
     <>
       <Head>
-        <title>Sucesso! | Me Joy</title>
+        <title>Sucesso! | MeJoy</title>
         <meta name="description" content="Sua conta foi criada com sucesso. Comece a usar agora!" />
       </Head>
 

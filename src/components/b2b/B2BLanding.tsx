@@ -31,7 +31,7 @@ export default function B2BLanding() {
         />
         <meta
           property="og:description"
-          content="Sua clínica com IA em minutos: logo, domínio, CTAs, relatórios e notificações. Me Joy e ZapVida já utilizam."
+          content="Sua clínica com IA em minutos: logo, domínio, CTAs, relatórios e notificações. MeJoy e ZapVida já utilizam."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://zapfarm.com" />

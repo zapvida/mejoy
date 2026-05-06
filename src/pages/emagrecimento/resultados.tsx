@@ -11,7 +11,7 @@ export default function ResultadosPage() {
   return (
     <>
       <Head>
-        <title>Resultados reais de emagrecimento | Depoimentos e estatísticas | Me Joy</title>
+        <title>Resultados reais de emagrecimento | Depoimentos e estatísticas | MeJoy</title>
         <meta
           name="description"
           content="Pessoas reais, resultados reais – com segurança. Centenas de pessoas já transformaram sua saúde com o programa de emagrecimento. Depoimentos verificados e estatísticas baseadas em dados."

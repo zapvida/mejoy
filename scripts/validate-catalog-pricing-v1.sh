@@ -31,7 +31,7 @@ echo "🔍 Gerando SQL (valida CSV)..."
 if pnpm catalog:pricing:sql 2>/dev/null; then
   echo "✅ CSV/SQL OK"
 else
-  echo "❌ Falha ao gerar SQL. Verifique: priceCents, Moonjoy, compliance."
+  echo "❌ Falha ao gerar SQL. Verifique: priceCents, MeJoy, compliance."
   FAILED=1
 fi
 echo ""
@@ -81,7 +81,7 @@ if [ -n "$BASE_URL" ]; then
       PRICE_99_FAIL=$((PRICE_99_FAIL + 1))
     fi
     if echo "$HTML" | grep -qi "moonjoy"; then
-      echo "   ⚠️  PDP $SLUG: Moonjoy no HTML"
+      echo "   ⚠️  PDP $SLUG: MeJoy no HTML"
       MOONJOY_FAIL=$((MOONJOY_FAIL + 1))
     fi
   done
@@ -101,10 +101,10 @@ if [ -n "$BASE_URL" ]; then
     echo "✅ Preços variados (não R$ 99)"
   fi
   if [ $MOONJOY_FAIL -gt 0 ]; then
-    echo "❌ Moonjoy encontrado em $MOONJOY_FAIL PDP(s)"
+    echo "❌ MeJoy encontrado em $MOONJOY_FAIL PDP(s)"
     FAILED=1
   else
-    echo "✅ Sem Moonjoy no HTML"
+    echo "✅ Sem MeJoy no HTML"
   fi
 else
   echo "⚠️  BASE_URL não definido — pulando validação em produção"

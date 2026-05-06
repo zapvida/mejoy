@@ -21,11 +21,11 @@ type Store = {
 };
 
 const defaultData: BrandingDraft = {
-  logoUrl: "/logosmejoy/logomejoy.png",
+  logoUrl: "/logosmejoy/logomejoy.svg",
   logoFile: null,
   primary: "#10b981",
   secondary: "#34d399",
-  fantasyName: "Me Joy",
+  fantasyName: "MeJoy",
   ctaText: "Falar com médico",
   ctaUrl: "https://wa.me/5511999999999",
   whatsapp: "",
@@ -51,4 +51,3 @@ export const useBranding = create<Store>()(
     }
   )
 );
-

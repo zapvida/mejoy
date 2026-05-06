@@ -7,7 +7,7 @@ Atualização de preços e conteúdo do catálogo Store V2 via CSV → SQL UPDAT
 ## 1. Visão geral
 
 - **Objetivo:** Substituir preço único (R$ 99) e textos genéricos por preços variados e conteúdo individualizado.
-- **Marca:** Sempre "Me Joy" (nunca "Moonjoy").
+- **Marca:** Sempre "MeJoy" (nunca "MeJoy").
 - **Compliance:** Sem alegações de cura/tratamento.
 - **Reversível:** SQL de rollback disponível.
 
@@ -166,9 +166,9 @@ Isso restaura todos os preços para R$ 99 e textos genéricos.
 | priceCents     | Sim         | Preço de venda. Ex: 6590 (R$ 65,90). Terminar em 90 quando possível. |
 | nome           | Não         | Nome do produto/componente + mg (ex: 5-HTP 50 mg). Exibido para leitura. |
 | compareAtCents | Não         | Preço "de" (riscado). Ex: 12900. Deixe vazio se não usar desconto. |
-| shortBenefit   | Sim         | 1 frase. Sem Moonjoy.                          |
+| shortBenefit   | Sim         | 1 frase. Sem MeJoy.                          |
 | description    | Sim         | 5–8 linhas. Sem alegações médicas.             |
-| seoTitle       | Sim         | `{Nome} \| Me Joy`                             |
+| seoTitle       | Sim         | `{Nome} \| MeJoy`                             |
 | seoDescription | Sim         | Até ~155 caracteres                            |
 
 ---
@@ -195,8 +195,8 @@ Isso restaura todos os preços para R$ 99 e textos genéricos.
 
 ## 8. Troubleshooting (referência)
 
-**"Moonjoy" ainda aparece**
-- Verifique o CSV: nenhum campo pode conter Moonjoy
+**"MeJoy" ainda aparece**
+- Verifique o CSV: nenhum campo pode conter MeJoy
 - Rode `pnpm catalog:pricing:sql` novamente (ele sanitiza)
 
 **Todos os preços iguais**

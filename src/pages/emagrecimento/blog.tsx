@@ -7,7 +7,7 @@ export default function BlogPage() {
   return (
     <>
       <Head>
-        <title>Blog de emagrecimento | Guias e dicas com ciência | Me Joy</title>
+        <title>Blog de emagrecimento | Guias e dicas com ciência | MeJoy</title>
         <meta
           name="description"
           content="Guias e dicas sobre emagrecimento com ciência e bom senso. Conteúdo educativo baseado em evidências científicas, escrito por especialistas. Não substitui consulta médica."

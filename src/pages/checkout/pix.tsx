@@ -56,7 +56,7 @@ export default function PixCheckoutPage() {
   return (
     <>
       <Head>
-        <title>Pagamento PIX - Me Joy</title>
+        <title>Pagamento PIX - MeJoy</title>
         <meta name="description" content="Complete seu pagamento via PIX" />
       </Head>
 

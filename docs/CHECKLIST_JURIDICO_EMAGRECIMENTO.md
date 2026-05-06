@@ -17,7 +17,7 @@ Este checklist é um **esqueleto inicial** para orientar a validação jurídica
 
 ### **Registro e Credenciamento**
 - [ ] **TODO:** Validar com jurídico se todos os médicos têm CRM ativo na jurisdição do paciente
-- [ ] **TODO:** Verificar necessidade de registro CNES da clínica Me Joy
+- [ ] **TODO:** Verificar necessidade de registro CNES da clínica MeJoy
 - [ ] **TODO:** Validar se há necessidade de credenciamento específico por estado
 
 ### **Prontuário Eletrônico**

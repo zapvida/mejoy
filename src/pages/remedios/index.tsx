@@ -22,7 +22,7 @@ import { faqJsonLd, orgJsonLd, websiteJsonLd, SITE } from '@/lib/seo';
 // FAQ adaptado para e-commerce
 const faqData = [
   {
-    q: 'O que exatamente estou comprando na Me Joy?',
+    q: 'O que exatamente estou comprando na MeJoy?',
     a: 'Você está comprando protocolos de saúde prontos, formados por combinações de produtos pensados para um objetivo específico (como emagrecimento, sono, intestino, imunidade, cabelos, etc.). Em cada página explicamos o que inclui, como usar e quais são os cuidados.',
   },
   {
@@ -70,7 +70,7 @@ export default function RemediosPage() {
   return (
     <>
       <Seo
-        title="Protocolos de Saúde com Curadoria Médica | Emagrecimento, Sono, Cabelos e Mais | Me Joy"
+        title="Protocolos de Saúde com Curadoria Médica | Emagrecimento, Sono, Cabelos e Mais | MeJoy"
         description="Compre protocolos de saúde prontos com produtos manipulados e suplementos selecionados por médicos. Emagrecimento, sono, cabelos, intestino, fígado, imunidade, libido, menopausa, articulações e ansiedade. Entrega em todo Brasil. Check-up gratuito."
         path="/remedios"
         keywords={[
@@ -92,7 +92,7 @@ export default function RemediosPage() {
           {
             "@context": "https://schema.org",
             "@type": "OnlineStore",
-            "name": "Me Joy",
+            "name": "MeJoy",
             "description": "Protocolos de saúde prontos com produtos manipulados e suplementos selecionados por médicos especialistas. Tratamentos personalizados para emagrecimento, sono, cabelos, intestino, fígado, imunidade, libido, menopausa, articulações e ansiedade.",
             "url": `${process.env.NEXT_PUBLIC_BASE_URL || SITE.baseUrl}/remedios`,
             "applicationCategory": "HealthApplication",

@@ -10,7 +10,7 @@ interface ProductBenefitsSectionProps {
 export function ProductBenefitsSection({ 
   config, 
   colors,
-  title = 'Por que a Me Joy',
+  title = 'Por que a MeJoy',
   subtitle = 'Curadoria médica. Segurança. Resultados reais.'
 }: ProductBenefitsSectionProps) {
   // Se não tiver config, usar valores padrão (backward compatibility)

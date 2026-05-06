@@ -36,11 +36,11 @@ export default function LancamentoPage() {
   return (
     <>
       <Seo
-        title="MonJoy — Lançamento | 33 Fórmulas com Transparência Total"
-        description="MonJoy: 11 fluxos de saúde, 33 SKUs, curadoria médica. Transparência total em componentes, doses e custos. Página de apresentação para investidores."
+        title="MeJoy — Lançamento | 33 Fórmulas com Transparência Total"
+        description="MeJoy: 11 fluxos de saúde, 33 SKUs, curadoria médica. Transparência total em componentes, doses e custos. Página de apresentação para investidores."
         path="/lancamento"
         keywords={[
-          'MonJoy lançamento',
+          'MeJoy lançamento',
           '33 fórmulas',
           'investidores',
           'transparência',
@@ -56,7 +56,7 @@ export default function LancamentoPage() {
         data-lpac="lancamento"
         className="min-h-screen bg-bg pb-safe"
         role="main"
-        aria-label="Página de lançamento MonJoy"
+        aria-label="Página de lançamento MeJoy"
       >
         <Navbar />
 
@@ -81,7 +81,7 @@ export default function LancamentoPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-ink mb-6 leading-tight"
             >
-              MonJoy — 33 fórmulas com{' '}
+              MeJoy — 33 fórmulas com{' '}
               <span className="text-brand">transparência total</span>
             </motion.h1>
             <motion.p

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 export const Footer: React.FC = () => (
   <View style={styles.root}>
     <View style={styles.row}>
-      <Text>Me Joy • Laudo informativo (não substitui consulta presencial)</Text>
+      <Text>MeJoy • Laudo informativo (não substitui consulta presencial)</Text>
       <Text>www.zapfarm.com.br</Text>
     </View>
   </View>

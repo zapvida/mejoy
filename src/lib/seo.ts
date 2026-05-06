@@ -2,7 +2,7 @@
 type U = string | undefined;
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.mejoy.com.br';
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Me Joy';
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'MeJoy';
 
 export const SITE = {
   name: SITE_NAME,
@@ -20,6 +20,11 @@ export function buildCanonical(path: U) {
 
 export function buildTitle(title?: string) {
   if (!title) return SITE.defaultTitle;
+  const normalizedTitle = title.trim().toLowerCase();
+  const normalizedSiteName = SITE.name.trim().toLowerCase();
+  if (normalizedTitle.includes(normalizedSiteName)) {
+    return title;
+  }
   return `${title} · ${SITE.name}`;
 }
 

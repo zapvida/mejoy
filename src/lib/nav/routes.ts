@@ -1,6 +1,6 @@
 import { Home, ClipboardList, FileText, User, Package, CreditCard, Stethoscope, MessageCircle, Settings } from "lucide-react";
 
-export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? "Me Joy";
+export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME ?? "MeJoy";
 
 export type NavItem = {
   key: "dashboard" | "protocolos" | "relatorios" | "perfil" | "produtos" | "assinatura" | "plano-vida" | "chat" | "configuracoes";

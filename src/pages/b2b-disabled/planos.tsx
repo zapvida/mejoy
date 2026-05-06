@@ -59,7 +59,7 @@ export default function PlanosPage() {
   return (
     <>
       <Head>
-        <title>Planos | Me Joy</title>
+        <title>Planos | MeJoy</title>
         <meta name="description" content="Escolha o plano ideal e veja sua clínica crescer com IA." />
       </Head>
       <main className="min-h-screen bg-bg text-fg">
@@ -170,7 +170,7 @@ export default function PlanosPage() {
 <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-lg text-white">
   <div className="max-w-6xl mx-auto text-center">
     <h2 className="text-3xl font-bold mb-10">
-            O que sua clínica ganha com o Me Joy
+            O que sua clínica ganha com o MeJoy
     </h2>
     <div className="grid md:grid-cols-3 gap-8 text-left">
       <div className="bg-white/10 rounded-xl p-6 shadow-lg hover:scale-[1.02] transition">
@@ -204,14 +204,14 @@ export default function PlanosPage() {
     <div className="space-y-6">
       {[
         {
-          question: 'Como o Me Joy reduz o tempo das consultas?',
+          question: 'Como o MeJoy reduz o tempo das consultas?',
           answer:
             'Com nossa IA médica, você recebe um relatório pré-consulta com histórico, sintomas e riscos organizados. Assim, você inicia a consulta com clareza total, economizando até 30% do tempo por atendimento.',
         },
         {
           question: 'O que significa plano White Label?',
           answer:
-            'Significa que sua clínica poderá utilizar o Me Joy com sua própria marca, logo e domínio personalizado. Seus pacientes verão apenas sua identidade visual.',
+            'Significa que sua clínica poderá utilizar o MeJoy com sua própria marca, logo e domínio personalizado. Seus pacientes verão apenas sua identidade visual.',
         },
         {
           question: 'Preciso pagar taxa extra por paciente?',
@@ -231,7 +231,7 @@ export default function PlanosPage() {
         {
           question: 'Existe suporte humano disponível?',
           answer:
-            'Sim! Nosso time de suporte está disponível para tirar dúvidas técnicas e ajudar você na implantação do Me Joy em sua clínica. Planos White Label e Pro têm atendimento prioritário.',
+            'Sim! Nosso time de suporte está disponível para tirar dúvidas técnicas e ajudar você na implantação do MeJoy em sua clínica. Planos White Label e Pro têm atendimento prioritário.',
         },
       ].map((faq, i) => (
         <details
@@ -287,7 +287,7 @@ export default function PlanosPage() {
     
     {/* Marca */}
     <div>
-      <h3 className="text-xl font-bold mb-3 text-brand">Me Joy</h3>
+      <h3 className="text-xl font-bold mb-3 text-brand">MeJoy</h3>
       <p className="text-white/70">
         Inteligência Médica para clínicas modernas. Triagens automáticas, relatórios personalizados e experiência premium para seus pacientes.
       </p>
@@ -325,7 +325,7 @@ export default function PlanosPage() {
   </div>
 
   <div className="mt-10 text-center text-white/40 text-xs">
-    © {new Date().getFullYear()} Me Joy. Todos os direitos reservados.
+    © {new Date().getFullYear()} MeJoy. Todos os direitos reservados.
   </div>
 </footer>
 </main>

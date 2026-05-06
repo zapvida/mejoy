@@ -1,7 +1,7 @@
 # Store V2 — Inventário do Repositório (FASE 0)
 
 **Data:** 2026-02-28  
-**Projeto:** Me Joy / mejoy.com.br — E-commerce 1P Farmácia de Manipulação
+**Projeto:** MeJoy / mejoy.com.br — E-commerce 1P Farmácia de Manipulação
 
 ---
 

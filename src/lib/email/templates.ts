@@ -1,7 +1,7 @@
 import { EmailTemplate, EmailTemplateData } from './types';
 
 const BRAND_COLORS = {
-  primary: '#00D084', // Verde Me Joy
+  primary: '#00D084', // Verde MeJoy
   secondary: '#0A0A0A', // Preto
   text: '#333333',
   textLight: '#666666',
@@ -20,7 +20,7 @@ function getBaseTemplate(content: string, data: EmailTemplateData): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Me Joy</title>
+  <title>MeJoy</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5; line-height: 1.6;">
   <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f5f5f5;">
@@ -31,7 +31,7 @@ function getBaseTemplate(content: string, data: EmailTemplateData): string {
           <tr>
             <td style="background: linear-gradient(135deg, ${BRAND_COLORS.primary} 0%, #00B875 100%); padding: 30px 40px; text-align: center;">
               <h1 style="margin: 0; color: ${BRAND_COLORS.background}; font-size: 28px; font-weight: 700;">
-                Me Joy
+                MeJoy
               </h1>
             </td>
           </tr>
@@ -47,14 +47,14 @@ function getBaseTemplate(content: string, data: EmailTemplateData): string {
           <tr>
             <td style="padding: 30px 40px; background-color: #f9f9f9; border-top: 1px solid ${BRAND_COLORS.border};">
               <p style="margin: 0 0 10px 0; font-size: 12px; color: ${BRAND_COLORS.textLight}; text-align: center;">
-                Este é um email automático da Me Joy. Por favor, não responda diretamente.
+                Este é um email automático da MeJoy. Por favor, não responda diretamente.
               </p>
               <p style="margin: 0; font-size: 12px; color: ${BRAND_COLORS.textLight}; text-align: center;">
                 <a href="${unsubscribeUrl}" style="color: ${BRAND_COLORS.textLight}; text-decoration: underline;">Descadastrar</a> | 
                 <a href="${siteUrl}" style="color: ${BRAND_COLORS.primary}; text-decoration: none;">Visitar site</a>
               </p>
               <p style="margin: 20px 0 0 0; font-size: 11px; color: ${BRAND_COLORS.textLight}; text-align: center; line-height: 1.5;">
-                Me Joy - Saúde personalizada com inteligência artificial<br>
+                MeJoy - Saúde personalizada com inteligência artificial<br>
                 ${siteUrl}
               </p>
             </td>
@@ -145,14 +145,14 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
           Olá, ${firstName}!
         </p>
         <p style="margin: 0 0 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
-          Seu pagamento foi confirmado com sucesso! Bem-vindo(a) à Me Joy.
+          Seu pagamento foi confirmado com sucesso! Bem-vindo(a) à MeJoy.
         </p>
         <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 6px;">
           <p style="margin: 0 0 10px 0; font-size: 14px; color: ${BRAND_COLORS.text};">
             <strong>Detalhes do pedido:</strong>
           </p>
           <p style="margin: 5px 0; font-size: 14px; color: ${BRAND_COLORS.textLight};">
-            Produto: ${data.productName || 'Acesso Me Joy'}<br>
+            Produto: ${data.productName || 'Acesso MeJoy'}<br>
             Valor: R$ ${data.amount?.toFixed(2) || '0,00'}<br>
             ${data.orderId ? `Pedido: ${data.orderId}<br>` : ''}
             ${data.paymentMethod ? `Método: ${data.paymentMethod}` : ''}
@@ -163,19 +163,19 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
           Em instantes você receberá seu acesso e orientações personalizadas. Qualquer dúvida, estamos à disposição!
         </p>
       `, data);
-      text = `Olá ${firstName}!\n\nPagamento confirmado! Bem-vindo(a) à Me Joy.\n\nProduto: ${data.productName || 'Acesso Me Joy'}\nValor: R$ ${data.amount?.toFixed(2) || '0,00'}\n\nAcesse: ${siteUrl}/dashboard`;
+      text = `Olá ${firstName}!\n\nPagamento confirmado! Bem-vindo(a) à MeJoy.\n\nProduto: ${data.productName || 'Acesso MeJoy'}\nValor: R$ ${data.amount?.toFixed(2) || '0,00'}\n\nAcesse: ${siteUrl}/dashboard`;
       break;
 
     case 'welcome':
       html = getBaseTemplate(`
         <h2 style="margin: 0 0 20px 0; color: ${BRAND_COLORS.secondary}; font-size: 24px;">
-          Bem-vindo(a) à Me Joy! 🎉
+          Bem-vindo(a) à MeJoy! 🎉
         </h2>
         <p style="margin: 0 0 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
           Olá, ${firstName}!
         </p>
         <p style="margin: 0 0 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
-          Estamos muito felizes em tê-lo(a) conosco! A Me Joy utiliza inteligência artificial para oferecer análises personalizadas de saúde.
+          Estamos muito felizes em tê-lo(a) conosco! A MeJoy utiliza inteligência artificial para oferecer análises personalizadas de saúde.
         </p>
         <div style="margin: 20px 0;">
           <p style="margin: 0 0 10px 0; font-size: 16px; color: ${BRAND_COLORS.text}; font-weight: 600;">
@@ -190,7 +190,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
         </div>
         ${getButtonStyle(`${siteUrl}/dashboard`, 'Começar agora')}
       `, data);
-      text = `Bem-vindo(a) à Me Joy, ${firstName}!\n\nEstamos felizes em tê-lo(a) conosco. Acesse: ${siteUrl}/dashboard`;
+      text = `Bem-vindo(a) à MeJoy, ${firstName}!\n\nEstamos felizes em tê-lo(a) conosco. Acesse: ${siteUrl}/dashboard`;
       break;
 
     case 'gift-received':
@@ -202,7 +202,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
           Olá, ${firstName}!
         </p>
         <p style="margin: 0 0 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
-          Alguém especial presenteou você com acesso à Me Joy!
+          Alguém especial presenteou você com acesso à MeJoy!
         </p>
         ${data.giftMessage ? `
           <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 6px; border-left: 4px solid ${BRAND_COLORS.primary};">
@@ -218,7 +218,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
         ` : ''}
         ${getButtonStyle(`${siteUrl}/redeem?code=${data.giftCode || ''}`, 'Resgatar presente')}
       `, data);
-      text = `Olá ${firstName}!\n\nVocê recebeu um presente da Me Joy!\n\n${data.giftCode ? `Código: ${data.giftCode}\n` : ''}Resgatar: ${siteUrl}/redeem?code=${data.giftCode || ''}`;
+      text = `Olá ${firstName}!\n\nVocê recebeu um presente da MeJoy!\n\n${data.giftCode ? `Código: ${data.giftCode}\n` : ''}Resgatar: ${siteUrl}/redeem?code=${data.giftCode || ''}`;
       break;
 
     case 'follow-up-d1':
@@ -293,7 +293,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
           Olá, ${firstName}!
         </p>
         <p style="margin: 0 0 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
-          Surpreenda alguém especial com 30 dias de Me Joy.
+          Surpreenda alguém especial com 30 dias de MeJoy.
         </p>
         <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 6px;">
           <p style="margin: 0 0 10px 0; font-size: 14px; color: ${BRAND_COLORS.text}; font-weight: 600;">
@@ -311,7 +311,7 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
         </p>
         ${getButtonStyle(`${siteUrl}/presente`, 'Presentear acesso • R$ 89')}
       `, data);
-      text = `Olá ${firstName}!\n\nSurpreenda alguém com 30 dias de Me Joy por R$ 89.\n\nUm presente útil de verdade!\n\nAcesse: ${siteUrl}/presente`;
+      text = `Olá ${firstName}!\n\nSurpreenda alguém com 30 dias de MeJoy por R$ 89.\n\nUm presente útil de verdade!\n\nAcesse: ${siteUrl}/presente`;
       break;
 
     case 'store-v2-order-confirmed': {
@@ -393,10 +393,10 @@ export function renderTemplate(template: EmailTemplate, data: EmailTemplateData)
           Olá, ${firstName}!
         </p>
         <p style="margin: 20px 0; color: ${BRAND_COLORS.text}; font-size: 16px;">
-          Este é um email da Me Joy.
+          Este é um email da MeJoy.
         </p>
       `, data);
-      text = `Olá ${firstName}!\n\nEste é um email da Me Joy.`;
+      text = `Olá ${firstName}!\n\nEste é um email da MeJoy.`;
   }
 
   return { html, text };

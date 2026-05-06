@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FiArrowLeft } from 'react-icons/fi';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 import Footer from '@/components/layout/Footer';
 
 export async function getServerSideProps() {
@@ -17,8 +17,8 @@ export default function TermosPage() {
   return (
     <>
       <Head>
-        <title>Termos de Uso | Me Joy</title>
-        <meta name="description" content="Termos de uso do Me Joy" />
+        <title>Termos de Uso | MeJoy</title>
+        <meta name="description" content="Termos de uso do MeJoy" />
       </Head>
 
       <main className="min-h-screen bg-gradient-to-br from-[#000000] via-[#000000] to-[#000000] text-white">
@@ -30,7 +30,7 @@ export default function TermosPage() {
           className="bg-black/20 backdrop-blur-md border-b border-white/10 py-4"
         >
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <Logo size="small" />
+            <LogoWithName size="small" variant="inverse" />
             <Link href="/" className="inline-flex items-center text-brand hover:text-brand/80">
               <FiArrowLeft className="mr-2" />
               Voltar ao início
@@ -51,28 +51,28 @@ export default function TermosPage() {
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">1. Aceitação dos Termos</h2>
                 <p className="text-white/80 leading-relaxed">
-                  Ao utilizar o Me Joy, você concorda com estes termos de uso. Se não concordar com qualquer parte destes termos, não utilize nossos serviços.
+                  Ao utilizar o MeJoy, você concorda com estes termos de uso. Se não concordar com qualquer parte destes termos, não utilize nossos serviços.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">2. Descrição do Serviço</h2>
                 <p className="text-white/80 leading-relaxed">
-                  O Me Joy é uma plataforma de triagem de saúde que oferece questionários especializados e relatórios personalizados com base em suas respostas. Nossos serviços são de caráter informativo e educativo.
+                  O MeJoy é uma plataforma de triagem de saúde que oferece questionários especializados e relatórios personalizados com base em suas respostas. Nossos serviços são de caráter informativo e educativo.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">3. Limitações Médicas</h2>
                 <p className="text-white/80 leading-relaxed">
-                  <strong>IMPORTANTE:</strong> Os relatórios gerados pelo Me Joy são de caráter informativo e educativo. Eles não substituem consultas médicas, diagnósticos ou tratamentos profissionais. Sempre consulte um médico qualificado para questões de saúde.
+                  <strong>IMPORTANTE:</strong> Os relatórios gerados pelo MeJoy são de caráter informativo e educativo. Eles não substituem consultas médicas, diagnósticos ou tratamentos profissionais. Sempre consulte um médico qualificado para questões de saúde.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">4. Uso Responsável</h2>
                 <p className="text-white/80 leading-relaxed">
-                  Você concorda em usar o Me Joy de forma responsável e não utilizar nossos serviços para:
+                  Você concorda em usar o MeJoy de forma responsável e não utilizar nossos serviços para:
                 </p>
                 <ul className="list-disc list-inside text-white/80 ml-4 mt-2 space-y-1">
                   <li>Autodiagnóstico ou automedicação</li>
@@ -92,14 +92,14 @@ export default function TermosPage() {
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">6. Propriedade Intelectual</h2>
                 <p className="text-white/80 leading-relaxed">
-                  Todo o conteúdo do Me Joy, incluindo textos, algoritmos, design e funcionalidades, é protegido por direitos autorais e propriedade intelectual.
+                  Todo o conteúdo do MeJoy, incluindo textos, algoritmos, design e funcionalidades, é protegido por direitos autorais e propriedade intelectual.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-2xl font-semibold text-white mb-4">7. Limitação de Responsabilidade</h2>
                 <p className="text-white/80 leading-relaxed">
-                  O Me Joy não se responsabiliza por decisões tomadas com base nos relatórios gerados. Os usuários são responsáveis por suas próprias decisões de saúde.
+                  O MeJoy não se responsabiliza por decisões tomadas com base nos relatórios gerados. Os usuários são responsáveis por suas próprias decisões de saúde.
                 </p>
               </section>
 

@@ -14,7 +14,7 @@ export function ProductFaqSection({
   config, 
   colors,
   title = 'Perguntas Frequentes',
-  subtitle = 'Tire suas dúvidas sobre o programa Me Joy'
+  subtitle = 'Tire suas dúvidas sobre o programa MeJoy'
 }: ProductFaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 

@@ -19,7 +19,7 @@ const FAQ_ITEMS = [
   {
     question: 'Como funciona o acompanhamento?',
     answer:
-      'Você segue pelo canal oficial da Me Joy, com orientação sobre triagem, avaliação, plano e suporte. A ideia é reduzir dúvida e manter o cuidado em movimento.',
+      'Você segue pelo canal oficial da MeJoy, com orientação sobre triagem, avaliação, plano e suporte. A ideia é reduzir dúvida e manter o cuidado em movimento.',
   },
   {
     question: 'Meus dados estão protegidos?',

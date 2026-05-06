@@ -67,10 +67,10 @@ export default function StoreV2Home({ sections, featured }: StoreV2HomeProps) {
   return (
     <>
       <Seo
-        title="Me Joy | Farmácia de Manipulação Online"
+        title="MeJoy | Farmácia de Manipulação Online"
         description="Fórmulas manipuladas para seus objetivos. Qualidade, entrega em todo o Brasil, checkout rápido. Pix e cartão."
         path="/"
-        keywords={['farmácia manipulação', 'suplementos', 'fórmulas manipuladas', 'Me Joy']}
+        keywords={['farmácia manipulação', 'suplementos', 'fórmulas manipuladas', 'MeJoy']}
       />
       <StorefrontHeader />
       <main className="min-h-screen pb-24 md:pb-0">

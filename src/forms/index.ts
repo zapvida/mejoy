@@ -224,7 +224,7 @@ export const formularios: Record<TipoTriagem, Formulario> = {
   },
   sono: {
     titulo: 'Sono Profundo & Ansiedade Noturna',
-    subtitulo: 'Tratamento Personalizado Me Joy',
+    subtitulo: 'Tratamento Personalizado MeJoy',
     descricao: 'Check-up gratuito para avaliar sua elegibilidade',
     descricaoDetalhada: 'Avaliação completa para tratamento de insônia e distúrbios do sono com suplemento natural e acompanhamento médico especializado.',
     duracao: '1-3 min',

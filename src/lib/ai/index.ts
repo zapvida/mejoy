@@ -378,7 +378,7 @@ ${classificacao === 'candidato_glp1' && posologiaData ? `
   - Comunicar ao médico qualquer efeito colateral persistente
   - Não interromper tratamento sem orientação médica
   
-  **AVISO OBRIGATÓRIO:** Esta pré-prescrição é um RASCUNHO gerado pela IA da Me Joy com base nas suas respostas. Ela será SEMPRE revisada, validada e ajustada por um médico endocrinologista da equipe após a confirmação do pagamento, antes de qualquer prescrição oficial. O médico pode confirmar, ajustar ou modificar este plano conforme sua avaliação individual completa.
+  **AVISO OBRIGATÓRIO:** Esta pré-prescrição é um RASCUNHO gerado pela IA da MeJoy com base nas suas respostas. Ela será SEMPRE revisada, validada e ajustada por um médico endocrinologista da equipe após a confirmação do pagamento, antes de qualquer prescrição oficial. O médico pode confirmar, ajustar ou modificar este plano conforme sua avaliação individual completa.
 ` : classificacao === 'contraindicado' ? `
 - Você NÃO é candidato a tratamento com GLP-1 no momento devido a:
   ${gestacao ? '- Gestação ou planejamento de gestação\n' : ''}${contraindicacoes.length > 0 ? contraindicacoes.map((c: string) => `- ${c}`).join('\n') : ''}
@@ -406,7 +406,7 @@ ${classificacao === 'candidato_glp1' && posologiaData ? `
 
 6) "Próximos passos"
 ${classificacao === 'candidato_glp1' ? `
-- Após confirmar sua compra, um médico endocrinologista da equipe Me Joy entrará em contato via WhatsApp para:
+- Após confirmar sua compra, um médico endocrinologista da equipe MeJoy entrará em contato via WhatsApp para:
   - Revisar este plano de tratamento
   - Validar ou ajustar a prescrição conforme sua avaliação individual
   - Orientar sobre o uso correto da medicação
@@ -425,7 +425,7 @@ ${classificacao === 'candidato_glp1' ? `
 `}
 
 FRASES OBRIGATÓRIAS (copie e garanta que apareçam SEMPRE):
-- "As condutas medicamentosas aqui sugeridas são um RASCUNHO gerado pela IA da Me Joy com base nas suas respostas e serão sempre revisadas e validadas por um médico endocrinologista da equipe antes de qualquer prescrição oficial."
+- "As condutas medicamentosas aqui sugeridas são um RASCUNHO gerado pela IA da MeJoy com base nas suas respostas e serão sempre revisadas e validadas por um médico endocrinologista da equipe antes de qualquer prescrição oficial."
 - "Todo uso de medicação é feito somente após avaliação individual e prescrição médica, seguindo as normas da ANVISA."
 - "Após confirmar sua compra, um médico da equipe entrará em contato para validar este plano antes de qualquer prescrição final."
 
@@ -488,7 +488,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como suplementação específica (vitaminas, minerais, aminoácidos) nutre o folículo piloso e como acompanhamento médico identifica causas específicas.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade, histórico familiar e fatores modificáveis.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade, histórico familiar e fatores modificáveis.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e ajustes conforme necessário.
 
@@ -504,7 +504,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como melatonina e fitoterápicos regulam o ciclo circadiano e como higiene do sono potencializa os efeitos.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e duração dos sintomas.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e duração dos sintomas.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e ajustes conforme necessário.
 
@@ -520,7 +520,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como fitoterápicos ansiolíticos (passiflora, valeriana) ajudam a regular neurotransmissores e como acompanhamento médico e psicológico potencializam resultados.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e impacto funcional.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e impacto funcional.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e psicológico.
 
@@ -536,7 +536,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como probióticos repovoam bactérias benéficas, fibras alimentam a microbiota e como acompanhamento médico identifica causas específicas.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e duração dos sintomas.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e duração dos sintomas.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e nutricional.
 
@@ -552,7 +552,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como fitoterápicos hepáticos (silimarina, alcachofra) protegem e regeneram células hepáticas e como acompanhamento médico monitora função hepática.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e fatores de risco.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e fatores de risco.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e exames de monitoramento.
 
@@ -568,7 +568,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como suplementos (maca, tribulus, zinco) ajudam a regular testosterona e como acompanhamento médico identifica causas hormonais.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e fatores relacionados.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e fatores relacionados.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e exames hormonais.
 
@@ -584,7 +584,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como fitormônios (isoflavonas, cimicífuga) ajudam a aliviar sintomas e como acompanhamento médico garante segurança.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade dos sintomas e histórico médico.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade dos sintomas e histórico médico.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento ginecológico e exames de monitoramento.
 
@@ -600,7 +600,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como colágeno tipo II mantém integridade articular, anti-inflamatórios naturais reduzem dor e como acompanhamento médico identifica causas específicas.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e impacto funcional.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na gravidade e impacto funcional.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e plano de exercícios.
 
@@ -616,7 +616,7 @@ Estrutura do relatório:
 
 2) "Por que este protocolo pode ajudar": explique como vitaminas (C, D, Zinco) e probióticos fortalecem sistema imune e como acompanhamento médico identifica deficiências específicas.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na frequência de infecções e deficiências identificadas.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é mensal, trimestral ou semestral, com base na frequência de infecções e deficiências identificadas.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico e exames de monitoramento.
 
@@ -774,7 +774,7 @@ function buildMockReport(kind: string, payload: TriagePayload): GeneratedReport 
   ].filter(Boolean).join('\n');
 
   const audioScript = [
-    `Olá, ${nome}! Aqui é o time Me Joy.`,
+    `Olá, ${nome}! Aqui é o time MeJoy.`,
     'Avaliamos suas respostas e montamos um plano personalizado para você.',
     'Recomendamos consultar um médico para uma avaliação completa dos seus sintomas.',
     'Enquanto isso, mantenha hábitos saudáveis de alimentação, exercícios e sono.',

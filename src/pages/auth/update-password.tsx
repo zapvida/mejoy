@@ -64,7 +64,7 @@ export default function UpdatePasswordPage() {
   return (
     <>
       <Head>
-        <title>Redefinir senha | Me Joy</title>
+        <title>Redefinir senha | MeJoy</title>
         <meta name="robots" content="noindex" />
       </Head>
 

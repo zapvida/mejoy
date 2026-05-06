@@ -2,7 +2,7 @@
  * Protocolo de Posologia - Tirzepatida
  * 
  * Este módulo implementa a lógica de cálculo de posologia baseada no protocolo
- * clínico interno Me Joy para tirzepatida 40mg e 60mg em pó.
+ * clínico interno MeJoy para tirzepatida 40mg e 60mg em pó.
  * 
  * IMPORTANTE: Esta é uma função auxiliar que calcula posologia SUGERIDA.
  * A prescrição final sempre deve ser validada por um médico endocrinologista.

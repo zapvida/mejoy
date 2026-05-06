@@ -1,4 +1,4 @@
-# GO-LIVE — Me Joy Store V2 | 1 Página
+# GO-LIVE — MeJoy Store V2 | 1 Página
 
 **Status:** Pronto para execução manual. Tudo validado. **Rollback:** `STORE_V2=0` em 1 minuto.
 

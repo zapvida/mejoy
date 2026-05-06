@@ -1,5 +1,5 @@
 // src/pages/contato.tsx
-// Página de Contato - Canais oficiais da Me Joy
+// Página de Contato - Canais oficiais da MeJoy
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ import Navbar from '@/components/layout/Navbar';
 const CONTACT = {
   whatsapp: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '554797789479',
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contato@mejoy.com.br',
-  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME || 'Me Joy Tecnologia em Saúde Ltda.',
+  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME || 'MeJoy Tecnologia em Saúde Ltda.',
   address: process.env.NEXT_PUBLIC_LEGAL_ADDRESS || 'Florianópolis, SC',
 };
 
@@ -21,8 +21,8 @@ export default function ContatoPage() {
   return (
     <>
       <Head>
-        <title>Contato | Me Joy</title>
-        <meta name="description" content="Entre em contato com a Me Joy. Suporte, dúvidas, reembolsos e exercício de direitos LGPD." />
+        <title>Contato | MeJoy</title>
+        <meta name="description" content="Entre em contato com a MeJoy. Suporte, dúvidas, reembolsos e exercício de direitos LGPD." />
         <meta name="robots" content="index, follow" />
       </Head>
 

@@ -66,7 +66,7 @@ export default function ObrigadoPage() {
   return (
     <>
       <Head>
-        <title>Pagamento em validação | Me Joy</title>
+        <title>Pagamento em validação | MeJoy</title>
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 py-8 text-white sm:py-10 md:py-12">
@@ -83,7 +83,7 @@ export default function ObrigadoPage() {
 
             <p className="mt-4 text-base leading-relaxed text-slate-100 sm:text-lg">
               {accessState === 'loading' &&
-                'Estamos validando o pagamento com o Asaas e liberando o seu dashboard Me Joy.'}
+                'Estamos validando o pagamento com o Asaas e liberando o seu dashboard MeJoy.'}
               {accessState === 'confirmed' &&
                 'Seu acesso está sendo liberado agora. Você será redirecionado para o dashboard em instantes.'}
               {accessState === 'pending' &&

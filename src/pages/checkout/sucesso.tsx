@@ -113,7 +113,7 @@ export default function CheckoutSuccessPage() {
   if (loading) {
     return (
       <>
-        <Head><title>Processando... | Me Joy</title></Head>
+        <Head><title>Processando... | MeJoy</title></Head>
         <StorefrontHeader />
         <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16">
           <Loader2 className="w-12 h-12 text-brand animate-spin mb-4" />
@@ -127,7 +127,7 @@ export default function CheckoutSuccessPage() {
   if (error || !order) {
     return (
       <>
-        <Head><title>Erro | Me Joy</title></Head>
+        <Head><title>Erro | MeJoy</title></Head>
         <StorefrontHeader />
         <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16">
           <p className="text-red-600 mb-4">{error || 'Pedido não encontrado'}</p>
@@ -145,7 +145,7 @@ export default function CheckoutSuccessPage() {
   return (
     <>
       <Head>
-        <title>{isPaid ? 'Compra confirmada!' : 'Finalize seu pagamento'} | Me Joy</title>
+        <title>{isPaid ? 'Compra confirmada!' : 'Finalize seu pagamento'} | MeJoy</title>
         <meta
           name="description"
           content={isPaid ? 'Seu pedido foi confirmado. Acompanhe pelo dashboard.' : 'Pague com PIX para confirmar sua compra.'}
@@ -307,7 +307,7 @@ function LegacySuccess() {
   return (
     <>
       <Head>
-        <title>Pagamento Confirmado | Me Joy</title>
+        <title>Pagamento Confirmado | MeJoy</title>
         <meta
           name="description"
           content="Seu pagamento foi realizado com sucesso. Agora você pode acessar sua plataforma de saúde personalizada com IA."

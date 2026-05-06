@@ -65,7 +65,7 @@ export default function OrderDetailPage() {
   if (!orderId) {
     return (
       <>
-        <Head><title>Pedido | Me Joy</title></Head>
+        <Head><title>Pedido | MeJoy</title></Head>
         <main className="min-h-screen flex items-center justify-center">
           <Link href="/"><Button>Voltar ao início</Button></Link>
         </main>
@@ -76,7 +76,7 @@ export default function OrderDetailPage() {
   if (loading || !order) {
     return (
       <>
-        <Head><title>Carregando... | Me Joy</title></Head>
+        <Head><title>Carregando... | MeJoy</title></Head>
         <StorefrontHeader />
         <main className="min-h-screen flex items-center justify-center">
           <div className="max-w-md text-center px-6">

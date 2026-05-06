@@ -55,7 +55,7 @@ export default function RelatorioPage({ vm, safePatient, reportId, shouldPrint }
     return (
       <>
         <Head>
-          <title>Relatório não encontrado | Me Joy</title>
+          <title>Relatório não encontrado | MeJoy</title>
           <meta name="robots" content="noindex" />
         </Head>
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center">
@@ -77,7 +77,7 @@ export default function RelatorioPage({ vm, safePatient, reportId, shouldPrint }
   return (
     <>
       <Head>
-        <title>{vm.greeting} | Me Joy</title>
+        <title>{vm.greeting} | MeJoy</title>
         <meta name="description" content={`Relatório personalizado de saúde para ${vm.basics.firstName}`} />
         <meta name="robots" content="noindex" />
       </Head>

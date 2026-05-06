@@ -8,7 +8,7 @@ export default function CheckoutCancelPage() {
   return (
     <>
       <Head>
-        <title>Pagamento Cancelado | Me Joy</title>
+        <title>Pagamento Cancelado | MeJoy</title>
         <meta
           name="description"
           content="Seu pagamento foi cancelado. Você pode tentar novamente a qualquer momento."

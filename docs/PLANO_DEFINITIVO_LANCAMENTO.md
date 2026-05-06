@@ -1,4 +1,4 @@
-# Plano Definitivo — Lançamento Me Joy
+# Plano Definitivo — Lançamento MeJoy
 
 **Status:** Implementado em código. Pronto para validação e deploy.
 

@@ -1,4 +1,4 @@
-# Plano E-commerce Farmácia de Manipulação — Me Joy
+# Plano E-commerce Farmácia de Manipulação — MeJoy
 
 > **Objetivo:** Ter o melhor e-commerce de farmácia de manipulação do Brasil, superior aos concorrentes (Oficialfarma, Drogasil, Eficaciafarmacia), pronto para lançamento oficial.
 
@@ -22,7 +22,7 @@
 
 ## 1. O que os concorrentes fazem que converte (benchmark)
 
-| Prática | Oficialfarma | Drogasil | Me Joy hoje |
+| Prática | Oficialfarma | Drogasil | MeJoy hoje |
 |---------|--------------|----------|-------------|
 | Primeiro quadrante = benefícios do produto | ✅ | ✅ | ❌ (comerciais) |
 | Benefícios com ✅ + emojis | ✅ | ⚠️ | ❌ |

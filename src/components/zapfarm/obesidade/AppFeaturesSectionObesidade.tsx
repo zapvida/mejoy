@@ -144,7 +144,7 @@ export function AppFeaturesSectionObesidade() {
                       <div className="space-y-3">
                         <div className="rounded-[24px] bg-white/10 p-4 text-white ring-1 ring-white/10">
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200">Canal oficial</p>
-                          <p className="mt-2 text-sm font-semibold">WhatsApp Me Joy</p>
+                          <p className="mt-2 text-sm font-semibold">WhatsApp MeJoy</p>
                           <p className="mt-2 text-sm leading-6 text-white/78">
                             Relatório inicial, próximos passos e lembretes no mesmo canal oficial.
                           </p>

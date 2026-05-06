@@ -35,7 +35,7 @@ export default function PartnerCTA({
     const partners = {
       zapfarm: {
         id: 'zapfarm',
-        name: 'Me Joy',
+        name: 'MeJoy',
         icon: '🌿',
         description: 'Suplementos para saúde gastrointestinal',
         copy: {

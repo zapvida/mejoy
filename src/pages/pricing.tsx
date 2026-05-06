@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 import Seo from '@/components/Seo';
+import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
 import { productJsonLd } from '@/lib/seo';
 import { formatPrice } from '@/lib/asaas/config';
@@ -47,7 +48,7 @@ const PricingPage = () => {
 
   useEffect(() => {
     trackEvent('page_view', {
-      page_title: 'Pricing - Me Joy',
+      page_title: 'Pricing - MeJoy',
       page_location: window.location.href
     });
 
@@ -147,7 +148,7 @@ const PricingPage = () => {
         path="/pricing"
         jsonLd={[
           productJsonLd({
-            name: 'Plano Plus Me Joy',
+            name: 'Plano Plus MeJoy',
             description: 'Plano principal com gift e assentos adicionais.',
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/pricing`,
             price: 29.9
@@ -156,12 +157,12 @@ const PricingPage = () => {
       />
 
       <Head>
-        <title>Planos - Me Joy Plus</title>
+        <title>Planos - MeJoy Plus</title>
         <meta
           name="description"
-          content="Assine o Plano Plus do Me Joy, com opção de presente e assentos extras para sua equipe."
+          content="Assine o Plano Plus do MeJoy, com opção de presente e assentos extras para sua equipe."
         />
-        <meta property="og:title" content="Planos - Me Joy Plus" />
+        <meta property="og:title" content="Planos - MeJoy Plus" />
         <meta
           property="og:description"
           content="Assinatura pronta para presente e equipes. Stripe e GHL integrados automaticamente."
@@ -174,9 +175,8 @@ const PricingPage = () => {
         <div className="bg-zinc-900/50 backdrop-blur-sm border-b border-zinc-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <img src="/logosmejoy/logomejoy.png" alt="Me Joy Farma" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">Me Joy</span>
+              <div className="flex items-center">
+                <LogoWithName size="small" variant="inverse" priority />
               </div>
               <button
                 onClick={() => router.push('/')}

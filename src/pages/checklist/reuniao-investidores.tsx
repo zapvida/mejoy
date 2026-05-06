@@ -217,7 +217,7 @@ export default function ChecklistReuniaoInvestidores() {
         },
         {
           id: 'cnes-monjoy',
-          title: 'CNES da Clínica Me Joy',
+          title: 'CNES da Clínica MeJoy',
           description: 'Validar necessidade e registro CNES',
           status: 'pending',
           priority: 'high',
@@ -415,14 +415,14 @@ export default function ChecklistReuniaoInvestidores() {
   return (
     <>
       <Seo
-        title="Checklist: Reunião com Investidores | Me Joy"
-        description="Checklist interativo para reunião com investidores - Me Joy Emagrecimento"
+        title="Checklist: Reunião com Investidores | MeJoy"
+        description="Checklist interativo para reunião com investidores - MeJoy Emagrecimento"
         path="/checklist/reuniao-investidores"
       />
       <Navbar />
       <InteractiveChecklist
         title="Checklist Final - Reunião com Investidores"
-        subtitle="Me Joy Emagrecimento - Padrão Voy Saúde"
+        subtitle="MeJoy Emagrecimento - Padrão Voy Saúde"
         sections={sections}
         storageKey="checklist-reuniao-investidores"
         showFilters={true}

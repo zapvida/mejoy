@@ -109,7 +109,7 @@ def get_font(size: int) -> ImageFont.FreeTypeFont:
             return ImageFont.truetype(path, size=size, index=index)
         except Exception:
             continue
-    raise RuntimeError("No suitable system font found for the Me Joy logo.")
+    raise RuntimeError("No suitable system font found for the MeJoy logo.")
 
 
 def draw_me_text(size: int, circle_only: bool) -> Image.Image:
@@ -212,7 +212,7 @@ def create_crop_preview(square_avatar: Image.Image, circle_mark: Image.Image) ->
     d = ImageDraw.Draw(preview)
     font_title = get_font(62)
     font_label = get_font(34)
-    d.text((80, 60), "Me Joy - preview final", font=font_title, fill="#203037")
+    d.text((80, 60), "MeJoy - preview final", font=font_title, fill="#203037")
     d.text((80, 150), "Avatar quadrado para Instagram/Facebook", font=font_label, fill="#48625C")
     d.text((880, 150), "Marca circular para favicon e app icon", font=font_label, fill="#48625C")
 

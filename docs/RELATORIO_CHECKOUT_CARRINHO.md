@@ -1,4 +1,4 @@
-# Relatório: Checkout e Carrinho — Me Joy E-commerce
+# Relatório: Checkout e Carrinho — MeJoy E-commerce
 
 **Data:** 05/03/2025  
 **Escopo:** Fluxo completo de carrinho → checkout → pagamento PIX

@@ -6,7 +6,7 @@ export default function StepReviewPage() {
   return (
     <>
       <Head>
-        <title>Revisão — Personalize sua marca | Me Joy</title>
+        <title>Revisão — Personalize sua marca | MeJoy</title>
         <meta name="description" content="Revise suas configurações e salve. Abra o demo em tela cheia." />
       </Head>
       <RunnerLayout 

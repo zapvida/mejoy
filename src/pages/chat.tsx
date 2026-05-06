@@ -116,7 +116,7 @@ export default function ChatPage() {
   return (
     <>
       <Head>
-        <title>Conversa com Médico | Me Joy</title>
+        <title>Conversa com Médico | MeJoy</title>
         <meta
           name="description"
           content="Tire suas dúvidas de saúde com nosso assistente médico virtual"

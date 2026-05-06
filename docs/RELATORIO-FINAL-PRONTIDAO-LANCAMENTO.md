@@ -1,4 +1,4 @@
-# Relatório Final de Prontidão para Lançamento — Me Joy
+# Relatório Final de Prontidão para Lançamento — MeJoy
 
 **Data:** 2026-03-06  
 **Modo:** Fase Final Absoluta de Pré-Lançamento
@@ -7,7 +7,7 @@
 
 ## 1. RESUMO EXECUTIVO
 
-O projeto Me Joy está em **FASE FINAL DE PRÉ-PRODUÇÃO / PRÉ-LANÇAMENTO**. A base técnica está estável, a copy dos 162 SKUs atende critérios premium na auditoria, e o fluxo de checkout está implementado e depende apenas de validação em produção.
+O projeto MeJoy está em **FASE FINAL DE PRÉ-PRODUÇÃO / PRÉ-LANÇAMENTO**. A base técnica está estável, a copy dos 162 SKUs atende critérios premium na auditoria, e o fluxo de checkout está implementado e depende apenas de validação em produção.
 
 **Veredito:**
 - **GO para deploy:** Sim

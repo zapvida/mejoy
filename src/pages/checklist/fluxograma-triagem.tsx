@@ -107,7 +107,7 @@ flowchart TD
   return (
     <>
       <Seo
-        title="Fluxograma Completo da Triagem de Emagrecimento | Me Joy"
+        title="Fluxograma Completo da Triagem de Emagrecimento | MeJoy"
         description="Fluxograma interativo completo da triagem de emagrecimento - Documento exclusivo para apresentação a investidores"
         path="/checklist/fluxograma-triagem"
       />

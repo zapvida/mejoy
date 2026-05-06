@@ -28,7 +28,7 @@ NEXT_BIN="$(resolve_bin next)"
 TSX_BIN="$(resolve_bin tsx)"
 
 echo "=============================================="
-echo "  VERIFY CLEAN RUNTIME — Me Joy"
+echo "  VERIFY CLEAN RUNTIME — MeJoy"
 echo "=============================================="
 echo "Timestamp: $(date)"
 echo "BASE_URL: $BASE_URL"

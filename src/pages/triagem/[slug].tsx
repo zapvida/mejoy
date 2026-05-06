@@ -655,7 +655,7 @@ export default function TriageSlugPage() {
   return (
     <>
       <Head>
-        <title>{flow.title} • Triagem | Me Joy</title>
+        <title>{flow.title} • Triagem | MeJoy</title>
         <meta
           name="description"
           content="Triagem interativa com relatórios personalizados e recomendações clínicas."

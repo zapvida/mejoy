@@ -156,7 +156,7 @@ test.describe('Fluxo Completo Emagrecimento - Smoke Test', () => {
 
     // 4. Validar remoção explícita dos blocos legados
     await expect(page.locator('text=Plano de Ações')).toHaveCount(0);
-    await expect(page.locator('text=Plano Recomendado Me Joy')).toHaveCount(0);
+    await expect(page.locator('text=Plano Recomendado MeJoy')).toHaveCount(0);
     await expect(page.locator('text=Consulta médica já!')).toHaveCount(0);
     await expect(page.locator('text=Conhecer Planos!')).toHaveCount(0);
     console.log('✅ Blocos legados não aparecem na composição aberta do relatório');

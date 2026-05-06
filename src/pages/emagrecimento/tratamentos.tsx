@@ -12,7 +12,7 @@ export default function TratamentosPage() {
   return (
     <>
       <Head>
-        <title>Tratamentos de emagrecimento com GLP-1 e suporte médico | Me Joy</title>
+        <title>Tratamentos de emagrecimento com GLP-1 e suporte médico | MeJoy</title>
         <meta
           name="description"
           content="Tratamentos modernos de emagrecimento com segurança: medicações GLP-1 quando indicadas, mudança de estilo de vida e acompanhamento médico contínuo. Conforme normas ANVISA."

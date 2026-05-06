@@ -1,4 +1,4 @@
-# Checklist de Lançamento — Conformidade Jurídica e Tributária Me Joy
+# Checklist de Lançamento — Conformidade Jurídica e Tributária MeJoy
 
 Documento de validação para go-live com máxima segurança jurídica, LGPD, tributária e consumerista.
 
@@ -26,7 +26,7 @@ O código usa **valores padrão (mocks)** quando as env vars não estão definid
 
 | Variável | Descrição | Exemplo |
 |----------|------------|---------|
-| `NEXT_PUBLIC_LEGAL_NAME` | Razão social | Me Joy Tecnologia em Saúde Ltda. |
+| `NEXT_PUBLIC_LEGAL_NAME` | Razão social | MeJoy Tecnologia em Saúde Ltda. |
 | `NEXT_PUBLIC_LEGAL_CNPJ` | CNPJ (apenas números ou formatado) | 12.345.678/0001-90 |
 | `NEXT_PUBLIC_LEGAL_ADDRESS` | Endereço completo da sede | Rua X, 123 - Centro, Florianópolis/SC |
 | `NEXT_PUBLIC_DPO_NAME` | Nome do Encarregado (DPO) | Nome Completo |

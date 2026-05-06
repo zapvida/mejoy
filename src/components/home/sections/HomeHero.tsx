@@ -49,7 +49,7 @@ export function HomeHero() {
                 className="mx-auto mb-0 text-[14px] font-medium leading-snug sm:mb-1 sm:text-[15px]"
                 style={{ color: MEDVI_HOME.heroTextMuted }}
               >
-                Milhares de pacientes já confiaram na Me Joy
+                Milhares de pacientes já confiaram na MeJoy
               </p>
               <h1
                 data-testid="home-hub-hero-title"

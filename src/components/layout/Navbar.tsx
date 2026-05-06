@@ -41,7 +41,7 @@ export default function Navbar() {
   const links = isRoot ? linksB2B : linksB2C;
   
   // CTAs condicionais
-  const ctaB2C = getPrimaryCTA(tenant || { name: 'Me Joy' });
+  const ctaB2C = getPrimaryCTA(tenant || { name: 'MeJoy' });
   const ctaB2B = { href: '/b2b/assinar', label: 'Assinar em 2 min' };
   const ctaSecondaryB2B = { href: '/b2b/sandbox', label: 'Ver demonstração' };
   

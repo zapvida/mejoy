@@ -50,7 +50,7 @@ export default function RelatorioProductPage({ vm, reportId, productConfig, erro
     return (
       <>
         <Head>
-          <title>Relatório não encontrado | Me Joy</title>
+          <title>Relatório não encontrado | MeJoy</title>
         </Head>
         <div className="min-h-screen bg-gradient-to-br from-purple-900 to-orange-900 flex items-center justify-center text-white">
           <div className="text-center">
@@ -77,7 +77,7 @@ export default function RelatorioProductPage({ vm, reportId, productConfig, erro
   return (
     <>
       <Head>
-        <title>Relatório de {productConfig.displayName} | Me Joy</title>
+        <title>Relatório de {productConfig.displayName} | MeJoy</title>
         <meta name="description" content={`Relatório personalizado de ${productConfig.displayName.toLowerCase()} para ${vm.basics.firstName}`} />
       </Head>
 

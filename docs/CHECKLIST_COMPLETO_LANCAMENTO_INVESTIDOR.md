@@ -121,7 +121,7 @@ ASAAS_PRICE_EMAGRECIMENTO_PREMIUM=589800     # R$ 5.898,00
 ### 4.1 CRM e Credenciamento
 - [ ] **Todos os médicos com CRM ativo** ⚠️
 - [ ] **CRM válido na jurisdição do paciente** ⚠️
-- [ ] **CNES da clínica Me Joy registrado** ⚠️
+- [ ] **CNES da clínica MeJoy registrado** ⚠️
 - [ ] **Credenciamento por estado** (se necessário) ⚠️
 
 ### 4.2 Prontuário Eletrônico

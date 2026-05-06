@@ -1,4 +1,4 @@
-# Auditoria E-commerce Me Joy — Pré-Lançamento
+# Auditoria E-commerce MeJoy — Pré-Lançamento
 
 **Data:** 07/03/2026  
 **Escopo:** 162 SKUs, Store V2, fluxos ponta a ponta
@@ -7,7 +7,7 @@
 
 ## Resumo Executivo
 
-O e-commerce Me Joy está **bem estruturado e pronto para lançamento**, com organização por objetivos, PDP premium (template Akkermat), checkout funcional e painéis admin/dashboard. Foram identificados e corrigidos pontos de fricção e gaps de navegação.
+O e-commerce MeJoy está **bem estruturado e pronto para lançamento**, com organização por objetivos, PDP premium (template Akkermat), checkout funcional e painéis admin/dashboard. Foram identificados e corrigidos pontos de fricção e gaps de navegação.
 
 ---
 

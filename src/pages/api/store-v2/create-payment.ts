@@ -291,7 +291,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     billingType: billingType as 'PIX' | 'CREDIT_CARD',
     value: valueInReais,
     dueDate: calculateDueDate(3),
-    description: `Pedido Me Joy - ${snapshotItems.length} item(ns)`,
+    description: `Pedido MeJoy - ${snapshotItems.length} item(ns)`,
     externalReference: `store_v2_${Date.now()}`,
     metadata: {
       tipo: 'store_v2',

@@ -16,14 +16,14 @@ export interface BrandConfig {
 export const BRAND_CONFIG: Record<BrandId, BrandConfig> = {
   zapfarm: {
     id: 'zapfarm',
-    name: 'Me Joy',
+    name: 'MeJoy',
     colors: {
       primary: '#4C1D95',   // roxo profundo
       secondary: '#F97316', // laranja
       accent: '#10B981',    // verde confiança
       gradient: 'from-purple-700 via-orange-500 to-amber-400',
     },
-    logo: '/logosmejoy/logomejoy.png',
+    logo: '/logosmejoy/logomejoy.svg',
     theme: 'zapfarm',
   },
 };
@@ -37,4 +37,3 @@ export function getBrandByRoute(pathname: string): BrandId {
   if (pathname.startsWith('/emagrecimento')) return 'zapfarm';
   return 'zapfarm';
 }
-

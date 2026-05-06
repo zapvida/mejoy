@@ -17,7 +17,7 @@ export default function ChecklistCNPJModeloNegocio() {
           status: 'pending',
           priority: 'high',
           actionItems: [
-            'Obter CNPJ da empresa Me Joy Tecnologia em Saúde Ltda.',
+            'Obter CNPJ da empresa MeJoy Tecnologia em Saúde Ltda.',
             'Atualizar variável de ambiente no Vercel',
             'Verificar se aparece corretamente nas políticas LGPD'
           ],
@@ -65,20 +65,20 @@ export default function ChecklistCNPJModeloNegocio() {
       items: [
         {
           id: 'clinica-monjoy',
-          title: 'Clínica Me Joy Identificada',
+          title: 'Clínica MeJoy Identificada',
           description: 'Parceria com clínica médica para realização de consultas',
           status: 'complete',
           priority: 'medium',
         },
         {
           id: 'cnes-validado',
-          title: 'CNES Me Joy Validado',
+          title: 'CNES MeJoy Validado',
           description: 'Validar com jurídico se precisa CNES e se está registrado',
           status: 'pending',
           priority: 'high',
           actionItems: [
             'Consultar jurídico sobre necessidade de CNES',
-            'Verificar se clínica Me Joy tem CNES registrado',
+            'Verificar se clínica MeJoy tem CNES registrado',
             'Documentar decisão'
           ],
           estimatedTime: '1-2 dias'
@@ -291,7 +291,7 @@ export default function ChecklistCNPJModeloNegocio() {
   return (
     <>
       <Seo
-        title="Checklist: Validação CNPJ e Modelo de Negócio | Me Joy"
+        title="Checklist: Validação CNPJ e Modelo de Negócio | MeJoy"
         description="Checklist interativo para validação do CNPJ e modelo de negócio intermediador"
         path="/checklist/cnpj-modelo-negocio"
       />

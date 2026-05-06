@@ -17,7 +17,7 @@
     <circle cx="512" cy="512" r="500" fill="#FF7A12" stroke="rgba(0,0,0,0.45)" stroke-width="8"/>
     <text x="512" y="560" text-anchor="middle" fill="#111111" font-size="348" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me</text>
   </g>
-  <text x="430" y="272" fill="#FF7A12" font-size="142" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me Joy,</text>
+  <text x="430" y="272" fill="#FF7A12" font-size="142" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">MeJoy,</text>
   <text x="436" y="378" fill="#FFB05A" font-size="72" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif">Me Cuido.</text>
   <text x="840" y="378" fill="#FF7A12" font-size="72" font-family="Avenir Next, Avenir, Helvetica Neue, Arial, sans-serif" font-weight="800">Me Amo!</text>
   <rect x="436" y="430" width="702" height="14" rx="7" fill="#E85E00"/>

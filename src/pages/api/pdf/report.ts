@@ -14,7 +14,7 @@ import type { ReportViewModel } from '@/lib/report/derive';
 import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 
 function tinyFallback(): Buffer {
-  const text = 'Me Joy - PDF fallback (emergencial).';
+  const text = 'MeJoy - PDF fallback (emergencial).';
   const base = Buffer.from(
     `%PDF-1.4
 1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj

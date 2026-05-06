@@ -65,7 +65,7 @@ export default function BenefitsB2C() {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-4xl md:text-5xl font-extrabold text-ink mb-4 leading-tight text-balance">
-            Por que a Me Joy
+            Por que a MeJoy
           </h2>
           <p className="text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
             Curadoria médica. Segurança. Resultados reais.

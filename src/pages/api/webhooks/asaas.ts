@@ -429,7 +429,7 @@ async function processStoreV2Payment(payment: AsaasPaymentResponse) {
           const magic = await createMagicLink({ profileId, redirectPath: '/dashboard' });
           if (magic?.magicUrl) {
             const nome = (order.customerName?.split(' ')[0]) || 'Cliente';
-            const msg = `Olá ${nome}! Sua compra Me Joy foi confirmada. Acesse seu painel para acompanhar o pedido: ${magic.magicUrl}`;
+            const msg = `Olá ${nome}! Sua compra MeJoy foi confirmada. Acesse seu painel para acompanhar o pedido: ${magic.magicUrl}`;
             const sent = await sendEvolutionMessageStoreV2(customerPhone, msg);
             if (!sent.success) {
               storeLogger.error('Store V2 WhatsApp failed', new Error(sent.error ?? 'Unknown'), {

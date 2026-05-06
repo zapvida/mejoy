@@ -7,8 +7,8 @@ import Footer from '@/components/layout/Footer';
 
 // Dados da empresa (via env vars com defaults)
 const COMPANY = {
-  appName: process.env.NEXT_PUBLIC_APP_NAME || 'Me Joy',
-  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME || 'Me Joy Tecnologia em Saúde Ltda.',
+  appName: process.env.NEXT_PUBLIC_APP_NAME || 'MeJoy',
+  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME || 'MeJoy Tecnologia em Saúde Ltda.',
   cnpj: process.env.NEXT_PUBLIC_LEGAL_CNPJ || '00.000.000/0001-00',
   address: process.env.NEXT_PUBLIC_LEGAL_ADDRESS || 'Rua Exemplo, 123 – Centro, Cidade/UF, Brasil',
   site: process.env.NEXT_PUBLIC_SITE || process.env.NEXT_PUBLIC_BASE_URL || 'https://zapfarm.com',

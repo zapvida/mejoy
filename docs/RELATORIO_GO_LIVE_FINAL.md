@@ -1,4 +1,4 @@
-# Relatório GO-LIVE FINAL — Me Joy
+# Relatório GO-LIVE FINAL — MeJoy
 
 **Data:** 2026-03-05  
 **Status:** ✅ GO (pré-deploy concluído)

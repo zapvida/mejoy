@@ -123,7 +123,7 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title>Entre na sua conta | Me Joy</title>
+        <title>Entre na sua conta | MeJoy</title>
         <meta name="description" content="Acesse seu painel de saúde personalizado" />
         <meta name="robots" content="noindex" />
       </Head>

@@ -8,7 +8,7 @@ export default function PromoBanner() {
       <div className="flex items-center justify-center gap-3 text-white">
         <div className="w-2 h-2 bg-brand-200 rounded-full"></div>
         <span className="text-sm font-medium">
-          Presente de Me Joy Suplementos e ZapVida Telemedicina
+          Presente de MeJoy Suplementos e ZapVida Telemedicina
         </span>
         <span className="text-lg">🎁</span>
       </div>

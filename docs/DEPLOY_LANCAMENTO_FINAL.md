@@ -1,4 +1,4 @@
-# Deploy Lançamento Final — Me Joy
+# Deploy Lançamento Final — MeJoy
 
 **Data:** 05/03/2026  
 **Status:** Textos individualizados, PIX corrigido, manifest, catalog com ON CONFLICT DO UPDATE.

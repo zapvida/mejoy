@@ -101,7 +101,7 @@ export default function EmagrecimentoLpV1() {
   return (
     <>
       <Head>
-        <title>Me Joy - Emagrecimento com evidências científicas e tecnologia</title>
+        <title>MeJoy - Emagrecimento com evidências científicas e tecnologia</title>
         <meta
           name="description"
           content="Programa de emagrecimento 100% online com médicos especialistas, estratégias modernas quando indicadas e suporte contínuo. Triagem inteligente e avaliação clínica."
@@ -146,7 +146,7 @@ export default function EmagrecimentoLpV1() {
         {/* Frame 7 - Tratamentos modernos e segurança */}
         <TreatmentsSection />
 
-        {/* Frame 8 - Comparação "Com Me Joy vs Caminho Tradicional" */}
+        {/* Frame 8 - Comparação "Com MeJoy vs Caminho Tradicional" */}
         <ComparisonSection />
 
         {/* Frame 9 - Preview dos planos */}

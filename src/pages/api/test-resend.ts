@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('📧 [test-resend] EMAIL_REPLY_TO:', process.env.EMAIL_REPLY_TO || 'padrão');
 
     const result = await sendTriageCompletedEmail(testEmail, {
-      name: 'Teste Me Joy',
+      name: 'Teste MeJoy',
       firstName: 'Teste',
       reportUrl: 'https://www.zapfarm.com.br/dashboard',
     });

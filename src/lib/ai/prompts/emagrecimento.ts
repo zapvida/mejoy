@@ -11,7 +11,7 @@ Gere um relatório em linguagem simples para o paciente, em 4 blocos:
 
 2) "Por que considerar tratamentos com medicação": explique o papel dos agonistas de GLP-1 (especialmente Tirzepatida), sempre deixando claro que a escolha final é do médico e que há alternativas não medicamentosas.
 
-3) "Plano recomendado Me Joy": indique de forma argumentada se o plano ideal é o mensal, trimestral ou semestral, com base na gravidade, nas comorbidades e na motivação do paciente.
+3) "Plano recomendado MeJoy": indique de forma argumentada se o plano ideal é o mensal, trimestral ou semestral, com base na gravidade, nas comorbidades e na motivação do paciente.
 
 4) "Próximos passos": convide o paciente a iniciar o tratamento, reforçando que haverá acompanhamento médico, nutricional e apoio para mudanças de estilo de vida.
 

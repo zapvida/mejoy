@@ -28,7 +28,7 @@ export function EmagrecimentoLpacPage({
   return (
     <>
       <Seo
-        title="Emagrecimento online com triagem inteligente e avaliação médica | Me Joy"
+        title="Emagrecimento online com triagem inteligente e avaliação médica | MeJoy"
         description={DESCRIPTION}
         path={canonicalPath}
         ogImage={ogImage}
@@ -37,7 +37,7 @@ export function EmagrecimentoLpacPage({
           'GLP-1 telemedicina',
           'triagem online emagrecimento',
           'acompanhamento contínuo',
-          'me joy',
+          'mejoy',
         ]}
       />
 

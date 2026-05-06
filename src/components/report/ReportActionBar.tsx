@@ -66,7 +66,7 @@ export function ReportActionBar({
 
     const sharePayload = {
       title: "Relatório de saúde",
-      text: "Confira meu relatório de saúde personalizado do Me Joy.",
+      text: "Confira meu relatório de saúde personalizado do MeJoy.",
       url: `${window.location.origin}/relatorio/${reportId}`,
     };
 

@@ -26,7 +26,7 @@
 
 ## ⚠️ Importante: domínio
 
-O projeto está linkado ao Vercel como **zapfarm**. O site da Me Joy pode estar em:
+O projeto está linkado ao Vercel como **zapfarm**. O site da MeJoy pode estar em:
 - `mejoy.com.br` (domínio customizado no projeto zapfarm), ou
 - Outro projeto
 

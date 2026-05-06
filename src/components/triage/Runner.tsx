@@ -2270,7 +2270,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             </button>
             <div>
               <span className={cn("text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.4em] font-semibold block", getTextColor())}>
-                {brand === 'zapfarm' ? '💊 Check-up Me Joy' : '🌿 Triagem'}
+                {brand === 'zapfarm' ? '💊 Check-up MeJoy' : '🌿 Triagem'}
               </span>
               <h1 className="mt-0.5 sm:mt-2 text-base sm:text-2xl font-bold text-gray-900 truncate">
                 {(() => {

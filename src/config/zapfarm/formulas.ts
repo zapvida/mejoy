@@ -1,5 +1,5 @@
 /**
- * 33 Fórmulas MonJoy — Fonte única de verdade
+ * 33 Fórmulas MeJoy — Fonte única de verdade
  * Edite os valores de custoReais; BOM é calculado automaticamente na UI.
  */
 

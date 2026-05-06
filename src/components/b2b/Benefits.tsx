@@ -40,7 +40,7 @@ const benefits = [
   {
     icon: CheckCircle2,
     title: 'Casos reais',
-    desc: 'Me Joy e ZapVida operando em produção.',
+    desc: 'MeJoy e ZapVida operando em produção.',
   },
 ];
 

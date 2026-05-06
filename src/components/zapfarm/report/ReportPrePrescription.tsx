@@ -323,7 +323,7 @@ export function ReportPrePrescription({ vm }: Props) {
               </RefinedCard>
               
               <p className="text-sm sm:text-base text-red-800 leading-relaxed">
-                Esta pré-prescrição é um <strong className="text-red-900">RASCUNHO</strong> gerado pela IA da Me Joy com base nas suas respostas. 
+                Esta pré-prescrição é um <strong className="text-red-900">RASCUNHO</strong> gerado pela IA da MeJoy com base nas suas respostas. 
                 Ela será <strong className="text-red-900">SEMPRE revisada, validada e ajustada</strong> por um médico endocrinologista da equipe 
                 após a confirmação do pagamento, antes de qualquer prescrição oficial. O médico pode confirmar, ajustar 
                 ou modificar este plano conforme sua avaliação individual completa.

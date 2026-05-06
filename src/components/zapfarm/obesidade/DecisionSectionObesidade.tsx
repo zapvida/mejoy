@@ -104,14 +104,14 @@ export function DecisionSectionObesidade() {
                 <div className="relative aspect-[16/8] w-full">
                   <Image
                     src={EMAGRECIMENTO_LP.storyWideA}
-                    alt="Suporte oficial do programa Me Joy"
+                    alt="Suporte oficial do programa MeJoy"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 40vw"
                   />
                 </div>
                 <div className="grid gap-2 border-t border-emerald-100 bg-white p-4 sm:grid-cols-3">
-                  {['Triagem em cerca de 5 min', 'Conduta definida em consulta', 'Canais oficiais da Me Joy'].map((item) => (
+                  {['Triagem em cerca de 5 min', 'Conduta definida em consulta', 'Canais oficiais da MeJoy'].map((item) => (
                     <div key={item} className="rounded-full bg-emerald-50 px-4 py-2 text-center text-xs font-semibold text-slate-700">
                       {item}
                     </div>

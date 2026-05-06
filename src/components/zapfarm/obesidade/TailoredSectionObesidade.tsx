@@ -42,7 +42,7 @@ export function TailoredSectionObesidade() {
               </h2>
 
               <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-                Emagrecimento sustentável depende de decisão clínica, adesão e acompanhamento. A Me Joy organiza essas
+                Emagrecimento sustentável depende de decisão clínica, adesão e acompanhamento. A MeJoy organiza essas
                 três partes em uma jornada simples.
               </p>
 

@@ -6,15 +6,15 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FiArrowLeft } from 'react-icons/fi';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 import Footer from '@/components/layout/Footer';
 
 export default function PrivacidadePage() {
   return (
     <>
       <Head>
-        <title>Política de Privacidade | Me Joy</title>
-        <meta name="description" content="Política de privacidade do Me Joy" />
+        <title>Política de Privacidade | MeJoy</title>
+        <meta name="description" content="Política de privacidade do MeJoy" />
       </Head>
 
       <main className="min-h-screen bg-gradient-to-br from-[#000000] via-[#000000] to-[#000000] text-white">
@@ -26,7 +26,7 @@ export default function PrivacidadePage() {
           className="bg-black/20 backdrop-blur-md border-b border-white/10 py-4"
         >
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <Logo size="small" />
+            <LogoWithName size="small" variant="inverse" />
             <Link href="/" className="inline-flex items-center text-brand hover:text-brand/80">
               <FiArrowLeft className="mr-2" />
               Voltar ao início

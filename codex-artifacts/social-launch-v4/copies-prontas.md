@@ -12,7 +12,7 @@
 ```text
 Se você já tentou recomeçar muitas vezes, talvez o que faltou não tenha sido esforço. Faltou direção.
 
-Na Me Joy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
+Na MeJoy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
 
 Se fizer sentido para você, comece pela triagem.
 

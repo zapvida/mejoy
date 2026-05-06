@@ -115,7 +115,7 @@ export default function RelatoriosPage() {
   return (
     <>
       <Head>
-        <title>Meus Relatórios | Me Joy</title>
+        <title>Meus Relatórios | MeJoy</title>
         <meta name="description" content="Acompanhe todos os seus relatórios de saúde gerados" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>

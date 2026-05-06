@@ -151,7 +151,7 @@ export async function importCatalogFromCSV(
       .map((t) => t.replace(/&/g, '-').trim())
       .filter(Boolean);
 
-    const seoTitle = (row.seo_title || row.name).replace('Moonjoy', 'Me Joy').replace('MoonJoy', 'Me Joy');
+    const seoTitle = (row.seo_title || row.name).replace('MeJoy', 'MeJoy').replace('MeJoy', 'MeJoy');
 
     try {
       const existing = await prisma.product.findUnique({ where: { sku: row.sku } });

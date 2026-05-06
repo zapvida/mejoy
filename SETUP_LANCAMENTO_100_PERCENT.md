@@ -1,4 +1,4 @@
-# Setup Lançamento 100% — Store V2 Me Joy
+# Setup Lançamento 100% — Store V2 MeJoy
 
 **Objetivo:** Validar em produção o e-commerce completo (home, categorias, produtos, carrinho, checkout PIX) com produtos carregados e alinhados.
 

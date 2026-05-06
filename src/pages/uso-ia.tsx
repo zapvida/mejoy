@@ -6,14 +6,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FiArrowLeft, FiCpu, FiShield, FiEye, FiCheckCircle } from 'react-icons/fi';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 export default function UsoIAPage() {
   return (
     <>
       <Head>
-        <title>Uso de Inteligência Artificial | Me Joy</title>
-        <meta name="description" content="Informações sobre como o Me Joy utiliza Inteligência Artificial para gerar relatórios personalizados de saúde." />
+        <title>Uso de Inteligência Artificial | MeJoy</title>
+        <meta name="description" content="Informações sobre como o MeJoy utiliza Inteligência Artificial para gerar relatórios personalizados de saúde." />
       </Head>
 
       <main className="min-h-screen bg-gradient-to-br from-[#000000] via-[#000000] to-[#000000] text-white">
@@ -25,7 +25,7 @@ export default function UsoIAPage() {
           className="bg-black/20 backdrop-blur-md border-b border-white/10 py-4"
         >
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <Logo size="small" />
+            <LogoWithName size="small" variant="inverse" />
             <Link href="/" className="inline-flex items-center text-brand hover:text-brand/80 transition-colors">
               <FiArrowLeft className="mr-2" />
               <span className="hidden sm:inline">Voltar ao início</span>
@@ -54,7 +54,7 @@ export default function UsoIAPage() {
                   Transparência e Ética
                 </h2>
                 <p className="text-white/80 leading-relaxed text-sm sm:text-base">
-                  O Me Joy utiliza Inteligência Artificial (IA) de forma transparente e ética para gerar relatórios personalizados de saúde baseados em suas respostas aos questionários de triagem. Esta página explica como utilizamos a IA e quais são seus direitos.
+                  O MeJoy utiliza Inteligência Artificial (IA) de forma transparente e ética para gerar relatórios personalizados de saúde baseados em suas respostas aos questionários de triagem. Esta página explica como utilizamos a IA e quais são seus direitos.
                 </p>
               </section>
 
@@ -178,4 +178,3 @@ export default function UsoIAPage() {
     </>
   );
 }
-

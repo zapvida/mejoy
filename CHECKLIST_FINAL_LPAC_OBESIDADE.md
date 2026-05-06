@@ -23,9 +23,9 @@
 - **Arquivo:** `PlansSectionObesidade.tsx` (NOVO)
 - **Status:** ✅ Criado e integrado
 - **Planos:**
-  1. Plano Essencial MonJoy
-  2. Plano Metabólico MonJoy (com badge "Mais escolhido")
-  3. Plano Total MonJoy
+  1. Plano Essencial MeJoy
+  2. Plano Metabólico MeJoy (com badge "Mais escolhido")
+  3. Plano Total MeJoy
 - **Posição:** Antes do FAQ
 
 ### 4. ✅ Componentes de Imagem Prontos

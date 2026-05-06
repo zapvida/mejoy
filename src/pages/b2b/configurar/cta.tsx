@@ -6,7 +6,7 @@ export default function StepCtasPage() {
   return (
     <>
       <Head>
-        <title>CTA — Personalize sua marca | Me Joy</title>
+        <title>CTA — Personalize sua marca | MeJoy</title>
         <meta name="description" content="Configure o botão de ação principal. Preview em tempo real." />
       </Head>
       <RunnerLayout 

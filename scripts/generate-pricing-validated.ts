@@ -272,10 +272,10 @@ function main() {
     const shortBenefit = priceRow?.shortBenefit ?? '';
 
     let nome = priceRow?.nome ?? catRow.name ?? '';
-    let seoTitle = priceRow?.seoTitle ?? `${nome} | Me Joy`;
+    let seoTitle = priceRow?.seoTitle ?? `${nome} | MeJoy`;
     nome = normalizeWithTokens(nome);
     seoTitle = normalizeWithTokens(seoTitle);
-    if (!seoTitle.endsWith(' | Me Joy')) seoTitle = `${seoTitle} | Me Joy`;
+    if (!seoTitle.endsWith(' | MeJoy')) seoTitle = `${seoTitle} | MeJoy`;
 
     let description = priceRow?.description ?? '';
     description = protectTokens(description);

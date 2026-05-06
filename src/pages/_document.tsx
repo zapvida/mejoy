@@ -19,10 +19,10 @@ class MyDocument extends Document {
           <link rel="manifest" href="/manifest.webmanifest" />
 
           {/* Meta globais */}
-          <meta name="author" content="Me Joy" />
-          <meta name="copyright" content="© 2025 Me Joy" />
+          <meta name="author" content="MeJoy" />
+          <meta name="copyright" content="© 2025 MeJoy" />
 
-          {/* 🔥 Favicon - Me Joy Farma */}
+          {/* 🔥 Favicon - MeJoy */}
           <link rel="icon" type="image/svg+xml" href="/logosmejoy/me-mark.svg" />
           <link rel="icon" type="image/png" sizes="32x32" href="/logosmejoy/faviconmejoy.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/logosmejoy/faviconmejoy.png" />

@@ -102,7 +102,7 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
     section: 3,
     title: 'Falta só entender seu objetivo e onde enviar o resultado.',
     description:
-      'Com isso, a Me Joy monta sua leitura inicial e orienta o próximo passo pelo canal oficial.',
+      'Com isso, a MeJoy monta sua leitura inicial e orienta o próximo passo pelo canal oficial.',
     note: 'Prescrição e medicação somente quando indicadas após avaliação médica.',
     ctaLabel: 'Gerar meu resultado inicial',
     submit: true,

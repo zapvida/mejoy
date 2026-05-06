@@ -103,7 +103,7 @@
 |------|--------|------------|
 | CRM médicos ativo | ⚠️ | Validar com jurídico |
 | CRM jurisdição | ⚠️ | Validar com jurídico |
-| CNES Me Joy | ⚠️ | Validar com jurídico |
+| CNES MeJoy | ⚠️ | Validar com jurídico |
 | Prontuário data/hora | ⚠️ | Verificar implementação |
 | Prontuário canal | ⚠️ | Verificar implementação |
 | Prontuário conteúdo | ⚠️ | Verificar implementação |

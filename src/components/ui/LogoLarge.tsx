@@ -4,26 +4,28 @@ import { useState } from 'react';
 interface LogoLargeProps {
   className?: string;
   priority?: boolean;
+  variant?: 'primary' | 'inverse';
 }
 
 const LogoLarge: React.FC<LogoLargeProps> = ({ 
   className = '', 
-  priority = false 
+  priority = false,
+  variant = 'primary',
 }) => {
   const [imageError, setImageError] = useState(false);
   
   if (imageError) {
     return (
       <div className={`flex items-center justify-center ${className}`}>
-        <span className="text-4xl font-bold text-brand">Me Joy</span>
+        <span className={`text-4xl font-bold ${variant === 'inverse' ? 'text-white' : 'text-foreground'}`}>MeJoy</span>
       </div>
     );
   }
   
   return (
     <Image
-      src="/logosmejoy/logomejoy.png"
-      alt="Me Joy Farma"
+      src={variant === 'inverse' ? '/logosmejoy/logomejoy-inverse.svg' : '/logosmejoy/logomejoy.svg'}
+      alt="MeJoy"
       width={320}
       height={96}
       priority={priority}

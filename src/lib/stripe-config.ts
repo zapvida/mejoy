@@ -55,8 +55,8 @@ export const STRIPE_CONFIG = {
 
   // Configurações de produto
   PRODUCT: {
-    name: 'Me Joy',
-    description: 'Acesso completo aos recursos do Me Joy'
+    name: 'MeJoy',
+    description: 'Acesso completo aos recursos do MeJoy'
   }
 };
 

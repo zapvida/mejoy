@@ -19,7 +19,7 @@ test.describe('Homepage Medvi Journey @pr-regression', () => {
   test('renderiza o hub na raiz com header, hero e CTA principal', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/Triagem online|Me Joy/i);
+    await expect(page).toHaveTitle(/Triagem online|MeJoy/i);
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
     await expect(page.getByTestId('home-medvi-header')).toBeVisible();
     await expect(page.getByTestId('home-hub-hero')).toBeVisible();

@@ -1,4 +1,4 @@
--- Store V2: E-commerce 200 SKUs (Me Joy)
+-- Store V2: E-commerce 200 SKUs (MeJoy)
 -- CreateTable
 CREATE TABLE "store_v2_products" (
     "id" TEXT NOT NULL,

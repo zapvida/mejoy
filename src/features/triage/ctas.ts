@@ -305,7 +305,7 @@ export function buildCTAsGI(input: BuildCTAsGIInput): BuildCTAsGIResult {
   };
   const zapfarmPrimary: CTA = {
     id:"zapfarmPrimary",
-    label: withEmoji(redFlag ? "Plano digestivo com base no seu caso" : (brandAffinity==="zapfarm" ? "Continuar com o Me Joy" : "Conhecer o Me Joy"),"zapfarm","primary",redFlag),
+    label: withEmoji(redFlag ? "Plano digestivo com base no seu caso" : (brandAffinity==="zapfarm" ? "Continuar com o MeJoy" : "Conhecer o MeJoy"),"zapfarm","primary",redFlag),
     href: appendUtm(`${ZAPFARM_BASE}`, { ...utm, content: `${slug}_zapfarm_primary` }),
     track: { brand:"zapfarm", variant:"primary" },
   };

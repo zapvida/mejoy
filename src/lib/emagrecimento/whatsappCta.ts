@@ -54,6 +54,6 @@ export function buildEmagrecimentoReportWhatsappUrl(params: {
   const reportUrl = `${base}${path.startsWith('/') ? '' : '/'}${path}`;
   const name = params.firstName?.trim();
   const greeting = name ? `Oi, sou ${name}.` : 'Oi!';
-  const text = `${greeting} Concluí a triagem na Me Joy e quero receber meu relatório e próximos passos por aqui: ${reportUrl}`;
+  const text = `${greeting} Concluí a triagem na MeJoy e quero receber meu relatório e próximos passos por aqui: ${reportUrl}`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }

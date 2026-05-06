@@ -56,7 +56,7 @@ POSTS = [
             """\
             Se você já tentou recomeçar muitas vezes, talvez o que faltou não tenha sido esforço. Faltou direção.
 
-            Na Me Joy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
+            Na MeJoy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
 
             Se fizer sentido para você, comece pela triagem.
 
@@ -333,7 +333,7 @@ def add_shadow(base: Image.Image, box: tuple[int, int, int, int], radius: int = 
 
 
 def draw_brand(draw: ImageDraw.ImageDraw) -> None:
-    label = "ME JOY"
+    label = "MEJOY"
     f = font(32, bold=True)
     bbox = draw.textbbox((0, 0), label, font=f)
     pill_w = bbox[2] - bbox[0] + 54

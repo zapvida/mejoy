@@ -21,7 +21,7 @@ Formato final: `1080x1350` (4:5), pronto para feed e boost posterior.
 
 Emagrecer com segurança não começa na pressa. Começa em entender o seu caso, o seu histórico e o que faz sentido sustentar na vida real.
 
-Aqui na Me Joy Farma, o ponto de partida é simples: triagem, avaliação médica e acompanhamento contínuo. Sem promessa milagrosa. Sem tentativa aleatória.
+Aqui na MeJoy Farma, o ponto de partida é simples: triagem, avaliação médica e acompanhamento contínuo. Sem promessa milagrosa. Sem tentativa aleatória.
 
 Se você quer começar com mais clareza e menos ruído, esse perfil foi feito para você.
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { MeJoyBrand } from '@/components/ui/MeJoyBrand';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 interface EmagrecimentoLayoutProps {
   children: React.ReactNode;
@@ -50,11 +50,18 @@ export function EmagrecimentoLayout({ children, showStickyCta = false }: Emagrec
           <div className="flex items-center justify-between h-20 sm:h-16 md:h-20">
             <Link href="/emagrecimento" className="flex items-center shrink-0">
               <div className="rounded-full bg-white/95 px-3 py-2 shadow-sm ring-1 ring-black/5">
-                <MeJoyBrand
-                  iconClassName="h-8 w-8 rounded-xl"
-                  titleClassName="text-[15px]"
-                  subtitle="Me cuido. Me amo!"
-                  subtitleClassName="mt-0.5 text-[10px] font-semibold tracking-[-0.01em] text-slate-500"
+                <LogoWithName
+                  size="small"
+                  priority
+                  tagline="Me cuido. Me amo!"
+                  taglineBelow
+                  nameClassName="text-slate-950"
+                  taglineContent={
+                    <>
+                      <span style={{ color: '#1f2937' }}>Me cuido. </span>
+                      <span style={{ color: '#2f6a49' }}>Me amo!</span>
+                    </>
+                  }
                 />
               </div>
             </Link>

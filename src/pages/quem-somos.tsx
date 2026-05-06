@@ -8,8 +8,8 @@ export default function QuemSomos() {
   return (
     <>
       <Head>
-        <title>Quem Somos | Me Joy</title>
-        <meta name="description" content="Conheça a equipe do Me Joy - Médicos, engenheiros e cientistas dedicados à revolução da saúde." />
+        <title>Quem Somos | MeJoy</title>
+        <meta name="description" content="Conheça a equipe do MeJoy - Médicos, engenheiros e cientistas dedicados à revolução da saúde." />
       </Head>
       <main className="min-h-screen bg-black text-white">
         <Navbar />
@@ -21,7 +21,7 @@ export default function QuemSomos() {
               </h1>
               <div className="space-y-6 text-base md:text-lg text-muted-foreground">
                 <p>
-                  O <span className="text-brand font-bold">Me Joy</span> nasceu com a missão de revolucionar a saúde, trazendo a medicina preditiva, preventiva e de precisão para a vida de milhares de pessoas.
+                  O <span className="text-brand font-bold">MeJoy</span> nasceu com a missão de revolucionar a saúde, trazendo a medicina preditiva, preventiva e de precisão para a vida de milhares de pessoas.
                 </p>
                 <p>
                   Somos uma plataforma de saúde digital que combina <span className="font-semibold text-white">inteligência artificial</span>, análise de dados, ciência médica e atendimento humano. Nosso propósito é democratizar o acesso à informação de saúde, permitindo que qualquer pessoa compreenda seu corpo, seu metabolismo e seus riscos de maneira clara, científica e personalizada.
@@ -40,7 +40,7 @@ export default function QuemSomos() {
             <div className="flex-1">
               <Image
                 src="/images/familia.png"
-                alt="Equipe Me Joy"
+                alt="Equipe MeJoy"
                 width={600}
                 height={450}
                 className="rounded-xl shadow-green-lg mx-auto"

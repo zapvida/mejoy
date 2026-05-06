@@ -11,7 +11,7 @@ export default function ComoFuncionaPage() {
   return (
     <>
       <Head>
-        <title>Como funciona o tratamento de emagrecimento da Me Joy | Check-up online e GLP-1 com segurança</title>
+        <title>Como funciona o tratamento de emagrecimento da MeJoy | Check-up online e GLP-1 com segurança</title>
         <meta
           name="description"
           content="Passo a passo completo do tratamento de emagrecimento: triagem online, avaliação médica, prescrição quando indicada e acompanhamento contínuo. 100% online com endocrinologista."

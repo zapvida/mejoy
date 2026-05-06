@@ -54,7 +54,7 @@ export function ReportPlanSuggestion({ vm }: Props) {
 
   return (
     <section className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-purple-100">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Plano Recomendado Me Joy</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Plano Recomendado MeJoy</h2>
       
       <div className="bg-gradient-to-r from-purple-50 to-orange-50 rounded-lg sm:rounded-xl p-4 sm:p-6 border-2 border-purple-300 mb-4">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">

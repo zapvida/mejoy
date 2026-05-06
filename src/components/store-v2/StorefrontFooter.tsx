@@ -89,7 +89,7 @@ export default function StorefrontFooter() {
           </p>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm">
-              © {currentYear} Me Joy. Farmácia de manipulação online.
+              © {currentYear} MeJoy. Farmácia de manipulação online.
             </p>
             <div className="flex gap-6">
             <Link href="/faq" className="text-sm hover:text-brand-400 transition-colors">Dúvidas</Link>

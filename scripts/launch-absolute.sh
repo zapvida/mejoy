@@ -3,7 +3,7 @@
 # Uso: ./scripts/launch-absolute.sh
 set -euo pipefail
 
-echo "== Lançamento Absoluto Me Joy =="
+echo "== Lançamento Absoluto MeJoy =="
 echo ""
 
 echo "1. Lint..."

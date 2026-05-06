@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
 import { formatPrice } from '@/lib/stripe-config';
 
@@ -27,7 +28,7 @@ const BillingPage = () => {
 
   useEffect(() => {
     trackEvent('page_view', {
-      page_title: 'Billing - Me Joy Plus',
+      page_title: 'Billing - MeJoy Plus',
       page_location: window.location.href
     });
 
@@ -117,10 +118,10 @@ const BillingPage = () => {
   return (
     <>
       <Head>
-        <title>Cobrança - Me Joy Plus</title>
-        <meta name="description" content="Gerencie sua assinatura e faturas do Me Joy Plus." />
-        <meta property="og:title" content="Cobrança - Me Joy Plus" />
-        <meta property="og:description" content="Gerencie sua assinatura e faturas do Me Joy Plus." />
+        <title>Cobrança - MeJoy Plus</title>
+        <meta name="description" content="Gerencie sua assinatura e faturas do MeJoy Plus." />
+        <meta property="og:title" content="Cobrança - MeJoy Plus" />
+        <meta property="og:description" content="Gerencie sua assinatura e faturas do MeJoy Plus." />
         <link rel="canonical" href="https://zapfarm.com.br/billing" />
       </Head>
 
@@ -136,8 +137,8 @@ const BillingPage = () => {
                 >
                   <ArrowLeftIcon className="h-6 w-6" />
                 </button>
-                <img src="/logosmejoy/logomejoy.png" alt="Me Joy Farma" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">Me Joy Plus</span>
+                <LogoWithName size="small" variant="inverse" priority />
+                <span className="text-xl font-bold text-white">MeJoy Plus</span>
               </div>
               <button
                 onClick={() => router.push('/dashboard')}

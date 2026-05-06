@@ -9,8 +9,8 @@ export default function DadosFiscaisPage() {
   return (
     <>
       <Head>
-        <title>Dados Fiscais | Me Joy</title>
-        <meta name="description" content="Dados fiscais e informações legais da Me Joy" />
+        <title>Dados Fiscais | MeJoy</title>
+        <meta name="description" content="Dados fiscais e informações legais da MeJoy" />
       </Head>
 
       <main className="min-h-screen bg-bg">
@@ -37,7 +37,7 @@ export default function DadosFiscaisPage() {
               <div className="space-y-6 text-ink-muted leading-relaxed">
                 <section>
                   <h2 className="text-lg font-semibold text-ink mb-2">Razão Social</h2>
-                  <p>{process.env.NEXT_PUBLIC_LEGAL_NAME || 'Me Joy Tecnologia em Saúde Ltda.'}</p>
+                  <p>{process.env.NEXT_PUBLIC_LEGAL_NAME || 'MeJoy Tecnologia em Saúde Ltda.'}</p>
                 </section>
 
                 <section>

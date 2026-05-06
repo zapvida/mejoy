@@ -136,7 +136,7 @@ Cada produto deve ser montado por estrutura de dados:
 
 ## 9. Copywriting vs Concorrente (Akkermat)
 
-| Aspecto | Me Joy | OficialFarma |
+| Aspecto | MeJoy | OficialFarma |
 |---------|--------|--------------|
 | **Benefícios** | 6 itens (benefício + mecanismo) | 6 itens |
 | **O que é** | Fitocomplexo GLP-1, saciedade, termogênico | Texto científico |

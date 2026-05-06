@@ -316,11 +316,11 @@ export function toReportData(answers: any, patientBasics?: any): any {
 
 function generateSuplementacaoContent(usoZapFarm: boolean, usaOutro: boolean, nuncaSup: boolean, brandAffinity: string): string {
   if (usoZapFarm) {
-    return `Você já conhece o Me Joy! Continue seguindo as orientações do produto e mantenha hábitos saudáveis. Evite sobreposições com outros suplementos digestivos sem orientação médica.`;
+    return `Você já conhece o MeJoy! Continue seguindo as orientações do produto e mantenha hábitos saudáveis. Evite sobreposições com outros suplementos digestivos sem orientação médica.`;
   }
   
   if (usaOutro) {
-    return `Você usa outro suplemento digestivo. Considere revisar a composição, tempo de uso e qualidade com um profissional. O Me Joy pode ser uma alternativa integrativa.`;
+    return `Você usa outro suplemento digestivo. Considere revisar a composição, tempo de uso e qualidade com um profissional. O MeJoy pode ser uma alternativa integrativa.`;
   }
   
   return `Suplementação digestiva pode ser uma aliada importante no seu caso. Consulte um profissional para orientação sobre produtos adequados e dosagens seguras.`;

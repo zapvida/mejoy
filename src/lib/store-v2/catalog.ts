@@ -10,7 +10,7 @@ import { objectiveToSlug } from './slugs';
 const AKKERMAT_SLUGS = ['akkermat-150-mg-30-capsulas'];
 const AKKERMAT_IMG = '/products/akkermat-150mg.png';
 
-/** Convenção: imagens Me Joy em public/products/{slug}.png */
+/** Convenção: imagens MeJoy em public/products/{slug}.png */
 function resolveProductImages(slug: string, dbImages: string[]): string[] {
   if (AKKERMAT_SLUGS.includes(slug)) return Array(5).fill(AKKERMAT_IMG);
   if (Array.isArray(dbImages) && dbImages.length > 0) {

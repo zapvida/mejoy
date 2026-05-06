@@ -19,7 +19,7 @@ export function ResultsSection() {
       age: 45,
       location: 'Rio de Janeiro',
       result: 'Em 1 mês perdi 5 kg',
-      quote: 'Já tinha tentado de tudo sem sucesso. Com a Me Joy, a injeção tira a fome e o médico ajustou minhas metas. Estou muito mais confiante!',
+      quote: 'Já tinha tentado de tudo sem sucesso. Com a MeJoy, a injeção tira a fome e o médico ajustou minhas metas. Estou muito mais confiante!',
       rating: 5,
     },
     {

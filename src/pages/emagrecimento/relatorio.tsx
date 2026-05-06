@@ -160,7 +160,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
     return (
       <>
         <Head>
-        <title>Relatório não encontrado | Me Joy</title>
+        <title>Relatório não encontrado | MeJoy</title>
         </Head>
         <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white">
           <div className="text-center">
@@ -181,7 +181,7 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
   return (
     <>
       <Head>
-        <title>Relatório de Emagrecimento | Me Joy</title>
+        <title>Relatório de Emagrecimento | MeJoy</title>
         <meta name="description" content={`Relatório personalizado de emagrecimento para ${vm.basics.firstName}`} />
       </Head>
 

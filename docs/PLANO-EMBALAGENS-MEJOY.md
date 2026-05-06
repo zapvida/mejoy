@@ -1,22 +1,22 @@
-# Plano de Embalagens — Me Joy
+# Plano de Embalagens — MeJoy
 
-> **Objetivo:** Cada produto exibe embalagem Me Joy Farma com nome do produto, conforme validado no Akkermat.
+> **Objetivo:** Cada produto exibe embalagem MeJoy Farma com nome do produto, conforme validado no Akkermat.
 
 ---
 
 ## Situação corrigida (2026-03-08)
 
 ### Problema
-Produtos sem imagem no banco exibiam fallback **MetaboSlim** (ZapFarm) em vez da embalagem Me Joy.
+Produtos sem imagem no banco exibiam fallback **MetaboSlim** (ZapFarm) em vez da embalagem MeJoy.
 
 ### Solução implementada
-1. **ProductPackShot** — Usa base `/mejoy1branco.png` (Me Joy Farma) + overlay dinâmico com nome do produto e dose.
+1. **ProductPackShot** — Usa base `/mejoy1branco.png` (MeJoy Farma) + overlay dinâmico com nome do produto e dose.
 2. **shouldUsePackShot** — Agora detecta `metaboslim` e `zapfarm` como placeholders → usa PackShot.
 3. **PDP** — Produtos sem imagem real usam ProductPackShot (embalagem branca + nome). Akkermat mantém imagem dedicada.
 
 ### Resultado
 - **Akkermat:** `/products/akkermat-150mg.png` (imagem dedicada)
-- **Demais produtos sem imagem:** ProductPackShot com nome do produto na embalagem Me Joy
+- **Demais produtos sem imagem:** ProductPackShot com nome do produto na embalagem MeJoy
 
 ---
 
@@ -48,7 +48,7 @@ Produtos sem imagem no banco exibiam fallback **MetaboSlim** (ZapFarm) em vez da
 
 ## Checklist para imagens dedicadas
 
-1. [ ] Gerar imagens no padrão Akkermat (Me Joy Farma, nome do produto)
+1. [ ] Gerar imagens no padrão Akkermat (MeJoy Farma, nome do produto)
 2. [ ] Salvar em `public/products/{slug}.png`
 3. [ ] Rodar `pnpm run sync:product-images` para validar
 4. [ ] Validar em PDP, cart, checkout
@@ -61,5 +61,5 @@ Produtos sem imagem no banco exibiam fallback **MetaboSlim** (ZapFarm) em vez da
 |---------|--------|
 | `src/components/store-v2/ProductPackShot.tsx` | Embalagem dinâmica (base + nome) |
 | `src/pages/p/[slug].tsx` | Lógica de imagens na PDP |
-| `public/mejoy1branco.png` | Base da embalagem Me Joy |
+| `public/mejoy1branco.png` | Base da embalagem MeJoy |
 | `public/products/akkermat-150mg.png` | Imagem dedicada Akkermat |

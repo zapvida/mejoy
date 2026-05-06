@@ -71,7 +71,7 @@ export default function TriageResumoPage() {
 
   const Title = () => (
     <Head>
-      <title>Resumo • {slug ?? "triagem"} | Me Joy</title>
+      <title>Resumo • {slug ?? "triagem"} | MeJoy</title>
       <meta name="robots" content="noindex" />
     </Head>
   );

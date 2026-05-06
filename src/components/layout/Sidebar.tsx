@@ -19,6 +19,8 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 import { useAuth } from '@/context/AuthContext';
+import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -47,13 +49,11 @@ export default function Sidebar() {
         {/* Logo e botão */}
         <div className="flex items-center justify-between px-4 py-4">
           <Link href="/dashboard" className="flex items-center shrink-0">
-            <img
-              src={isExpanded ? '/logosmejoy/logomejoy.png' : '/logosmejoy/faviconmejoy.png'}
-              alt="Me Joy Farma"
-              className={`transition-all object-contain hover:opacity-80 ${
-                isExpanded ? 'h-9 w-auto max-w-[140px]' : 'h-9 w-9'
-              }`}
-            />
+            {isExpanded ? (
+              <LogoWithName size="small" className="transition-all hover:opacity-80" />
+            ) : (
+              <Logo size="small" className="h-9 w-9 transition-all hover:opacity-80" />
+            )}
           </Link>
           <button
             onClick={() => setIsExpanded(!isExpanded)}

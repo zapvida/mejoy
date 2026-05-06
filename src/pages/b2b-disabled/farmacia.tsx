@@ -34,9 +34,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Me Joy para Farmácias — Fidelize com Saúde e Inovação</title>
+        <title>MeJoy para Farmácias — Fidelize com Saúde e Inovação</title>
         <meta name="description" content="Ofereça check-up digital gratuito em sua farmácia e fidelize clientes com tecnologia baseada em IA." />
-        <meta property="og:title" content="Me Joy para Farmácias" />
+        <meta property="og:title" content="MeJoy para Farmácias" />
         <meta property="og:description" content="Check-up digital gratuito para seus clientes. Rápido, científico e com inteligência artificial." />
         <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
         <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
@@ -119,7 +119,7 @@ export default function Home() {
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <h2 className="text-3xl font-bold">🏥 Tem uma farmácia ou drogaria?</h2>
               <p className="text-white/80 text-lg">
-                Leve a Me Joy para o seu balcão e ofereça saúde preditiva aos seus clientes. Uma nova forma de fidelizar com cuidado e tecnologia.
+                Leve a MeJoy para o seu balcão e ofereça saúde preditiva aos seus clientes. Uma nova forma de fidelizar com cuidado e tecnologia.
               </p>
               <p className="text-white/70 text-base">
                 A triagem é gratuita e gera um relatório claro. Seu time pode orientar melhor, indicar produtos e gerar mais retorno para o negócio.
@@ -138,7 +138,7 @@ export default function Home() {
                     {/* Missão / Visão / Valores */}
           <section className="py-14 px-4 sm:px-6 lg:px-8 bg-black/20 backdrop-blur-md mt-10">
             <div className="max-w-7xl mx-auto text-center space-y-12">
-              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o Me Joy foi criado?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o MeJoy foi criado?</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-bg border border-border p-6 rounded-2xl shadow-lg">
@@ -196,7 +196,7 @@ export default function Home() {
             <div className="max-w-6xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6">🔬 Autoridade e Confiança</h2>
               <p className="text-white/80 mb-8 text-lg max-w-3xl mx-auto">
-                O Me Joy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
+                O MeJoy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
               </p>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex flex-wrap justify-center gap-6">
@@ -303,8 +303,8 @@ export default function Home() {
 
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.png"
-              alt="Logo Me Joy Animada"
+              src="/logosmejoy/logomejoy.svg"
+              alt="Logo MeJoy"
               width={240}
               height={240}
               className="object-contain animate-pulse"

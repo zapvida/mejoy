@@ -6,7 +6,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import MobileTabBar from '@/components/mobile/MobileTabBar';
 import MobileTopBar from '@/components/mobile/MobileTopBar';
 import { formularios } from '@/forms';
-import { useResponsive } from '@/hooks/useResponsive';
 import { track } from '@/lib/analytics';
 import { ZAPFARM_PRODUCTS } from '@/config/zapfarm/products';
 import { getSearchSuggestions } from '@/lib/search/intelligent-search';
@@ -47,7 +46,6 @@ interface ProtocoloCard {
 
 export default function ProtocolosIndex() {
   const router = useRouter();
-  const { isMobile } = useResponsive();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -190,22 +188,19 @@ export default function ProtocolosIndex() {
   return (
     <>
       <Head>
-        <title>Protocolos de Saúde | Me Joy</title>
+        <title>Protocolos de Saúde | MeJoy</title>
         <meta name="description" content="Escolha seu protocolo de saúde personalizado com acompanhamento médico especializado" />
       </Head>
 
-      {/* Mobile Navigation */}
-      {isMobile && (
-        <>
-          <MobileTopBar title="Protocolos" />
-          <MobileTabBar />
-        </>
-      )}
+      <MobileTopBar title="Protocolos" />
+      <MobileTabBar />
 
-      <main className={`min-h-screen bg-white text-gray-900 ${isMobile ? 'pt-20 pb-[calc(64px+env(safe-area-inset-bottom))]' : ''}`} data-testid="page-protocolos">
+      <main
+        className="min-h-screen bg-white pb-[calc(64px+env(safe-area-inset-bottom))] pt-20 text-gray-900 md:pb-0 md:pt-0"
+        data-testid="page-protocolos"
+      >
         {/* Navigation Bar - Desktop Only */}
-        {!isMobile && (
-          <div className="px-4 py-3">
+        <div className="hidden px-4 py-3 md:block">
             <div className="flex items-center justify-between max-w-6xl mx-auto">
               <button
                 onClick={() => router.push('/')}
@@ -225,8 +220,7 @@ export default function ProtocolosIndex() {
                 </span>
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
         {/* Header Enriquecido */}
         <div className="px-4 pb-6">
@@ -434,4 +428,3 @@ export default function ProtocolosIndex() {
     </>
   );
 }
-

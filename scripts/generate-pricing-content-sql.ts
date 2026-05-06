@@ -96,7 +96,7 @@ function generatePrice(formKey: string, packSize: string, name: string, ingredie
 }
 
 function sanitizeBrand(s: string): string {
-  return (s || '').replace(/Moonjoy/gi, 'Me Joy');
+  return (s || '').replace(/MeJoy/gi, 'MeJoy');
 }
 
 function escapeSql(s: string): string {
@@ -129,8 +129,8 @@ function generateFromCatalog(): PricingRow[] {
     const priceCents = generatePrice(formKey, packSize, name, ingredients, requiresRx);
     const shortBenefit = `Fórmula manipulada para apoiar ${objective.toLowerCase()}. Qualidade e entrega nacional.`;
     const description = `${name} é uma fórmula manipulada que pode contribuir para seu bem-estar. Composição: ${ingredients || 'conforme prescrição'}. Use conforme orientação do seu médico ou nutricionista. Manter em local seco, longe da luz. Consulte um profissional de saúde antes do uso.`;
-    const seoTitle = sanitizeBrand(`${name} | Me Joy`);
-    const seoDescription = sanitizeBrand(`${name}. Fórmula manipulada. Entrega em todo Brasil. Me Joy.`);
+    const seoTitle = sanitizeBrand(`${name} | MeJoy`);
+    const seoDescription = sanitizeBrand(`${name}. Fórmula manipulada. Entrega em todo Brasil. MeJoy.`);
     result.push({ sku, priceCents, compareAtCents: null, shortBenefit, description, seoTitle, seoDescription });
   }
   return result;
@@ -156,8 +156,8 @@ function loadPricingCSV(): PricingRow[] {
       compareAtCents: compareAtCents != null && compareAtCents > 0 ? compareAtCents : null,
       shortBenefit: shortBenefit || `Fórmula manipulada com qualidade. Entrega nacional.`,
       description: description || shortBenefit || `Fórmula manipulada. Use conforme orientação profissional.`,
-      seoTitle: seoTitle || `${sku} | Me Joy`,
-      seoDescription: seoDescription || `Fórmula manipulada. Entrega em todo Brasil. Me Joy.`,
+      seoTitle: seoTitle || `${sku} | MeJoy`,
+      seoDescription: seoDescription || `Fórmula manipulada. Entrega em todo Brasil. MeJoy.`,
     });
   }
   return result;
@@ -175,7 +175,7 @@ function main() {
     const csvHeader = 'sku,priceCents,nome,compareAtCents,shortBenefit,description,seoTitle,seoDescription';
     const csvLines = rows.map(
       (r) => {
-        const nome = (r.seoTitle || '').replace(/\s*\|\s*Me Joy\s*$/i, '').trim();
+        const nome = (r.seoTitle || '').replace(/\s*\|\s*MeJoy\s*$/i, '').trim();
         return `${r.sku},${r.priceCents},"${nome.replace(/"/g, '""')}",${r.compareAtCents ?? ''},"${(r.shortBenefit || '').replace(/"/g, '""')}","${(r.description || '').replace(/"/g, '""')}","${(r.seoTitle || '').replace(/"/g, '""')}","${(r.seoDescription || '').replace(/"/g, '""')}"`;
       }
     );
@@ -202,7 +202,7 @@ function main() {
     process.exit(1);
   }
 
-  // Validar: Moonjoy
+  // Validar: MeJoy
   const moonjoyRows = rows.filter(
     (r) =>
       /moonjoy/i.test(r.seoTitle) ||
@@ -211,7 +211,7 @@ function main() {
       /moonjoy/i.test(r.description)
   );
   if (moonjoyRows.length > 0) {
-    console.error('❌ "Moonjoy" encontrado em:', moonjoyRows.map((r) => r.sku).join(', '));
+    console.error('❌ "MeJoy" encontrado em:', moonjoyRows.map((r) => r.sku).join(', '));
     process.exit(1);
   }
 
@@ -300,7 +300,7 @@ UPDATE store_v2_product_variants SET "priceCents" = 9900;
 UPDATE store_v2_products SET
   "shortBenefit" = 'Fórmula manipulada para apoiar seu objetivo com praticidade e recorrência.',
   description = NULL,
-  "seoTitle" = name || ' | Me Joy',
+  "seoTitle" = name || ' | MeJoy',
   "seoDescription" = NULL;
 
 -- 3. Price versions: remove preço "de" (riscado)

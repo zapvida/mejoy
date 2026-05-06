@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import Logo from "@/components/ui/Logo";
+import LogoWithName from "@/components/ui/LogoWithName";
 import type { Report } from "@/lib/report/types";
 
 const riskTone: Record<NonNullable<Report["scores"]["level"]>, { label: string; className: string }> = {
@@ -29,7 +29,9 @@ export function ReportHeader({ report, onPrint }: ReportHeaderProps) {
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 pb-16 pt-12 sm:pt-16">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-center gap-3 text-sm text-white/60 print:text-slate-500">
-            <Logo />
+            <div className="rounded-full bg-white/95 px-3 py-2 shadow-sm ring-1 ring-black/5 print:bg-transparent print:px-0 print:py-0 print:shadow-none print:ring-0">
+              <LogoWithName size="small" />
+            </div>
             <div className="h-5 w-px bg-white/20" />
             <div>
               <p className="uppercase tracking-[0.35em] text-xs text-white/40 print:text-slate-500">

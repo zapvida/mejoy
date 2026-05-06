@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-[color:var(--border)] text-center text-sm text-ink-muted">
-          <p>© {new Date().getFullYear()} Me Joy. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} MeJoy. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

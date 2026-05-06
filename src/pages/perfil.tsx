@@ -103,7 +103,7 @@ export default function PerfilPage() {
   return (
     <>
       <Head>
-        <title>Meu Perfil | Me Joy</title>
+        <title>Meu Perfil | MeJoy</title>
         <meta name="description" content="Gerencie suas informações pessoais e acompanhe seus dados de saúde" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>

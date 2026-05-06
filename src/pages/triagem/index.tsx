@@ -6,13 +6,11 @@ import React, { useState, useEffect } from 'react';
 import MobileTabBar from '@/components/mobile/MobileTabBar';
 import MobileTopBar from '@/components/mobile/MobileTopBar';
 import { listaTriagens } from '@/forms';
-import { useResponsive } from '@/hooks/useResponsive';
 import { track } from '@/lib/analytics';
 import { intelligentSearch, getSearchSuggestions } from '@/lib/search/intelligent-search';
 
 export default function TriagemIndex() {
   const router = useRouter();
-  const { isMobile } = useResponsive();
   const [openPlan, setOpenPlan] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [hasPaidAccess, setHasPaidAccess] = useState(false);
@@ -97,22 +95,19 @@ export default function TriagemIndex() {
   return (
     <>
       <Head>
-        <title>Triagens | Me Joy</title>
+        <title>Triagens | MeJoy</title>
         <meta name="description" content="Escolha sua triagem de saúde personalizada" />
       </Head>
 
-      {/* Mobile Navigation */}
-      {isMobile && (
-        <>
-          <MobileTopBar title="Triagens" />
-          <MobileTabBar />
-        </>
-      )}
+      <MobileTopBar title="Triagens" />
+      <MobileTabBar />
 
-      <main className={`min-h-screen bg-white text-gray-900 ${isMobile ? 'pt-20 pb-[calc(64px+env(safe-area-inset-bottom))]' : ''}`} data-testid="page-triage">
+      <main
+        className="min-h-screen bg-white pb-[calc(64px+env(safe-area-inset-bottom))] pt-20 text-gray-900 md:pb-0 md:pt-0"
+        data-testid="page-triage"
+      >
         {/* Navigation Bar - Desktop Only */}
-        {!isMobile && (
-          <div className="px-4 py-3">
+        <div className="hidden px-4 py-3 md:block">
             <div className="flex items-center justify-between max-w-6xl mx-auto">
               <button
                 onClick={() => router.push('/')}
@@ -134,8 +129,7 @@ export default function TriagemIndex() {
                 </span>
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
         {/* Header Enriquecido */}
         <div className="px-4 pb-6">

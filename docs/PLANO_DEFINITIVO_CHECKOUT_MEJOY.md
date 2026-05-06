@@ -1,8 +1,8 @@
-# Plano Definitivo: Checkout Me Joy — Layout Zapvida + Máxima Confiança
+# Plano Definitivo: Checkout MeJoy — Layout Zapvida + Máxima Confiança
 
 **Versão:** 2.0 FINAL  
 **Data:** 05/03/2025  
-**Objetivo:** Refatorar o checkout Me Joy com layout idêntico ao Zapvida (anexos), adaptado ao contexto e-commerce, gateway Asaas, e máxima confiança para os clientes.
+**Objetivo:** Refatorar o checkout MeJoy com layout idêntico ao Zapvida (anexos), adaptado ao contexto e-commerce, gateway Asaas, e máxima confiança para os clientes.
 
 ---
 
@@ -106,7 +106,7 @@ Dois badges lado a lado, centralizados:
 
 ### 3.1 Header
 
-- Logo Me Joy à esquerda (link para `/`)
+- Logo MeJoy à esquerda (link para `/`)
 - À direita: ícone Lock + "Ambiente seguro" (`text-gray-600`)
 - `sticky top-0 z-50`, `bg-white/95 backdrop-blur`, `border-b border-gray-100`
 - `px-4 sm:px-6 lg:px-8 py-4`
@@ -163,7 +163,7 @@ Dois badges lado a lado, centralizados:
 
 ### 5.1 Background da página
 
-- Zapvida usa fundo escuro (`#282436` ou similar). Para Me Joy, opções:
+- Zapvida usa fundo escuro (`#282436` ou similar). Para MeJoy, opções:
   - **Opção A:** `bg-gray-100` (mais suave, comum em e-commerce)
   - **Opção B:** `bg-slate-800` ou `bg-gray-900` (mais dramático, destaca os cards)
 
@@ -177,7 +177,7 @@ Recomendação: **Opção A** (`bg-gray-100`) para manter consistência com o re
 
 ---
 
-## 6. Gateway e contexto Me Joy
+## 6. Gateway e contexto MeJoy
 
 - **Gateway:** Asaas (mesmo do Zapvida)
 - **API:** `POST /api/store-v2/create-payment`
@@ -213,4 +213,4 @@ Ver arquivo `PROMPT_CHECKOUT_DEFINITIVO_MEJOY.txt`
 
 ---
 
-*Plano alinhado aos anexos Zapvida. Gateway Asaas. Máxima confiança para clientes Me Joy.*
+*Plano alinhado aos anexos Zapvida. Gateway Asaas. Máxima confiança para clientes MeJoy.*

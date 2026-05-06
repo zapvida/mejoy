@@ -1,4 +1,4 @@
-# Plano Rebrand E-commerce Me Joy — Laranja, Preto e Branco
+# Plano Rebrand E-commerce MeJoy — Laranja, Preto e Branco
 
 ## Executado em: 2025-03-01
 

@@ -24,7 +24,7 @@ export default function ProdutosCatalog({ sections }: ProdutosCatalogProps) {
     return (
       <>
         <Seo
-          title="Todos os produtos | Me Joy"
+          title="Todos os produtos | MeJoy"
           description="Fórmulas manipuladas por objetivo. Curadoria médica e entrega em todo o Brasil."
           path="/produtos"
         />
@@ -46,7 +46,7 @@ export default function ProdutosCatalog({ sections }: ProdutosCatalogProps) {
   return (
     <>
       <Seo
-        title="Todos os produtos | Me Joy"
+        title="Todos os produtos | MeJoy"
         description="Fórmulas manipuladas por objetivo: sono, saúde, cabelo, emagrecimento e mais. Curadoria médica e entrega em todo o Brasil."
         path="/produtos"
         keywords={[
@@ -57,7 +57,7 @@ export default function ProdutosCatalog({ sections }: ProdutosCatalogProps) {
           'cabelo',
           'emagrecimento',
           'intestino',
-          'Me Joy',
+          'MeJoy',
         ]}
       />
       <StorefrontHeader />

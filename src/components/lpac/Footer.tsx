@@ -72,7 +72,7 @@ export default function Footer({ data }: FooterProps) {
           {/* Copyright */}
           <div className="pt-8 border-t border-gray-800">
             <p className="text-sm text-gray-600">
-              © 2024 Me Joy. Todos os direitos reservados.
+              © 2024 MeJoy. Todos os direitos reservados.
             </p>
           </div>
         </motion.div>

@@ -14,7 +14,7 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null;
 // Se EMAIL_FROM usar @gmail.com ou outro domínio não verificado, usar @resend.dev
 function sanitizeEmailFrom(emailFrom: string | undefined): string {
   if (!emailFrom) {
-    return 'Me Joy <onboarding@resend.dev>';
+    return 'MeJoy <onboarding@resend.dev>';
   }
   
   // Se usar @gmail.com, @yahoo.com, @hotmail.com ou outros domínios não verificados, substituir por @resend.dev
@@ -24,7 +24,7 @@ function sanitizeEmailFrom(emailFrom: string | undefined): string {
   if (hasUnverifiedDomain) {
     // Extrair o nome antes do <
     const nameMatch = emailFrom.match(/^([^<]+)</);
-    const name = nameMatch ? nameMatch[1].trim() : 'Me Joy';
+    const name = nameMatch ? nameMatch[1].trim() : 'MeJoy';
     console.log(`⚠️ [email] EMAIL_FROM usa domínio não verificado, substituindo por @resend.dev: ${emailFrom} → ${name} <onboarding@resend.dev>`);
     return `${name} <onboarding@resend.dev>`;
   }

@@ -6,7 +6,7 @@ export default function StepColorsPage() {
   return (
     <>
       <Head>
-        <title>Cores — Personalize sua marca | Me Joy</title>
+        <title>Cores — Personalize sua marca | MeJoy</title>
         <meta name="description" content="Escolha as cores da sua marca. Preview em tempo real." />
       </Head>
       <RunnerLayout 

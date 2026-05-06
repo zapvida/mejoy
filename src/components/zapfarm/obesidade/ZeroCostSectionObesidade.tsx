@@ -89,7 +89,7 @@ export function ZeroCostSectionObesidade() {
               O que entra no programa antes de você avançar
             </h2>
             <p className="text-base sm:text-lg text-gray-700 text-center leading-relaxed mb-8 sm:mb-10 max-w-3xl mx-auto">
-              A Me Joy transforma suas respostas em uma jornada prática: triagem, avaliação quando indicada, plano e
+              A MeJoy transforma suas respostas em uma jornada prática: triagem, avaliação quando indicada, plano e
               suporte. O que depender de decisão médica é tratado com transparência na consulta.
             </p>
 

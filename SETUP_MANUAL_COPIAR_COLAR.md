@@ -1,6 +1,6 @@
 # Setup manual — copiar e colar
 
-**MonJoy · mejoy.com.br** — Tudo que falta fazer manualmente, pronto para copiar e colar. Validado para lançamento contínuo.
+**MeJoy · mejoy.com.br** — Tudo que falta fazer manualmente, pronto para copiar e colar. Validado para lançamento contínuo.
 
 ---
 
@@ -167,7 +167,7 @@ http://localhost:3000/**
 
 **Assunto (Subject):**
 ```
-Acesse seu painel MonJoy
+Acesse seu painel MeJoy
 ```
 
 **Corpo (Body) — Magic Link (tab "Link"):**
@@ -248,7 +248,7 @@ Ou: Vercel → Deployments → Redeploy (último deploy).
 
 ## 10. Validação pós-deploy (mejoy.com.br)
 
-1. **Home:** https://www.mejoy.com.br → Loja B2C (MonJoy)
+1. **Home:** https://www.mejoy.com.br → Loja B2C (MeJoy)
 2. **Produtos:** https://www.mejoy.com.br/produtos → Catálogo completo
 3. **Protocolos:** https://www.mejoy.com.br/protocolos → Check-up gratuito
 4. **Login:** https://www.mejoy.com.br/login → Magic Link ou E-mail e senha → `/dashboard`

@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
 import { formatPrice } from '@/lib/asaas/config';
 
@@ -29,7 +30,7 @@ const GiftPage = () => {
 
   useEffect(() => {
     trackEvent('page_view', {
-      page_title: 'Presentear - Me Joy Plus',
+      page_title: 'Presentear - MeJoy Plus',
       page_location: window.location.href
     });
   }, [trackEvent]);
@@ -155,10 +156,10 @@ const GiftPage = () => {
   return (
     <>
       <Head>
-        <title>Presentear - Me Joy Plus</title>
-        <meta name="description" content="Presenteie alguém especial com acesso ao Me Joy Plus. Crie um token de presente personalizado." />
-        <meta property="og:title" content="Presentear - Me Joy Plus" />
-        <meta property="og:description" content="Presenteie alguém especial com acesso ao Me Joy Plus. Crie um token de presente personalizado." />
+        <title>Presentear - MeJoy Plus</title>
+        <meta name="description" content="Presenteie alguém especial com acesso ao MeJoy Plus. Crie um token de presente personalizado." />
+        <meta property="og:title" content="Presentear - MeJoy Plus" />
+        <meta property="og:description" content="Presenteie alguém especial com acesso ao MeJoy Plus. Crie um token de presente personalizado." />
         <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
         <link rel="canonical" href="https://zapfarm.com.br/presente" />
       </Head>
@@ -168,9 +169,8 @@ const GiftPage = () => {
         <div className="bg-zinc-900/50 backdrop-blur-sm border-b border-zinc-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <img src="/logosmejoy/logomejoy.png" alt="Me Joy Farma" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">Me Joy</span>
+              <div className="flex items-center">
+                <LogoWithName size="small" variant="inverse" priority />
               </div>
               <button
                 onClick={() => router.push('/')}

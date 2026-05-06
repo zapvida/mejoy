@@ -28,7 +28,7 @@ export function TenantProvider({ children }: { children: ReactNode }) {
           try {
             const draft = JSON.parse(draftStr);
             setTenant({
-              name: draft.fantasyName || 'Me Joy',
+              name: draft.fantasyName || 'MeJoy',
               logoUrl: draft.logoUrl,
               primaryColor: draft.brandColor || '#10b981',
               secondaryColor: draft.accentColor,
@@ -43,11 +43,11 @@ export function TenantProvider({ children }: { children: ReactNode }) {
 
         // ✅ PRIORIDADE 2: Tenant hardcoded
         const t = detectTenantByHost(window.location.hostname);
-        // Para domínio root B2B (zapfarm.com), sempre usar "Me Joy"
+        // Para domínio root B2B (zapfarm.com), sempre usar "MeJoy"
         const isRootB2B = isRootB2BDomain();
         setTenant({
           id: t.id,
-          name: isRootB2B ? 'Me Joy' : t.name,
+          name: isRootB2B ? 'MeJoy' : t.name,
           primaryColor: t.brand?.primary,
           secondaryColor: t.brand?.secondary,
         });
@@ -55,7 +55,7 @@ export function TenantProvider({ children }: { children: ReactNode }) {
     } catch {
       // Fallback se não encontrar tenant
       setTenant({
-        name: 'Me Joy',
+        name: 'MeJoy',
         primaryColor: '#10b981',
       });
     }
@@ -70,6 +70,6 @@ export function TenantProvider({ children }: { children: ReactNode }) {
 
 export function useTenant() {
   const tenant = useContext(TenantContext);
-  return tenant || { name: 'Me Joy', primaryColor: '#10b981' };
+  return tenant || { name: 'MeJoy', primaryColor: '#10b981' };
 }
 

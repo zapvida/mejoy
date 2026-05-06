@@ -69,7 +69,7 @@ export default function PlanoVidaPage() {
   return (
     <>
       <Head>
-        <title>Plano de Vida | Me Joy</title>
+        <title>Plano de Vida | MeJoy</title>
         <meta
           name="description"
           content="Acompanhe seu plano de saúde e evolução ao longo do tempo"

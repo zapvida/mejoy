@@ -1,4 +1,4 @@
-# Plano Completo — E-commerce Me Joy (Melhor do Mundo)
+# Plano Completo — E-commerce MeJoy (Melhor do Mundo)
 
 **Objetivo:** Do catálogo vazio hoje até o melhor e-commerce de farmácia de manipulação, validado e conversível — da chegada ao site até o produto em casa.
 

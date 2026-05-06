@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
+import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
 
 const RedeemPage = () => {
@@ -22,7 +23,7 @@ const RedeemPage = () => {
 
   useEffect(() => {
     trackEvent('page_view', {
-      page_title: 'Resgatar Presente - Me Joy Plus',
+      page_title: 'Resgatar Presente - MeJoy Plus',
       page_location: window.location.href
     });
 
@@ -92,10 +93,10 @@ const RedeemPage = () => {
   return (
     <>
       <Head>
-        <title>Resgatar Presente - Me Joy Plus</title>
-        <meta name="description" content="Resgate seu presente Me Joy Plus usando o código fornecido." />
-        <meta property="og:title" content="Resgatar Presente - Me Joy Plus" />
-        <meta property="og:description" content="Resgate seu presente Me Joy Plus usando o código fornecido." />
+        <title>Resgatar Presente - MeJoy Plus</title>
+        <meta name="description" content="Resgate seu presente MeJoy Plus usando o código fornecido." />
+        <meta property="og:title" content="Resgatar Presente - MeJoy Plus" />
+        <meta property="og:description" content="Resgate seu presente MeJoy Plus usando o código fornecido." />
         <link rel="canonical" href="https://www.mejoy.com.br/resgatar" />
       </Head>
 
@@ -104,9 +105,8 @@ const RedeemPage = () => {
         <div className="bg-zinc-900/50 backdrop-blur-sm border-b border-zinc-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <img src="/logosmejoy/logomejoy.png" alt="MeJoy" className="h-8 w-auto object-contain" />
-                <span className="text-xl font-bold text-white">MeJoy</span>
+              <div className="flex items-center">
+                <LogoWithName size="small" variant="inverse" priority />
               </div>
               <button
                 onClick={() => router.push('/')}

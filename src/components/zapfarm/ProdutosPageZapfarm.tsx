@@ -53,7 +53,7 @@ export default function ProdutosPageZapfarm() {
   return (
     <>
       <Seo
-        title="Produtos de Saúde para Viver Mais | Protocolos com Curadoria Médica | MonJoy"
+        title="Produtos de Saúde para Viver Mais | Protocolos com Curadoria Médica | MeJoy"
         description="Compre protocolos de saúde prontos: emagrecimento, sono, intestino, imunidade, calvície e mais. Curadoria médica. Check-up gratuito. Entrega em todo Brasil."
         path="/produtos"
         keywords={[
@@ -75,7 +75,7 @@ export default function ProdutosPageZapfarm() {
         data-lpac="vibrant"
         className="min-h-screen bg-bg pb-safe"
         role="main"
-        aria-label="Catálogo de produtos MonJoy"
+        aria-label="Catálogo de produtos MeJoy"
       >
         <Navbar />
 

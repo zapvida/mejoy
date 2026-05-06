@@ -45,7 +45,7 @@ POSTS = [
             """\
             Se você já tentou recomeçar muitas vezes, talvez o que faltou não tenha sido esforço. Faltou direção.
 
-            Na Me Joy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
+            Na MeJoy, o começo é com triagem, avaliação médica e acompanhamento. Sem atalho. Sem promessa vazia.
 
             Se fizer sentido para você, comece pela triagem.
 
@@ -336,7 +336,7 @@ def draw_header(base: Image.Image, draw: ImageDraw.ImageDraw, logo_icon: Image.I
     icon = contain(logo_icon, (72, 72))
     title_font = font(56, bold=True)
     slogan_font = font(24, bold=False)
-    title = "Me Joy"
+    title = "MeJoy"
     slogan = "Me Amo, Me Cuido"
 
     title_box = draw.textbbox((0, 0), title, font=title_font)
@@ -464,7 +464,7 @@ def write_markdown(output_paths: list[Path]) -> None:
     lines = [
         "# Série final validada - Instagram/Facebook",
         "",
-        "9 posts finais com `Me Joy` e slogan `Me Amo, Me Cuido`.",
+        "9 posts finais com `MeJoy` e slogan `Me Amo, Me Cuido`.",
         "",
     ]
     for post, image_path in zip(POSTS, output_paths):

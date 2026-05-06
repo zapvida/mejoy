@@ -43,12 +43,12 @@ const SHARED_PRICES = {
 const ALL: Tenant[] = [
   {
     id: 'mejoy',
-    name: 'Me Joy',
+    name: 'MeJoy',
     hostnameMatch: (h) => /(^|\.)mejoy\.com\.br$/.test(h),
     brand: {
       primary: '#10b981',
       secondary: '#059669',
-      logoPath: '/logosmejoy/logomejoy.png'
+      logoPath: '/logosmejoy/logomejoy.svg'
     },
     stripe: {
       prices: SHARED_PRICES
@@ -66,7 +66,7 @@ const ALL: Tenant[] = [
   },
   {
     id: 'zapfarm',
-    name: 'Me Joy',
+    name: 'MeJoy',
     hostnameMatch: (h) => /(^|\.)zapfarm\.com\.br$/.test(h) || /(^|\.)zapfarm\.com$/.test(h),
     brand: {
       primary: '#16a34a',

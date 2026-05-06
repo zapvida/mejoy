@@ -48,7 +48,7 @@ stream
 BT
 /F1 12 Tf
 72 720 Td
-(Relatório Me Joy - Teste de PDF) Tj
+(Relatório MeJoy - Teste de PDF) Tj
 0 -20 Td
 (Data: ${new Date().toLocaleString('pt-BR')}) Tj
 0 -20 Td
@@ -110,7 +110,7 @@ startxref
 INFORMAÇÕES ADICIONAIS DO SISTEMA ZAPFARM
 ---
 
-Este documento foi gerado automaticamente pelo sistema Me Joy.
+Este documento foi gerado automaticamente pelo sistema MeJoy.
 Para mais informações, visite: https://www.zapfarm.com.br
 
 CARACTERÍSTICAS DO SISTEMA:
@@ -143,7 +143,7 @@ TECNOLOGIA E SEGURANÇA:
 - Monitoramento 24/7
 
 ---
-Sistema Me Joy - Tecnologia em Saúde
+Sistema MeJoy - Tecnologia em Saúde
 Relatório ID: ${Date.now()}
 Versão: 2.0
 Data de geração: ${new Date().toISOString()}

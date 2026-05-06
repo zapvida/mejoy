@@ -1,8 +1,8 @@
-# Plano Mestre: Checkout Me Joy — Layout Zapvida + UX de Alta Conversão
+# Plano Mestre: Checkout MeJoy — Layout Zapvida + UX de Alta Conversão
 
 **Versão:** 2.0  
 **Data:** 05/03/2025  
-**Objetivo:** Alinhar o checkout Me Joy ao layout Zapvida, reduzir fricção, maximizar conversão e validar o lançamento com o melhor checkout possível.
+**Objetivo:** Alinhar o checkout MeJoy ao layout Zapvida, reduzir fricção, maximizar conversão e validar o lançamento com o melhor checkout possível.
 
 > **📌 Plano definitivo com specs visuais dos anexos:** `PLANO_DEFINITIVO_CHECKOUT_MEJOY.md`  
 > **📌 Prompt pronto para executar:** `PROMPT_CHECKOUT_DEFINITIVO_MEJOY.txt`  
@@ -13,11 +13,11 @@
 ## Índice
 
 1. [Contexto e referências](#1-contexto-e-referências)
-2. [Estado atual Me Joy](#2-estado-atual-me-joy)
+2. [Estado atual MeJoy](#2-estado-atual-me-joy)
 3. [Fluxo alvo (2 etapas)](#3-fluxo-alvo-2-etapas)
 4. [Layout visual (Zapvida)](#4-layout-visual-zapvida)
 5. [Validação e regras de negócio](#5-validação-e-regras-de-negócio)
-6. [Arquivos Me Joy](#6-arquivos-me-joy)
+6. [Arquivos MeJoy](#6-arquivos-me-joy)
 7. [Ordem de execução](#7-ordem-de-execução)
 8. [Critérios de aceitação](#8-critérios-de-aceitação)
 9. [PROMPT DEFINITIVO (copiar e colar)](#9-prompt-definitivo-copiar-e-colar)
@@ -33,7 +33,7 @@
 - **Layout:** 2 colunas, cards, header sticky, barra de progresso com círculos numerados, footer com trust badges
 - **Componentes:** Header, Steps, Banner, CustomerForm, PaymentForm, Summary, Footer
 
-### Me Joy (e-commerce farmácia)
+### MeJoy (e-commerce farmácia)
 
 - **Tipo:** E-commerce com carrinho, endereço de entrega, frete
 - **Pagamento:** Asaas (PIX + Cartão de crédito — backend já suporta ambos)
@@ -41,7 +41,7 @@
 
 ---
 
-## 2. Estado atual Me Joy
+## 2. Estado atual MeJoy
 
 ### O que funciona
 
@@ -99,7 +99,7 @@
 
 ### Header
 
-- Logo Me Joy à esquerda (link para home)
+- Logo MeJoy à esquerda (link para home)
 - À direita: ícone de cadeado + "Ambiente seguro"
 - `sticky top-0`, fundo branco, `backdrop-blur`
 
@@ -173,11 +173,11 @@
 
 ### Guest checkout
 
-- Me Joy já é guest (sessionId). Manter. Pós-compra: "Crie uma conta para acompanhar seu pedido" (opcional).
+- MeJoy já é guest (sessionId). Manter. Pós-compra: "Crie uma conta para acompanhar seu pedido" (opcional).
 
 ---
 
-## 6. Arquivos Me Joy
+## 6. Arquivos MeJoy
 
 ### Checkout Store V2
 
@@ -261,9 +261,9 @@
 Resumo do prompt (bloco legado):
 
 ---
-# MISSÃO: Checkout Me Joy — Layout Zapvida + UX de Alta Conversão
+# MISSÃO: Checkout MeJoy — Layout Zapvida + UX de Alta Conversão
 
-Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao) e implemente as práticas de UX abaixo para reduzir fricção, minimizar cliques e maximizar conversão.
+Alinhe o checkout do MeJoy ao layout visual do Zapvida (zapvida.com/pay/plantao) e implemente as práticas de UX abaixo para reduzir fricção, minimizar cliques e maximizar conversão.
 
 ---
 
@@ -286,7 +286,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 ## PARTE 2 — LAYOUT VISUAL (IDÊNTICO AO ZAPVIDA)
 
 ### Header
-- Logo Me Joy à esquerda (link para home).
+- Logo MeJoy à esquerda (link para home).
 - À direita: ícone de cadeado + "Ambiente seguro".
 - Sticky top-0, fundo branco com backdrop-blur.
 
@@ -377,7 +377,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 
 ---
 
-## PARTE 6 — ARQUIVOS ME JOY (CONTEXTO)
+## PARTE 6 — ARQUIVOS MEJOY (CONTEXTO)
 
 ### Modificar
 - src/pages/checkout/index.tsx — página principal
@@ -392,7 +392,7 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 - src/components/store-v2/checkout/AddressForm.tsx (com ViaCEP)
 - src/components/store-v2/checkout/PaymentForm.tsx (PIX + Cartão)
 
-### Referência Zapvida (estrutura visual, adaptar ao Me Joy)
+### Referência Zapvida (estrutura visual, adaptar ao MeJoy)
 - checkout-header.tsx, checkout-steps.tsx, atendimento-rapido-banner.tsx
 - customer-form.tsx, payment-form.tsx, checkout-footer.tsx, checkout-summary-card.tsx
 
@@ -444,4 +444,4 @@ Alinhe o checkout do Me Joy ao layout visual do Zapvida (zapvida.com/pay/plantao
 
 ---
 
-*Documento gerado para execução pelo agente Me Joy. Referência: Zapvida checkout, best practices de conversão, relatório checkout/carrinho Me Joy.*
+*Documento gerado para execução pelo agente MeJoy. Referência: Zapvida checkout, best practices de conversão, relatório checkout/carrinho MeJoy.*

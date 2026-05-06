@@ -24,10 +24,10 @@ export default function CheckoutPage() {
   return (
     <>
       <Head>
-        <title>Checkout do Programa de Emagrecimento | Me Joy</title>
+        <title>Checkout do Programa de Emagrecimento | MeJoy</title>
         <meta
           name="description"
-          content="Fallback standalone do checkout Me Joy com pagamento seguro, PIX inline e liberacao do dashboard somente apos confirmacao."
+          content="Fallback standalone do checkout MeJoy com pagamento seguro, PIX inline e liberacao do dashboard somente apos confirmacao."
         />
       </Head>
 

@@ -352,7 +352,7 @@ export const perguntasEmagrecimento: Step[] = [
     placeholder: 'Como podemos te chamar?',
     required: true,
     helperText:
-      'Seu nome entra no relatório e no resumo oficial da Me Joy.',
+      'Seu nome entra no relatório e no resumo oficial da MeJoy.',
     justification: 'Personalização.',
     group: 'contato',
     compact: true,
@@ -364,7 +364,7 @@ export const perguntasEmagrecimento: Step[] = [
     label: 'WhatsApp (com DDD)',
     placeholder: '11999998888',
     required: true,
-    helperText: 'Canal oficial Me Joy para envio do relatório e próximos passos.',
+    helperText: 'Canal oficial MeJoy para envio do relatório e próximos passos.',
     justification: 'Contato pós-triagem.',
     group: 'contato',
     compact: true,
@@ -380,7 +380,7 @@ export const perguntasEmagrecimento: Step[] = [
       {
         value: 'autorizo',
         label:
-          'Autorizo a Me Joy a enviar meu relatório, orientações e próximos passos pelo WhatsApp, conforme a Política de Privacidade.',
+          'Autorizo a MeJoy a enviar meu relatório, orientações e próximos passos pelo WhatsApp, conforme a Política de Privacidade.',
       },
     ],
     helperText: 'Você pode exercer seus direitos LGPD a qualquer momento.',

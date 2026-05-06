@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FiCheck, FiGift, FiLock, FiArrowRight } from 'react-icons/fi';
 
-import Logo from '@/components/ui/Logo';
+import LogoWithName from '@/components/ui/LogoWithName';
 import { t } from '@/lib/i18n';
 
 export default function ObrigadoPage() {
@@ -81,7 +81,7 @@ export default function ObrigadoPage() {
   return (
     <>
       <Head>
-        <title>Obrigado! | Me Joy</title>
+        <title>Obrigado! | MeJoy</title>
         <meta name="description" content="Pagamento realizado com sucesso" />
       </Head>
 
@@ -94,7 +94,7 @@ export default function ObrigadoPage() {
           className="bg-bg/20 backdrop-blur-md border-b border-border py-4"
         >
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
-            <Logo size="small" />
+            <LogoWithName size="small" />
           </div>
         </motion.div>
 
@@ -166,9 +166,9 @@ export default function ObrigadoPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-16 text-center text-fg/50 text-sm"
-          >
-            <p>Me Joy - Sua saúde em primeiro lugar</p>
+          className="mt-16 text-center text-fg/50 text-sm"
+        >
+            <p>MeJoy - Sua saúde em primeiro lugar</p>
             <p className="mt-2">
               Dúvidas? Entre em contato conosco via WhatsApp
             </p>

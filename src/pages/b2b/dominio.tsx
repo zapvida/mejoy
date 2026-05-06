@@ -76,7 +76,7 @@ export default function B2BDominio() {
   return (
     <>
       <Head>
-        <title>Configurar domínio | Me Joy</title>
+        <title>Configurar domínio | MeJoy</title>
         <meta name="description" content="Configure seu domínio customizado para sua plataforma white-label." />
       </Head>
       <main className="min-h-screen bg-muted">

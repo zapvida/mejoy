@@ -60,7 +60,7 @@ test.describe.serial('MeJoy sandbox lifecycle @sandbox-e2e', () => {
     );
 
     await page.goto('/');
-    await expect(page.locator('body')).toContainText(/Me Joy|MeJoy/i);
+    await expect(page.locator('body')).toContainText(/MeJoy|MeJoy/i);
 
     const report = await createEmagrecimentoReportViaApi(request, {
       primeiro_nome: 'Sandbox',

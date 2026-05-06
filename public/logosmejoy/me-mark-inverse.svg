@@ -1,12 +1,12 @@
 <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <title>MeJoy mark</title>
-  <rect x="4" y="4" width="72" height="72" rx="24" fill="#131313" />
+  <title>MeJoy mark inverse</title>
+  <rect x="4" y="4" width="72" height="72" rx="24" fill="#FFFFFF" />
   <text
     x="40"
     y="42"
     text-anchor="middle"
     dominant-baseline="middle"
-    fill="#FFFFFF"
+    fill="#184B39"
     font-family="'Avenir Next', 'Segoe UI', sans-serif"
     font-size="36"
     font-weight="600"
@@ -16,7 +16,7 @@
   </text>
   <path
     d="M22 56C30.6 64.3 49 64.4 58 56"
-    stroke="#FFFFFF"
+    stroke="#184B39"
     stroke-width="4.6"
     stroke-linecap="round"
     stroke-linejoin="round"

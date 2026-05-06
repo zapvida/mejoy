@@ -340,7 +340,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Seo title="Checkout | Me Joy" description="Finalize sua compra" path="/checkout" />
+      <Seo title="Checkout | MeJoy" description="Finalize sua compra" path="/checkout" />
       <CheckoutHeader />
       <main className="min-h-screen py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

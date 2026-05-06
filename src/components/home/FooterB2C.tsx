@@ -84,7 +84,7 @@ export default function FooterB2C() {
           {/* Logo e Descrição */}
           <div className="lg:col-span-4">
             <div className="mb-4">
-              <LogoWithName size="medium" nameClassName="text-white" />
+              <LogoWithName size="medium" variant="inverse" nameClassName="text-white" />
             </div>
             <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 max-w-md">
               Protocolos de saúde com curadoria médica. Produtos selecionados por especialistas para você cuidar da sua saúde em casa.
@@ -253,7 +253,7 @@ export default function FooterB2C() {
         <div className="border-t border-gray-700/50 pt-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400">
-              <p>© {new Date().getFullYear()} Me Joy. Todos os direitos reservados.</p>
+              <p>© {new Date().getFullYear()} MeJoy. Todos os direitos reservados.</p>
               <span className="hidden sm:inline">•</span>
               <p>CNPJ: 12.345.678/0001-90</p>
               <span className="hidden sm:inline">•</span>
@@ -271,4 +271,3 @@ export default function FooterB2C() {
     </footer>
   );
 }
-

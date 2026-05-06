@@ -1,4 +1,4 @@
-# 🚀 Passo a passo — Lançamento Me Joy (copiar e colar)
+# 🚀 Passo a passo — Lançamento MeJoy (copiar e colar)
 
 **Ordem exata.** Siga na sequência. Cada bloco está pronto para copiar e colar.
 
@@ -7,7 +7,7 @@
 ## PASSO 1 — Migrations no Supabase
 
 1. Abra: **https://supabase.com/dashboard**
-2. Entre no seu projeto Me Joy
+2. Entre no seu projeto MeJoy
 3. Menu lateral: **SQL Editor** → **New query**
 4. Abra o arquivo `scripts/store-v2-migrations.sql` do projeto (Ctrl+O ou arraste)
 5. Copie **todo o conteúdo** do arquivo
@@ -83,7 +83,7 @@ git status
 Confira os arquivos listados. Se estiver tudo certo:
 
 ```bash
-git commit -m "feat: lancamento e-commerce Me Joy - PDP, tema laranja, Evolution, admin Store V2"
+git commit -m "feat: lancamento e-commerce MeJoy - PDP, tema laranja, Evolution, admin Store V2"
 ```
 
 ```bash

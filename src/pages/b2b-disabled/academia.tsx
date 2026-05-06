@@ -30,9 +30,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Me Joy - Triagem de Saúde com IA</title>
+        <title>MeJoy - Triagem de Saúde com IA</title>
         <meta name="description" content="Descubra como está sua saúde em minutos com inteligência artificial. 100% gratuito e baseado em ciência." />
-        <meta property="og:title" content="Me Joy - Descubra Sua Saúde" />
+        <meta property="og:title" content="MeJoy - Descubra Sua Saúde" />
         <meta property="og:description" content="Triagem gratuita com relatório personalizado. Baseado em ciência, com IA." />
         <meta property="og:image" content="https://www.mejoy.com.br/logosmejoy/logomejoy.png" />
         <link rel="icon" href="/logosmejoy/faviconmejoy.png" />
@@ -49,7 +49,7 @@ export default function Home() {
                   <>
                     <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
                       className="text-4xl md:text-6xl font-extrabold mb-6">
-                      Sua academia transforma corpos. O Me Joy transforma vidas.
+                      Sua academia transforma corpos. O MeJoy transforma vidas.
                     </motion.h1>
                     <h2 className="text-xl font-bold text-white/90 mb-4">
                       Ofereça um check-up digital aos seus alunos e leve a saúde para outro nível.
@@ -133,7 +133,7 @@ export default function Home() {
                     {/* Missão / Visão / Valores */}
           <section className="py-14 px-4 sm:px-6 lg:px-8 bg-black/20 backdrop-blur-md mt-10">
             <div className="max-w-7xl mx-auto text-center space-y-12">
-              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o Me Joy foi criado?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">💡 Por que o MeJoy foi criado?</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-bg border border-border p-6 rounded-2xl shadow-lg">
@@ -191,7 +191,7 @@ export default function Home() {
             <div className="max-w-6xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6">🔬 Autoridade e Confiança</h2>
               <p className="text-white/80 mb-8 text-lg max-w-3xl mx-auto">
-                O Me Joy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
+                O MeJoy utiliza apenas informações validadas pelas maiores referências da medicina mundial: OMS, Harvard Medical School, Cochrane, CDC, entre outras. Tudo para garantir recomendações confiáveis, seguras e baseadas em ciência.
               </p>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex flex-wrap justify-center gap-6">
@@ -298,8 +298,8 @@ export default function Home() {
 
           <div className="w-full flex justify-center mt-20 px-4">
             <Image
-              src="/logosmejoy/logomejoy.png"
-              alt="Logo Me Joy Animada"
+              src="/logosmejoy/logomejoy.svg"
+              alt="Logo MeJoy"
               width={240}
               height={240}
               className="object-contain animate-pulse"

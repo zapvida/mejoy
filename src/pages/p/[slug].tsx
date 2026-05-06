@@ -832,7 +832,7 @@ const COMO_FUNCIONA_STEPS = [
 const FAQ_GENERICO = [
   { q: 'Como funciona a entrega?', a: 'Despachamos em até 24h após a manipulação. O pedido sai rapidamente para o destino e a entrega varia conforme seu CEP.' },
   { q: 'Posso trocar ou devolver?', a: 'Sim. Oferecemos troca ou reembolso em até 7 dias após o recebimento, em conformidade com o Código de Defesa do Consumidor.' },
-  { q: 'É seguro comprar na Me Joy?', a: 'Sim. Somos farmácia de manipulação certificada pela ANVISA. Todas as fórmulas são manipuladas sob rigoroso controle de qualidade.' },
+  { q: 'É seguro comprar na MeJoy?', a: 'Sim. Somos farmácia de manipulação certificada pela ANVISA. Todas as fórmulas são manipuladas sob rigoroso controle de qualidade.' },
   { q: 'Preciso de receita médica?', a: 'Depende do produto. Alguns exigem receita ou validação. A informação aparece na página do produto.' },
   { q: 'Como devo usar meu produto?', a: 'Siga sempre a orientação do seu médico ou nutricionista e respeite a posologia descrita na página.' },
 ];
@@ -899,7 +899,7 @@ export default function PDPPage({ product, relatedProducts }: Props) {
     sku: product.sku,
     brand: {
       '@type': 'Brand',
-      name: process.env.NEXT_PUBLIC_BRAND_NAME ?? 'Me Joy',
+      name: process.env.NEXT_PUBLIC_BRAND_NAME ?? 'MeJoy',
     },
     ...(product.leadTimeDays != null && {
       additionalProperty: [{
@@ -946,7 +946,7 @@ export default function PDPPage({ product, relatedProducts }: Props) {
   return (
     <>
       <Seo
-        title={product.seoTitle ?? `${product.name} | Me Joy`}
+        title={product.seoTitle ?? `${product.name} | MeJoy`}
         description={product.seoDescription ?? product.shortBenefit ?? product.name}
         path={`/p/${product.slug}`}
         jsonLd={[jsonLd]}

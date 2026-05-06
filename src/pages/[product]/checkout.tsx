@@ -444,7 +444,7 @@ export default function ProductCheckoutPage({ productConfig, plans, showVariants
   return (
     <>
       <Head>
-        <title>Checkout - {productConfig.commercialName} | Me Joy</title>
+        <title>Checkout - {productConfig.commercialName} | MeJoy</title>
         <meta name="description" content={`Finalize sua compra de ${productConfig.commercialName}`} />
       </Head>
 

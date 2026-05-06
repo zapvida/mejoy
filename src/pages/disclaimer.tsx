@@ -7,8 +7,8 @@ export default function Disclaimer() {
   return (
     <>
       <Head>
-        <title>Disclaimer Médico | Me Joy</title>
-        <meta name="description" content="Informações importantes sobre o uso da plataforma Me Joy." />
+        <title>Disclaimer Médico | MeJoy</title>
+        <meta name="description" content="Informações importantes sobre o uso da plataforma MeJoy." />
       </Head>
       <main className="min-h-screen bg-black text-white">
         <Navbar />
@@ -19,7 +19,7 @@ export default function Disclaimer() {
             <section className="bg-background/50 p-6 rounded-xl border border-border">
               <h2 className="text-2xl font-semibold mb-2 text-white">1. Não Substitui Atendimento Médico</h2>
               <p className="text-muted-foreground">
-                As avaliações, relatórios e recomendações geradas pelo Me Joy não substituem consultas presenciais, diagnósticos realizados por médicos ou exames laboratoriais.
+                As avaliações, relatórios e recomendações geradas pelo MeJoy não substituem consultas presenciais, diagnósticos realizados por médicos ou exames laboratoriais.
               </p>
             </section>
 
@@ -33,14 +33,14 @@ export default function Disclaimer() {
             <section className="bg-background/50 p-6 rounded-xl border border-border">
               <h2 className="text-2xl font-semibold mb-2 text-white">3. Limitação de Responsabilidade</h2>
               <p className="text-muted-foreground">
-                O Me Joy não se responsabiliza por eventuais consequências do uso incorreto das informações. Consulte sempre um profissional de saúde.
+                O MeJoy não se responsabiliza por eventuais consequências do uso incorreto das informações. Consulte sempre um profissional de saúde.
               </p>
             </section>
 
             <section className="bg-background/50 p-6 rounded-xl border border-border">
               <h2 className="text-2xl font-semibold mb-2 text-white">4. Emergências Médicas</h2>
               <p className="text-muted-foreground">
-                Em casos de emergência, procure um serviço de pronto atendimento. O Me Joy não oferece serviços de urgência e emergência.
+                Em casos de emergência, procure um serviço de pronto atendimento. O MeJoy não oferece serviços de urgência e emergência.
               </p>
             </section>
 

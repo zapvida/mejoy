@@ -10,7 +10,7 @@ export default function EspecialistasPage() {
   return (
     <>
       <Head>
-        <title>Time de especialistas em emagrecimento | Endocrinologistas e nutricionistas | Me Joy</title>
+        <title>Time de especialistas em emagrecimento | Endocrinologistas e nutricionistas | MeJoy</title>
         <meta
           name="description"
           content="Time completo de especialistas em emagrecimento: endocrinologistas credenciados, nutricionistas, farmacêuticos e enfermeiros. Suporte diário via WhatsApp. ⭐ 4,9/5 em avaliações."

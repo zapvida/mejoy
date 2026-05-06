@@ -119,7 +119,7 @@ export function ReportDecisionFold({
             </h1>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Elegibilidade, trilha, plano e pagamento ficam no mesmo fluxo. O dashboard da Me Joy so abre depois da confirmacao real do pagamento.
+              Elegibilidade, trilha, plano e pagamento ficam no mesmo fluxo. O dashboard da MeJoy so abre depois da confirmacao real do pagamento.
             </p>
 
             <div className={cn('mt-6 rounded-[28px] border p-5', eligibility.tone)}>
@@ -190,7 +190,7 @@ export function ReportDecisionFold({
                   <div className="relative aspect-[0.96] overflow-hidden rounded-[22px]">
                     <Image
                       src="/images/emagrecimento/medvi/hero-main.webp"
-                      alt="Programa Me Joy"
+                      alt="Programa MeJoy"
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 52vw, 28vw"

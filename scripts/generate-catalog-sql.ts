@@ -106,7 +106,7 @@ async function main() {
       .split(';')
       .map((t) => t.replace(/&/g, '-').trim())
       .filter(Boolean);
-    const seoTitle = (r.seo_title || name).replace(/Moonjoy/gi, 'Me Joy');
+    const seoTitle = (r.seo_title || name).replace(/MeJoy/gi, 'MeJoy');
     const requiresRx = r.requires_rx === 'True';
     const requiresValidation = r.requires_validation === 'True';
     const canSubscribe = r.can_subscribe !== 'False';
@@ -297,7 +297,7 @@ ON CONFLICT (sku) DO UPDATE SET
     const name = r.name.trim();
     const objective = r.objective_primary.trim();
     const tags = (r.tags || '').split(';').map((t) => t.replace(/&/g, '-').trim()).filter(Boolean);
-    const seoTitle = (r.seo_title || name).replace(/Moonjoy/gi, 'Me Joy');
+    const seoTitle = (r.seo_title || name).replace(/MeJoy/gi, 'MeJoy');
     const pid = productIdFor(sku);
     const vid = productIdFor('v-' + sku);
     const pvid = productIdFor('pv-' + sku);

@@ -1,4 +1,4 @@
-# COPIE E COLE — Lançamento Final Me Joy Store V2
+# COPIE E COLE — Lançamento Final MeJoy Store V2
 
 **Tudo pronto para copiar e colar. Sem Prisma migrate (evita travar).**
 

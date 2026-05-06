@@ -1,6 +1,6 @@
 # Instrução de Execução — Cursor Agent
 
-> Cole este prompt no Cursor Agent para executar o plano de lançamento do e-commerce Me Joy.
+> Cole este prompt no Cursor Agent para executar o plano de lançamento do e-commerce MeJoy.
 
 ---
 

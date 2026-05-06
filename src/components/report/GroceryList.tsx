@@ -43,7 +43,7 @@ export function GroceryList({ grocery, reportId, onCopy, onWhatsapp }: GroceryLi
     const buySection = grocery.buy.map((item) => `• ${item}`).join("\n");
     const avoidSection = grocery.avoid.map((item) => `• ${item}`).join("\n");
     const notesSection = (grocery.notes ?? []).map((note) => `• ${note}`).join("\n");
-    return `Lista inteligente — Me Joy\n\nComprar prioritariamente:\n${buySection}\n\nEvitar neste ciclo:\n${avoidSection}\n\nNotas rápidas:\n${notesSection}`;
+    return `Lista inteligente — MeJoy\n\nComprar prioritariamente:\n${buySection}\n\nEvitar neste ciclo:\n${avoidSection}\n\nNotas rápidas:\n${notesSection}`;
   }, [grocery]);
 
   const handleCopy = useCallback(async () => {

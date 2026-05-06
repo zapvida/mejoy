@@ -225,7 +225,7 @@ function buildV2Content(
       ? 'Produto sob prescrição. Requer avaliação médica. Gestantes, lactantes e crianças devem consultar médico.'
       : 'Gestantes, lactantes e crianças devem consultar médico antes do uso.';
 
-  const seoTitle = `${normalizedProductName} | Me Joy`;
+  const seoTitle = `${normalizedProductName} | MeJoy`;
   let seoDescription = row.seoDescription ?? '';
   seoDescription = sentenceCase(seoDescription);
   seoDescription = truncateAtWord(seoDescription, 155);
@@ -234,7 +234,7 @@ function buildV2Content(
 
   const baseKw = normalizedProductName.toLowerCase().replace(/[()[\]{}|]/g, ' ').replace(/\s+/g, ' ').trim();
   const primKw = normalizedPrimaryActive.toLowerCase().replace(/[()[\]{}|]/g, ' ').replace(/\s+/g, ' ').trim();
-  const keywords_primary = [baseKw, primKw, `${objective.toLowerCase()} manipulado`, 'me joy']
+  const keywords_primary = [baseKw, primKw, `${objective.toLowerCase()} manipulado`, 'mejoy']
     .filter((v, i, a) => a.indexOf(v) === i)
     .slice(0, 5)
     .join(';');

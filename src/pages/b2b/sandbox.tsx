@@ -114,7 +114,7 @@ export default function B2BSandbox() {
     return (
       <>
         <Head>
-          <title>Carregando Demo | Me Joy</title>
+          <title>Carregando Demo | MeJoy</title>
         </Head>
         <main className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
@@ -130,7 +130,7 @@ export default function B2BSandbox() {
     return (
       <>
         <Head>
-          <title>Erro | Me Joy</title>
+          <title>Erro | MeJoy</title>
         </Head>
         <Navbar />
         <main className="min-h-screen bg-gray-50 px-4 py-10 flex items-center justify-center">
@@ -154,7 +154,7 @@ export default function B2BSandbox() {
   return (
     <>
       <Head>
-        <title>{brandName} - Demo White-label | Me Joy</title>
+        <title>{brandName} - Demo White-label | MeJoy</title>
         <meta name="description" content={`Demonstração do White-label para ${brandName} - Veja como sua clínica verá a triagem com logo, cores e CTAs personalizados.`} />
       </Head>
       <Navbar />

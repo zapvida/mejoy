@@ -1,4 +1,4 @@
-# Status Completo e Próximos Passos — Me Joy E-commerce
+# Status Completo e Próximos Passos — MeJoy E-commerce
 
 **Data:** 2026-03-06  
 **Objetivo:** Melhor e-commerce de farmácia de manipulação do Brasil, com PDPs mais conversíveis e copywriting completo, total e inteligente.

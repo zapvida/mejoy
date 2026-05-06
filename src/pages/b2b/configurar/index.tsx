@@ -12,7 +12,7 @@ export default function StepLogoNamePage() {
   return (
     <>
       <Head>
-        <title>Logo & Nome — Personalize sua marca | Me Joy</title>
+        <title>Logo & Nome — Personalize sua marca | MeJoy</title>
         <meta name="description" content="Configure o logo e nome da sua clínica. Veja o preview em tempo real." />
       </Head>
       <RunnerLayout 

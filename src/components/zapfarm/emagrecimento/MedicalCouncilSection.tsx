@@ -25,7 +25,7 @@ export function MedicalCouncilSection() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white">
-            Conselho Médico Me Joy
+            Conselho Médico MeJoy
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto px-2">
             Liderança médica comprometida com segurança e excelência

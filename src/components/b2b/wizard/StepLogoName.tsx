@@ -47,7 +47,7 @@ export default function StepLogoName() {
             onClick={() => fileInputRef.current?.click()}
             className="h-10 rounded-lg border border-gray-300 px-5 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
           >
-            {data.logoUrl && data.logoUrl !== "/logosmejoy/logomejoy.png" 
+            {data.logoUrl && data.logoUrl !== "/logosmejoy/logomejoy.svg" 
               ? "Trocar logo" 
               : "Enviar logo"}
           </button>
@@ -57,7 +57,7 @@ export default function StepLogoName() {
               alt="Logo preview"
               className="h-10 w-10 rounded-lg object-contain ring-1 ring-gray-200"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "/logosmejoy/logomejoy.png";
+                (e.target as HTMLImageElement).src = "/logosmejoy/logomejoy.svg";
               }}
             />
           )}
@@ -82,4 +82,3 @@ export default function StepLogoName() {
     </div>
   );
 }
-

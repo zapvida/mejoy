@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { getCheckoutUrl, getProductConfig, productExists } from '@/lib/zapfarm/product-loader';
 import { MEDVI_GLP } from '@/lib/medvi-parity-tokens';
+import LogoWithName from '@/components/ui/LogoWithName';
 
 function IconMenuTwoLines({ className }: { className?: string }) {
   return (
@@ -72,7 +72,6 @@ export function HeaderZapfarm({
   const isLandingPage = router.pathname === '/emagrecimento' || asPath === '/emagrecimento';
   const isHomeHub = router.pathname === '/';
   const isJourneyPage = isLandingPage || isHomeHub;
-  const useMedviMark = isJourneyPage || asPath.startsWith('/triagem/emagrecimento');
   const useMinimalReportHeader = isReportPage;
 
   /** Só em rotas com hero transparente (ex.: home) o scroll altera o estilo do header; em `/emagrecimento` o header já é sólido — ouvir scroll aqui gerava setState a cada frame perto do limiar e “tremor”. */
@@ -161,6 +160,7 @@ export function HeaderZapfarm({
 
   const textColor = shouldUseScrolledStyle ? 'text-slate-800' : 'text-white';
   const medviShell = isHomeHub || isLandingPage;
+  const logoVariant = shouldUseScrolledStyle || isReportPage ? 'primary' : 'inverse';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50" data-testid="home-medvi-header">
@@ -171,51 +171,23 @@ export function HeaderZapfarm({
       >
         <div className="container mx-auto max-w-[1100px] px-4 sm:px-6">
           <div className={`flex items-center justify-between ${isJourneyPage ? 'h-14 sm:h-[60px]' : 'h-20 sm:h-16 md:h-20'}`}>
-            <a href="/" className="flex min-w-0 shrink-0 items-center gap-2" aria-label="Me Joy — inicio">
-            {useMedviMark ? (
-              <div className="flex min-w-0 items-center gap-2">
-                {medviShell ? (
-                  <span
-                    className={`truncate text-[17px] font-bold tracking-[-0.02em] sm:text-[18px] ${
-                      shouldUseScrolledStyle ? 'text-[#1f2937]' : 'text-white'
-                    }`}
-                  >
-                    Me Joy
-                  </span>
-                ) : (
-                  <>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1.5 text-[11px] font-black tracking-[0.2em] ${
-                        shouldUseScrolledStyle || isReportPage
-                          ? 'bg-emerald-700 text-white shadow-sm'
-                          : 'bg-white/95 text-emerald-800 shadow-md'
-                      }`}
-                    >
-                      MEJOY
-                    </span>
-                    {isEmagrecimentoFlow && (
-                      <span
-                        className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}
-                      >
-                        Emagrecimento com avaliação médica
-                      </span>
-                    )}
-                  </>
-                )}
-                {!medviShell && !isEmagrecimentoFlow && brandSubtitle && (
-                  <span className={`hidden text-xs md:inline ${textColor}`}>{brandSubtitle}</span>
-                )}
-              </div>
-            ) : (
-              <Image
-                src="/logosmejoy/logomejoy.png"
-                alt="Me Joy Farma"
-                width={160}
-                height={48}
-                className="h-8 w-auto object-contain sm:h-9 md:h-10"
+            <a href="/" className="flex min-w-0 shrink-0 items-center gap-3" aria-label="MeJoy - início">
+              <LogoWithName
+                size={medviShell ? 'small' : 'header'}
+                variant={logoVariant}
                 priority
+                className="min-w-0"
               />
-            )}
+              {!medviShell && isEmagrecimentoFlow && (
+                <span
+                  className={`hidden text-[11px] font-semibold uppercase tracking-[0.12em] lg:inline ${textColor}`}
+                >
+                  Emagrecimento com avaliação médica
+                </span>
+              )}
+              {!medviShell && !isEmagrecimentoFlow && brandSubtitle && (
+                <span className={`hidden text-xs md:inline ${textColor}`}>{brandSubtitle}</span>
+              )}
             </a>
 
             <nav

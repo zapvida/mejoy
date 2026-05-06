@@ -33,7 +33,7 @@ export function FaqSection() {
     {
       category: 'Tratamento & medicamentos',
       question: 'Eu preciso de receita médica? Como obtenho a medicação?',
-      answer: 'Sim, você precisa de receita médica. Nosso médico endocrinologista irá prescrever eletronicamente após avaliação completa. A Me Joy cuida de tudo, incluindo a compra e entrega da medicação em farmácias parceiras credenciadas, conforme legislação vigente.',
+      answer: 'Sim, você precisa de receita médica. Nosso médico endocrinologista irá prescrever eletronicamente após avaliação completa. A MeJoy cuida de tudo, incluindo a compra e entrega da medicação em farmácias parceiras credenciadas, conforme legislação vigente.',
     },
     // Exames & acompanhamento
     {
@@ -71,7 +71,7 @@ export function FaqSection() {
     {
       category: 'Outras',
       question: 'Qual a diferença pra ir num endocrinologista presencial?',
-      answer: 'A principal diferença é a conveniência e o acompanhamento contínuo. Com a Me Joy, você tem acesso a especialistas em obesidade, relatórios detalhados com tecnologia avançada, acompanhamento entre consultas e tudo 100% online. Além disso, os medicamentos são entregues em casa. O nível de cuidado médico é o mesmo, com mais praticidade.',
+      answer: 'A principal diferença é a conveniência e o acompanhamento contínuo. Com a MeJoy, você tem acesso a especialistas em obesidade, relatórios detalhados com tecnologia avançada, acompanhamento entre consultas e tudo 100% online. Além disso, os medicamentos são entregues em casa. O nível de cuidado médico é o mesmo, com mais praticidade.',
     },
     {
       category: 'Outras',
@@ -89,7 +89,7 @@ export function FaqSection() {
               Perguntas Frequentes
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-              Tire suas dúvidas sobre o programa Me Joy
+              Tire suas dúvidas sobre o programa MeJoy
             </p>
           </div>
 

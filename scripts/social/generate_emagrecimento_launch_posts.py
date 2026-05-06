@@ -55,7 +55,7 @@ POSTS = [
             """\
             Emagrecer com segurança não começa na pressa. Começa em entender o seu caso, o seu histórico e o que faz sentido sustentar na vida real.
 
-            Aqui na Me Joy Farma, o ponto de partida é simples: triagem, avaliação médica e acompanhamento contínuo. Sem promessa milagrosa. Sem tentativa aleatória.
+            Aqui na MeJoy Farma, o ponto de partida é simples: triagem, avaliação médica e acompanhamento contínuo. Sem promessa milagrosa. Sem tentativa aleatória.
 
             Se você quer começar com mais clareza e menos ruído, esse perfil foi feito para você.
 
@@ -381,7 +381,7 @@ def draw_wrapped_text(
 def draw_brand_pill(draw: ImageDraw.ImageDraw) -> None:
     pill = (BODY_X, 58, BODY_X + 255, 108)
     draw.rounded_rectangle(pill, radius=24, fill=ORANGE)
-    draw.text((BODY_X + 28, 70), "ME JOY FARMA", font=font(28, bold=True), fill="white")
+    draw.text((BODY_X + 28, 70), "MEJOY FARMA", font=font(28, bold=True), fill="white")
 
 
 def draw_post_index(draw: ImageDraw.ImageDraw, index: int) -> None:

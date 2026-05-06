@@ -1,4 +1,4 @@
-# Lançamento Store V2 — Me Joy E-commerce
+# Lançamento Store V2 — MeJoy E-commerce
 
 **Objetivo:** Loja 200 SKUs em produção, vendendo via PIX (Asaas), com lançamento contínuo.
 

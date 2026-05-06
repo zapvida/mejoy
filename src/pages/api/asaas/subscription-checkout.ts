@@ -106,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       billingType: 'PIX', // Por padrão PIX, pode ser alterado no frontend
       value: valueInReais, // Valor em REAIS (já convertido de centavos)
       dueDate: calculateDueDate(3),
-      description: `Me Joy Plus - ${period === 'monthly' ? 'Mensal' : 'Anual'}${checkoutVariant === 'gift' ? ' (Presente)' : ''}${extraSeatsClamped > 0 ? ` + ${extraSeatsClamped} assentos` : ''}`,
+      description: `MeJoy Plus - ${period === 'monthly' ? 'Mensal' : 'Anual'}${checkoutVariant === 'gift' ? ' (Presente)' : ''}${extraSeatsClamped > 0 ? ` + ${extraSeatsClamped} assentos` : ''}`,
       externalReference: `zapfarm_plus_${period}_${checkoutVariant}_${Date.now()}`,
       metadata: {
         tipo: 'zapfarm_subscription',
