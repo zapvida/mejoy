@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
@@ -117,17 +117,21 @@ export default function RelatorioEmagrecimentoPage({ vm, reportId, error }: Rela
   const selectedPlan = getPlanById(selectedPlanId);
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
 
+  const defaultsForSelectionRef = useRef({ defaultTrilha, defaultPlanId });
+  defaultsForSelectionRef.current = { defaultTrilha, defaultPlanId };
+
   useEffect(() => {
     if (!reportId) return;
     trackFunnelEvent('report_viewed', { report_id: reportId });
   }, [reportId]);
 
-  /** Defaults estáveis (useMemo) evitam reset da seleção a cada render; reportId inclui troca de relatório. */
+  /** Só quando `reportId` muda: snapshot atual dos defaults (evita resets por memos instáveis). */
   useEffect(() => {
     if (!reportId) return;
-    setSelectedTrilha(defaultTrilha);
-    setSelectedPlanId(defaultPlanId);
-  }, [reportId, defaultTrilha, defaultPlanId]);
+    const snap = defaultsForSelectionRef.current;
+    setSelectedTrilha(snap.defaultTrilha);
+    setSelectedPlanId(snap.defaultPlanId);
+  }, [reportId]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);

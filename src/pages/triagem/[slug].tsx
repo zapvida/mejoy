@@ -61,6 +61,15 @@ const resolveSlugFromLocation = () => {
   return extractSlugFromPath(window.location.pathname);
 };
 
+/** True when the browser pathname is `/triagem/.../` with a slug (not apenas `/triagem`). */
+function browserIsOnExplicitTriagePath(): boolean {
+  if (typeof window === "undefined") return false;
+  const pathname = window.location.pathname.split(/[?#]/)[0] ?? "";
+  const stripped = pathname.replace(LOCALE_PREFIX_PATTERN, "");
+  const segs = stripped.split("/").filter(Boolean);
+  return segs.length >= 2 && segs[0] === "triagem";
+}
+
 const EMPTY_SEED_ANSWERS: Record<string, never> = {};
 
 /** Evita novo objeto `initialAnswers` a cada polling de sessão (quebrava o intake com setAnswers em loop). */
@@ -403,7 +412,7 @@ export default function TriageSlugPage() {
       extractSlugFromPath(router.asPath) ??
       (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined);
 
-    const resolved = querySlug || pathSlug;
+    const resolved = querySlug ?? pathSlug;
 
     setSlug(current => {
       if (resolved !== undefined) {
@@ -417,8 +426,14 @@ export default function TriageSlugPage() {
         if (locSlug !== undefined) {
           return current === locSlug ? current : locSlug;
         }
+        /* Nunca apagar o slug apenas porque router.query/asPath falharam em um instante:
+           isso re-disparava bootstrap (session null → fetchSession) em loop na produção. */
+        if (browserIsOnExplicitTriagePath()) {
+          return current;
+        }
+        return undefined;
       }
-      return current === undefined ? current : undefined;
+      return current;
     });
   }, [router.asPath, slugFromQuery]);
 
@@ -521,7 +536,11 @@ export default function TriageSlugPage() {
         setFinalizeState("running");
         setFinalizeError(null);
         await fetchSession(false, { silent: true });
-        scheduleSessionRefresh();
+        /* EmagrecimentoOnePageIntake já faz poll de /api/triage/finalize (5s). Poll duplicado em
+           /api/triage/session (4s) gerava rajadas nos logs Vercel e re-renders sem necessidade. */
+        if ((displaySlug || slugRef.current) !== "emagrecimento") {
+          scheduleSessionRefresh();
+        }
         return;
       }
 
