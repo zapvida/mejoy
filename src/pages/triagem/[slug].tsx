@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -153,10 +154,18 @@ export default function TriageSlugPage() {
     [router.asPath]
   );
 
-  /** Uma identidade estável: query → asPath → estado (sincronizado no effect). Sem refs no render. */
+  /** Slug lido do `window.location` no layout client — cobre hydration em que router.asPath ainda está "/triagem/[slug]". */
+  const [browserPathSlug, setBrowserPathSlug] = useState<string | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    const p = resolveSlugFromLocation();
+    if (p) setBrowserPathSlug(prev => (prev === p ? prev : p));
+  }, [router.asPath]);
+
+  /** Uma identidade estável: query → asPath → pathname real → estado. */
   const displaySlug = useMemo(
-    () => querySlugResolved || pathSlugFromAsPath || slug,
-    [querySlugResolved, pathSlugFromAsPath, slug]
+    () => querySlugResolved || pathSlugFromAsPath || browserPathSlug || slug,
+    [querySlugResolved, pathSlugFromAsPath, browserPathSlug, slug]
   );
 
   const flow: TriageFlow | undefined = useMemo(
@@ -373,12 +382,15 @@ export default function TriageSlugPage() {
     []
   );
 
+  const asPathRef = useRef(router.asPath);
+  asPathRef.current = router.asPath;
+
   const scheduleSessionRefresh = useCallback(() => {
     if (flowSlugRef.current === "emagrecimento") return;
 
     const pathSlugGuard =
       (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ??
-      extractSlugFromPath(router.asPath) ??
+      extractSlugFromPath(asPathRef.current) ??
       slugRef.current;
     if (pathSlugGuard === "emagrecimento") return;
 
@@ -393,7 +405,7 @@ export default function TriageSlugPage() {
       }
       const slugNow =
         (typeof window !== "undefined" ? resolveSlugFromLocation() : undefined) ??
-        extractSlugFromPath(router.asPath) ??
+        extractSlugFromPath(asPathRef.current) ??
         slugRef.current;
       if (slugNow === "emagrecimento") {
         if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
@@ -405,7 +417,7 @@ export default function TriageSlugPage() {
         scheduleSessionRefresh();
       }
     }, 4000);
-  }, [fetchSession, router.asPath]);
+  }, [fetchSession]);
 
   useEffect(() => {
     finalizeStateRef.current = finalizeState;
