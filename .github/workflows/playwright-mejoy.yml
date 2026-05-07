@@ -156,12 +156,28 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps chromium
 
-      - name: Skip when deploy URL is unavailable
-        if: needs.resolve-post-deploy-url.outputs.deploy_url == ''
-        run: echo "Deploy URL unavailable; skipping preview smoke." >> "$GITHUB_STEP_SUMMARY"
+      - name: Check preview smoke configuration
+        id: preflight
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.resolve-post-deploy-url.outputs.deploy_url }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+        run: |
+          if [ -z "$PLAYWRIGHT_BASE_URL" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Deploy URL unavailable; skipping preview smoke." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if [ -z "$PRODUCTION_REPORT_ID" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Production smoke secrets are not configured; skipping preview smoke." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
 
       - name: Run prod smoke on deploy URL
-        if: needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: steps.preflight.outputs.ready == 'true'
         env:
           PLAYWRIGHT_LANE: prod-smoke
           PLAYWRIGHT_BASE_URL: ${{ needs.resolve-post-deploy-url.outputs.deploy_url }}
@@ -171,21 +187,18 @@ jobs:
           E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
           E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
           E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
-        run: |
-          test -n "$PLAYWRIGHT_BASE_URL"
-          test -n "$PRODUCTION_REPORT_ID"
-          pnpm exec playwright test --project=chromium
+        run: pnpm exec playwright test --project=chromium
 
       - name: Generate summary
-        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: pnpm qa:mejoy:summary
 
       - name: Publish summary
-        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload HTML report
-        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-preview-html
@@ -193,7 +206,7 @@ jobs:
           retention-days: 7
 
       - name: Upload test results
-        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-preview-test-results
@@ -201,7 +214,7 @@ jobs:
           retention-days: 7
 
       - name: Upload summary JSON
-        if: always() && needs.resolve-post-deploy-url.outputs.deploy_url != ''
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-preview-summary-json
@@ -226,7 +239,21 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps chromium
 
+      - name: Check canonical smoke configuration
+        id: preflight
+        env:
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+        run: |
+          if [ -z "$PRODUCTION_REPORT_ID" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Production smoke secrets are not configured; skipping canonical smoke." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - name: Run prod smoke on canonical domain
+        if: steps.preflight.outputs.ready == 'true'
         env:
           PLAYWRIGHT_LANE: prod-smoke
           PLAYWRIGHT_BASE_URL: https://www.mejoy.com.br
@@ -236,20 +263,18 @@ jobs:
           E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
           E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
           E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
-        run: |
-          test -n "$PRODUCTION_REPORT_ID"
-          pnpm exec playwright test --project=chromium
+        run: pnpm exec playwright test --project=chromium
 
       - name: Generate summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: pnpm qa:mejoy:summary
 
       - name: Publish summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload HTML report
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-canonical-html
@@ -257,7 +282,7 @@ jobs:
           retention-days: 7
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-canonical-test-results
@@ -265,7 +290,7 @@ jobs:
           retention-days: 7
 
       - name: Upload summary JSON
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-post-deploy-canonical-summary-json
@@ -290,7 +315,22 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps chromium
 
+      - name: Check daily prod smoke configuration
+        id: preflight
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+        run: |
+          if [ -z "$PLAYWRIGHT_BASE_URL" ] || [ -z "$PRODUCTION_REPORT_ID" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Daily prod smoke is not fully configured; skipping." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - name: Run daily prod smoke
+        if: steps.preflight.outputs.ready == 'true'
         env:
           PLAYWRIGHT_LANE: prod-smoke
           PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
@@ -300,21 +340,18 @@ jobs:
           E2E_PROD_USER_PASSWORD: ${{ secrets.E2E_PROD_USER_PASSWORD }}
           E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
           E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
-        run: |
-          test -n "$PLAYWRIGHT_BASE_URL"
-          test -n "$PRODUCTION_REPORT_ID"
-          pnpm exec playwright test --project=chromium
+        run: pnpm exec playwright test --project=chromium
 
       - name: Generate summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: pnpm qa:mejoy:summary
 
       - name: Publish summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload HTML report
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-daily-html
@@ -322,7 +359,7 @@ jobs:
           retention-days: 7
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-daily-test-results
@@ -330,7 +367,7 @@ jobs:
           retention-days: 7
 
       - name: Upload summary JSON
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: prod-smoke-daily-summary-json
@@ -338,7 +375,7 @@ jobs:
           retention-days: 7
 
       - name: Open issue after repeated scheduled failure
-        if: always() && failure() && github.event_name == 'schedule'
+        if: always() && failure() && github.event_name == 'schedule' && steps.preflight.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ARTIFACT_NAME: prod-smoke-daily-summary-json
@@ -406,7 +443,25 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps chromium
 
+      - name: Check sandbox e2e configuration
+        id: preflight
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || secrets.SANDBOX_URL }}
+          E2E_SANDBOX_USER_EMAIL: ${{ secrets.E2E_SANDBOX_USER_EMAIL }}
+          E2E_SANDBOX_USER_PASSWORD: ${{ secrets.E2E_SANDBOX_USER_PASSWORD }}
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_SECRET: ${{ secrets.E2E_ADMIN_SECRET }}
+        run: |
+          if [ -z "$PLAYWRIGHT_BASE_URL" ] || [ -z "$E2E_SANDBOX_USER_EMAIL" ] || [ -z "$E2E_SANDBOX_USER_PASSWORD" ] || [ -z "$E2E_ADMIN_EMAIL" ] || [ -z "$E2E_ADMIN_SECRET" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Sandbox E2E is not fully configured; skipping." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - name: Run sandbox e2e
+        if: steps.preflight.outputs.ready == 'true'
         env:
           PLAYWRIGHT_LANE: sandbox-e2e
           PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || secrets.SANDBOX_URL }}
@@ -420,24 +475,18 @@ jobs:
           E2E_SANDBOX_CARD_EXPIRY: ${{ secrets.E2E_SANDBOX_CARD_EXPIRY }}
           E2E_SANDBOX_CARD_CVV: ${{ secrets.E2E_SANDBOX_CARD_CVV }}
           ASAAS_WEBHOOK_TOKEN: ${{ secrets.ASAAS_WEBHOOK_TOKEN }}
-        run: |
-          test -n "$PLAYWRIGHT_BASE_URL"
-          test -n "$E2E_SANDBOX_USER_EMAIL"
-          test -n "$E2E_SANDBOX_USER_PASSWORD"
-          test -n "$E2E_ADMIN_EMAIL"
-          test -n "$E2E_ADMIN_SECRET"
-          pnpm exec playwright test --project=chromium
+        run: pnpm exec playwright test --project=chromium
 
       - name: Generate summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: pnpm qa:mejoy:summary
 
       - name: Publish summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload HTML report
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: sandbox-e2e-nightly-html
@@ -445,7 +494,7 @@ jobs:
           retention-days: 7
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: sandbox-e2e-nightly-test-results
@@ -453,7 +502,7 @@ jobs:
           retention-days: 7
 
       - name: Upload summary JSON
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: sandbox-e2e-nightly-summary-json
@@ -461,7 +510,7 @@ jobs:
           retention-days: 7
 
       - name: Open issue after repeated scheduled failure
-        if: always() && failure() && github.event_name == 'schedule'
+        if: always() && failure() && github.event_name == 'schedule' && steps.preflight.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ARTIFACT_NAME: sandbox-e2e-nightly-summary-json
@@ -529,26 +578,38 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps firefox webkit
 
+      - name: Check public cross-browser configuration
+        id: preflight
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
+          PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
+        run: |
+          if [ -z "$PLAYWRIGHT_BASE_URL" ] || [ -z "$PRODUCTION_REPORT_ID" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Public cross-browser smoke is not fully configured; skipping." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - name: Run weekly cross-browser public smoke
+        if: steps.preflight.outputs.ready == 'true'
         env:
           PLAYWRIGHT_LANE: prod-smoke
           PLAYWRIGHT_BASE_URL: ${{ inputs.base_url || 'https://www.mejoy.com.br' }}
           PRODUCTION_REPORT_ID: ${{ secrets.PRODUCTION_REPORT_ID }}
-        run: |
-          test -n "$PLAYWRIGHT_BASE_URL"
-          test -n "$PRODUCTION_REPORT_ID"
-          pnpm exec playwright test tests/e2e/public/prod-smoke.spec.ts --project=firefox --project=webkit
+        run: pnpm exec playwright test tests/e2e/public/prod-smoke.spec.ts --project=firefox --project=webkit
 
       - name: Generate summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: pnpm qa:mejoy:summary
 
       - name: Publish summary
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         run: cat playwright-report/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload HTML report
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: public-cross-browser-weekly-html
@@ -556,7 +617,7 @@ jobs:
           retention-days: 7
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: public-cross-browser-weekly-test-results
@@ -564,7 +625,7 @@ jobs:
           retention-days: 7
 
       - name: Upload summary JSON
-        if: always()
+        if: always() && steps.preflight.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: public-cross-browser-weekly-summary-json
@@ -572,7 +633,7 @@ jobs:
           retention-days: 7
 
       - name: Open issue after repeated scheduled failure
-        if: always() && failure() && github.event_name == 'schedule'
+        if: always() && failure() && github.event_name == 'schedule' && steps.preflight.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ARTIFACT_NAME: public-cross-browser-weekly-summary-json
