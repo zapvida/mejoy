@@ -23,12 +23,17 @@
     "ios": {
       "bundleIdentifier": "br.com.mejoy.app",
       "supportsTablet": true,
+      "associatedDomains": [
+        "applinks:mejoy.com.br",
+        "applinks:www.mejoy.com.br"
+      ],
       "infoPlist": {
         "NSCameraUsageDescription": "A MeJoy usa a câmera para ler cardápios, refeições e exames do paciente.",
         "NSPhotoLibraryUsageDescription": "A MeJoy acessa sua galeria para anexar refeições, exames e documentos clínicos.",
         "NSPhotoLibraryAddUsageDescription": "A MeJoy salva comprovantes e conteúdos compartilháveis quando você solicitar.",
         "NSHealthShareUsageDescription": "A MeJoy lê sono, passos e métricas compartilhadas para personalizar o coaching de saúde.",
-        "NSHealthUpdateUsageDescription": "A MeJoy grava apenas dados necessários quando você optar por sincronizar sua jornada."
+        "NSHealthUpdateUsageDescription": "A MeJoy grava apenas dados necessários quando você optar por sincronizar sua jornada.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -39,13 +44,49 @@
         "android.permission.READ_MEDIA_IMAGES",
         "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
         "android.permission.VIBRATE"
-      ]
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "mejoy.com.br",
+              "pathPrefix": "/"
+            },
+            {
+              "scheme": "https",
+              "host": "www.mejoy.com.br",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro"
     },
     "notification": {
       "color": "#167C5A"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ca40b9f0-234c-485f-9c25-500728c89794"
+      }
+    },
+    "owner": "allzapvida",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ca40b9f0-234c-485f-9c25-500728c89794"
     }
   }
 }

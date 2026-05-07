@@ -1,18 +1,26 @@
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
-import { colors, spacing } from '@mejoy/design-tokens';
+import { colors, spacing, typography } from '@mejoy/design-tokens';
+import { ActionTile } from '@/components/action-tile';
+import { ClinicalStatusBadge } from '@/components/clinical-status-badge';
+import { HeroCard } from '@/components/hero-card';
+import { InsightCard } from '@/components/insight-card';
+import { MetricPill } from '@/components/metric-pill';
 import { PrimaryButton } from '@/components/primary-button';
 import { ScreenShell } from '@/components/screen-shell';
 import { SectionCard } from '@/components/section-card';
-import { getDashboard } from '@/lib/api';
+import { TimelineRow } from '@/components/timeline-row';
 import { useSession } from '@/context/session-context';
-import type { PatientDashboard } from '@mejoy/api-contracts/mobile';
+import { trackMobileEvent } from '@/lib/analytics';
+import { getDashboard } from '@/lib/api';
+import { formatAdherence, formatCampaignLabel, formatDateLabel, formatWeight } from '@/lib/formatters';
 
 export default function DashboardRoute() {
+  const router = useRouter();
   const session = useSession();
-  const [dashboard, setDashboard] = React.useState<PatientDashboard | null>(null);
+  const [dashboard, setDashboard] = React.useState<Awaited<ReturnType<typeof getDashboard>> | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -20,7 +28,16 @@ export default function DashboardRoute() {
     setLoading(true);
     setError(null);
     try {
-      setDashboard(await getDashboard(session));
+      const response = await getDashboard(session);
+      setDashboard(response);
+      await trackMobileEvent(session, {
+        event: 'dashboard_loaded',
+        screen: 'home',
+        status: 'ok',
+        metadata: {
+          notifications: response.notifications.length,
+        },
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar dashboard');
     } finally {
@@ -32,17 +49,32 @@ export default function DashboardRoute() {
     void load();
   }, [session.apiBaseUrl, session.email]);
 
+  const riskTone = dashboard?.riskStatus.level === 'high' ? 'high' : dashboard?.riskStatus.level === 'attention' ? 'attention' : 'low';
+  const primaryActionTone =
+    dashboard?.journey.primaryAction?.variant === 'secondary'
+      ? 'ghost'
+      : dashboard?.journey.primaryAction?.variant === 'support'
+        ? 'accent'
+        : 'brand';
+
   return (
-    <ScreenShell summary="Painel longitudinal do paciente com jornada clínica, métricas GLP-1, retenção e CTAs de produção já conectados ao BFF.">
-      {loading ? (
-        <SectionCard eyebrow="Sincronizando" title="Carregando jornada">
+    <ScreenShell
+      eyebrow="Home"
+      title="Painel longitudinal"
+      summary="Seu status clínico, retenção diária e operação assistida aparecem no mesmo fluxo, com prioridade clara sobre o que mexe mais no tratamento hoje."
+      support="Puxe para atualizar o dashboard e refletir novas pesagens, refill, documentos e práticas de regulação."
+      refreshing={loading}
+      onRefresh={() => void load()}
+    >
+      {loading && !dashboard ? (
+        <SectionCard eyebrow="Sincronizando" title="Montando seu dia clínico" tone="muted">
           <ActivityIndicator color={colors.brand} />
         </SectionCard>
       ) : null}
 
       {error ? (
         <SectionCard eyebrow="Atenção" title="Não foi possível carregar o painel">
-          <Text selectable style={{ color: colors.danger, lineHeight: 22 }}>
+          <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 23 }}>
             {error}
           </Text>
           <PrimaryButton label="Tentar novamente" onPress={() => void load()} />
@@ -51,124 +83,137 @@ export default function DashboardRoute() {
 
       {dashboard ? (
         <>
-          <SectionCard eyebrow={dashboard.journey.state} title={dashboard.journey.title}>
-            <Text selectable style={{ color: colors.text, lineHeight: 22 }}>
-              {dashboard.journey.summary}
-            </Text>
+          <HeroCard
+            eyebrow={dashboard.journey.state}
+            title={dashboard.profile?.name ? `${dashboard.profile.name}, ${dashboard.journey.title}` : dashboard.journey.title}
+            summary={dashboard.riskStatus.summary}
+            badge={<ClinicalStatusBadge label={dashboard.riskStatus.label} tone={riskTone} />}
+          >
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-              <Metric label="IMC" value={dashboard.metrics.bmi ? dashboard.metrics.bmi.toFixed(1) : 'N/A'} />
-              <Metric label="Peso" value={dashboard.metrics.currentWeightKg ? `${dashboard.metrics.currentWeightKg} kg` : 'N/A'} />
-              <Metric label="Adesão" value={dashboard.glp1.adherenceScore != null ? `${dashboard.glp1.adherenceScore}%` : 'N/A'} />
-              <Metric label="Sono" value={dashboard.sleep.consistencyScore != null ? `${dashboard.sleep.consistencyScore}` : 'N/A'} />
+              <MetricPill label="Peso" value={formatWeight(dashboard.metrics.currentWeightKg)} caption={`Último log ${formatDateLabel(dashboard.metrics.lastWeightLoggedAt)}`} tone="brand" />
+              <MetricPill label="IMC" value={dashboard.metrics.bmi != null ? dashboard.metrics.bmi.toFixed(1) : 'N/A'} caption="Faixa corporal atual" />
+              <MetricPill label="Adesão" value={formatAdherence(dashboard.glp1.adherenceScore)} caption={dashboard.glp1.dosePhase || 'Fase não definida'} tone="accent" />
+              <MetricPill label="Sono" value={dashboard.sleep.consistencyScore != null ? `${dashboard.sleep.consistencyScore}/100` : 'N/A'} caption={dashboard.sleep.coachingTip} tone="warning" />
             </View>
             {dashboard.journey.primaryAction ? (
-              <Text selectable style={{ color: colors.textMuted }}>
-                CTA atual: {dashboard.journey.primaryAction.label}
+              <PrimaryButton
+                label={dashboard.journey.primaryAction.label}
+                detail={dashboard.journey.summary}
+                tone={primaryActionTone}
+                onPress={() => router.push(dashboard.journey.primaryAction?.href as never)}
+              />
+            ) : null}
+          </HeroCard>
+
+          <SectionCard eyebrow="Insights do dia" title="Onde vale concentrar energia">
+            {dashboard.insights.length ? (
+              dashboard.insights.map((insight) => (
+                <InsightCard
+                  key={insight.id}
+                  tone={insight.tone}
+                  title={insight.title}
+                  body={insight.body}
+                  metricLabel={insight.metricLabel}
+                  metricValue={insight.metricValue}
+                  supportingCopy={insight.supportingCopy}
+                />
+              ))
+            ) : (
+              <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
+                Assim que houver mais sinais longitudinais, o app passa a sintetizar o que mais altera risco, adesão e performance diária.
               </Text>
+            )}
+          </SectionCard>
+
+          <SectionCard eyebrow="Próximos passos" title="Loops premium do app">
+            <ActionTile
+              eyebrow="Meal AI"
+              title="Ler prato ou cardápio"
+              description="Use texto ou imagem para estimar calorias, risco e melhor escolha para a fase atual."
+              href="/meal-analysis"
+              tone="brand"
+            />
+            <ActionTile
+              eyebrow="Consulta"
+              title="Solicitar concierge clínico"
+              description="Abra um pedido com SLA claro, contexto de sintomas e handoff seguro."
+              href="/consult-request"
+            />
+            <ActionTile
+              eyebrow="Exames"
+              title="Adicionar documento ao hub"
+              description="Suba PDFs ou imagens para OCR, timeline e revisão clínica."
+              href="/exam-upload"
+            />
+            <ActionTile
+              eyebrow="Médico externo"
+              title="Gerar bundle compartilhável"
+              description="Monte um link seguro com exames, peso, sono e sinais recentes."
+              href="/share-bundle"
+            />
+            {dashboard.ritualSuggestion ? (
+              <ActionTile
+                eyebrow="Ritual sugerido"
+                title={dashboard.ritualSuggestion.title}
+                description={dashboard.ritualSuggestion.benefit}
+                href="/rituals"
+                tone="accent"
+                caption="Abrir rituais"
+              />
+            ) : null}
+            {!dashboard.refill ? (
+              <ActionTile
+                eyebrow="Refill"
+                title="Planejar o próximo reabastecimento"
+                description="Abra o pedido cedo para evitar interrupção de rotina e ruído operacional."
+                href="/refill-request"
+                caption="Solicitar refill"
+              />
             ) : null}
           </SectionCard>
 
-          <SectionCard eyebrow="Próximas ações" title="Abrir loops de retenção">
-            <Link href="/meal-analysis" asChild>
-              <Pressable style={linkButtonStyle}>
-                <Text selectable style={linkLabelStyle}>Meal AI e leitura de cardápio</Text>
-              </Pressable>
-            </Link>
-            <Link href="/consult-request" asChild>
-              <Pressable style={linkButtonStyle}>
-                <Text selectable style={linkLabelStyle}>Solicitar consulta e concierge</Text>
-              </Pressable>
-            </Link>
-            <Link href="/exam-upload" asChild>
-              <Pressable style={linkButtonStyle}>
-                <Text selectable style={linkLabelStyle}>Registrar exame ou documento</Text>
-              </Pressable>
-            </Link>
-            <Link href="/share-bundle" asChild>
-              <Pressable style={linkButtonStyle}>
-                <Text selectable style={linkLabelStyle}>Gerar pacote clínico compartilhável</Text>
-              </Pressable>
-            </Link>
-          </SectionCard>
-
-          <SectionCard eyebrow="Notificações" title="Fila inteligente do paciente">
+          <SectionCard eyebrow="Notificações inteligentes" title="Fila priorizada do paciente" tone="muted">
             {dashboard.notifications.length === 0 ? (
-              <Text selectable style={{ color: colors.textMuted }}>
-                Sem alertas relevantes agora. O motor mobile já está pronto para push segmentado.
+              <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
+                Sem alertas relevantes agora. O motor de push está pronto para campanhas clínicas, sono, ritual e refill.
               </Text>
             ) : (
               dashboard.notifications.slice(0, 4).map((notification) => (
-                <View
+                <ActionTile
                   key={notification.id}
-                  style={{
-                    borderRadius: 18,
-                    borderCurve: 'continuous',
-                    borderWidth: 1,
-                    borderColor: colors.border,
-                    padding: spacing.lg,
-                    gap: spacing.sm,
-                  }}
-                >
-                  <Text selectable style={{ color: colors.text, fontWeight: '700' }}>
-                    {notification.title}
-                  </Text>
-                  <Text selectable style={{ color: colors.textMuted, lineHeight: 20 }}>
-                    {notification.body}
-                  </Text>
-                </View>
+                  eyebrow={formatCampaignLabel(notification.campaignType ?? 'clinical')}
+                  title={notification.title}
+                  description={notification.body}
+                  caption={notification.deepLink ? 'Abrir detalhe' : (notification.priority ?? 'medium').toUpperCase()}
+                  href={notification.deepLink || undefined}
+                  tone={notification.priority === 'urgent' ? 'accent' : 'default'}
+                />
               ))
             )}
           </SectionCard>
 
-          <SectionCard eyebrow="Clínica + operação" title="Pedidos, relatórios e concierge">
-            <Text selectable style={{ color: colors.text }}>Pedidos recentes: {dashboard.orders.length}</Text>
-            <Text selectable style={{ color: colors.text }}>Relatórios recentes: {dashboard.reports.length}</Text>
-            <Text selectable style={{ color: colors.text }}>
-              Consulta atual: {dashboard.care.latestRequestStatus || 'sem solicitação ativa'}
-            </Text>
-            <Text selectable style={{ color: colors.text }}>
-              Exames no hub: {dashboard.exams.totalDocuments}
-            </Text>
+          <SectionCard eyebrow="Clínica e operação" title="Status assistencial">
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
+              <MetricPill label="Pedidos" value={String(dashboard.orders.length)} caption="Histórico comercial consolidado" />
+              <MetricPill label="Relatórios" value={String(dashboard.reports.length)} caption="Itens recentes no BFF" />
+              <MetricPill label="Exames" value={String(dashboard.exams.totalDocuments)} caption="Documentos no hub" />
+              <MetricPill
+                label="Consulta"
+                value={dashboard.care.latestRequestStatus || 'Sem fila'}
+                caption={`SLA ${dashboard.care.conciergeSlaHours}h`}
+              />
+            </View>
+            {dashboard.orders.slice(0, 3).map((order) => (
+              <TimelineRow
+                key={order.id}
+                title={order.label}
+                subtitle={`Status ${order.status} · R$ ${(order.amountCents / 100).toFixed(2)}`}
+                meta={formatDateLabel(order.createdAt)}
+              />
+            ))}
           </SectionCard>
         </>
       ) : null}
     </ScreenShell>
   );
 }
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <View
-      style={{
-        minWidth: '47%',
-        borderRadius: 18,
-        borderCurve: 'continuous',
-        backgroundColor: colors.surfaceStrong,
-        padding: spacing.md,
-        gap: 4,
-      }}
-    >
-      <Text selectable style={{ color: colors.textMuted, fontSize: 12, textTransform: 'uppercase', fontWeight: '700' }}>
-        {label}
-      </Text>
-      <Text selectable style={{ color: colors.text, fontSize: 18, fontWeight: '700' }}>
-        {value}
-      </Text>
-    </View>
-  );
-}
-
-const linkButtonStyle = {
-  borderRadius: 18,
-  borderCurve: 'continuous' as const,
-  borderWidth: 1,
-  borderColor: colors.border,
-  padding: spacing.lg,
-  backgroundColor: '#FFFFFF',
-};
-
-const linkLabelStyle = {
-  color: colors.text,
-  fontSize: 16,
-  fontWeight: '600' as const,
-};

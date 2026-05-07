@@ -89,6 +89,7 @@ interface EmagrecimentoCheckoutExperienceProps {
   defaultPlanId?: string;
   defaultTrilha?: EmagrecimentoTrilha;
   defaultPrincipio?: string;
+  appReturnUrl?: string | null;
   prefillProfile?: PrefillProfile | null;
   allowPlanSelection?: boolean;
   mode?: 'inline' | 'standalone';
@@ -118,6 +119,7 @@ export function EmagrecimentoCheckoutExperience({
   defaultPlanId = 'programa-3m',
   defaultTrilha = 'alternativas_clinicas',
   defaultPrincipio,
+  appReturnUrl,
   prefillProfile,
   allowPlanSelection = false,
   mode = 'inline',
@@ -207,6 +209,23 @@ export function EmagrecimentoCheckoutExperience({
       body: 'O acompanhamento segue com canal oficial e dashboard apos pagamento confirmado.',
     },
   ];
+
+  const buildAppContinuationUrl = (paymentId: string) => {
+    if (!appReturnUrl) return null;
+
+    try {
+      const nextUrl = new URL(appReturnUrl);
+      nextUrl.searchParams.set('paymentId', paymentId);
+      nextUrl.searchParams.set('status', 'confirmed');
+      nextUrl.searchParams.set('source', 'checkout');
+      if (reportId) {
+        nextUrl.searchParams.set('reportId', reportId);
+      }
+      return nextUrl.toString();
+    } catch {
+      return appReturnUrl;
+    }
+  };
 
   useEffect(() => {
     setSelectedPlan(defaultPlanId);
@@ -345,6 +364,12 @@ export function EmagrecimentoCheckoutExperience({
       payment_method: paymentMethod,
     });
 
+    const appContinuationUrl = buildAppContinuationUrl(confirmedPaymentId);
+    if (appContinuationUrl) {
+      window.location.href = appContinuationUrl;
+      return;
+    }
+
     try {
       const response = await fetch(`/api/asaas/payment-dashboard-link?paymentId=${confirmedPaymentId}`);
       const data = await response.json();
@@ -364,9 +389,11 @@ export function EmagrecimentoCheckoutExperience({
       window.location.href = data.magicUrl;
     } catch (redirectError) {
       console.error('[emagrecimento-checkout] dashboard redirect failed', redirectError);
-      window.location.href = `/emagrecimento/obrigado?paymentId=${encodeURIComponent(confirmedPaymentId)}${
-        reportId ? `&reportId=${encodeURIComponent(reportId)}` : ''
-      }`;
+      const query = new URLSearchParams();
+      query.set('paymentId', confirmedPaymentId);
+      if (reportId) query.set('reportId', reportId);
+      if (appReturnUrl) query.set('appReturnUrl', appReturnUrl);
+      window.location.href = `/emagrecimento/obrigado?${query.toString()}`;
     }
   };
 

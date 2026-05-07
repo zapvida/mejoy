@@ -1,15 +1,19 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
-import { colors, spacing } from '@mejoy/design-tokens';
+import type { ClinicalShareBundleResponse } from '@mejoy/api-contracts/mobile';
+import { colors, typography } from '@mejoy/design-tokens';
+import { ClinicalStatusBadge } from '@/components/clinical-status-badge';
+import { NativeModalSheet } from '@/components/native-modal-sheet';
 import { PrimaryButton } from '@/components/primary-button';
 import { ScreenShell } from '@/components/screen-shell';
 import { SectionCard } from '@/components/section-card';
 import { TextField } from '@/components/text-field';
-import { createShareBundle } from '@/lib/api';
 import { useSession } from '@/context/session-context';
-import type { ClinicalShareBundleResponse } from '@mejoy/api-contracts/mobile';
+import { trackMobileEvent } from '@/lib/analytics';
+import { createShareBundle } from '@/lib/api';
+import { formatDateTimeLabel } from '@/lib/formatters';
 
 export default function ShareBundleRoute() {
   const session = useSession();
@@ -17,9 +21,11 @@ export default function ShareBundleRoute() {
   const [expiresInHours, setExpiresInHours] = React.useState('72');
   const [result, setResult] = React.useState<ClinicalShareBundleResponse | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   async function handleShareBundle() {
     setError(null);
+    setLoading(true);
     try {
       const response = await createShareBundle(session, {
         note,
@@ -29,33 +35,59 @@ export default function ShareBundleRoute() {
       });
       setResult(response);
       await Haptics.selectionAsync();
+      await trackMobileEvent(session, {
+        event: 'bundle_shared',
+        screen: 'share-bundle',
+        status: 'ok',
+        metadata: {
+          expiresInHours: Number(expiresInHours),
+        },
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao gerar pacote');
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <ScreenShell summary="Pacote clínico seguro e expirável para médico externo, reaproveitando relatório, jornada, peso e sono do paciente.">
-      <SectionCard eyebrow="Bundle seguro" title="Gerar link compartilhável">
+    <ScreenShell
+      eyebrow="Bundle clínico"
+      title="Pacote seguro para médico externo"
+      summary="O share bundle é a primeira interface médica do v1: um link expirável que organiza resumo, peso, sono, relatórios e documentos sem pedir portal dedicado."
+    >
+      <NativeModalSheet
+        eyebrow="Compartilhamento seguro"
+        title="Gerar link expirável"
+        summary="Adicione um contexto curto para o médico e defina a janela de expiração. O payload nasce com resumo clínico e dados recentes do paciente."
+      >
         <TextField label="Nota para o médico" value={note} onChangeText={setNote} multiline placeholder="Contexto clínico que deve acompanhar o bundle." />
         <TextField label="Expira em horas" value={expiresInHours} onChangeText={setExpiresInHours} keyboardType="numeric" />
-        <PrimaryButton label="Gerar pacote" onPress={() => void handleShareBundle()} disabled={!expiresInHours.trim()} />
-      </SectionCard>
+        <PrimaryButton
+          label={loading ? 'Gerando...' : 'Gerar pacote'}
+          onPress={() => void handleShareBundle()}
+          disabled={loading || !expiresInHours.trim()}
+        />
+      </NativeModalSheet>
 
       {error ? (
-        <View style={{ borderRadius: 18, borderCurve: 'continuous', backgroundColor: '#FFF1F1', padding: spacing.lg }}>
-          <Text selectable style={{ color: colors.danger }}>{error}</Text>
-        </View>
+        <SectionCard eyebrow="Falha" title="Bundle não criado">
+          <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 22 }}>
+            {error}
+          </Text>
+        </SectionCard>
       ) : null}
 
       {result ? (
-        <SectionCard eyebrow="Bundle criado" title="Pronto para compartilhar">
-          <Text selectable style={{ color: colors.text }}>ID: {result.id}</Text>
-          <Text selectable style={{ color: colors.text }}>Expira em: {result.expiresAt}</Text>
-          <Text selectable style={{ color: colors.textMuted, lineHeight: 22 }}>
+        <SectionCard eyebrow="Bundle criado" title="Pronto para compartilhar" tone="muted">
+          <ClinicalStatusBadge label={`Expira ${formatDateTimeLabel(result.expiresAt)}`} tone="attention" />
+          <Text selectable style={{ color: colors.textStrong, fontSize: typography.bodyStrong, fontWeight: '700' }}>
+            ID {result.id}
+          </Text>
+          <Text selectable style={{ color: colors.text, fontSize: typography.body, lineHeight: 23 }}>
             {result.bundle.summary}
           </Text>
-          <Text selectable style={{ color: colors.brand, lineHeight: 22 }}>
+          <Text selectable style={{ color: colors.brandStrong, fontSize: typography.body, lineHeight: 22 }}>
             {result.shareUrl}
           </Text>
         </SectionCard>

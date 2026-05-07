@@ -1,0 +1,15 @@
+/.git
+/.next
+/.reports
+/.swc
+/.vercel
+/coverage
+/docs
+/playwright-report
+/test-results
+/tests
+/__tests__
+/public
+/src
+/*.md
+/*.txt

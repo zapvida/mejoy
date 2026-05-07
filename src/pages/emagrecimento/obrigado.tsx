@@ -9,6 +9,7 @@ export default function ObrigadoPage() {
   const router = useRouter();
   const paymentId = readStringQuery(router.query.paymentId);
   const queryReportId = readStringQuery(router.query.reportId);
+  const appReturnUrl = readStringQuery(router.query.appReturnUrl);
   const [reportId, setReportId] = useState<string | null>(queryReportId || null);
   const [accessState, setAccessState] = useState<AccessState>(paymentId ? 'loading' : 'confirmed');
   const [dashboardUrl, setDashboardUrl] = useState<string | null>(null);
@@ -45,6 +46,14 @@ export default function ObrigadoPage() {
           source: 'obrigado_fallback',
         });
 
+        if (appReturnUrl) {
+          const nextAppUrl = buildAppContinuationUrl(appReturnUrl, paymentId, reportId);
+          window.setTimeout(() => {
+            window.location.href = nextAppUrl;
+          }, 900);
+          return;
+        }
+
         if (data.magicUrl) {
           window.setTimeout(() => {
             window.location.href = data.magicUrl;
@@ -61,7 +70,7 @@ export default function ObrigadoPage() {
     return () => {
       cancelled = true;
     };
-  }, [paymentId]);
+  }, [appReturnUrl, paymentId, reportId]);
 
   return (
     <>
@@ -102,6 +111,14 @@ export default function ObrigadoPage() {
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              {appReturnUrl && accessState === 'confirmed' && (
+                <a
+                  href={buildAppContinuationUrl(appReturnUrl, paymentId, reportId)}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"
+                >
+                  Abrir no app MeJoy
+                </a>
+              )}
               {dashboardUrl && (
                 <a
                   href={dashboardUrl}
@@ -112,7 +129,7 @@ export default function ObrigadoPage() {
               )}
               {paymentId && (
                 <a
-                  href={`/emagrecimento/checkout?paymentId=${encodeURIComponent(paymentId)}${reportId ? `&reportId=${encodeURIComponent(reportId)}` : ''}`}
+                  href={`/emagrecimento/checkout?paymentId=${encodeURIComponent(paymentId)}${reportId ? `&reportId=${encodeURIComponent(reportId)}` : ''}${appReturnUrl ? `&appReturnUrl=${encodeURIComponent(appReturnUrl)}` : ''}`}
                   className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/15"
                 >
                   Voltar ao checkout
@@ -141,4 +158,17 @@ export default function ObrigadoPage() {
 
 function readStringQuery(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function buildAppContinuationUrl(appReturnUrl: string, paymentId?: string | null, reportId?: string | null) {
+  try {
+    const nextUrl = new URL(appReturnUrl);
+    if (paymentId) nextUrl.searchParams.set('paymentId', paymentId);
+    nextUrl.searchParams.set('status', 'confirmed');
+    nextUrl.searchParams.set('source', 'checkout');
+    if (reportId) nextUrl.searchParams.set('reportId', reportId);
+    return nextUrl.toString();
+  } catch {
+    return appReturnUrl;
+  }
 }
