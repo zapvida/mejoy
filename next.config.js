@@ -184,6 +184,15 @@ const nextConfig = {
   compress: true,
 
   transpilePackages: ['@mejoy/domain', '@mejoy/api-contracts', '@mejoy/design-tokens'],
+  serverExternalPackages: ['@prisma/client', 'prisma'],
+  outputFileTracingIncludes: {
+    '/**': [
+      './generated/prisma-client/**/*',
+      './node_modules/.pnpm/@prisma+client@*/node_modules/@prisma/client/runtime/**/*',
+      './node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client/**/*',
+      './node_modules/.pnpm/@prisma+engines@*/node_modules/@prisma/engines/**/*',
+    ],
+  },
   
   // Configurações experimentais para performance
   experimental: {

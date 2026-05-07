@@ -12,7 +12,8 @@ function ensurePrismaLink() {
   }
 
   const prismaDir = path.join(packageDir, '.prisma');
-  const relativeTarget = '../.prisma';
+  const targetPath = path.resolve(packageDir, '..', '..', '.prisma');
+  const relativeTarget = '../../.prisma';
 
   try {
     const stat = fs.lstatSync(prismaDir);
@@ -21,6 +22,11 @@ function ensurePrismaLink() {
     }
   } catch (error) {
     // Missing path is expected on pnpm installs.
+  }
+
+  if (!fs.existsSync(targetPath)) {
+    console.warn(`[link-prisma-client] target not found, skipping link: ${targetPath}`);
+    return;
   }
 
   try {
