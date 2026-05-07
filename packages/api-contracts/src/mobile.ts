@@ -12,11 +12,13 @@ export const mobileFeatureFlagsSchema = z.object({
   push: z.boolean(),
 });
 
-export const dashboardPrimaryActionSchema = z.object({
-  label: z.string(),
-  href: z.string(),
-  variant: z.enum(['primary', 'secondary', 'support']),
-}).nullable();
+export const dashboardPrimaryActionSchema = z
+  .object({
+    label: z.string(),
+    href: z.string(),
+    variant: z.enum(['primary', 'secondary', 'support']),
+  })
+  .nullable();
 
 export const mobileProfileSchema = z.object({
   id: z.string(),
@@ -32,12 +34,27 @@ export const mobileProfileSchema = z.object({
   updatedAt: z.string().nullable(),
 });
 
+export const dashboardInsightBlockSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  body: z.string(),
+  tone: z.enum(['performance', 'clinical', 'celebration', 'warning']),
+  metricLabel: z.string().nullable(),
+  metricValue: z.string().nullable(),
+  supportingCopy: z.string().nullable(),
+  cta: dashboardPrimaryActionSchema.optional(),
+});
+
 export const dashboardNotificationSchema = z.object({
   id: z.string(),
   level: z.enum(['info', 'success', 'warning', 'critical']),
   title: z.string(),
   body: z.string(),
   cta: dashboardPrimaryActionSchema.optional(),
+  deepLink: z.string().nullable().default(null),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
+  campaignType: z.enum(['clinical', 'lifestyle', 'commerce', 'ritual', 'sleep', 'engagement']).default('clinical'),
+  dismissState: z.enum(['pending', 'dismissed', 'completed']).default('pending'),
 });
 
 export const mobileOrderSchema = z.object({
@@ -99,6 +116,23 @@ export const doseLogInputSchema = z.object({
   occurredAt: z.string().optional(),
 });
 
+export const sideEffectLogSchema = z.object({
+  id: z.string(),
+  symptom: z.string(),
+  severity: z.enum(['low', 'medium', 'high']),
+  status: z.enum(['monitor', 'needs-review', 'resolved']),
+  note: z.string().nullable(),
+  occurredAt: z.string(),
+  createdAt: z.string(),
+});
+
+export const sideEffectLogInputSchema = z.object({
+  symptom: z.string().min(2).max(80),
+  severity: z.enum(['low', 'medium', 'high']),
+  note: z.string().max(280).optional(),
+  occurredAt: z.string().optional(),
+});
+
 export const sleepSnapshotSchema = z.object({
   provider: z.enum(['healthkit', 'health-connect', 'manual']),
   recordedAt: z.string(),
@@ -110,12 +144,14 @@ export const sleepSnapshotSchema = z.object({
 
 export const wearablesSyncInputSchema = z.object({
   provider: z.enum(['healthkit', 'health-connect', 'manual']),
-  sleep: z.object({
-    recordedAt: z.string(),
-    durationHours: z.number().positive().max(24),
-    latencyMinutes: z.number().int().min(0).max(300).optional(),
-    awakenings: z.number().int().min(0).max(20).optional(),
-  }).optional(),
+  sleep: z
+    .object({
+      recordedAt: z.string(),
+      durationHours: z.number().positive().max(24),
+      latencyMinutes: z.number().int().min(0).max(300).optional(),
+      awakenings: z.number().int().min(0).max(20).optional(),
+    })
+    .optional(),
   stepsCount: z.number().int().min(0).max(100000).optional(),
 });
 
@@ -175,6 +211,21 @@ export const examDocumentSchema = z.object({
   reviewHint: z.string(),
 });
 
+export const examTimelineItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  type: z.enum(['upload', 'ocr', 'review']),
+  status: z.enum(['queued', 'processing', 'ready']),
+  occurredAt: z.string(),
+  summary: z.string().nullable(),
+});
+
+export const examListResponseSchema = z.object({
+  generatedAt: z.string(),
+  documents: z.array(examDocumentSchema),
+  timeline: z.array(examTimelineItemSchema),
+});
+
 export const examUploadInputSchema = z.object({
   fileName: z.string().min(3).max(180),
   mimeType: z.string().min(3).max(120),
@@ -182,6 +233,85 @@ export const examUploadInputSchema = z.object({
   summaryText: z.string().max(1000).optional(),
   capturedAt: z.string().optional(),
   tags: z.array(z.string().min(1).max(40)).max(8).optional(),
+});
+
+export const ritualCategorySchema = z.enum(['focus', 'craving', 'anxiety', 'pre-sleep']);
+
+export const ritualTrackSchema = z.object({
+  id: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  subtitle: z.string(),
+  durationMinutes: z.number().int().min(2).max(20),
+  category: ritualCategorySchema,
+  accent: z.string(),
+  benefit: z.string(),
+  recommendedFor: z.string(),
+  audioUrl: z.string().nullable(),
+  isFeatured: z.boolean(),
+});
+
+export const ritualSessionSchema = z.object({
+  id: z.string(),
+  ritualId: z.string(),
+  category: ritualCategorySchema,
+  durationMinutes: z.number().int().min(1).max(30),
+  outcome: z.enum(['started', 'completed', 'skipped']),
+  completedAt: z.string(),
+  reflection: z.string().nullable(),
+  insight: z.string().nullable(),
+});
+
+export const ritualSessionInputSchema = z.object({
+  ritualId: z.string().min(2),
+  category: ritualCategorySchema,
+  durationMinutes: z.number().int().min(1).max(30),
+  outcome: z.enum(['started', 'completed', 'skipped']).default('completed'),
+  reflection: z.string().max(240).optional(),
+});
+
+export const ritualListResponseSchema = z.object({
+  generatedAt: z.string(),
+  featured: ritualTrackSchema.nullable(),
+  tracks: z.array(ritualTrackSchema),
+  recentSessions: z.array(ritualSessionSchema),
+});
+
+export const journeyInsightSchema = z.object({
+  id: z.string(),
+  source: z.enum(['weight', 'dose', 'sleep', 'nutrition', 'ritual']),
+  title: z.string(),
+  body: z.string(),
+  tone: z.enum(['good', 'focus', 'warning']),
+});
+
+export const refillRequestSchema = z.object({
+  id: z.string(),
+  status: z.enum(['requested', 'handoff_created', 'scheduled']),
+  medication: z.string(),
+  doseMg: z.number().nullable(),
+  createdAt: z.string(),
+  etaHours: z.number(),
+  nextStep: z.string(),
+  redirectUrl: z.string().nullable(),
+});
+
+export const refillRequestInputSchema = z.object({
+  medication: z.string().min(2).max(80),
+  doseMg: z.number().positive().max(100).optional(),
+  urgency: z.enum(['routine', 'soon', 'urgent']).default('routine'),
+  note: z.string().max(280).optional(),
+});
+
+export const journeyResponseSchema = z.object({
+  generatedAt: z.string(),
+  weightLogs: z.array(mobileWeightLogSchema),
+  doseLogs: z.array(doseLogSchema),
+  sideEffectLogs: z.array(sideEffectLogSchema),
+  latestSleep: sleepSnapshotSchema.nullable(),
+  insights: z.array(journeyInsightSchema),
+  adherenceScore: z.number().nullable(),
+  refill: refillRequestSchema.nullable(),
 });
 
 export const notificationPreferenceSchema = z.object({
@@ -198,6 +328,35 @@ export const notificationListResponseSchema = z.object({
   notifications: z.array(dashboardNotificationSchema),
   preferences: notificationPreferenceSchema,
   featureFlags: mobileFeatureFlagsSchema,
+});
+
+export const mobileAnalyticsEventNameSchema = z.enum([
+  'app_open',
+  'dashboard_loaded',
+  'weight_logged',
+  'meal_analyzed',
+  'sleep_synced',
+  'meditation_started',
+  'consult_requested',
+  'exam_uploaded',
+  'bundle_shared',
+  'handoff_opened',
+  'side_effect_flagged',
+  'onboarding_started',
+  'onboarding_checkout_opened',
+  'activation_completed',
+  'push_permission_prompted',
+  'deeplink_opened',
+]);
+
+export const mobileAnalyticsEventInputSchema = z.object({
+  event: mobileAnalyticsEventNameSchema,
+  screen: z.string().max(80).optional(),
+  status: z.enum(['ok', 'error', 'info']).default('info'),
+  metadata: z
+    .record(z.union([z.string(), z.number(), z.boolean(), z.null()]))
+    .optional()
+    .default({}),
 });
 
 export const clinicalShareBundleSchema = z.object({
@@ -227,6 +386,12 @@ export const shareBundleResponseSchema = z.object({
   expiresAt: z.string(),
   shareUrl: z.string(),
   bundle: clinicalShareBundleSchema,
+});
+
+export const riskStatusSchema = z.object({
+  level: z.enum(['low', 'attention', 'high']),
+  label: z.string(),
+  summary: z.string(),
 });
 
 export const patientDashboardSchema = z.object({
@@ -259,6 +424,10 @@ export const patientDashboardSchema = z.object({
     lastSyncedAt: z.string().nullable(),
     coachingTip: z.string(),
   }),
+  insights: z.array(dashboardInsightBlockSchema),
+  ritualSuggestion: ritualTrackSchema.nullable(),
+  refill: refillRequestSchema.nullable(),
+  riskStatus: riskStatusSchema,
   orders: z.array(mobileOrderSchema),
   reports: z.array(mobileReportSchema),
   notifications: z.array(dashboardNotificationSchema),
@@ -276,12 +445,23 @@ export const patientDashboardSchema = z.object({
 
 export type MobileFeatureFlags = z.infer<typeof mobileFeatureFlagsSchema>;
 export type MobileProfile = z.infer<typeof mobileProfileSchema>;
+export type DashboardInsightBlock = z.infer<typeof dashboardInsightBlockSchema>;
 export type PatientDashboard = z.infer<typeof patientDashboardSchema>;
 export type WeightLog = z.infer<typeof mobileWeightLogSchema>;
 export type DoseLog = z.infer<typeof doseLogSchema>;
+export type SideEffectLog = z.infer<typeof sideEffectLogSchema>;
 export type MealAnalysisResponse = z.infer<typeof mealAnalysisResponseSchema>;
 export type SleepSnapshot = z.infer<typeof sleepSnapshotSchema>;
 export type CareRequestResponse = z.infer<typeof careRequestResponseSchema>;
 export type ExamDocument = z.infer<typeof examDocumentSchema>;
+export type ExamTimelineItem = z.infer<typeof examTimelineItemSchema>;
+export type ExamListResponse = z.infer<typeof examListResponseSchema>;
 export type NotificationListResponse = z.infer<typeof notificationListResponseSchema>;
+export type MobileAnalyticsEventInput = z.infer<typeof mobileAnalyticsEventInputSchema>;
 export type ClinicalShareBundleResponse = z.infer<typeof shareBundleResponseSchema>;
+export type RitualTrack = z.infer<typeof ritualTrackSchema>;
+export type RitualSession = z.infer<typeof ritualSessionSchema>;
+export type RitualListResponse = z.infer<typeof ritualListResponseSchema>;
+export type JourneyInsight = z.infer<typeof journeyInsightSchema>;
+export type JourneyResponse = z.infer<typeof journeyResponseSchema>;
+export type RefillRequest = z.infer<typeof refillRequestSchema>;

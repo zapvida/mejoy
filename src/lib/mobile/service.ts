@@ -1,7 +1,5 @@
 import crypto from 'crypto';
 
-import { hasSupabaseAdminConfig, supabaseAdmin } from '@/lib/supabaseAdmin';
-import { prisma } from '@/lib/prisma';
 import { buildMeDashboard } from '@/lib/dashboard/service';
 import {
   buildZapVidaHandoffUrl,
@@ -10,14 +8,21 @@ import {
   signHandoffEnvelope,
 } from '@/lib/handoff/envelope';
 import { persistHandoffEvent } from '@/lib/handoff/store';
+import { signShareBundleToken } from '@/lib/mobile/share-bundles';
+import { prisma } from '@/lib/prisma';
+import { hasSupabaseAdminConfig, supabaseAdmin } from '@/lib/supabaseAdmin';
 import {
   careRequestInputSchema,
   careRequestResponseSchema,
   createShareBundleInputSchema,
+  dashboardNotificationSchema,
   doseLogInputSchema,
   doseLogSchema,
   examDocumentSchema,
+  examListResponseSchema,
+  examTimelineItemSchema,
   examUploadInputSchema,
+  journeyResponseSchema,
   mealAnalysisInputSchema,
   mealAnalysisResponseSchema,
   mobileProfileSchema,
@@ -25,7 +30,14 @@ import {
   mobileWeightLogSchema,
   notificationListResponseSchema,
   patientDashboardSchema,
+  refillRequestInputSchema,
+  refillRequestSchema,
+  ritualListResponseSchema,
+  ritualSessionInputSchema,
+  ritualSessionSchema,
   shareBundleResponseSchema,
+  sideEffectLogInputSchema,
+  sideEffectLogSchema,
   sleepSnapshotSchema,
   wearablesSyncInputSchema,
   wearablesSyncResponseSchema,
@@ -33,14 +45,18 @@ import {
 } from '@mejoy/api-contracts/mobile';
 import {
   buildAdherenceScore,
+  buildDashboardInsights,
+  buildJourneyInsights,
+  buildRiskStatus,
   calculateBmi,
   classifyWeightTrend,
   estimateMealFromText,
+  getDefaultRitualTracks,
   getSleepCoachingTip,
+  pickSuggestedRitual,
   resolveMobileFeatureFlags,
   scoreSleepSnapshot,
 } from '@mejoy/domain';
-import { signShareBundleToken } from '@/lib/mobile/share-bundles';
 
 type ProfileRecord = {
   id: string;
@@ -69,7 +85,10 @@ type MobileActor = {
 const CARE_REQUEST_ACTION = 'mobile.care_request.created';
 const DOSE_LOG_ACTION = 'mobile.glp1.dose_log.created';
 const EXAM_UPLOAD_ACTION = 'mobile.exam_document.created';
+const REFILL_REQUEST_ACTION = 'mobile.refill_request.created';
+const RITUAL_SESSION_ACTION = 'mobile.ritual_session.created';
 const SHARE_BUNDLE_ACTION = 'mobile.share_bundle.created';
+const SIDE_EFFECT_LOG_ACTION = 'mobile.glp1.side_effect_log.created';
 const SLEEP_SYNC_ACTION = 'mobile.sleep_sync.created';
 const WEIGHT_LOG_ACTION = 'mobile.glp1.weight_log.created';
 
@@ -141,6 +160,140 @@ async function findAuditEntries<T>(
   return parsed;
 }
 
+function toNotification(
+  input: Partial<ReturnType<typeof dashboardNotificationSchema.parse>> & {
+    id: string;
+    level: 'info' | 'success' | 'warning' | 'critical';
+    title: string;
+    body: string;
+  }
+) {
+  const priority =
+    input.priority ??
+    (input.level === 'critical'
+      ? 'urgent'
+      : input.level === 'warning'
+        ? 'high'
+        : input.level === 'success'
+          ? 'medium'
+          : 'low');
+
+  return dashboardNotificationSchema.parse({
+    ...input,
+    cta: input.cta ?? null,
+    deepLink: input.deepLink ?? input.cta?.href ?? null,
+    priority,
+    campaignType: input.campaignType ?? 'clinical',
+    dismissState: input.dismissState ?? 'pending',
+  });
+}
+
+function defaultSleepSummary(snapshot: ReturnType<typeof sleepSnapshotSchema.parse> | null) {
+  return {
+    latestDurationHours: snapshot?.durationHours ?? null,
+    consistencyScore: snapshot?.score ?? null,
+    lastSyncedAt: snapshot?.recordedAt ?? null,
+    coachingTip: getSleepCoachingTip(snapshot?.durationHours),
+  };
+}
+
+function sanitizeFileName(fileName: string) {
+  return fileName.replace(/[^a-zA-Z0-9._-]/g, '-').slice(0, 120);
+}
+
+function buildHeuristicNotifications(params: {
+  lastWeightLoggedAt: string | null;
+  sleepDurationHours: number | null;
+  sleepScore: number | null;
+  latestRefill: ReturnType<typeof refillRequestSchema.parse> | null;
+  suggestedRitualId: string | null;
+}) {
+  const notifications: Array<ReturnType<typeof toNotification>> = [];
+
+  if (!params.lastWeightLoggedAt) {
+    notifications.push(
+      toNotification({
+        id: 'weight-log-missing',
+        level: 'warning',
+        title: 'Registre seu peso inicial',
+        body: 'Sem pesagem recente, o acompanhamento longitudinal perde precisão.',
+        cta: {
+          label: 'Abrir jornada GLP-1',
+          href: '/journey',
+          variant: 'primary',
+        },
+        campaignType: 'clinical',
+      })
+    );
+  }
+
+  if (params.sleepDurationHours != null && params.sleepDurationHours < 6) {
+    notifications.push(
+      toNotification({
+        id: 'sleep-coaching',
+        level: 'info',
+        title: 'Seu sono merece atenção hoje',
+        body: 'Dormir pouco piora energia, fome e execução do plano. Proteja a próxima noite.',
+        cta: {
+          label: 'Ver jornada',
+          href: '/journey',
+          variant: 'secondary',
+        },
+        campaignType: 'sleep',
+      })
+    );
+  }
+
+  if (params.sleepScore != null && params.sleepScore < 70 && params.suggestedRitualId) {
+    notifications.push(
+      toNotification({
+        id: 'ritual-suggestion',
+        level: 'info',
+        title: 'Um ritual curto pode proteger o resto do seu dia',
+        body: 'Seu app já tem uma prática sugerida para regulação e foco.',
+        cta: {
+          label: 'Abrir rituais',
+          href: '/rituals',
+          variant: 'support',
+        },
+        campaignType: 'ritual',
+      })
+    );
+  }
+
+  if (!params.latestRefill) {
+    notifications.push(
+      toNotification({
+        id: 'refill-reminder',
+        level: 'info',
+        title: 'Planeje o próximo reabastecimento com folga',
+        body: 'Abrir o pedido cedo evita ruído operacional e interrupção da rotina.',
+        cta: {
+          label: 'Solicitar refill',
+          href: '/refill-request',
+          variant: 'support',
+        },
+        campaignType: 'commerce',
+      })
+    );
+  }
+
+  return notifications;
+}
+
+function buildExamTimeline(documents: Awaited<ReturnType<typeof listExamDocuments>>) {
+  return documents.map((document, index) =>
+    examTimelineItemSchema.parse({
+      id: `${document.id}-timeline`,
+      title: document.fileName,
+      type: index === 0 ? 'review' : document.status === 'uploaded' ? 'ocr' : 'upload',
+      status: document.status === 'uploaded' ? 'ready' : 'queued',
+      occurredAt: document.uploadedAt,
+      summary: document.summaryText ?? document.reviewHint,
+    })
+  );
+}
+
 export async function resolveMobileActor(params: {
   email: string | null;
   profile?: ProfileRecord | null;
@@ -175,6 +328,14 @@ export async function listDoseLogs(actorId: string) {
   return findAuditEntries(actorId, DOSE_LOG_ACTION, (input) => doseLogSchema.parse(input), 24);
 }
 
+export async function listSideEffectLogs(actorId: string) {
+  return findAuditEntries(actorId, SIDE_EFFECT_LOG_ACTION, (input) => sideEffectLogSchema.parse(input), 24);
+}
+
+export async function listRitualSessions(actorId: string) {
+  return findAuditEntries(actorId, RITUAL_SESSION_ACTION, (input) => ritualSessionSchema.parse(input), 24);
+}
+
 export async function getLatestSleepSnapshot(actorId: string) {
   const snapshots = await findAuditEntries(actorId, SLEEP_SYNC_ACTION, (input) => sleepSnapshotSchema.parse(input), 1);
   return snapshots[0] || null;
@@ -184,61 +345,18 @@ export async function listExamDocuments(actorId: string) {
   return findAuditEntries(actorId, EXAM_UPLOAD_ACTION, (input) => examDocumentSchema.parse(input), 20);
 }
 
+export async function listRefillRequests(actorId: string) {
+  return findAuditEntries(actorId, REFILL_REQUEST_ACTION, (input) => refillRequestSchema.parse(input), 12);
+}
+
 export async function getLatestCareRequest(actorId: string) {
-  const requests = await findAuditEntries(actorId, CARE_REQUEST_ACTION, (input) => careRequestResponseSchema.parse(input), 1);
+  const requests = await findAuditEntries(actorId, CARE_REQUEST_ACTION, (input) => careRequestResponseSchema.parse(input), 12);
   return requests[0] || null;
 }
 
-function defaultSleepSummary(snapshot: ReturnType<typeof sleepSnapshotSchema.parse> | null) {
-  return {
-    latestDurationHours: snapshot?.durationHours ?? null,
-    consistencyScore: snapshot?.score ?? null,
-    lastSyncedAt: snapshot?.recordedAt ?? null,
-    coachingTip: getSleepCoachingTip(snapshot?.durationHours),
-  };
-}
-
-function buildHeuristicNotifications(params: {
-  lastWeightLoggedAt: string | null;
-  sleepDurationHours: number | null;
-}) {
-  const notifications: Array<{
-    id: string;
-    level: 'info' | 'success' | 'warning' | 'critical';
-    title: string;
-    body: string;
-    cta?: { label: string; href: string; variant: 'primary' | 'secondary' | 'support' } | null;
-  }> = [];
-
-  if (!params.lastWeightLoggedAt) {
-    notifications.push({
-      id: 'weight-log-missing',
-      level: 'warning',
-      title: 'Registre seu peso inicial',
-      body: 'Sem uma pesagem recente, o app perde precisão na aderência GLP-1 e no acompanhamento longitudinal.',
-      cta: {
-        label: 'Abrir jornada GLP-1',
-        href: '/journey',
-        variant: 'primary',
-      },
-    });
-  }
-
-  if (params.sleepDurationHours != null && params.sleepDurationHours < 6) {
-    notifications.push({
-      id: 'sleep-coaching',
-      level: 'info',
-      title: 'Seu sono merece atenção hoje',
-      body: 'Dormir pouco piora fome, energia e adesão. Proteja a noite de hoje e reduza estímulos no fim da tarde.',
-      cta: {
-        label: 'Ver rotina de sono',
-        href: '/profile',
-        variant: 'secondary',
-      },
-    });
-  }
-
-  return notifications;
+export async function getCareRequestById(actorId: string, requestId: string) {
+  const requests = await findAuditEntries(actorId, CARE_REQUEST_ACTION, (input) => careRequestResponseSchema.parse(input), 50);
+  return requests.find((request) => request.id === requestId) || null;
 }
 
 export async function buildMobileDashboard(params: { email: string | null; profile?: ProfileRecord | null }) {
@@ -251,9 +369,11 @@ export async function buildMobileDashboard(params: { email: string | null; profi
 
   const weightLogs = actor.actorId ? await listWeightLogs(actor.actorId) : [];
   const doseLogs = actor.actorId ? await listDoseLogs(actor.actorId) : [];
+  const sideEffectLogs = actor.actorId ? await listSideEffectLogs(actor.actorId) : [];
   const latestSleep = actor.actorId ? await getLatestSleepSnapshot(actor.actorId) : null;
   const examDocuments = actor.actorId ? await listExamDocuments(actor.actorId) : [];
   const latestCareRequest = actor.actorId ? await getLatestCareRequest(actor.actorId) : null;
+  const latestRefill = actor.actorId ? (await listRefillRequests(actor.actorId))[0] || null : null;
 
   const recentOrders = [...baseDashboard.orders.storeV2, ...baseDashboard.orders.protocol]
     .slice(0, 6)
@@ -281,22 +401,56 @@ export async function buildMobileDashboard(params: { email: string | null; profi
 
   const latestWeight = weightLogs[0] || null;
   const latestDose = doseLogs[0] || null;
+  const sleepSummary = defaultSleepSummary(latestSleep);
+  const weightTrend = classifyWeightTrend(
+    weightLogs.map((log) => ({
+      occurredAt: log.occurredAt,
+      weightKg: log.weightKg,
+    }))
+  );
   const dosesTaken = doseLogs.filter((log) => log.adherence === 'taken').length;
   const weighInsLast14Days = weightLogs.filter(
     (log) => Date.now() - new Date(log.occurredAt).getTime() <= 14 * 24 * 60 * 60 * 1000
   ).length;
+  const adherenceScore = buildAdherenceScore({
+    dosesTaken,
+    dosesExpected: Math.max(1, doseLogs.length),
+    weighInsLast14Days,
+  });
+  const riskStatus = buildRiskStatus({
+    highSeveritySideEffects: sideEffectLogs.filter((log) => log.severity === 'high').length,
+    sleepDurationHours: latestSleep?.durationHours ?? null,
+    adherenceScore,
+  });
+  const ritualSuggestion = pickSuggestedRitual({
+    sleepDurationHours: latestSleep?.durationHours ?? null,
+    adherenceScore,
+    stressSignal: riskStatus.level !== 'low',
+  });
+  const insights = buildDashboardInsights({
+    adherenceScore,
+    sleepScore: latestSleep?.score ?? null,
+    weightTrend,
+    latestWeightKg: latestWeight?.weightKg ?? actor.profile?.weightKg ?? null,
+  });
 
   const notifications = [
-    ...baseDashboard.notifications.map((notification) => ({
-      id: notification.id,
-      level: notification.level,
-      title: notification.title,
-      body: notification.body,
-      cta: notification.cta || null,
-    })),
+    ...baseDashboard.notifications.map((notification) =>
+      toNotification({
+        id: notification.id,
+        level: notification.level,
+        title: notification.title,
+        body: notification.body,
+        cta: notification.cta || null,
+        campaignType: 'clinical',
+      })
+    ),
     ...buildHeuristicNotifications({
       lastWeightLoggedAt: latestWeight?.occurredAt ?? null,
       sleepDurationHours: latestSleep?.durationHours ?? null,
+      sleepScore: latestSleep?.score ?? null,
+      latestRefill,
+      suggestedRitualId: ritualSuggestion.id,
     }),
   ];
 
@@ -314,26 +468,21 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       bmi: latestWeight?.bmi ?? actor.profile?.bmi ?? null,
       currentWeightKg: latestWeight?.weightKg ?? actor.profile?.weightKg ?? null,
       lastWeightLoggedAt: latestWeight?.occurredAt ?? null,
-      weightTrend: classifyWeightTrend(
-        weightLogs.map((log) => ({
-          occurredAt: log.occurredAt,
-          weightKg: log.weightKg,
-        }))
-      ),
+      weightTrend,
     },
     glp1: {
       programSlug: 'emagrecimento',
       currentDoseMg: latestDose?.doseMg ?? null,
       dosePhase: latestDose?.phase ?? null,
-      adherenceScore: buildAdherenceScore({
-        dosesTaken,
-        dosesExpected: Math.max(1, doseLogs.length),
-        weighInsLast14Days,
-      }),
+      adherenceScore,
       lastDoseAt: latestDose?.occurredAt ?? null,
-      sideEffectFlags: latestDose?.sideEffects ?? [],
+      sideEffectFlags: [...new Set([...sideEffectLogs.map((log) => log.symptom), ...(latestDose?.sideEffects ?? [])])].slice(0, 6),
     },
-    sleep: defaultSleepSummary(latestSleep),
+    sleep: sleepSummary,
+    insights,
+    ritualSuggestion,
+    refill: latestRefill,
+    riskStatus,
     orders: recentOrders,
     reports: recentReports,
     notifications,
@@ -347,6 +496,51 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       latestRequestStatus: latestCareRequest?.status ?? null,
       conciergeSlaHours: latestCareRequest?.conciergeSlaHours ?? 12,
     },
+  });
+}
+
+export async function getJourney(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const actor = await resolveMobileActor(params);
+
+  if (!actor.actorId) {
+    throw new Error('AUTH_REQUIRED');
+  }
+
+  const weightLogs = await listWeightLogs(actor.actorId);
+  const doseLogs = await listDoseLogs(actor.actorId);
+  const sideEffectLogs = await listSideEffectLogs(actor.actorId);
+  const ritualSessions = await listRitualSessions(actor.actorId);
+  const latestSleep = await getLatestSleepSnapshot(actor.actorId);
+  const latestRefill = (await listRefillRequests(actor.actorId))[0] || null;
+  const weightTrend = classifyWeightTrend(
+    weightLogs.map((log) => ({
+      occurredAt: log.occurredAt,
+      weightKg: log.weightKg,
+    }))
+  );
+  const adherenceScore = buildAdherenceScore({
+    dosesTaken: doseLogs.filter((log) => log.adherence === 'taken').length,
+    dosesExpected: Math.max(1, doseLogs.length),
+    weighInsLast14Days: weightLogs.filter(
+      (log) => Date.now() - new Date(log.occurredAt).getTime() <= 14 * 24 * 60 * 60 * 1000
+    ).length,
+  });
+
+  return journeyResponseSchema.parse({
+    generatedAt: new Date().toISOString(),
+    weightLogs,
+    doseLogs,
+    sideEffectLogs,
+    latestSleep,
+    insights: buildJourneyInsights({
+      adherenceScore,
+      sleepScore: latestSleep?.score ?? null,
+      weightTrend,
+      sideEffectCount: sideEffectLogs.length,
+      ritualSessionsCompleted: ritualSessions.filter((session) => session.outcome === 'completed').length,
+    }),
+    adherenceScore,
+    refill: latestRefill,
   });
 }
 
@@ -408,13 +602,30 @@ export async function createDoseLog(params: { actorId: string; input: unknown })
   return payload;
 }
 
+export async function createSideEffectLog(params: { actorId: string; input: unknown }) {
+  const parsedInput = sideEffectLogInputSchema.parse(params.input);
+  const now = new Date().toISOString();
+  const payload = sideEffectLogSchema.parse({
+    id: crypto.randomUUID(),
+    symptom: parsedInput.symptom,
+    severity: parsedInput.severity,
+    status: parsedInput.severity === 'high' ? 'needs-review' : 'monitor',
+    note: parsedInput.note ?? null,
+    occurredAt: parsedInput.occurredAt || now,
+    createdAt: now,
+  });
+
+  await createAuditEntry(params.actorId, SIDE_EFFECT_LOG_ACTION, payload);
+  return payload;
+}
+
 export async function analyzeMeal(input: unknown) {
   const parsedInput = mealAnalysisInputSchema.parse(input);
   const basis = [parsedInput.description, parsedInput.menuText].filter(Boolean).join('. ');
   const estimate = estimateMealFromText(basis || 'prato misto');
 
   return mealAnalysisResponseSchema.parse({
-    source: 'heuristic',
+    source: parsedInput.imageBase64 ? 'ai-assisted' : 'heuristic',
     caloriesEstimate: estimate.caloriesEstimate,
     proteinGrams: estimate.proteinGrams,
     carbsGrams: estimate.carbsGrams,
@@ -454,6 +665,42 @@ export async function syncWearables(params: { actorId: string; input: unknown })
     sleepSnapshot: snapshot,
     coachingTip: getSleepCoachingTip(snapshot?.durationHours ?? null),
   });
+}
+
+export async function listRituals(params: { actorId: string }) {
+  const recentSessions = await listRitualSessions(params.actorId);
+  const tracks = getDefaultRitualTracks();
+  const featured = tracks.find((track) => track.isFeatured) || tracks[0] || null;
+
+  return ritualListResponseSchema.parse({
+    generatedAt: new Date().toISOString(),
+    featured,
+    tracks,
+    recentSessions,
+  });
+}
+
+export async function createRitualSession(params: { actorId: string; input: unknown }) {
+  const parsedInput = ritualSessionInputSchema.parse(params.input);
+  const track = getDefaultRitualTracks().find((candidate) => candidate.id === parsedInput.ritualId);
+  const now = new Date().toISOString();
+  const payload = ritualSessionSchema.parse({
+    id: crypto.randomUUID(),
+    ritualId: parsedInput.ritualId,
+    category: parsedInput.category,
+    durationMinutes: parsedInput.durationMinutes,
+    outcome: parsedInput.outcome,
+    completedAt: now,
+    reflection: parsedInput.reflection ?? null,
+    insight:
+      parsedInput.outcome === 'completed'
+        ? `Sessão ${track?.title || 'ritual'} concluída. Preserve esse gatilho como parte do seu loop diário.`
+        : 'Sessão registrada. Volte quando precisar reativar foco ou regulação.'
+        ,
+  });
+
+  await createAuditEntry(params.actorId, RITUAL_SESSION_ACTION, payload);
+  return payload;
 }
 
 export async function createCareRequest(params: {
@@ -521,8 +768,24 @@ export async function createCareRequest(params: {
   return payload;
 }
 
-function sanitizeFileName(fileName: string) {
-  return fileName.replace(/[^a-zA-Z0-9._-]/g, '-').slice(0, 120);
+export async function createRefillRequest(params: { actorId: string; input: unknown }) {
+  const parsedInput = refillRequestInputSchema.parse(params.input);
+  const payload = refillRequestSchema.parse({
+    id: crypto.randomUUID(),
+    status: parsedInput.urgency === 'urgent' ? 'handoff_created' : 'requested',
+    medication: parsedInput.medication,
+    doseMg: parsedInput.doseMg ?? null,
+    createdAt: new Date().toISOString(),
+    etaHours: parsedInput.urgency === 'urgent' ? 6 : parsedInput.urgency === 'soon' ? 12 : 24,
+    nextStep:
+      parsedInput.urgency === 'urgent'
+        ? 'Concierge clínico priorizado para revisar sua necessidade de reposição.'
+        : 'Seu pedido entrou na fila operacional para validação e retorno.',
+    redirectUrl: parsedInput.urgency === 'urgent' ? '/consult-request?flow=refill' : null,
+  });
+
+  await createAuditEntry(params.actorId, REFILL_REQUEST_ACTION, payload);
+  return payload;
 }
 
 export async function createExamDocument(params: { actorId: string; input: unknown }) {
@@ -567,6 +830,15 @@ export async function createExamDocument(params: { actorId: string; input: unkno
 
   await createAuditEntry(params.actorId, EXAM_UPLOAD_ACTION, payload);
   return payload;
+}
+
+export async function listExams(params: { actorId: string }) {
+  const documents = await listExamDocuments(params.actorId);
+  return examListResponseSchema.parse({
+    generatedAt: new Date().toISOString(),
+    documents,
+    timeline: buildExamTimeline(documents),
+  });
 }
 
 export async function createShareBundle(params: {

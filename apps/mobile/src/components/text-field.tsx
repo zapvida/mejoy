@@ -1,6 +1,6 @@
 import { TextInput, View, Text } from 'react-native';
 
-import { colors, radii, spacing } from '@mejoy/design-tokens';
+import { colors, radii, spacing, typography } from '@mejoy/design-tokens';
 
 export function TextField({
   label,
@@ -19,7 +19,7 @@ export function TextField({
 }) {
   return (
     <View style={{ gap: spacing.sm }}>
-      <Text selectable style={{ color: colors.textMuted, fontSize: 13, fontWeight: '600' }}>
+      <Text selectable style={{ color: colors.textMuted, fontSize: typography.caption, fontWeight: '600' }}>
         {label}
       </Text>
       <TextInput
@@ -33,13 +33,15 @@ export function TextField({
           borderRadius: radii.md,
           borderCurve: 'continuous',
           borderWidth: 1,
-          borderColor: colors.border,
-          backgroundColor: '#FFFFFF',
+          borderColor: colors.borderStrong,
+          backgroundColor: colors.card,
           paddingHorizontal: spacing.lg,
           paddingVertical: multiline ? spacing.lg : 0,
-          color: colors.text,
+          color: colors.textStrong,
+          fontSize: typography.body,
           textAlignVertical: multiline ? 'top' : 'center',
         }}
+        placeholderTextColor={colors.textSoft}
       />
     </View>
   );

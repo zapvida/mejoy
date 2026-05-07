@@ -1,19 +1,20 @@
 import { z } from 'zod';
 
-import type {
-  ClinicalShareBundleResponse,
-  NotificationListResponse,
-  PatientDashboard,
-} from '@mejoy/api-contracts/mobile';
 import {
   careRequestResponseSchema,
   doseLogSchema,
   examDocumentSchema,
+  examListResponseSchema,
+  journeyResponseSchema,
   mealAnalysisResponseSchema,
   mobileProfileSchema,
   notificationListResponseSchema,
   patientDashboardSchema,
+  refillRequestSchema,
+  ritualListResponseSchema,
+  ritualSessionSchema,
   shareBundleResponseSchema,
+  sideEffectLogSchema,
   wearablesSyncResponseSchema,
 } from '@mejoy/api-contracts/mobile';
 
@@ -52,11 +53,19 @@ async function requestJson<T>({
   return schema.parse(payload);
 }
 
-export function getDashboard(session: SessionLike): Promise<PatientDashboard> {
+export function getDashboard(session: SessionLike) {
   return requestJson({
     session,
     path: '/api/mobile/v1/dashboard',
     schema: patientDashboardSchema,
+  });
+}
+
+export function getJourney(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/journey',
+    schema: journeyResponseSchema,
   });
 }
 
@@ -68,7 +77,7 @@ export function getProfile(session: SessionLike) {
   });
 }
 
-export function getNotifications(session: SessionLike): Promise<NotificationListResponse> {
+export function getNotifications(session: SessionLike) {
   return requestJson({
     session,
     path: '/api/mobile/v1/notifications',
@@ -99,6 +108,16 @@ export function createDoseLog(session: SessionLike, body: Record<string, unknown
     session,
     path: '/api/mobile/v1/programs/glp1/dose-logs',
     schema: doseLogSchema,
+    method: 'POST',
+    body,
+  });
+}
+
+export function createSideEffectLog(session: SessionLike, body: Record<string, unknown>) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/programs/glp1/side-effects',
+    schema: sideEffectLogSchema,
     method: 'POST',
     body,
   });
@@ -144,11 +163,47 @@ export function createExamDocument(session: SessionLike, body: Record<string, un
   });
 }
 
-export function createShareBundle(session: SessionLike, body: Record<string, unknown>): Promise<ClinicalShareBundleResponse> {
+export function getExams(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/exams',
+    schema: examListResponseSchema,
+  });
+}
+
+export function createShareBundle(session: SessionLike, body: Record<string, unknown>) {
   return requestJson({
     session,
     path: '/api/mobile/v1/share-bundles',
     schema: shareBundleResponseSchema,
+    method: 'POST',
+    body,
+  });
+}
+
+export function getRituals(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/rituals',
+    schema: ritualListResponseSchema,
+  });
+}
+
+export function createRitualSession(session: SessionLike, body: Record<string, unknown>) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/ritual-sessions',
+    schema: ritualSessionSchema,
+    method: 'POST',
+    body,
+  });
+}
+
+export function createRefillRequest(session: SessionLike, body: Record<string, unknown>) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/refill-requests',
+    schema: refillRequestSchema,
     method: 'POST',
     body,
   });

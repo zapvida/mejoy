@@ -17,6 +17,7 @@ export default function CheckoutPage() {
   const plano = readStringQuery(router.query.plano) || 'programa-3m';
   const principio = readStringQuery(router.query.principio);
   const trilhaQuery = readStringQuery(router.query.trilha);
+  const appReturnUrl = readStringQuery(router.query.appReturnUrl);
   const trilha = trilhaQuery
     ? (normalizeCheckoutTrilhaParam(trilhaQuery) as EmagrecimentoTrilha)
     : trilhaFromPreferencia(principio);
@@ -55,6 +56,7 @@ export default function CheckoutPage() {
               allowPlanSelection
               reportId={reportId}
               triageId={triageId}
+              appReturnUrl={appReturnUrl}
               defaultPlanId={plano}
               defaultTrilha={trilha}
               defaultPrincipio={principio}
