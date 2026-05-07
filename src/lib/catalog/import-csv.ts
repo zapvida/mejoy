@@ -5,7 +5,7 @@
  */
 
 import * as fs from 'fs';
-import { PrismaClient } from '@/lib/prisma-client';
+import { type PrismaClientInstance } from '@/lib/prisma-client';
 import { z } from 'zod';
 import { storeLogger } from '@/lib/store-v2/logger';
 
@@ -105,7 +105,7 @@ export interface ImportResult {
 
 export async function importCatalogFromCSV(
   csvPath: string,
-  prisma: PrismaClient
+  prisma: PrismaClientInstance
 ): Promise<ImportResult> {
   const result: ImportResult = { created: 0, updated: 0, errors: [], total: 0 };
   const slugUsed = new Set<string>();

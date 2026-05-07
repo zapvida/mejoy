@@ -3,7 +3,7 @@
 
 import crypto from 'crypto';
 
-import { PrismaClient, Prisma } from '@/lib/prisma-client';
+import { PrismaClient } from '@/lib/prisma-client';
 
 const prisma = new PrismaClient();
 
@@ -39,9 +39,9 @@ export async function deleteUserData(userId: string): Promise<boolean> {
       triages: true,
       subscriptions: true,
       reports: true
-    } satisfies Prisma.PatientInclude;
+    };
 
-    const include = { ...includeBase } as Prisma.PatientInclude & Record<string, any>;
+    const include = { ...includeBase } as Record<string, any>;
     if (process.env.GIFT_ENABLED === "1") {
       include["gifts"] = true;
     }
@@ -147,9 +147,9 @@ export async function exportUserData(userId: string): Promise<any> {
       triages: true,
       subscriptions: true,
       reports: true
-    } satisfies Prisma.PatientInclude;
+    };
 
-    const include = { ...includeBase } as Prisma.PatientInclude & Record<string, any>;
+    const include = { ...includeBase } as Record<string, any>;
     if (process.env.GIFT_ENABLED === "1") {
       include["gifts"] = true;
     }
