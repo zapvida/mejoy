@@ -182,6 +182,8 @@ const nextConfig = {
   
   // Otimizações de performance
   compress: true,
+
+  transpilePackages: ['@mejoy/domain', '@mejoy/api-contracts', '@mejoy/design-tokens'],
   
   // Configurações experimentais para performance
   experimental: {

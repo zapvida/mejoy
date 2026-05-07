@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "MeJoy",
+    "slug": "mejoy-native",
+    "scheme": "mejoy",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "experiments": {
+      "typedRoutes": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
+    ],
+    "ios": {
+      "bundleIdentifier": "br.com.mejoy.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "A MeJoy usa a câmera para ler cardápios, refeições e exames do paciente.",
+        "NSPhotoLibraryUsageDescription": "A MeJoy acessa sua galeria para anexar refeições, exames e documentos clínicos.",
+        "NSPhotoLibraryAddUsageDescription": "A MeJoy salva comprovantes e conteúdos compartilháveis quando você solicitar.",
+        "NSHealthShareUsageDescription": "A MeJoy lê sono, passos e métricas compartilhadas para personalizar o coaching de saúde.",
+        "NSHealthUpdateUsageDescription": "A MeJoy grava apenas dados necessários quando você optar por sincronizar sua jornada."
+      }
+    },
+    "android": {
+      "package": "br.com.mejoy.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.VIBRATE"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "notification": {
+      "color": "#167C5A"
+    }
+  }
+}

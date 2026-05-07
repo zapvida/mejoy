@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "strict": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedIndexedAccess": false,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": false,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "incremental": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@prisma/client": ["node_modules/@prisma/client/.prisma/client/default"],
+      "@mejoy/domain": ["packages/domain/src/index.ts"],
+      "@mejoy/domain/*": ["packages/domain/src/*"],
+      "@mejoy/api-contracts": ["packages/api-contracts/src/index.ts"],
+      "@mejoy/api-contracts/*": ["packages/api-contracts/src/*"],
+      "@mejoy/design-tokens": ["packages/design-tokens/src/index.ts"],
+      "@mejoy/design-tokens/*": ["packages/design-tokens/src/*"]
+    }
+  }
+}

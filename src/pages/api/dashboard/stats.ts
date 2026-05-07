@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { getProfileFromRequest } from '@/lib/api/auth-helper';
 
@@ -143,4 +143,3 @@ export default async function handler(
     return res.status(500).json({ error: 'Erro ao buscar estatísticas do dashboard' });
   }
 }
-

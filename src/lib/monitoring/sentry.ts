@@ -18,7 +18,7 @@ export function initSentry() {
         }
         return event;
       },
-    });
+    } as any);
   }
 }
 

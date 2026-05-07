@@ -34,7 +34,6 @@ export default function HeroB2C() {
             ease: 'linear',
           }}
           className="absolute top-1/4 right-1/4 w-[300px] sm:w-[400px] md:w-[500px] h-[300px] sm:h-[400px] md:h-[500px] bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl"
-          style={{ willChange: 'transform' }}
         />
       </div>
 
@@ -56,8 +55,7 @@ export default function HeroB2C() {
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="font-extrabold tracking-tight text-ink mb-3 sm:mb-4 leading-[1.1] sm:leading-tight text-balance px-1"
-              style={{ fontSize: 'var(--hero-h1)' }}
+              className="px-1 text-[length:var(--hero-h1)] font-extrabold tracking-tight text-ink mb-3 sm:mb-4 leading-[1.1] sm:leading-tight text-balance"
             >
               Cuide da sua saúde em casa com protocolos selecionados por médicos
             </motion.h1>
@@ -65,8 +63,7 @@ export default function HeroB2C() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-ink-muted mt-2 sm:mt-3 max-w-2xl mx-auto lg:mx-0 leading-relaxed px-1 text-balance"
-              style={{ fontSize: 'var(--hero-subtitle)' }}
+              className="mt-2 sm:mt-3 max-w-2xl mx-auto lg:mx-0 px-1 text-[length:var(--hero-subtitle)] leading-relaxed text-ink-muted text-balance"
             >
               Emagrecimento, sono, intestino, imunidade e mais. Check-up grátis em 2 min.
             </motion.p>

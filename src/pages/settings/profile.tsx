@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 
 import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
+import { buildCanonical } from '@/lib/seo';
 
 const ProfileSettingsPage = () => {
   const router = useRouter();
@@ -119,7 +120,7 @@ const ProfileSettingsPage = () => {
         <meta name="description" content="Gerencie suas informações pessoais e configurações de privacidade." />
         <meta property="og:title" content="Configurações do Perfil - MeJoy Plus" />
         <meta property="og:description" content="Gerencie suas informações pessoais e configurações de privacidade." />
-        <link rel="canonical" href="https://zapfarm.com.br/settings/profile" />
+        <link rel="canonical" href={buildCanonical('/settings/profile')} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">

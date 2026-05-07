@@ -1,0 +1,11 @@
+{
+  "name": "@mejoy/web",
+  "private": true,
+  "scripts": {
+    "dev": "next dev ../..",
+    "build": "next build ../..",
+    "start": "next start ../.. -p ${PORT:-3000}",
+    "lint": "pnpm --dir ../.. lint",
+    "typecheck": "pnpm --dir ../.. typecheck"
+  }
+}

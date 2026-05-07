@@ -1,0 +1,15 @@
+version = 1
+name = "mejoy-mobile"
+
+[setup]
+script = ""
+
+[[actions]]
+name = "Run"
+icon = "run"
+command = "./script/build_and_run.sh"
+
+[[actions]]
+name = "Expo Doctor"
+icon = "tool"
+command = "./script/build_and_run.sh --doctor"

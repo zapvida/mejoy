@@ -2066,7 +2066,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-0 left-0 w-72 h-72 sm:w-96 sm:h-96 -z-10 rounded-full blur-3xl"
             style={{
               background: 'radial-gradient(circle, rgba(124, 29, 149, 0.2) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.5, 0.9, 0.5],
               scale: [1, 1.25, 1],
@@ -2085,7 +2085,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 -z-10 rounded-full blur-3xl"
             style={{
               background: 'radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.4, 0.8, 0.4],
               scale: [1, 1.2, 1],
@@ -2105,7 +2105,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-1/2 left-1/2 w-64 h-64 sm:w-80 sm:h-80 -z-10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
             style={{
               background: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.3, 0.7, 0.3],
               scale: [1, 1.15, 1],
@@ -2122,7 +2122,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-20 right-20 w-48 h-48 sm:w-64 sm:h-64 -z-10 rounded-full blur-2xl"
             style={{
               background: 'radial-gradient(circle, rgba(249, 115, 22, 0.12) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.4, 0.7, 0.4],
               scale: [1, 1.35, 1]
@@ -2143,7 +2143,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-0 left-0 w-72 h-72 sm:w-96 sm:h-96 -z-10 rounded-full blur-3xl"
             style={{
               background: 'radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.5, 0.9, 0.5],
               scale: [1, 1.25, 1],
@@ -2162,7 +2162,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 -z-10 rounded-full blur-3xl"
             style={{
               background: 'radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.4, 0.8, 0.4],
               scale: [1, 1.2, 1],
@@ -2182,7 +2182,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-1/2 left-1/2 w-64 h-64 sm:w-80 sm:h-80 -z-10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
             style={{
               background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.3, 0.7, 0.3],
               scale: [1, 1.15, 1],
@@ -2199,7 +2199,7 @@ export function Runner({ triageId, flow, firstVisit, initialAnswers = {}, onComp
             className="absolute top-20 right-20 w-48 h-48 sm:w-64 sm:h-64 -z-10 rounded-full blur-2xl"
             style={{
               background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%)'
-            }}
+            } as any}
             animate={{
               opacity: [0.4, 0.7, 0.4],
               scale: [1, 1.35, 1]

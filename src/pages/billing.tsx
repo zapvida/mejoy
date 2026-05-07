@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 
 import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
+import { buildCanonical } from '@/lib/seo';
 import { formatPrice } from '@/lib/stripe-config';
 
 export async function getServerSideProps() {
@@ -122,7 +123,7 @@ const BillingPage = () => {
         <meta name="description" content="Gerencie sua assinatura e faturas do MeJoy Plus." />
         <meta property="og:title" content="Cobrança - MeJoy Plus" />
         <meta property="og:description" content="Gerencie sua assinatura e faturas do MeJoy Plus." />
-        <link rel="canonical" href="https://zapfarm.com.br/billing" />
+        <link rel="canonical" href={buildCanonical('/billing')} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">

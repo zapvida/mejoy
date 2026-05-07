@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { buffer } from 'micro';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 
 const prisma = new PrismaClient();
 
@@ -210,4 +210,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Por enquanto, apenas checkout.session.completed é processado
   return res.status(200).json({ received: true, eventType: event.type });
 }
-

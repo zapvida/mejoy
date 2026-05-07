@@ -1,0 +1,65 @@
+name: Mobile Foundation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - 'src/lib/mobile/**'
+      - 'src/pages/api/mobile/**'
+      - '__tests__/api/mobile-v1.test.ts'
+      - '__tests__/lib/mobile-domain.test.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.base.json'
+      - 'tsconfig.json'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - 'src/lib/mobile/**'
+      - 'src/pages/api/mobile/**'
+      - '__tests__/api/mobile-v1.test.ts'
+      - '__tests__/lib/mobile-domain.test.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.base.json'
+      - 'tsconfig.json'
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Web and shared typecheck
+        run: pnpm typecheck
+
+      - name: Mobile contracts and domain tests
+        run: pnpm test:mobile-foundation
+
+      - name: Mobile app typecheck
+        run: pnpm mobile:typecheck
+
+      - name: Validate Expo run script
+        run: |
+          bash -n apps/mobile/script/build_and_run.sh
+          apps/mobile/script/build_and_run.sh --help

@@ -1,7 +1,7 @@
 // src/lib/alerts-engine.ts
 // Engine de avaliação e geração de alertas
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 import { getKPIs, getFunnelData, getTechData } from './admin-queries';
 
 export interface AlertRule {

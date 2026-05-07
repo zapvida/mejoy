@@ -5,7 +5,7 @@
  */
 
 import * as fs from 'fs';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 import { z } from 'zod';
 import { storeLogger } from '@/lib/store-v2/logger';
 

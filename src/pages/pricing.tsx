@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import Seo from '@/components/Seo';
 import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
-import { productJsonLd } from '@/lib/seo';
+import { buildCanonical, productJsonLd } from '@/lib/seo';
 import { formatPrice } from '@/lib/asaas/config';
 
 type CheckoutVariant = 'standard' | 'gift';
@@ -168,7 +168,7 @@ const PricingPage = () => {
           content="Assinatura pronta para presente e equipes. Stripe e GHL integrados automaticamente."
         />
         <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
-        <link rel="canonical" href="https://zapfarm.com.br/pricing" />
+        <link rel="canonical" href={buildCanonical('/pricing')} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">

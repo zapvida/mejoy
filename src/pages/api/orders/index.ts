@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 import { getProfileFromRequest } from '@/lib/api/auth-helper';
 
 const prisma = new PrismaClient();
@@ -71,4 +71,3 @@ export default async function handler(
     return res.status(500).json({ error: 'Erro ao buscar pedidos' });
   }
 }
-

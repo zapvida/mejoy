@@ -1,13 +1,22 @@
 {
   "name": "zapfarm",
   "version": "1.0.0",
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && node scripts/link-prisma-client.cjs && node scripts/sync-prisma-generated.cjs",
     "dev": "next dev",
+    "web:dev": "pnpm --dir apps/web dev",
     "prebuild": "node scripts/prepare-next-build.cjs",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "web:build": "pnpm --dir apps/web build",
     "postbuild": "npx next-sitemap || true",
     "start": "next start -p ${PORT:-3000}",
+    "mobile:dev": "pnpm --dir apps/mobile dev",
+    "mobile:ios": "pnpm --dir apps/mobile ios",
+    "mobile:android": "pnpm --dir apps/mobile android",
+    "mobile:web": "pnpm --dir apps/mobile web",
+    "mobile:typecheck": "pnpm --dir apps/mobile typecheck",
+    "mobile:doctor": "pnpm --dir apps/mobile doctor",
     "lint": "eslint src/ --max-warnings=0",
     "lint:colors": "node scripts/lint-colors.js",
     "fix:colors": "node scripts/fix-colors-auto.js",
@@ -54,6 +63,7 @@
     "qa:emagrecimento:prod": "PRODUCTION_URL=https://www.mejoy.com.br tsx scripts/qa/emagrecimento-smoke.ts",
     "qa:emagrecimento:zapfarm": "PRODUCTION_URL=https://www.zapfarm.com.br tsx scripts/qa/emagrecimento-smoke.ts",
     "test:handoff": "jest --runInBand --runTestsByPath __tests__/handoff/envelope.test.ts __tests__/api/handoff-create.test.ts __tests__/api/handoff-status.test.ts",
+    "test:mobile-foundation": "jest --runInBand --runTestsByPath __tests__/lib/mobile-domain.test.ts __tests__/api/mobile-v1.test.ts",
     "validate:emagrecimento": "bash scripts/validate-emagrecimento-production.sh",
     "validate:handoff:bundle": "tsx scripts/validate-handoff-bundle.ts",
     "validate:handoff:env": "tsx scripts/validate-handoff-env.ts",
@@ -149,7 +159,8 @@
     "deploy": "bash scripts/deploy-vercel.sh",
     "deploy:hook": "bash scripts/deploy-vercel.sh",
     "deploy:prod": "bash scripts/deploy-vercel.sh",
-    "deploy:preview": "bash scripts/deploy-safe.sh --preview"
+    "deploy:preview": "bash scripts/deploy-safe.sh --preview",
+    "workspace:check": "pnpm lint && pnpm typecheck && pnpm test:mobile-foundation"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",

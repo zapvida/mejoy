@@ -15,6 +15,12 @@ const customJestConfig = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@mejoy/domain$': '<rootDir>/packages/domain/src/index.ts',
+    '^@mejoy/domain/(.*)$': '<rootDir>/packages/domain/src/$1',
+    '^@mejoy/api-contracts$': '<rootDir>/packages/api-contracts/src/index.ts',
+    '^@mejoy/api-contracts/(.*)$': '<rootDir>/packages/api-contracts/src/$1',
+    '^@mejoy/design-tokens$': '<rootDir>/packages/design-tokens/src/index.ts',
+    '^@mejoy/design-tokens/(.*)$': '<rootDir>/packages/design-tokens/src/$1',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

@@ -28,3 +28,7 @@ playwright-report/
 test-results/
 tmp/
 tmp/pdfs/
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+generated/prisma-client/

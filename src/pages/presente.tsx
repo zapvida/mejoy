@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 
 import LogoWithName from '@/components/ui/LogoWithName';
 import { useGA4 } from '@/hooks/useGA4';
+import { buildCanonical } from '@/lib/seo';
 import { formatPrice } from '@/lib/asaas/config';
 
 const GiftPage = () => {
@@ -161,7 +162,7 @@ const GiftPage = () => {
         <meta property="og:title" content="Presentear - MeJoy Plus" />
         <meta property="og:description" content="Presenteie alguém especial com acesso ao MeJoy Plus. Crie um token de presente personalizado." />
         <meta property="og:image" content="https://www.mejoy.com.br/og-default.png" />
-        <link rel="canonical" href="https://zapfarm.com.br/presente" />
+        <link rel="canonical" href={buildCanonical('/presente')} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">

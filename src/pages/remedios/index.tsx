@@ -17,7 +17,7 @@ import FAQB2C from '@/components/home/FAQB2C';
 import FooterB2C from '@/components/home/FooterB2C';
 import StickyBarB2C from '@/components/home/StickyBarB2C';
 import { Loading } from '@/components/ui/feedback';
-import { faqJsonLd, orgJsonLd, websiteJsonLd, SITE } from '@/lib/seo';
+import { buildCanonical, faqJsonLd, orgJsonLd, websiteJsonLd, SITE } from '@/lib/seo';
 
 // FAQ adaptado para e-commerce
 const faqData = [
@@ -111,7 +111,7 @@ export default function RemediosPage() {
       
       <Head>
         <link rel="icon" href="/favicon-32x32.png" />
-        <link rel="canonical" href="https://zapfarm.com.br/remedios" />
+        <link rel="canonical" href={buildCanonical('/remedios')} />
       </Head>
 
       {isCheckingAuth ? (
@@ -142,4 +142,3 @@ export default function RemediosPage() {
     </>
   );
 }
-

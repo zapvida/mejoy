@@ -21,7 +21,6 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
     >
       <motion.div
         className="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 rounded-full transition-all duration-500 shadow-lg ring ring-brand-300/30 hover:shadow-xl"
-        style={{ width: `${percentage}%` }}
         initial={{ width: 0 }}
         animate={{ width: `${percentage}%` }}
         transition={{ duration: 0.5 }}

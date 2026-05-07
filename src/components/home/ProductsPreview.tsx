@@ -64,8 +64,7 @@ export default function ProductsPreview() {
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="rounded-2xl sm:rounded-3xl shadow-2xl ring-1 ring-[color:var(--border)]/60 bg-white p-3 sm:p-4"
-        style={{ width: '75%', maxWidth: '720px' }}
+        className="w-3/4 max-w-[720px] rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-[color:var(--border)]/60 sm:rounded-3xl sm:p-4"
       >
         {/* Header do preview */}
         <div className="mb-4 flex items-center justify-between">
@@ -135,4 +134,3 @@ export default function ProductsPreview() {
     </div>
   );
 }
-

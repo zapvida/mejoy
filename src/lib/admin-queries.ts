@@ -1,7 +1,7 @@
 // src/lib/admin-queries.ts
 // Queries otimizadas e agregadas para o dashboard admin
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/lib/prisma-client';
 
 const prisma = new PrismaClient();
 

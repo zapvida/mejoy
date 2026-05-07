@@ -34,7 +34,6 @@ export default function Hero() {
             ease: 'linear',
           }}
           className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl"
-          style={{ willChange: 'transform' }}
         />
       </div>
 
@@ -135,8 +134,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="rounded-3xl shadow-2xl ring-1 ring-[color:var(--border)]/60 bg-white p-2"
-              style={{ width: '75%', maxWidth: '720px' }}
+              className="w-3/4 max-w-[720px] rounded-3xl bg-white p-2 shadow-2xl ring-1 ring-[color:var(--border)]/60"
             >
               <Image
                 src="/relatorioaistotele.png"

@@ -28,13 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const redirectTo = redirect.startsWith('/') ? `${BASE_URL.replace(/\/$/, '')}${redirect}` : redirect;
+    const adminAuth = supabaseAdmin.auth as any;
 
-    await supabaseAdmin.auth.admin.createUser({
+    await adminAuth.admin.createUser({
       email: result.email,
       email_confirm: true,
     }).catch(() => {});
 
-    const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink({
+    const { data: linkData, error } = await adminAuth.admin.generateLink({
       type: 'magiclink',
       email: result.email,
       options: {
@@ -45,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (error) {
       const isExistingUser = error.message?.toLowerCase().includes('already') ?? false;
       if (isExistingUser) {
-        const retry = await supabaseAdmin.auth.admin.generateLink({
+        const retry = await adminAuth.admin.generateLink({
           type: 'magiclink',
           email: result.email,
           options: { redirectTo },

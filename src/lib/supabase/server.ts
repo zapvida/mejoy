@@ -39,7 +39,8 @@ export async function getAuthenticatedUser(req: NextApiRequest): Promise<{ user:
   const authHeader = req.headers.authorization;
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.substring(7);
-    const { data, error } = await supabase.auth.getUser(token);
+    const auth = supabase.auth as any;
+    const { data, error } = await auth.getUser(token);
     return { user: data.user, error };
   }
 
@@ -89,7 +90,8 @@ export async function getProfileByAuthUserId(authUserId: string) {
   }
 
   // Se não encontrar, buscar pelo email do usuário auth
-  const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(authUserId);
+  const adminAuth = supabaseAdmin.auth as any;
+  const { data: authUser, error: authError } = await adminAuth.admin.getUserById(authUserId);
   
   if (authError || !authUser?.user?.email) {
     return null;
