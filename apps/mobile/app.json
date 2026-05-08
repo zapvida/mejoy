@@ -6,13 +6,18 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "experiments": {
       "typedRoutes": true
     },
     "plugins": [
       "expo-router",
-      "expo-notifications",
+      [
+        "expo-notifications",
+        {
+          "color": "#167C5A",
+          "mode": "production"
+        }
+      ],
       [
         "expo-document-picker",
         {
@@ -71,9 +76,6 @@
     },
     "web": {
       "bundler": "metro"
-    },
-    "notification": {
-      "color": "#167C5A"
     },
     "extra": {
       "router": {},
