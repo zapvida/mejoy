@@ -24,7 +24,9 @@ export function HeroCard({
         backgroundColor: colors.ink,
         padding: spacing.xxl,
         gap: spacing.md,
-        boxShadow: shadows.medium,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.06)',
+        boxShadow: shadows.elevation3,
       }}
     >
       <View
@@ -78,9 +80,19 @@ export function HeroCard({
           </Text>
           {badge}
         </View>
-        <Text selectable style={{ color: '#D7E7E0', fontSize: typography.body, lineHeight: 24 }}>
-          {summary}
-        </Text>
+        <View
+          style={{
+            borderRadius: radii.md,
+            borderCurve: 'continuous',
+            backgroundColor: 'rgba(255,255,255,0.06)',
+            paddingHorizontal: spacing.lg,
+            paddingVertical: spacing.md,
+          }}
+        >
+          <Text selectable style={{ color: '#D7E7E0', fontSize: typography.body, lineHeight: 24 }}>
+            {summary}
+          </Text>
+        </View>
       </View>
       {children}
     </View>

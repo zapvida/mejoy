@@ -1,9 +1,9 @@
 /**
- * DESIGN SYSTEM TOKENS - ZapFarm
- * Inspirado em: Linear, Vercel, Stripe
- * 
- * Sistema de design tokens refinado para elevar a qualidade visual
- * da plataforma para nível world-class.
+ * DESIGN SYSTEM TOKENS - MeJoy
+ *
+ * Camada visual compartilhada entre web e nativo.
+ * Mantém compatibilidade com a base atual enquanto adiciona
+ * superfícies, elevações, motion e níveis semânticos consistentes.
  */
 
 :root {
@@ -61,6 +61,12 @@
   --border: 0 0% 90%; /* Bordas sutis */
   --input: 0 0% 95%; /* Inputs com fundo quase branco */
   --ring: 24 95% 47%; /* Foco laranja (brand) */
+  --surface: 140 24% 99%;
+  --surface-muted: 140 18% 96%;
+  --surface-strong: 146 28% 92%;
+  --surface-elevated: 0 0% 100%;
+  --surface-warm: 28 58% 95%;
+  --surface-overlay: 155 36% 8%;
   
   /* ============================================
      ESTADOS SEMÂNTICOS
@@ -77,6 +83,14 @@
   
   --info: 217 91% 60%; /* Azul informação */
   --info-foreground: 0 0% 100%;
+  --emphasis-brand-surface: 146 34% 92%;
+  --emphasis-accent-surface: 28 75% 91%;
+  --emphasis-success-surface: 145 45% 93%;
+  --emphasis-warning-surface: 45 83% 90%;
+  --emphasis-brand-text: 156 55% 28%;
+  --emphasis-accent-text: 21 79% 20%;
+  --emphasis-success-text: 145 64% 29%;
+  --emphasis-warning-text: 38 72% 31%;
   
   /* ============================================
      ESPAÇAMENTO - Escala 4px
@@ -146,6 +160,9 @@
   --shadow-brand-sm: 0 2px 8px rgba(234, 88, 12, 0.15);
   --shadow-brand-md: 0 4px 16px rgba(234, 88, 12, 0.2);
   --shadow-brand-lg: 0 8px 24px rgba(234, 88, 12, 0.25);
+  --elevation-1: 0 10px 28px rgba(12, 26, 22, 0.06);
+  --elevation-2: 0 18px 42px rgba(12, 26, 22, 0.1);
+  --elevation-3: 0 28px 68px rgba(12, 26, 22, 0.14);
   
   /* ============================================
      BORDAS - Mais Refinadas
@@ -165,6 +182,11 @@
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-immediate: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-quick: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-regular: 260ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-slow: 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-lingering: 560ms cubic-bezier(0.22, 1, 0.36, 1);
   
   /* ============================================
      Z-INDEX - Sistema Organizado
@@ -346,4 +368,3 @@
     transform: scale(1);
   }
 }
-

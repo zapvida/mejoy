@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { isStoreV2Enabled, isStoreV2ConversionEnabled, isCopyV2PilotEnabled, isCopyV4Enabled } from '@/lib/flags';
+import { AppValueSection } from '@/components/mejoy-app/AppValueSection';
 import { getProductBySlug, getRelatedProducts } from '@/lib/store-v2/catalog';
 import { getFallbackProductBySlug, getFallbackRelatedProducts } from '@/lib/store-v2/catalog-fallback';
 import {
@@ -818,6 +819,37 @@ interface Props {
     howToUseBullets?: string[];
     videoUrl?: string | null;
     advertenciasCompleto?: string | null;
+    appIncluded?: boolean;
+    appTier?: 'premium_full_access';
+    appValueHeadline?: string;
+    appFeatureMatrix?: Array<{
+      id: string;
+      title: string;
+      webValue: string;
+      appValue: string;
+      summary: string;
+      featured: boolean;
+    }>;
+    protocolContext?: {
+      primaryProtocolSlug: string;
+      primaryProtocolTitle: string;
+      careLane: 'glp1_integral' | 'whole_person_care';
+      relatedProtocols: string[];
+    };
+    appValue?: {
+      appIncluded: boolean;
+      appTier: 'premium_full_access';
+      headline: string;
+      summary: string;
+      featureMatrix: Array<{
+        id: string;
+        title: string;
+        webValue: string;
+        appValue: string;
+        summary: string;
+        featured: boolean;
+      }>;
+    };
   };
   relatedProducts: RelatedProduct[];
 }
@@ -1123,6 +1155,11 @@ export default function PDPPage({ product, relatedProducts }: Props) {
 
                 {/* Trust line */}
                 <p className="mt-2 text-xs text-gray-600">Troca em 7 dias · Frete grátis acima de R$ 190</p>
+                {product.appIncluded ? (
+                  <p className="mt-2 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-800">
+                    Inclui App MeJoy Premium
+                  </p>
+                ) : null}
 
                 {/* Bloco decisório — card organizado e proporcional */}
                 <div className="mt-4 p-4 rounded-xl bg-gray-50/60 border border-gray-100 shadow-sm space-y-4">
@@ -1237,6 +1274,18 @@ export default function PDPPage({ product, relatedProducts }: Props) {
 
         {/* TrustBar abaixo do produto — mobile: primeiro frame = produto */}
         <TrustBar />
+
+        {product.appValue ? (
+          <section className="py-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <AppValueSection
+                value={product.appValue}
+                surface="pdp"
+                title="Ganhe acesso ao App MeJoy Premium com este produto"
+              />
+            </div>
+          </section>
+        ) : null}
 
         {/* Seções de conteúdo — narrativa de decisão */}
         <section className="py-10 md:py-14 bg-gray-50/80">
@@ -1673,6 +1722,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       howToUseBullets: safeHowToUseBullets,
       videoUrl: videoUrl ?? null,
       advertenciasCompleto: advertenciasCompleto ?? null,
+      appIncluded: product.appIncluded ?? false,
+      appTier: product.appTier ?? 'premium_full_access',
+      appValueHeadline: product.appValueHeadline ?? null,
+      appFeatureMatrix: product.appFeatureMatrix ?? [],
+      protocolContext: product.protocolContext ?? null,
+      appValue: product.appValue ?? null,
     };
 
     let related = usingFallbackCatalog

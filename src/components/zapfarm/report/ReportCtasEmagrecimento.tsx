@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { AppValueSection } from '@/components/mejoy-app/AppValueSection';
+import { buildProductAppValue } from '@/lib/mejoy-app/value';
 import type { ReportViewModel } from '@/lib/report/derive';
 import { RefinedCard } from '@/components/ui/RefinedCard';
 import { RefinedButton } from '@/components/ui/RefinedButton';
@@ -7,6 +9,7 @@ import {
   emagrecimentoLegalNote,
   emagrecimentoPlans,
   planIdMapping,
+  type EmagrecimentoPlan,
 } from '@/config/zapfarm/emagrecimento-plans';
 import {
   estimateWeightLossRangeKg,
@@ -26,13 +29,14 @@ interface Props {
   selectedTrilha: EmagrecimentoTrilha;
   onSelectPlan?: (planId: string) => void;
   onOpenInlineCheckout?: () => void;
+  planCatalog?: EmagrecimentoPlan[];
 }
 
 const FRAME_TWO_IMAGES = [
   {
-    src: '/images/emagrecimento/medvi/treatment-injetavel.webp',
-    alt: 'Trilha injetavel',
-    title: 'Maior potencia',
+    src: '/mejoyimagens/mejoy19.png',
+    alt: 'Paciente MeJoy',
+    title: 'Fechamento guiado',
   },
   {
     src: '/images/emagrecimento/medvi/treatment-comprimidos.avif',
@@ -54,7 +58,9 @@ export function ReportCtasEmagrecimento({
   selectedTrilha,
   onSelectPlan,
   onOpenInlineCheckout,
+  planCatalog,
 }: Props) {
+  const availablePlans = planCatalog?.length ? planCatalog : emagrecimentoPlans;
   const triageContextId = vm?.triageId || reportId;
   const classification = vm
     ? ((vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined)
@@ -76,6 +82,10 @@ export function ReportCtasEmagrecimento({
     vm?.basics.weightKg,
     selectedTrackCard.efficacyRangePercent
   );
+  const productAppValue = buildProductAppValue({
+    productSlug: 'emagrecimento',
+    productName: 'Programa MeJoy de emagrecimento',
+  });
   const preferenciaTexto =
     preferenciaPrincipioAtivo === 'tirzepatida'
       ? 'Tirzepatida'
@@ -104,10 +114,10 @@ export function ReportCtasEmagrecimento({
           Escolha do plano
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-          Escolha o plano do seu programa
+          Escolha o plano e mantenha o checkout aqui embaixo
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-          A trilha clínica já está definida acima. Aqui você só escolhe a duração do acompanhamento e segue para o checkout nesta mesma página.
+          A trilha clínica já está definida acima. Aqui você escolhe a duração do acompanhamento e segue para o checkout sem sair desta mesma página.
         </p>
       </div>
 
@@ -179,8 +189,17 @@ export function ReportCtasEmagrecimento({
         </div>
       </div>
 
+      <div className="mt-8">
+        <AppValueSection
+          value={productAppValue}
+          surface="report"
+          compact
+          title="Ao fechar aqui, voce tambem libera o App MeJoy Premium"
+        />
+      </div>
+
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
-        {emagrecimentoPlans.map((plan) => {
+        {availablePlans.map((plan) => {
           const recommended = plan.id === recommendedPlanId;
           const selected = plan.id === selectedPlanId;
           return (

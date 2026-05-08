@@ -1,12 +1,12 @@
 import { Text, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '@mejoy/design-tokens';
+import { colors, radii, shadows, spacing, typography } from '@mejoy/design-tokens';
 
 type MetricTone = 'default' | 'brand' | 'accent' | 'warning';
 
 const toneStyles: Record<MetricTone, { backgroundColor: string; borderColor: string; valueColor: string }> = {
   default: {
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: colors.surfaceElevated,
     borderColor: colors.border,
     valueColor: colors.textStrong,
   },
@@ -52,6 +52,7 @@ export function MetricPill({
         borderColor: style.borderColor,
         backgroundColor: style.backgroundColor,
         padding: spacing.lg,
+        boxShadow: shadows.soft,
       }}
     >
       <Text

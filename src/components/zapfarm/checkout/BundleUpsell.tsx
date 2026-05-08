@@ -50,7 +50,11 @@ export function BundleUpsell({
           type="button"
           onClick={() => {
             onSelect(bundleId);
-            if (basePath) window.location.href = `${basePath}?bundle=${bundleId}`;
+            if (basePath) {
+              const url = new URL(basePath, window.location.origin);
+              url.searchParams.set('bundle', bundleId);
+              window.location.href = url.toString();
+            }
           }}
           className={cn(
             'px-4 py-2 rounded-lg font-bold text-white text-sm whitespace-nowrap',

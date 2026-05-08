@@ -8,6 +8,8 @@ import { createMagicLink } from '@/lib/auth/magic-link';
 import { sendEvolutionMessage, sendEvolutionMessageStoreV2 } from '@/lib/evolution/client';
 import { prisma } from '@/lib/prisma';
 import { buildOrderAccessUrl } from '@/lib/store-v2/order-access';
+import { ensureCheckoutProfile } from '@/lib/zapfarm/profile-link';
+import { upsertZapfarmOrderFromPayment } from '@/lib/zapfarm/order-sync';
 
 export const config = { api: { bodyParser: false } };
 
@@ -134,17 +136,10 @@ async function processPayment(payment: AsaasPaymentResponse) {
       return;
     }
 
-    const productSlug = payment.metadata?.product || '';
-    const planSlug = payment.metadata?.plano || '';
-    const reportId = payment.metadata?.reportId || null;
-    const triageId = payment.metadata?.triageId || null;
     const customerEmail = payment.metadata?.customer_email || '';
     const customerPhone = payment.metadata?.customer_phone || null;
-    const utmSource = payment.metadata?.utm_source || null;
-    const utmMedium = payment.metadata?.utm_medium || null;
-    const utmCampaign = payment.metadata?.utm_campaign || null;
-    const utmContent = payment.metadata?.utm_content || null;
-    const utmTerm = payment.metadata?.utm_term || null;
+    const productSlug = payment.metadata?.product || '';
+    const planSlug = payment.metadata?.plano || '';
 
     if (!productSlug || !planSlug || !customerEmail) {
       console.error('[webhooks/asaas] Dados incompletos no pagamento:', {
@@ -156,94 +151,29 @@ async function processPayment(payment: AsaasPaymentResponse) {
       return;
     }
 
-    let status = 'PENDING';
-    if (payment.status === 'CONFIRMED' || payment.status === 'RECEIVED' || payment.status === 'RECEIVED_IN_CASH') {
-      status = 'PAID';
-    } else if (payment.status === 'OVERDUE') {
-      status = 'OVERDUE';
-    } else if (payment.status === 'REFUNDED') {
-      status = 'REFUNDED';
-    } else if (payment.deleted) {
-      status = 'CANCELED';
+    const profile = await ensureCheckoutProfile({
+      email: customerEmail,
+      name: payment.metadata?.customer_name || null,
+      whatsapp: customerPhone,
+    });
+
+    const synced = await upsertZapfarmOrderFromPayment(payment, {
+      profileId: profile?.id ?? null,
+    });
+
+    if (!synced) {
+      return;
     }
 
-    const amount = Math.round(payment.value * 100);
-    const currency = 'BRL';
-
-    const existingOrder = await prisma.zapfarmOrder.findUnique({
-      where: { asaasPaymentId: payment.id },
-      select: { status: true },
-    });
-    const wasAlreadyPaid = existingOrder?.status === 'PAID';
-
-    let profileId: string | null = null;
-    if (customerEmail) {
-      try {
-        const { createClient } = await import('@supabase/supabase-js');
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-        if (supabaseUrl && supabaseKey) {
-          const supabase = createClient(supabaseUrl, supabaseKey);
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('email', customerEmail.toLowerCase())
-            .maybeSingle();
-          if (profile?.id) profileId = profile.id;
-        }
-      } catch (profileError) {
-        console.warn('[webhooks/asaas] Erro ao buscar profile:', profileError);
-      }
-    }
-
-    const order = await prisma.zapfarmOrder.upsert({
-      where: { asaasPaymentId: payment.id },
-      update: {
-        status,
-        amount,
-        currency,
-        customerName: payment.metadata?.customer_name || 'Cliente',
-        customerEmail,
-        customerPhone,
-        reportId,
-        triageId,
-        profileId: profileId || undefined,
-        utmSource,
-        utmMedium,
-        utmCampaign,
-        utmContent,
-        utmTerm,
-        paidAt: status === 'PAID' ? (payment.paymentDate ? new Date(payment.paymentDate) : new Date()) : null,
-        updatedAt: new Date(),
-      },
-      create: {
-        productSlug,
-        planSlug,
-        asaasPaymentId: payment.id,
-        status,
-        customerName: payment.metadata?.customer_name || 'Cliente',
-        customerEmail,
-        customerPhone,
-        amount,
-        currency,
-        reportId,
-        triageId,
-        profileId: profileId || undefined,
-        utmSource,
-        utmMedium,
-        utmCampaign,
-        utmContent,
-        utmTerm,
-        paidAt: status === 'PAID' ? (payment.paymentDate ? new Date(payment.paymentDate) : new Date()) : null,
-      },
-    });
+    const { order, status, wasAlreadyPaid } = synced;
+    const profileId = profile?.id ?? null;
 
     console.log('[webhooks/asaas] Pedido processado:', {
       orderId: order.id,
       productSlug,
       planSlug,
       status,
-      amount,
+      amount: order.amount,
       paymentId: payment.id,
     });
 
@@ -259,7 +189,7 @@ async function processPayment(payment: AsaasPaymentResponse) {
     if (status === 'PAID' && !wasAlreadyPaid && customerEmail) {
       const customerName = payment.metadata?.customer_name || 'Cliente';
       const productName = `${productSlug} - ${planSlug}`;
-      const amountInReais = amount / 100;
+      const amountInReais = order.amount / 100;
 
       try {
         await sendPaymentConfirmedEmail(customerEmail, {

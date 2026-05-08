@@ -6,9 +6,9 @@ type InsightTone = 'performance' | 'clinical' | 'celebration' | 'warning';
 
 const toneStyles: Record<InsightTone, { stripe: string; backgroundColor: string }> = {
   performance: { stripe: colors.brand, backgroundColor: colors.card },
-  clinical: { stripe: colors.ink, backgroundColor: colors.card },
-  celebration: { stripe: colors.success, backgroundColor: colors.card },
-  warning: { stripe: colors.accent, backgroundColor: colors.card },
+  clinical: { stripe: colors.ink, backgroundColor: colors.surfaceElevated },
+  celebration: { stripe: colors.success, backgroundColor: colors.surfaceElevated },
+  warning: { stripe: colors.accent, backgroundColor: colors.surfaceWarm },
 };
 
 export function InsightCard({
@@ -41,7 +41,7 @@ export function InsightCard({
         padding: spacing.xl,
         borderWidth: 1,
         borderColor: colors.border,
-        boxShadow: shadows.soft,
+        boxShadow: shadows.elevation1,
       }}
     >
       <View

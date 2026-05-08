@@ -1,58 +1,96 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
-import { FiActivity, FiAlertTriangle, FiRefreshCw, FiShield, FiTrendingUp, FiTruck, FiUsers } from 'react-icons/fi';
-import useSWR from 'swr';
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import {
+  FiActivity,
+  FiAlertTriangle,
+  FiRefreshCw,
+  FiShield,
+  FiTrendingUp,
+  FiTruck,
+  FiUsers,
+} from "react-icons/fi";
+import useSWR from "swr";
 
-import { AdminLayout } from '@/components/admin/AdminLayout';
-import { adminFetchJson, AdminClientError } from '@/lib/admin/client';
-import type { AdminAlert, AdminDashboardResponse, AdminMetricValue, AdminQueueItem } from '@/lib/dashboard/types';
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { adminFetchJson, AdminClientError } from "@/lib/admin/client";
+import type {
+  AdminAlert,
+  AdminDashboardResponse,
+  AdminMetricValue,
+  AdminQueueItem,
+} from "@/lib/dashboard/types";
 
-const HASH_TO_TAB: Record<string, 'visao' | 'operacao' | 'comercial' | 'clinico' | 'tech'> = {
-  '': 'visao',
-  operacao: 'operacao',
-  comercial: 'comercial',
-  clinico: 'clinico',
-  tech: 'tech',
+const HASH_TO_TAB: Record<
+  string,
+  "visao" | "operacao" | "comercial" | "clinico" | "tech"
+> = {
+  "": "visao",
+  operacao: "operacao",
+  comercial: "comercial",
+  clinico: "clinico",
+  tech: "tech",
 };
 
 const TAB_TO_HASH: Record<string, string> = {
-  visao: '',
-  operacao: '#operacao',
-  comercial: '#comercial',
-  clinico: '#clinico',
-  tech: '#tech',
+  visao: "",
+  operacao: "#operacao",
+  comercial: "#comercial",
+  clinico: "#clinico",
+  tech: "#tech",
 };
 
 const fetcher = (url: string) => adminFetchJson<AdminDashboardResponse>(url);
 
 function formatMetric(metric: AdminMetricValue) {
-  if (metric.value == null) return 'Indisponível';
-  if (metric.unit === 'brl') {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(metric.value);
+  if (metric.value == null) return "Indisponível";
+  if (metric.unit === "brl") {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(metric.value);
   }
-  if (metric.unit === 'percent') {
+  if (metric.unit === "percent") {
     return `${metric.value}%`;
   }
-  return new Intl.NumberFormat('pt-BR').format(metric.value);
+  return new Intl.NumberFormat("pt-BR").format(metric.value);
 }
 
 function queueTone(status: string) {
-  if (status === 'PENDING_PAYMENT' || status === 'pending') return 'bg-amber-50 border-amber-200 text-amber-800';
-  if (status === 'failed' || status === 'expired' || status === 'rejected') return 'bg-rose-50 border-rose-200 text-rose-800';
-  if (status === 'SHIPPED' || status === 'opened') return 'bg-blue-50 border-blue-200 text-blue-800';
-  return 'bg-slate-50 border-slate-200 text-slate-800';
+  if (status === "PENDING_PAYMENT" || status === "pending")
+    return "bg-amber-50 border-amber-200 text-amber-800";
+  if (status === "failed" || status === "expired" || status === "rejected")
+    return "bg-rose-50 border-rose-200 text-rose-800";
+  if (status === "SHIPPED" || status === "opened")
+    return "bg-blue-50 border-blue-200 text-blue-800";
+  return "bg-slate-50 border-slate-200 text-slate-800";
 }
 
 function alertTone(alert: AdminAlert) {
-  if (alert.level === 'critical') return 'border-rose-200 bg-rose-50';
-  if (alert.level === 'warning') return 'border-amber-200 bg-amber-50';
-  if (alert.level === 'success') return 'border-emerald-200 bg-emerald-50';
-  return 'border-slate-200 bg-slate-50';
+  if (alert.level === "critical") return "border-rose-200 bg-rose-50";
+  if (alert.level === "warning") return "border-amber-200 bg-amber-50";
+  if (alert.level === "success") return "border-emerald-200 bg-emerald-50";
+  return "border-slate-200 bg-slate-50";
 }
 
-function QueueList({ title, items, emptyLabel }: { title: string; items: AdminQueueItem[]; emptyLabel: string }) {
+function severityTone(level: "info" | "success" | "warning" | "critical") {
+  if (level === "critical") return "border-rose-200 bg-rose-50 text-rose-900";
+  if (level === "warning") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (level === "success")
+    return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  return "border-slate-200 bg-slate-50 text-slate-900";
+}
+
+function QueueList({
+  title,
+  items,
+  emptyLabel,
+}: {
+  title: string;
+  items: AdminQueueItem[];
+  emptyLabel: string;
+}) {
   return (
     <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3">
@@ -63,23 +101,33 @@ function QueueList({ title, items, emptyLabel }: { title: string; items: AdminQu
       </div>
       <div className="mt-4 space-y-3">
         {items.map((item) => (
-          <div key={item.id} className={`rounded-2xl border p-4 ${queueTone(item.status)}`}>
+          <div
+            key={item.id}
+            className={`rounded-2xl border p-4 ${queueTone(item.status)}`}
+          >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold">{item.title}</p>
                 <p className="mt-1 text-sm">{item.subtitle}</p>
               </div>
               <div className="text-right text-xs">
-                <p className="font-semibold uppercase tracking-[0.12em]">{item.status}</p>
-                {item.ageHours != null && <p className="mt-1">{item.ageHours}h</p>}
+                <p className="font-semibold uppercase tracking-[0.12em]">
+                  {item.status}
+                </p>
+                {item.ageHours != null && (
+                  <p className="mt-1">{item.ageHours}h</p>
+                )}
               </div>
             </div>
             {(item.href || item.meta) && (
               <div className="mt-3 flex items-center justify-between gap-3 text-xs text-slate-600">
-                <span>{item.meta || 'Fila operacional'}</span>
+                <span>{item.meta || "Fila operacional"}</span>
                 {item.href && (
-                  <Link href={item.href} className="font-semibold text-emerald-700 hover:text-emerald-800">
-                    {item.ctaLabel || 'Abrir'} →
+                  <Link
+                    href={item.href}
+                    className="font-semibold text-emerald-700 hover:text-emerald-800"
+                  >
+                    {item.ctaLabel || "Abrir"} →
                   </Link>
                 )}
               </div>
@@ -102,42 +150,48 @@ export async function getServerSideProps() {
 
 export default function AdminPage() {
   const router = useRouter();
-  const [period, setPeriod] = useState<'today' | '7d' | '30d'>('30d');
-  const [activeTab, setActiveTab] = useState<'visao' | 'operacao' | 'comercial' | 'clinico' | 'tech'>('visao');
+  const [period, setPeriod] = useState<"today" | "7d" | "30d">("30d");
+  const [activeTab, setActiveTab] = useState<
+    "visao" | "operacao" | "comercial" | "clinico" | "tech"
+  >("visao");
   const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const hash = (window.location.hash || '').replace(/^#/, '');
-    setActiveTab(HASH_TO_TAB[hash] || 'visao');
+    if (typeof window === "undefined") return;
+    const hash = (window.location.hash || "").replace(/^#/, "");
+    setActiveTab(HASH_TO_TAB[hash] || "visao");
   }, [router.asPath]);
 
   const { data, error, isLoading, mutate } = useSWR(
     `/api/admin/dashboard?period=${period}`,
     fetcher,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000 },
   );
 
-  const isUnauthorized = error instanceof AdminClientError && error.status === 401;
+  const isUnauthorized =
+    error instanceof AdminClientError && error.status === 401;
 
   const tabs = [
-    { id: 'visao' as const, label: 'Visão Geral', icon: FiTrendingUp },
-    { id: 'operacao' as const, label: 'Operação', icon: FiTruck },
-    { id: 'comercial' as const, label: 'Comercial', icon: FiUsers },
-    { id: 'clinico' as const, label: 'Clínico', icon: FiActivity },
-    { id: 'tech' as const, label: 'Saúde Técnica', icon: FiShield },
+    { id: "visao" as const, label: "Visão Geral", icon: FiTrendingUp },
+    { id: "operacao" as const, label: "Operação", icon: FiTruck },
+    { id: "comercial" as const, label: "Comercial", icon: FiUsers },
+    { id: "clinico" as const, label: "Clínico", icon: FiActivity },
+    { id: "tech" as const, label: "Saúde Técnica", icon: FiShield },
   ];
 
-  const topAlerts = useMemo(() => data?.alerts.slice(0, 3) || [], [data?.alerts]);
+  const topAlerts = useMemo(
+    () => data?.alerts.slice(0, 3) || [],
+    [data?.alerts],
+  );
 
   const logout = async () => {
     setLoggingOut(true);
     try {
-      await fetch('/api/admin/auth/session', {
-        method: 'DELETE',
-        credentials: 'same-origin',
+      await fetch("/api/admin/auth/session", {
+        method: "DELETE",
+        credentials: "same-origin",
       });
-      router.replace('/admin/login');
+      router.replace("/admin/login");
     } finally {
       setLoggingOut(false);
     }
@@ -148,7 +202,10 @@ export default function AdminPage() {
       <Head>
         <title>Admin Dashboard | MeJoy</title>
         <meta name="robots" content="noindex,nofollow" />
-        <meta name="description" content="Cockpit operacional e executivo do lançamento MeJoy." />
+        <meta
+          name="description"
+          content="Cockpit operacional e executivo do lançamento MeJoy."
+        />
       </Head>
 
       <AdminLayout
@@ -163,14 +220,14 @@ export default function AdminPage() {
                   key={tab.id}
                   onClick={() => {
                     setActiveTab(tab.id);
-                    if (typeof window !== 'undefined') {
-                      window.location.hash = TAB_TO_HASH[tab.id] || '';
+                    if (typeof window !== "undefined") {
+                      window.location.hash = TAB_TO_HASH[tab.id] || "";
                     }
                   }}
                   className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition ${
                     activeTab === tab.id
-                      ? 'bg-slate-950 text-white'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? "bg-slate-950 text-white"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
                   <tab.icon size={16} />
@@ -182,7 +239,9 @@ export default function AdminPage() {
             <div className="flex items-center gap-2">
               <select
                 value={period}
-                onChange={(event) => setPeriod(event.target.value as 'today' | '7d' | '30d')}
+                onChange={(event) =>
+                  setPeriod(event.target.value as "today" | "7d" | "30d")
+                }
                 className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700"
               >
                 <option value="today">Hoje</option>
@@ -201,18 +260,24 @@ export default function AdminPage() {
                 disabled={loggingOut}
                 className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
               >
-                {loggingOut ? 'Saindo...' : 'Sair'}
+                {loggingOut ? "Saindo..." : "Sair"}
               </button>
             </div>
           </div>
 
           {isUnauthorized && (
             <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 p-5 shadow-sm">
-              <p className="text-sm font-semibold text-amber-900">Sessão admin necessária</p>
-              <p className="mt-2 text-sm text-amber-800">
-                Este cockpit usa sessão server-only. Entre novamente para carregar os dados operacionais.
+              <p className="text-sm font-semibold text-amber-900">
+                Sessão admin necessária
               </p>
-              <Link href="/admin/login" className="mt-4 inline-flex text-sm font-semibold text-amber-900">
+              <p className="mt-2 text-sm text-amber-800">
+                Este cockpit usa sessão server-only. Entre novamente para
+                carregar os dados operacionais.
+              </p>
+              <Link
+                href="/admin/login"
+                className="mt-4 inline-flex text-sm font-semibold text-amber-900"
+              >
                 Ir para login →
               </Link>
             </div>
@@ -223,17 +288,27 @@ export default function AdminPage() {
               <div className="flex items-start gap-3">
                 <FiAlertTriangle className="mt-0.5 text-amber-700" />
                 <div>
-                  <p className="text-sm font-semibold text-amber-900">Dashboard degradado, sem dados inventados</p>
+                  <p className="text-sm font-semibold text-amber-900">
+                    Dashboard degradado, sem dados inventados
+                  </p>
                   <p className="mt-1 text-sm text-amber-800">
-                    Pelo menos uma fonte crítica está indisponível. Os números abaixo continuam reais, mas podem estar parciais.
+                    Pelo menos uma fonte crítica está indisponível. Os números
+                    abaixo continuam reais, mas podem estar parciais.
                   </p>
                 </div>
               </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 {data.degradedReasons.map((reason) => (
-                  <div key={`${reason.source}-${reason.message}`} className="rounded-2xl border border-amber-200 bg-white p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-amber-700">{reason.source}</p>
-                    <p className="mt-2 text-sm text-slate-700">{reason.message}</p>
+                  <div
+                    key={`${reason.source}-${reason.message}`}
+                    className="rounded-2xl border border-amber-200 bg-white p-4"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-amber-700">
+                      {reason.source}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-700">
+                      {reason.message}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -243,16 +318,74 @@ export default function AdminPage() {
           {topAlerts.length > 0 && (
             <div className="grid gap-4 lg:grid-cols-3">
               {topAlerts.map((alert) => (
-                <div key={alert.id} className={`rounded-[1.5rem] border p-5 shadow-sm ${alertTone(alert)}`}>
-                  <p className="text-sm font-semibold text-slate-900">{alert.title}</p>
+                <div
+                  key={alert.id}
+                  className={`rounded-[1.5rem] border p-5 shadow-sm ${alertTone(alert)}`}
+                >
+                  <p className="text-sm font-semibold text-slate-900">
+                    {alert.title}
+                  </p>
                   <p className="mt-2 text-sm text-slate-700">{alert.body}</p>
                   {alert.href && (
-                    <Link href={alert.href} className="mt-4 inline-flex text-sm font-semibold text-slate-900">
+                    <Link
+                      href={alert.href}
+                      className="mt-4 inline-flex text-sm font-semibold text-slate-900"
+                    >
                       Abrir fila →
                     </Link>
                   )}
                 </div>
               ))}
+            </div>
+          )}
+
+          {data && (
+            <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+              <section
+                className={`rounded-[1.5rem] border p-5 shadow-sm ${severityTone(data.dashboardReleaseState.severity)}`}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.16em]">
+                  Estado do lançamento
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold">
+                  {data.dashboardReleaseState.label}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed">
+                  {data.dashboardReleaseState.detail}
+                </p>
+              </section>
+
+              <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                  Saúde da sincronização
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+                  {data.paymentSyncHealth.healthy
+                    ? "Pagamento e liberação estáveis"
+                    : "Há pendências entre pagamento e liberação"}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {data.paymentSyncHealth.detail}
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
+                      PIX pendentes
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold text-slate-900">
+                      {data.paymentSyncHealth.pendingCount}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
+                      Pagos sem vínculo ideal
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold text-slate-900">
+                      {data.paymentSyncHealth.unsyncedPaidCount}
+                    </p>
+                  </div>
+                </div>
+              </section>
             </div>
           )}
 
@@ -264,40 +397,97 @@ export default function AdminPage() {
 
           {data && (
             <>
-              {activeTab === 'visao' && (
+              {activeTab === "visao" && (
                 <div className="space-y-6">
                   <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {data.overview.map((metric) => (
-                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div
+                        key={metric.label}
+                        className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm"
+                      >
                         <p className="text-sm text-slate-500">{metric.label}</p>
-                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
-                        {metric.detail && <p className="mt-2 text-xs text-slate-500">{metric.detail}</p>}
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">
+                          {formatMetric(metric)}
+                        </p>
+                        {metric.detail && (
+                          <p className="mt-2 text-xs text-slate-500">
+                            {metric.detail}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </section>
+
+                  {data.reportFunnelAlerts.length > 0 && (
+                    <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          Alertas do funil de relatório
+                        </h3>
+                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                          {data.reportFunnelAlerts.length}
+                        </span>
+                      </div>
+                      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                        {data.reportFunnelAlerts.map((alert) => (
+                          <div
+                            key={alert.id}
+                            className={`rounded-2xl border p-4 ${alertTone(alert)}`}
+                          >
+                            <p className="text-sm font-semibold text-slate-900">
+                              {alert.title}
+                            </p>
+                            <p className="mt-2 text-sm text-slate-700">
+                              {alert.body}
+                            </p>
+                            {alert.href && (
+                              <Link
+                                href={alert.href}
+                                className="mt-4 inline-flex text-sm font-semibold text-slate-900"
+                              >
+                                Abrir fila →
+                              </Link>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
 
                   <section className="grid gap-6 lg:grid-cols-2">
                     <QueueList
                       title="Foco operacional imediato"
                       items={[
                         ...data.operation.queues.pendingPix.slice(0, 3),
-                        ...data.operation.queues.paidWithoutNextAction.slice(0, 3),
+                        ...data.operation.queues.paidWithoutNextAction.slice(
+                          0,
+                          3,
+                        ),
                         ...data.operation.queues.handoffsStuck.slice(0, 2),
                       ]}
                       emptyLabel="Nenhuma fila crítica aberta neste momento."
                     />
                     <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                      <h3 className="text-lg font-semibold text-gray-900">Saúde do lançamento</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Saúde do lançamento
+                      </h3>
                       <div className="mt-4 space-y-3">
                         {data.technical.checks.slice(0, 6).map((check) => (
-                          <div key={check.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                          <div
+                            key={check.id}
+                            className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                          >
                             <div className="flex items-center justify-between gap-3">
-                              <p className="text-sm font-semibold text-slate-900">{check.label}</p>
+                              <p className="text-sm font-semibold text-slate-900">
+                                {check.label}
+                              </p>
                               <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
                                 {check.status}
                               </span>
                             </div>
-                            <p className="mt-2 text-sm text-slate-600">{check.detail}</p>
+                            <p className="mt-2 text-sm text-slate-600">
+                              {check.detail}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -306,25 +496,37 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {activeTab === 'operacao' && (
+              {activeTab === "operacao" && (
                 <div className="space-y-6">
                   <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {data.operation.stats.map((metric) => (
-                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div
+                        key={metric.label}
+                        className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm"
+                      >
                         <p className="text-sm text-slate-500">{metric.label}</p>
-                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">
+                          {formatMetric(metric)}
+                        </p>
                       </div>
                     ))}
                   </section>
 
                   <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900">SLAs operacionais</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      SLAs operacionais
+                    </h3>
                     <div className="mt-4 grid gap-4 md:grid-cols-3">
                       {data.operation.slas.map((sla) => (
-                        <div key={sla.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                          <p className="text-sm font-semibold text-slate-900">{sla.label}</p>
+                        <div
+                          key={sla.id}
+                          className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                        >
+                          <p className="text-sm font-semibold text-slate-900">
+                            {sla.label}
+                          </p>
                           <p className="mt-3 text-2xl font-semibold text-slate-900">
-                            {sla.current == null ? 'Indisponível' : sla.current}
+                            {sla.current == null ? "Indisponível" : sla.current}
                           </p>
                           <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">
                             status: {sla.status}
@@ -335,37 +537,80 @@ export default function AdminPage() {
                   </section>
 
                   <div className="grid gap-6 xl:grid-cols-2">
-                    <QueueList title="PIX pendente" items={data.operation.queues.pendingPix} emptyLabel="Nenhum PIX pendente no período." />
-                    <QueueList title="Pago sem próxima ação" items={data.operation.queues.paidWithoutNextAction} emptyLabel="Nenhum pedido pago aguardando ação." />
-                    <QueueList title="Receita / RX pendente" items={data.operation.queues.rxPending} emptyLabel="Nenhum pedido aguardando validação clínica." />
-                    <QueueList title="Handoff travado" items={data.operation.queues.handoffsStuck} emptyLabel="Nenhum handoff travado além do SLA." />
-                    <QueueList title="Envio / rastreamento" items={data.operation.queues.shipmentsAtRisk} emptyLabel="Nenhum envio em risco." />
-                    <QueueList title="Risco de suporte" items={data.operation.queues.supportRisk} emptyLabel="Nenhum caso com risco alto de suporte." />
+                    <QueueList
+                      title="PIX pendente"
+                      items={data.operation.queues.pendingPix}
+                      emptyLabel="Nenhum PIX pendente no período."
+                    />
+                    <QueueList
+                      title="Pago sem próxima ação"
+                      items={data.operation.queues.paidWithoutNextAction}
+                      emptyLabel="Nenhum pedido pago aguardando ação."
+                    />
+                    <QueueList
+                      title="Receita / RX pendente"
+                      items={data.operation.queues.rxPending}
+                      emptyLabel="Nenhum pedido aguardando validação clínica."
+                    />
+                    <QueueList
+                      title="Handoff travado"
+                      items={data.operation.queues.handoffsStuck}
+                      emptyLabel="Nenhum handoff travado além do SLA."
+                    />
+                    <QueueList
+                      title="Envio / rastreamento"
+                      items={data.operation.queues.shipmentsAtRisk}
+                      emptyLabel="Nenhum envio em risco."
+                    />
+                    <QueueList
+                      title="Risco de suporte"
+                      items={data.operation.queues.supportRisk}
+                      emptyLabel="Nenhum caso com risco alto de suporte."
+                    />
                   </div>
                 </div>
               )}
 
-              {activeTab === 'comercial' && (
+              {activeTab === "comercial" && (
                 <div className="space-y-6">
                   <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {data.commercial.metrics.map((metric) => (
-                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div
+                        key={metric.label}
+                        className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm"
+                      >
                         <p className="text-sm text-slate-500">{metric.label}</p>
-                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
-                        {metric.detail && <p className="mt-2 text-xs text-slate-500">{metric.detail}</p>}
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">
+                          {formatMetric(metric)}
+                        </p>
+                        {metric.detail && (
+                          <p className="mt-2 text-xs text-slate-500">
+                            {metric.detail}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </section>
 
                   <section className="grid gap-6 lg:grid-cols-2">
                     <div className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                      <h3 className="text-lg font-semibold text-gray-900">Receita por produto</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Receita por produto
+                      </h3>
                       <div className="mt-4 space-y-3">
                         {data.commercial.revenueByProduct.map((item) => (
-                          <div key={item.label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <span className="text-sm font-medium text-slate-900">{item.label}</span>
+                          <div
+                            key={item.label}
+                            className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                          >
+                            <span className="text-sm font-medium text-slate-900">
+                              {item.label}
+                            </span>
                             <span className="text-sm font-semibold text-slate-900">
-                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.value / 100)}
+                              {new Intl.NumberFormat("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              }).format(item.value / 100)}
                             </span>
                           </div>
                         ))}
@@ -373,13 +618,23 @@ export default function AdminPage() {
                     </div>
 
                     <div className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                      <h3 className="text-lg font-semibold text-gray-900">Receita por origem</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Receita por origem
+                      </h3>
                       <div className="mt-4 space-y-3">
                         {data.commercial.revenueBySource.map((item) => (
-                          <div key={item.label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <span className="text-sm font-medium text-slate-900">{item.label}</span>
+                          <div
+                            key={item.label}
+                            className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                          >
+                            <span className="text-sm font-medium text-slate-900">
+                              {item.label}
+                            </span>
                             <span className="text-sm font-semibold text-slate-900">
-                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.value / 100)}
+                              {new Intl.NumberFormat("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              }).format(item.value / 100)}
                             </span>
                           </div>
                         ))}
@@ -388,12 +643,21 @@ export default function AdminPage() {
                   </section>
 
                   <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900">Cohort simples de pagamentos</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Cohort simples de pagamentos
+                    </h3>
                     <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                       {data.commercial.cohort.map((datum) => (
-                        <div key={datum.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                          <p className="text-xs uppercase tracking-[0.12em] text-slate-500">{datum.label}</p>
-                          <p className="mt-2 text-2xl font-semibold text-slate-900">{datum.value}</p>
+                        <div
+                          key={datum.label}
+                          className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                        >
+                          <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
+                            {datum.label}
+                          </p>
+                          <p className="mt-2 text-2xl font-semibold text-slate-900">
+                            {datum.value}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -401,37 +665,59 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {activeTab === 'clinico' && (
+              {activeTab === "clinico" && (
                 <div className="space-y-6">
                   <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {data.clinical.metrics.map((metric) => (
-                      <div key={metric.label} className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div
+                        key={metric.label}
+                        className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm"
+                      >
                         <p className="text-sm text-slate-500">{metric.label}</p>
-                        <p className="mt-3 text-3xl font-semibold text-slate-900">{formatMetric(metric)}</p>
+                        <p className="mt-3 text-3xl font-semibold text-slate-900">
+                          {formatMetric(metric)}
+                        </p>
                       </div>
                     ))}
                   </section>
 
                   <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900">Pacientes / jornadas recentes</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Pacientes / jornadas recentes
+                    </h3>
                     <div className="mt-4 space-y-3">
                       {data.clinical.recentPatients.map((patient) => (
-                        <div key={patient.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div
+                          key={patient.id}
+                          className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                        >
                           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                              <p className="text-sm font-semibold text-slate-900">{patient.name}</p>
-                              <p className="mt-1 text-sm text-slate-600">{patient.latestStatus}</p>
+                              <p className="text-sm font-semibold text-slate-900">
+                                {patient.name}
+                              </p>
+                              <p className="mt-1 text-sm text-slate-600">
+                                {patient.latestStatus}
+                              </p>
                             </div>
                             <div className="text-xs text-slate-500">
                               {patient.reference}
                             </div>
                           </div>
-                          <p className="mt-3 text-xs text-slate-500">Atualizado em {patient.updatedAt ? new Date(patient.updatedAt).toLocaleString('pt-BR') : 'sem data'}</p>
+                          <p className="mt-3 text-xs text-slate-500">
+                            Atualizado em{" "}
+                            {patient.updatedAt
+                              ? new Date(patient.updatedAt).toLocaleString(
+                                  "pt-BR",
+                                )
+                              : "sem data"}
+                          </p>
                         </div>
                       ))}
                       {data.clinical.recentPatients.length === 0 && (
                         <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
-                          Nenhuma jornada clínica recente no período selecionado.
+                          Nenhuma jornada clínica recente no período
+                          selecionado.
                         </div>
                       )}
                     </div>
@@ -439,30 +725,43 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {activeTab === 'tech' && (
+              {activeTab === "tech" && (
                 <div className="space-y-6">
                   <section className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">Health checks reais</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          Health checks reais
+                        </h3>
                         <p className="mt-1 text-sm text-slate-500">
-                          Build SHA: {data.technical.buildSha || 'não informado'}
+                          Build SHA:{" "}
+                          {data.technical.buildSha || "não informado"}
                         </p>
                       </div>
                     </div>
                     <div className="mt-4 grid gap-4 md:grid-cols-2">
                       {data.technical.checks.map((check) => (
-                        <div key={check.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div
+                          key={check.id}
+                          className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                        >
                           <div className="flex items-center justify-between gap-3">
-                            <p className="text-sm font-semibold text-slate-900">{check.label}</p>
+                            <p className="text-sm font-semibold text-slate-900">
+                              {check.label}
+                            </p>
                             <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
                               {check.status}
                             </span>
                           </div>
-                          <p className="mt-2 text-sm text-slate-600">{check.detail}</p>
+                          <p className="mt-2 text-sm text-slate-600">
+                            {check.detail}
+                          </p>
                           {check.updatedAt && (
                             <p className="mt-3 text-xs text-slate-500">
-                              Atualizado em {new Date(check.updatedAt).toLocaleString('pt-BR')}
+                              Atualizado em{" "}
+                              {new Date(check.updatedAt).toLocaleString(
+                                "pt-BR",
+                              )}
                             </p>
                           )}
                         </div>

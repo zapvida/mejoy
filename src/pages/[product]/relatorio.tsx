@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { ProductAppValue } from '@mejoy/api-contracts/mobile';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -8,14 +9,23 @@ import { getSupabaseServerConfig } from '@/lib/supabase/runtime-config';
 import { cn } from '@/lib/utils';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { ReportView } from '@/components/report/ReportView';
+import ProductCheckoutExperience from '@/components/zapfarm/checkout/ProductCheckoutExperience';
 import { getProductConfig } from '@/lib/zapfarm/product-loader';
 import type { ZapfarmProductConfig } from '@/config/zapfarm/products';
 import { getProductColorClasses } from '@/lib/zapfarm/color-utils';
+import {
+  buildZapfarmCheckoutPageProps,
+  type CheckoutPlans,
+} from '@/lib/zapfarm/checkout-page-props';
 
 interface RelatorioProductProps {
   vm: ReportViewModel | null;
   reportId: string | null;
   productConfig: ZapfarmProductConfig | null;
+  checkoutPlans: CheckoutPlans | null;
+  checkoutShowVariants?: boolean;
+  checkoutIsTestMode?: boolean;
+  productAppValue?: ProductAppValue | null;
   error?: string;
 }
 
@@ -42,7 +52,16 @@ async function resolveTriageId(
   return reportMatch?.triage_id || id;
 }
 
-export default function RelatorioProductPage({ vm, reportId, productConfig, error }: RelatorioProductProps) {
+export default function RelatorioProductPage({
+  vm,
+  reportId,
+  productConfig,
+  checkoutPlans,
+  checkoutShowVariants = false,
+  checkoutIsTestMode = false,
+  productAppValue = null,
+  error,
+}: RelatorioProductProps) {
   const router = useRouter();
   const product = router.query.product as string;
 
@@ -90,7 +109,7 @@ export default function RelatorioProductPage({ vm, reportId, productConfig, erro
         {/* Sticky CTA bar for mobile - tap target 48px min, alto contraste */}
         <div className={`fixed bottom-0 left-0 right-0 z-40 ${ctaGradientClasses} p-3 sm:p-4 shadow-2xl md:hidden`}>
           <a
-            href={`/${product}/checkout?reportId=${reportId}`}
+            href="#checkout-relatorio"
             className={cn(
               "block w-full text-center rounded-full bg-white font-bold py-3 min-h-[48px] px-5 sm:px-6 transition-all text-sm sm:text-base",
               "shadow-lg active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent",
@@ -116,17 +135,33 @@ export default function RelatorioProductPage({ vm, reportId, productConfig, erro
                 Escolha seu plano e inicie sua jornada com segurança e acompanhamento médico especializado
               </p>
               <a
-                href={`/${product}/checkout?reportId=${reportId}`}
+                href="#checkout-relatorio"
                 className={cn(
                   "inline-flex items-center justify-center rounded-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 md:py-4 min-h-[48px] text-sm sm:text-base md:text-lg font-bold bg-white shadow-2xl transition-all hover:scale-105 hover:shadow-white/50 w-full sm:w-auto max-w-sm sm:max-w-none",
                   "focus:outline-none focus:ring-4 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-transparent active:scale-[0.98]",
                   colorClasses.text
                 )}
               >
-                Ver Produtos →
+                Ir para o checkout →
               </a>
             </div>
           </section>
+
+          {checkoutPlans && (
+            <section id="checkout-relatorio" className="container mx-auto px-4 sm:px-6 pb-10 sm:pb-12 md:pb-16">
+              <div className="mx-auto max-w-6xl">
+                <ProductCheckoutExperience
+                  productConfig={productConfig}
+                  plans={checkoutPlans}
+                  showVariants={checkoutShowVariants}
+                  embedded
+                  reportId={reportId}
+                  isTestMode={checkoutIsTestMode}
+                  productAppValue={productAppValue!}
+                />
+              </div>
+            </section>
+          )}
 
           {/* Download PDF - secundário */}
           <div className="container mx-auto px-4 sm:px-6 pb-8 sm:pb-10 md:pb-12 text-center">
@@ -154,17 +189,46 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
   const product = (params?.product || query.product) as string | undefined;
 
   if (!id) {
-    return { props: { vm: null, reportId: null, productConfig: null, error: 'ID não fornecido' } };
+    return {
+      props: {
+        vm: null,
+        reportId: null,
+        productConfig: null,
+        checkoutPlans: null,
+        productAppValue: null,
+        error: 'ID não fornecido',
+      },
+    };
   }
 
   if (!product) {
-    return { props: { vm: null, reportId: null, productConfig: null, error: 'Produto não especificado' } };
+    return {
+      props: {
+        vm: null,
+        reportId: null,
+        productConfig: null,
+        checkoutPlans: null,
+        productAppValue: null,
+        error: 'Produto não especificado',
+      },
+    };
   }
 
   const productConfig = getProductConfig(product);
   if (!productConfig) {
-    return { props: { vm: null, reportId: null, productConfig: null, error: 'Produto não encontrado' } };
+    return {
+      props: {
+        vm: null,
+        reportId: null,
+        productConfig: null,
+        checkoutPlans: null,
+        productAppValue: null,
+        error: 'Produto não encontrado',
+      },
+    };
   }
+
+  const checkoutProps = buildZapfarmCheckoutPageProps(product);
 
   try {
     const { url: supabaseUrl, readKey: supabaseKey } = getSupabaseServerConfig();
@@ -190,9 +254,28 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
           options: { includeAudio: false },
         }, { persist: false });
         (vm as any).answers = {};
-        return { props: { vm, reportId: id, productConfig } };
+        return {
+          props: {
+            vm,
+            reportId: id,
+            productConfig,
+            checkoutPlans: checkoutProps?.plans || null,
+            checkoutShowVariants: checkoutProps?.showVariants,
+            checkoutIsTestMode: checkoutProps?.isTestMode,
+            productAppValue: checkoutProps?.productAppValue || null,
+          },
+        };
       }
-      return { props: { vm: null, reportId: id, productConfig: null, error: 'Ambiente não configurado' } };
+      return {
+        props: {
+          vm: null,
+          reportId: id,
+          productConfig: null,
+          checkoutPlans: null,
+          productAppValue: null,
+          error: 'Ambiente não configurado',
+        },
+      };
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -209,7 +292,16 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
       .single();
 
     if (sessionError || !sessionRow) {
-      return { props: { vm: null, reportId: id, productConfig: null, error: 'Sessão não encontrada' } };
+      return {
+        props: {
+          vm: null,
+          reportId: id,
+          productConfig: null,
+          checkoutPlans: null,
+          productAppValue: null,
+          error: 'Sessão não encontrada',
+        },
+      };
     }
 
     const reportRow = Array.isArray(sessionRow.triage_reports)
@@ -223,7 +315,17 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
       const cached = reportRow.sections as ReportViewModel;
       if (cached?.id && cached?.basics && cached?.content) {
         (cached as any).answers = answers;
-        return { props: { vm: cached, reportId: resolvedId, productConfig } };
+        return {
+          props: {
+            vm: cached,
+            reportId: resolvedId,
+            productConfig,
+            checkoutPlans: checkoutProps?.plans || null,
+            checkoutShowVariants: checkoutProps?.showVariants,
+            checkoutIsTestMode: checkoutProps?.isTestMode,
+            productAppValue: checkoutProps?.productAppValue || null,
+          },
+        };
       }
     }
 
@@ -250,13 +352,32 @@ export const getServerSideProps: GetServerSideProps<RelatorioProductProps> = asy
     }, { persist: false });
 
     (vm as any).answers = answers;
-    return { props: { vm, reportId: resolvedId, productConfig } };
+    return {
+      props: {
+        vm,
+        reportId: resolvedId,
+        productConfig,
+        checkoutPlans: checkoutProps?.plans || null,
+        checkoutShowVariants: checkoutProps?.showVariants,
+        checkoutIsTestMode: checkoutProps?.isTestMode,
+        productAppValue: checkoutProps?.productAppValue || null,
+      },
+    };
   } catch (error: any) {
     if (process.env.NODE_ENV === 'production') {
       console.error('[relatorio] Error:', error?.message);
     } else {
       console.error('[relatorio] Error:', error);
     }
-    return { props: { vm: null, reportId: id, productConfig: null, error: error?.message || 'Erro ao gerar relatório' } };
+    return {
+      props: {
+        vm: null,
+        reportId: id,
+        productConfig: null,
+        checkoutPlans: null,
+        productAppValue: null,
+        error: error?.message || 'Erro ao gerar relatório',
+      },
+    };
   }
 };

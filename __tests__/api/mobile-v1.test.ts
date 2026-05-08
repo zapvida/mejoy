@@ -4,6 +4,7 @@
 import { createMocks } from 'node-mocks-http';
 
 import dashboardHandler from '@/pages/api/mobile/v1/dashboard';
+import entitlementsHandler from '@/pages/api/mobile/v1/entitlements';
 import weightLogsHandler from '@/pages/api/mobile/v1/programs/glp1/weight-logs';
 import shareBundleHandler from '@/pages/api/mobile/v1/share-bundles/[bundleId]';
 import { signShareBundleToken } from '@/lib/mobile/share-bundles';
@@ -15,6 +16,7 @@ jest.mock('@/lib/api/auth-helper', () => ({
 
 jest.mock('@/lib/mobile/service', () => ({
   buildMobileDashboard: jest.fn(),
+  getEntitlementSnapshot: jest.fn(),
   resolveMobileActor: jest.fn(),
   createWeightLog: jest.fn(),
   getStoredShareBundle: jest.fn(),
@@ -110,6 +112,44 @@ describe('/api/mobile/v1 foundation routes', () => {
 
     expect(res._getStatusCode()).toBe(401);
     expect(res._getJSONData().error).toBe('AUTH_REQUIRED');
+  });
+
+  it('returns the mobile entitlement snapshot payload', async () => {
+    auth.getUserEmailFromRequest.mockResolvedValue('paciente@mejoy.com.br');
+    auth.getProfileFromRequest.mockResolvedValue({ id: 'profile-1' });
+    mobileService.getEntitlementSnapshot.mockResolvedValue({
+      generatedAt: '2026-05-08T12:00:00.000Z',
+      accessLevel: 'full_app',
+      activationState: 'care_active',
+      protocolContext: {
+        primaryProtocolSlug: 'emagrecimento',
+        primaryProtocolTitle: 'Emagrecimento + saúde integral',
+        careLane: 'glp1_integral',
+        relatedProtocols: ['sono', 'ansiedade'],
+      },
+      recommendedModules: ['dashboard', 'journey', 'consult'],
+      recommendedActions: [
+        {
+          label: 'Solicitar concierge clínico',
+          href: '/consult-request',
+          reason: 'Seu cenário atual pede revisão humana antes do próximo ajuste.',
+        },
+      ],
+      productAppValue: {
+        appIncluded: true,
+        appTier: 'premium_full_access',
+        headline: 'Ganhe acesso ao App MeJoy Premium em cada compra.',
+        summary: 'Produto, protocolo e continuidade nativa no mesmo ecossistema.',
+        featureMatrix: [],
+      },
+    });
+
+    const { req, res } = createMocks({ method: 'GET' });
+    await entitlementsHandler(req as any, res as any);
+
+    expect(res._getStatusCode()).toBe(200);
+    expect(res._getJSONData().activationState).toBe('care_active');
+    expect(res._getJSONData().protocolContext.primaryProtocolSlug).toBe('emagrecimento');
   });
 
   it('serves a signed share bundle payload', async () => {

@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { Link, type Href } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 
@@ -5,21 +6,24 @@ import { colors, radii, shadows, spacing, typography } from '@mejoy/design-token
 
 type ActionTone = 'default' | 'brand' | 'accent';
 
-const toneStyles: Record<ActionTone, { backgroundColor: string; borderColor: string; accentColor: string }> = {
+const toneStyles: Record<ActionTone, { backgroundColor: string; borderColor: string; accentColor: string; eyebrowColor: string }> = {
   default: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.surfaceElevated,
     borderColor: colors.border,
     accentColor: colors.textStrong,
+    eyebrowColor: colors.textMuted,
   },
   brand: {
     backgroundColor: colors.brandSoft,
     borderColor: colors.brandSoft,
     accentColor: colors.brandStrong,
+    eyebrowColor: colors.brandStrong,
   },
   accent: {
     backgroundColor: colors.accentSoft,
     borderColor: colors.accentSoft,
     accentColor: colors.ink,
+    eyebrowColor: colors.ink,
   },
 };
 
@@ -48,14 +52,14 @@ function ActionTileBody({
         borderWidth: 1,
         borderColor: style.borderColor,
         padding: spacing.xl,
-        boxShadow: shadows.soft,
+        boxShadow: shadows.elevation1,
       }}
     >
       {eyebrow ? (
         <Text
           selectable
           style={{
-            color: colors.textMuted,
+            color: style.eyebrowColor,
             fontSize: typography.micro,
             fontWeight: '700',
             letterSpacing: 0.6,
@@ -71,9 +75,14 @@ function ActionTileBody({
       <Text selectable style={{ color: colors.text, fontSize: typography.body, lineHeight: 23 }}>
         {description}
       </Text>
-      <Text selectable style={{ color: style.accentColor, fontSize: typography.caption, fontWeight: '700' }}>
-        {caption || 'Abrir'}
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md }}>
+        <Text selectable style={{ color: style.accentColor, fontSize: typography.caption, fontWeight: '700' }}>
+          {caption || 'Abrir'}
+        </Text>
+        <Text selectable style={{ color: style.accentColor, fontSize: typography.bodyStrong, fontWeight: '700' }}>
+          →
+        </Text>
+      </View>
     </View>
   );
 }
@@ -91,10 +100,17 @@ export function ActionTile({
   caption?: string;
   tone?: ActionTone;
 }) {
+  const handlePress = () => {
+    if (process.env.EXPO_OS === 'ios') {
+      void Haptics.selectionAsync();
+    }
+    onPress?.();
+  };
+
   if (href) {
     return (
       <Link href={href} asChild>
-        <Pressable style={{ borderRadius: radii.lg, borderCurve: 'continuous' }}>
+        <Pressable onPress={handlePress} style={{ borderRadius: radii.lg, borderCurve: 'continuous' }}>
           <ActionTileBody {...props} />
         </Pressable>
       </Link>
@@ -102,7 +118,7 @@ export function ActionTile({
   }
 
   return (
-    <Pressable onPress={onPress} style={{ borderRadius: radii.lg, borderCurve: 'continuous' }}>
+    <Pressable onPress={handlePress} style={{ borderRadius: radii.lg, borderCurve: 'continuous' }}>
       <ActionTileBody {...props} />
     </Pressable>
   );

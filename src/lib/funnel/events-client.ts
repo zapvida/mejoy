@@ -1,12 +1,9 @@
 import { getOrCreateJourneyContext } from "@/lib/analytics/journey";
-
-declare global {
-  interface Window {
-    analytics?: {
-      track?: (event: string, payload?: Record<string, any>) => void;
-    };
-  }
-}
+import {
+  inferProgramSlugFromPath,
+  readClientAttribution,
+  sanitizeClientAnalyticsPayload,
+} from "@/lib/analytics/clientTracking";
 
 export type FunnelEventName =
   | "lp_view"
@@ -32,6 +29,22 @@ export type FunnelEventName =
   | "pharmacy_order_started"
   | "pharmacy_order_created"
   | "followup_started";
+
+export const CANONICAL_LAUNCH_EVENT_NAMES: readonly FunnelEventName[] = [
+  "lp_view",
+  "cta_start_triage",
+  "triage_started",
+  "triage_completed",
+  "report_viewed",
+  "cta_clinical_handoff",
+  "handoff_created",
+  "handoff_opened",
+  "handoff_failed",
+  "clinical_payment_started",
+  "clinical_payment_success",
+  "consult_completed",
+  "pharmacy_order_created",
+] as const;
 
 export type MejoyConversionEventName =
   | "triage_start"
@@ -65,55 +78,34 @@ function pushToGtag(event: FunnelEventName, payload: Record<string, any>) {
 function pushToCustomAnalytics(event: FunnelEventName, payload: Record<string, any>) {
   if (typeof window === "undefined") return;
   try {
-    (window as any).analytics?.track?.(event, payload);
+    window.analytics?.track?.(event, payload);
   } catch {
     // no-op
   }
 }
 
-export function trackFunnelEvent(event: FunnelEventName, payload: Record<string, any> = {}) {
-  if (typeof window === "undefined") return;
+function buildCanonicalPayload(payload: Record<string, any>) {
   const journey = getOrCreateJourneyContext();
-  const enrichedPayload = {
+  return sanitizeClientAnalyticsPayload({
+    ...readClientAttribution(),
     ...payload,
+    program_slug: payload.program_slug || inferProgramSlugFromPath(),
+    origin: payload.origin || payload.source || window.location.pathname,
     correlation_id: payload.correlation_id || journey.correlationId,
     session_pseudo_id: payload.session_pseudo_id || journey.sessionPseudoId,
     ts: Date.now(),
     path: window.location.pathname,
-    query: window.location.search
-  };
+    query: window.location.search,
+  });
+}
+
+export function trackFunnelEvent(event: FunnelEventName, payload: Record<string, any> = {}) {
+  if (typeof window === "undefined") return;
+  const enrichedPayload = buildCanonicalPayload(payload);
 
   pushToDataLayer(event, enrichedPayload);
   pushToGtag(event, enrichedPayload);
   pushToCustomAnalytics(event, enrichedPayload);
-}
-
-function readCookie(name: string): string | undefined {
-  if (typeof document === "undefined") return undefined;
-  const match = document.cookie
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(`${name}=`));
-  if (!match) return undefined;
-  const value = match.split("=").slice(1).join("=");
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
-
-function readClientUtm() {
-  if (typeof window === "undefined") return {};
-  const search = new URLSearchParams(window.location.search);
-  const fromQueryOrCookie = (key: string) => search.get(key) || readCookie(key) || undefined;
-  return {
-    utm_source: fromQueryOrCookie("utm_source"),
-    utm_medium: fromQueryOrCookie("utm_medium"),
-    utm_campaign: fromQueryOrCookie("utm_campaign"),
-    utm_content: fromQueryOrCookie("utm_content"),
-    utm_term: fromQueryOrCookie("utm_term"),
-  };
 }
 
 export function trackMejoyConversionEvent(
@@ -121,19 +113,11 @@ export function trackMejoyConversionEvent(
   payload: Record<string, any> = {}
 ) {
   if (typeof window === "undefined") return;
-  const journey = getOrCreateJourneyContext();
-  const utm = readClientUtm();
-  const enrichedPayload = {
+  const enrichedPayload = buildCanonicalPayload({
     funnel: "mejoy_emagrecimento",
     product: "emagrecimento",
-    ...utm,
     ...payload,
-    correlation_id: payload.correlation_id || journey.correlationId,
-    session_pseudo_id: payload.session_pseudo_id || journey.sessionPseudoId,
-    ts: Date.now(),
-    path: window.location.pathname,
-    query: window.location.search,
-  };
+  });
 
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...enrichedPayload });
@@ -141,7 +125,7 @@ export function trackMejoyConversionEvent(
     window.gtag("event", event, enrichedPayload);
   }
   try {
-    (window as any).analytics?.track?.(event, enrichedPayload);
+    window.analytics?.track?.(event, enrichedPayload);
   } catch {
     // no-op
   }

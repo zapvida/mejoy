@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   careRequestResponseSchema,
   doseLogSchema,
+  entitlementSnapshotSchema,
   examDocumentSchema,
   examListResponseSchema,
   journeyResponseSchema,
@@ -58,6 +59,14 @@ export function getDashboard(session: SessionLike) {
     session,
     path: '/api/mobile/v1/dashboard',
     schema: patientDashboardSchema,
+  });
+}
+
+export function getEntitlements(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/entitlements',
+    schema: entitlementSnapshotSchema,
   });
 }
 

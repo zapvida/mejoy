@@ -4,6 +4,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { buildProductAppValue, buildProtocolContext } from '@/lib/mejoy-app/value';
 import { prisma } from '@/lib/prisma';
 import { objectiveToSlug } from './slugs';
 
@@ -36,6 +37,11 @@ export interface ProductCardData {
   rating?: number | null;
   formDisplay?: string | null;
   sku?: string | null;
+  appIncluded?: boolean;
+  appTier?: 'premium_full_access';
+  appValueHeadline?: string;
+  appFeatureMatrix?: ReturnType<typeof buildProductAppValue>['featureMatrix'];
+  protocolContext?: ReturnType<typeof buildProtocolContext>;
 }
 
 export async function getProductsByObjective(objectiveSlug: string, limit = 50) {
@@ -76,6 +82,15 @@ export async function getProductsByObjective(objectiveSlug: string, limit = 50) 
 
   return products.map((p) => {
     const imgs = resolveProductImages(p.slug, p.images);
+    const protocolContext = buildProtocolContext({
+      productSlug: p.slug,
+      objective: p.objective,
+    });
+    const appValue = buildProductAppValue({
+      productSlug: p.slug,
+      objective: p.objective,
+      productName: p.name,
+    });
     return {
       id: p.id,
       sku: p.sku,
@@ -95,6 +110,12 @@ export async function getProductsByObjective(objectiveSlug: string, limit = 50) 
       badges: p.badges,
       requiresRx: p.requiresRx,
       requiresValidation: p.requiresValidation,
+      appIncluded: appValue.appIncluded,
+      appTier: appValue.appTier,
+      appValueHeadline: appValue.headline,
+      appFeatureMatrix: appValue.featureMatrix,
+      protocolContext,
+      appValue,
     };
   });
 }
@@ -157,6 +178,15 @@ export async function getProductBySlug(slug: string, includeDraft = true) {
 
   const dbImages = Array.isArray(product.images) ? product.images : [];
   const resolvedImages = resolveProductImages(product.slug, dbImages);
+  const protocolContext = buildProtocolContext({
+    productSlug: product.slug,
+    objective: product.objective,
+  });
+  const appValue = buildProductAppValue({
+    productSlug: product.slug,
+    objective: product.objective,
+    productName: product.name,
+  });
 
   return {
     id: product.id,
@@ -188,6 +218,12 @@ export async function getProductBySlug(slug: string, includeDraft = true) {
     seoTitle: product.seoTitle,
     seoDescription: product.seoDescription,
     status: product.status,
+    appIncluded: appValue.appIncluded,
+    appTier: appValue.appTier,
+    appValueHeadline: appValue.headline,
+    appFeatureMatrix: appValue.featureMatrix,
+    protocolContext,
+    appValue,
   };
 }
 
@@ -220,6 +256,15 @@ export async function searchProducts(query: string, limit = 20) {
 
   return products.map((p) => {
     const imgs = resolveProductImages(p.slug, p.images);
+    const protocolContext = buildProtocolContext({
+      productSlug: p.slug,
+      objective: p.objective,
+    });
+    const appValue = buildProductAppValue({
+      productSlug: p.slug,
+      objective: p.objective,
+      productName: p.name,
+    });
     return {
       id: p.id,
       slug: p.slug,
@@ -231,6 +276,12 @@ export async function searchProducts(query: string, limit = 20) {
       image: imgs[0] ?? p.images[0] ?? null,
       objective: p.objective,
       sku: p.sku ?? null,
+      appIncluded: appValue.appIncluded,
+      appTier: appValue.appTier,
+      appValueHeadline: appValue.headline,
+      appFeatureMatrix: appValue.featureMatrix,
+      protocolContext,
+      appValue,
     };
   });
 }

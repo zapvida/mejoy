@@ -1,9 +1,16 @@
+const resolvedGa4MeasurementId =
+  process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ||
+  process.env.NEXT_PUBLIC_GA4_ID ||
+  '';
+
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'production',
   NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || '',
   NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID || '',
+  NEXT_PUBLIC_GOOGLE_CONSENT_MODE: process.env.NEXT_PUBLIC_GOOGLE_CONSENT_MODE || 'operational',
 
   // Fallback direto (se não usar GTM)
+  NEXT_PUBLIC_GA4_MEASUREMENT_ID: resolvedGa4MeasurementId,
   NEXT_PUBLIC_GA4_ID: process.env.NEXT_PUBLIC_GA4_ID || '',
   NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID || '',
   NEXT_PUBLIC_TIKTOK_PIXEL_ID: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID || '',
@@ -31,6 +38,13 @@ export const serverEnv = {
 export function isFeatureEnabled(flag: string) {
   const v = process.env[flag];
   return v === '1' || v === 'true' || v === 'on' || v === 'enabled';
+}
+
+export function isStrictGoogleConsentModeEnabled() {
+  return (
+    env.NEXT_PUBLIC_GOOGLE_CONSENT_MODE === 'strict' ||
+    isFeatureEnabled('NEXT_PUBLIC_GOOGLE_STRICT_CONSENT_MODE')
+  );
 }
 
 const CRITICAL_ENVS = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET'] as const;

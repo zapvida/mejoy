@@ -1,39 +1,39 @@
-export type DashboardSeverity = 'info' | 'success' | 'warning' | 'critical';
+export type DashboardSeverity = "info" | "success" | "warning" | "critical";
 
 export type CustomerJourneyState =
-  | 'checkout_pending'
-  | 'payment_confirmed'
-  | 'rx_pending'
-  | 'handoff_pending'
-  | 'consult_in_progress'
-  | 'fulfillment'
-  | 'shipped'
-  | 'delivered'
-  | 'report_ready'
-  | 'action_required';
+  | "checkout_pending"
+  | "payment_confirmed"
+  | "rx_pending"
+  | "handoff_pending"
+  | "consult_in_progress"
+  | "fulfillment"
+  | "shipped"
+  | "delivered"
+  | "report_ready"
+  | "action_required";
 
 export type ClinicalHandoffState =
-  | 'not_started'
-  | 'created'
-  | 'opened'
-  | 'payment_pending'
-  | 'consult_in_progress'
-  | 'followup'
-  | 'completed'
-  | 'blocked';
+  | "not_started"
+  | "created"
+  | "opened"
+  | "payment_pending"
+  | "consult_in_progress"
+  | "followup"
+  | "completed"
+  | "blocked";
 
-export type OrderTimelineStatus = 'done' | 'current' | 'upcoming' | 'issue';
+export type OrderTimelineStatus = "done" | "current" | "upcoming" | "issue";
 
 export interface DegradedReason {
   source: string;
   message: string;
-  severity: Exclude<DashboardSeverity, 'success'>;
+  severity: Exclude<DashboardSeverity, "success">;
 }
 
 export interface DashboardPrimaryAction {
   label: string;
   href: string;
-  variant: 'primary' | 'secondary' | 'support';
+  variant: "primary" | "secondary" | "support";
   note?: string;
 }
 
@@ -47,13 +47,13 @@ export interface OrderTimelineEvent {
   at: string | null;
   label: string;
   description: string;
-  source: 'order' | 'report' | 'clinical' | 'system';
+  source: "order" | "report" | "clinical" | "system";
   status: OrderTimelineStatus;
 }
 
 export interface CustomerOrderSummary {
   id: string;
-  type: 'store_v2' | 'protocol';
+  type: "store_v2" | "protocol";
   label: string;
   status: string;
   amountCents: number;
@@ -89,6 +89,41 @@ export interface CustomerSupportCenter {
   email: string;
   recommendations: string[];
   accessResendAvailable: boolean;
+}
+
+export interface CustomerNextAction {
+  eyebrow: string;
+  title: string;
+  body: string;
+  eta?: string | null;
+  cta: DashboardPrimaryAction | null;
+}
+
+export interface CustomerCareHighlight {
+  id: string;
+  title: string;
+  body: string;
+  tone: "neutral" | "success" | "warning";
+  meta?: string;
+  imageSrc?: string | null;
+  cta?: DashboardPrimaryAction | null;
+}
+
+export interface CustomerRenewalCard {
+  status: "inactive" | "watching" | "ready";
+  title: string;
+  body: string;
+  note?: string;
+  cta: DashboardPrimaryAction | null;
+}
+
+export interface CustomerRelatedProtocol {
+  slug: string;
+  title: string;
+  badge: string;
+  summary: string;
+  href: string;
+  imageSrc: string;
 }
 
 export interface CustomerProfileSummary {
@@ -128,6 +163,10 @@ export interface MeDashboardResponse {
   degradedReasons: DegradedReason[];
   profile: CustomerProfileSummary | null;
   journey: CustomerJourneySummary;
+  nextAction: CustomerNextAction;
+  careHighlights: CustomerCareHighlight[];
+  renewalCard: CustomerRenewalCard;
+  relatedProtocols: CustomerRelatedProtocol[];
   timeline: OrderTimelineEvent[];
   orders: {
     total: number;
@@ -168,14 +207,14 @@ export interface OperationalSla {
   label: string;
   current: number | null;
   threshold: number;
-  unit: 'minutes' | 'hours' | 'count';
-  status: 'healthy' | 'warning' | 'critical' | 'unknown';
+  unit: "minutes" | "hours" | "count";
+  status: "healthy" | "warning" | "critical" | "unknown";
 }
 
 export interface AdminMetricValue {
   label: string;
   value: number | null;
-  unit?: 'count' | 'brl' | 'percent';
+  unit?: "count" | "brl" | "percent";
   detail?: string;
 }
 
@@ -193,7 +232,7 @@ export interface AdminBreakdownDatum {
 export interface AdminTechnicalCheck {
   id: string;
   label: string;
-  status: 'healthy' | 'warning' | 'critical' | 'unknown';
+  status: "healthy" | "warning" | "critical" | "unknown";
   detail: string;
   updatedAt?: string | null;
 }
@@ -207,11 +246,27 @@ export interface AdminCustomerSnapshot {
   updatedAt: string | null;
 }
 
+export interface AdminPaymentSyncHealth {
+  healthy: boolean;
+  pendingCount: number;
+  unsyncedPaidCount: number;
+  detail: string;
+}
+
+export interface AdminDashboardReleaseState {
+  label: string;
+  detail: string;
+  severity: DashboardSeverity;
+}
+
 export interface AdminDashboardResponse {
   generatedAt: string;
-  period: 'today' | '7d' | '30d';
+  period: "today" | "7d" | "30d";
   degraded: boolean;
   degradedReasons: DegradedReason[];
+  paymentSyncHealth: AdminPaymentSyncHealth;
+  dashboardReleaseState: AdminDashboardReleaseState;
+  reportFunnelAlerts: AdminAlert[];
   overview: AdminMetricValue[];
   operation: {
     stats: AdminMetricValue[];

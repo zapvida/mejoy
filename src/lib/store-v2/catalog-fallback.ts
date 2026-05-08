@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { buildProductAppValue, buildProtocolContext } from '@/lib/mejoy-app/value';
 import { PDP_MASTER_COMPARE_AT_FALLBACK_CENTS, PDP_TEMPLATE_MASTER_SKU } from './copy-v2';
 
 const COPY_V4_PATH = path.join(process.cwd(), 'data', 'store-v2', 'copy', 'copy-blueprint-v4.csv');
@@ -38,6 +39,12 @@ export interface FallbackCatalogProduct {
   seoTitle: string | null;
   seoDescription: string | null;
   status: string;
+  appIncluded: boolean;
+  appTier: 'premium_full_access';
+  appValueHeadline: string;
+  appFeatureMatrix: ReturnType<typeof buildProductAppValue>['featureMatrix'];
+  protocolContext: ReturnType<typeof buildProtocolContext>;
+  appValue: ReturnType<typeof buildProductAppValue>;
 }
 
 interface FallbackCatalogEntry extends FallbackCatalogProduct {
@@ -136,6 +143,15 @@ function buildFallbackEntries(): FallbackCatalogEntry[] {
       const compareAtCents = toInt(pricing?.compareAtCents) ?? (sku === PDP_TEMPLATE_MASTER_SKU ? PDP_MASTER_COMPARE_AT_FALLBACK_CENTS : null);
       const activeIngredients = [row.primaryActive, row.dose].filter(Boolean).join(' ').trim() || null;
       const images = resolveFallbackImages(slug);
+      const protocolContext = buildProtocolContext({
+        productSlug: slug,
+        objective: row.objective,
+      });
+      const appValue = buildProductAppValue({
+        productSlug: slug,
+        objective: row.objective,
+        productName: row.productName,
+      });
 
       const entry: FallbackCatalogEntry = {
         id: `fallback-${sku}`,
@@ -166,6 +182,12 @@ function buildFallbackEntries(): FallbackCatalogEntry[] {
         seoTitle: pricing?.seoTitle || row.seoTitle || null,
         seoDescription: pricing?.seoDescription || row.seoDescription || null,
         status: 'active',
+        appIncluded: appValue.appIncluded,
+        appTier: appValue.appTier,
+        appValueHeadline: appValue.headline,
+        appFeatureMatrix: appValue.featureMatrix,
+        protocolContext,
+        appValue,
         searchText: normalizeForSearch(
           [
             row.productName,

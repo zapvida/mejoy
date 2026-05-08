@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@mejoy/design-tokens';
+import { colors, radii, spacing, typography } from '@mejoy/design-tokens';
 
 type TimelineTone = 'default' | 'success' | 'warning';
 
@@ -22,7 +22,16 @@ export function TimelineRow({
   tone?: TimelineTone;
 }) {
   return (
-    <View style={{ flexDirection: 'row', gap: spacing.md }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        gap: spacing.md,
+        borderRadius: radii.md,
+        borderCurve: 'continuous',
+        backgroundColor: colors.surfaceElevated,
+        padding: spacing.md,
+      }}
+    >
       <View style={{ alignItems: 'center', gap: spacing.xs }}>
         <View
           style={{

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
 // Criar cliente Supabase apenas se as variáveis estiverem configuradas
@@ -33,12 +34,14 @@ export default async function handler(
 
   try {
     const { preferences, version, timestamp } = req.body as CookieConsentRequest;
-    const clientId = req.cookies.client_id || 'anonymous';
+    const clientId =
+      req.cookies.mejoy_session_id ||
+      req.cookies.mejoy_correlation_id ||
+      req.cookies.client_id ||
+      'anonymous';
     const ipRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
     const ip = Array.isArray(ipRaw) ? ipRaw[0] : ipRaw;
-
-    // Hash simples do IP (em produção, usar hash SHA-256)
-    const ipHash = String(ip).substring(0, 20); // Simplificado para exemplo
+    const ipHash = createHash('sha256').update(String(ip)).digest('hex');
 
     // Salvar no Supabase apenas se configurado
     const supabase = getSupabaseClient();
@@ -48,7 +51,12 @@ export default async function handler(
       consent_at: timestamp,
       policy_version: version,
       ip_hash: ipHash,
-      metadata: { cookie_preferences: preferences },
+      metadata: {
+        cookie_preferences: preferences,
+        analytics_enabled: preferences.analytics,
+        marketing_enabled: preferences.marketing,
+        source: 'cookie_banner',
+      },
     });
 
     if (error) {
@@ -70,4 +78,3 @@ export default async function handler(
     return res.status(200).json({ success: true });
   }
 }
-

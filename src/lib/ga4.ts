@@ -18,7 +18,8 @@ class GA4Tracker {
 
   constructor() {
     this.config = {
-      measurementId: typeof window !== 'undefined' ? (window as any).ENV?.GA4_MEASUREMENT_ID : undefined,
+      measurementId:
+        process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA4_ID || undefined,
       enabled: process.env.NODE_ENV === 'production',
       debug: process.env.NODE_ENV === 'development',
     };

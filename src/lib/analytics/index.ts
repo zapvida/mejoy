@@ -1,4 +1,5 @@
 import { env } from '../env';
+import { sanitizeClientAnalyticsPayload } from './clientTracking';
 
 /** Inicializa Facebook Pixel sem violar TS */
 export function ensureFacebookPixel() {
@@ -80,6 +81,7 @@ export type TrackEvent =
   | 'provisional_open'
   | 'product_card_click'
   | 'protocolo_start'
+  | 'app_value_block_viewed'
   | 'checkup_section_cta_click'
   | 'produtos_page_cta'
   | 'produtos_page_checkup_cta';
@@ -93,11 +95,10 @@ export function initPixels() {
   const pushDL = (e:any) => window.dataLayer!.push(e);
 
   // GA4 fallback (se sem GTM)
-  if (!env.NEXT_PUBLIC_GTM_ID && env.NEXT_PUBLIC_GA4_ID) {
-    // @ts-ignore
-    window.gtag = function(){ window.dataLayer!.push(arguments); };
+  if (!env.NEXT_PUBLIC_GTM_ID && env.NEXT_PUBLIC_GA4_MEASUREMENT_ID) {
+    window.gtag = window.gtag || function(){ window.dataLayer!.push(arguments as unknown as IArguments); };
     pushDL({ 'js': new Date() });
-    pushDL({ 'config': env.NEXT_PUBLIC_GA4_ID });
+    pushDL({ 'config': env.NEXT_PUBLIC_GA4_MEASUREMENT_ID });
   }
 
   // Meta Pixel (fbq) fallback
@@ -124,14 +125,14 @@ export function track(event: TrackEvent, params: Record<string, any> = {}) {
     return;
   }
 
-  const payload = { event, ...params };
+  const payload = sanitizeClientAnalyticsPayload({ event, ...params });
 
   // dataLayer
   window.dataLayer?.push(payload);
 
   // GA4 direct
   if (!env.NEXT_PUBLIC_GTM_ID && window.gtag) {
-    window.gtag('event', event, params);
+    window.gtag('event', event, sanitizeClientAnalyticsPayload(params));
   }
 
   // Meta
@@ -163,7 +164,7 @@ export function track(event: TrackEvent, params: Record<string, any> = {}) {
       provisional_open: 'ViewContent',
     };
     const name = metaMap[event] || 'CustomEvent';
-    window.fbq('track', name, params);
+    window.fbq('track', name, sanitizeClientAnalyticsPayload(params));
   }
 
   // TikTok
@@ -195,6 +196,6 @@ export function track(event: TrackEvent, params: Record<string, any> = {}) {
       provisional_open: 'ViewContent',
     };
     const name = ttMap[event] || event;
-    window.ttq.track(name, params);
+    window.ttq.track(name, sanitizeClientAnalyticsPayload(params));
   }
 }

@@ -6,25 +6,34 @@ import {
   normalizeBrazilPhone,
   normalizeBrazilPhoneNational,
   validateBrazilPhoneInput,
-} from '@/lib/phone/normalize';
+} from "@/lib/phone/normalize";
 
-describe('phone normalization', () => {
-  it('accepts Brazilian numbers with country code', () => {
-    expect(normalizeBrazilPhoneNational('+55 (11) 99999-8888')).toBe('11999998888');
-    expect(normalizeBrazilPhone('+55 (11) 99999-8888')).toBe('5511999998888');
-    expect(validateBrazilPhoneInput('+55 (11) 99999-8888')).toBeNull();
+describe("phone normalization", () => {
+  it("accepts Brazilian numbers with country code", () => {
+    expect(normalizeBrazilPhoneNational("+55 (11) 99999-8888")).toBe(
+      "11999998888",
+    );
+    expect(normalizeBrazilPhone("+55 (11) 99999-8888")).toBe("5511999998888");
+    expect(validateBrazilPhoneInput("+55 (11) 99999-8888")).toBeNull();
   });
 
-  it('accepts Brazilian numbers without country code', () => {
-    expect(normalizeBrazilPhoneNational('(11) 99999-8888')).toBe('11999998888');
-    expect(normalizeBrazilPhone('(11) 99999-8888')).toBe('5511999998888');
-    expect(coercePhoneLike('(11) 99999-8888')).toBe('5511999998888');
+  it("accepts Brazilian numbers without country code", () => {
+    expect(normalizeBrazilPhoneNational("(11) 99999-8888")).toBe("11999998888");
+    expect(normalizeBrazilPhone("(11) 99999-8888")).toBe("5511999998888");
+    expect(coercePhoneLike("(11) 99999-8888")).toBe("5511999998888");
   });
 
-  it('rejects incomplete numbers', () => {
-    expect(normalizeBrazilPhoneNational('9999-8888')).toBeUndefined();
-    expect(validateBrazilPhoneInput('9999-8888')).toBe(
-      'Informe DDD + número com 10 ou 11 dígitos, com ou sem +55.'
+  it("rejects incomplete numbers", () => {
+    expect(normalizeBrazilPhoneNational("9999-8888")).toBeUndefined();
+    expect(validateBrazilPhoneInput("9999-8888")).toBe(
+      "Informe DDD + número com 10 ou 11 dígitos, com ou sem +55.",
+    );
+  });
+
+  it("rejects fictitious repeated-digit numbers that Asaas refuses", () => {
+    expect(normalizeBrazilPhoneNational("(11) 99999-9999")).toBe("11999999999");
+    expect(validateBrazilPhoneInput("(11) 99999-9999")).toBe(
+      "Digite um WhatsApp valido. Evite numeros ficticios ou com digitos repetidos.",
     );
   });
 });

@@ -41,7 +41,10 @@ export function ScreenShell({
           borderRadius: radii.xl,
           borderCurve: 'continuous',
           padding: spacing.xxl,
-          gap: spacing.sm,
+          gap: spacing.md,
+          borderWidth: 1,
+          borderColor: 'rgba(255,255,255,0.06)',
+          boxShadow: '0 24px 56px rgba(12, 26, 22, 0.18)',
         }}
       >
         <View
@@ -66,6 +69,14 @@ export function ScreenShell({
             backgroundColor: 'rgba(232, 243, 237, 0.08)',
           }}
         />
+        <View
+          style={{
+            width: 76,
+            height: 5,
+            borderRadius: 999,
+            backgroundColor: colors.accent,
+          }}
+        />
         <Text selectable style={{ color: '#DAF5E7', fontSize: typography.micro, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8 }}>
           {eyebrow}
         </Text>
@@ -76,9 +87,19 @@ export function ScreenShell({
           {summary}
         </Text>
         {support ? (
-          <Text selectable style={{ color: '#BFD5CA', fontSize: typography.caption, lineHeight: 20 }}>
-            {support}
-          </Text>
+          <View
+            style={{
+              borderRadius: radii.md,
+              borderCurve: 'continuous',
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              paddingHorizontal: spacing.lg,
+              paddingVertical: spacing.md,
+            }}
+          >
+            <Text selectable style={{ color: '#BFD5CA', fontSize: typography.caption, lineHeight: 20 }}>
+              {support}
+            </Text>
+          </View>
         ) : null}
       </View>
       {children}

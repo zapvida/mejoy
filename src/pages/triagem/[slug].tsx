@@ -369,7 +369,16 @@ export default function TriageSlugPage() {
 
         if (!sessionResponseStillRelevant(slugStarted)) return;
 
-        console.error("[TriagePage] Error fetching session:", err);
+        const shouldWarnOnly =
+          err instanceof Error &&
+          (err.name === "AbortError" ||
+            err.message.includes("Failed to fetch") ||
+            err.message.includes("NetworkError"));
+        if (shouldWarnOnly) {
+          console.warn("[TriagePage] Session fetch degraded:", err.message);
+        } else {
+          console.error("[TriagePage] Error fetching session:", err);
+        }
         setError(errorMessage);
         setState("error");
       } finally {

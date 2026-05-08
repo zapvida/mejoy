@@ -18,6 +18,7 @@ import {
   dashboardNotificationSchema,
   doseLogInputSchema,
   doseLogSchema,
+  entitlementSnapshotSchema,
   examDocumentSchema,
   examListResponseSchema,
   examTimelineItemSchema,
@@ -43,6 +44,7 @@ import {
   wearablesSyncResponseSchema,
   weightLogInputSchema,
 } from '@mejoy/api-contracts/mobile';
+import { buildEntitlementSnapshot } from '@/lib/mejoy-app/value';
 import {
   buildAdherenceScore,
   buildDashboardInsights,
@@ -294,6 +296,30 @@ function buildExamTimeline(documents: Awaited<ReturnType<typeof listExamDocument
   );
 }
 
+function deriveEntitlementSeed(params: {
+  recentOrders: Array<{
+    label?: string | null;
+  }>;
+  recentReports: Array<{
+    triageSlug?: string | null;
+  }>;
+  relatedProtocols: Array<{
+    slug?: string | null;
+    title?: string | null;
+  }>;
+}) {
+  const reportProtocolSlug = params.recentReports[0]?.triageSlug ?? null;
+  const relatedProtocol = params.relatedProtocols[0] ?? null;
+  const orderLabel = params.recentOrders[0]?.label ?? null;
+  const orderProductSlug = orderLabel?.split(' • ')[0]?.trim() || null;
+
+  return {
+    protocolSlug: reportProtocolSlug ?? relatedProtocol?.slug ?? orderProductSlug,
+    productSlug: relatedProtocol?.slug ?? orderProductSlug,
+    productName: relatedProtocol?.title ?? orderLabel,
+  };
+}
+
 export async function resolveMobileActor(params: {
   email: string | null;
   profile?: ProfileRecord | null;
@@ -398,6 +424,11 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       href: report.href,
     })
   );
+  const entitlementSeed = deriveEntitlementSeed({
+    recentOrders,
+    recentReports,
+    relatedProtocols: baseDashboard.relatedProtocols,
+  });
 
   const latestWeight = weightLogs[0] || null;
   const latestDose = doseLogs[0] || null;
@@ -453,11 +484,30 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       suggestedRitualId: ritualSuggestion.id,
     }),
   ];
+  const entitlements = buildEntitlementSnapshot({
+    email: actor.email,
+    productSlug: entitlementSeed.productSlug,
+    protocolSlug: entitlementSeed.protocolSlug,
+    productName: entitlementSeed.productName,
+    recentOrdersCount: recentOrders.length,
+    recentReportsCount: recentReports.length,
+    riskLevel: riskStatus.level,
+    hasRecentSleepSignal: Boolean(latestSleep?.recordedAt),
+    hasRecentExams: examDocuments.length > 0,
+    hasRefillFlow: Boolean(latestRefill),
+  });
 
   return patientDashboardSchema.parse({
     generatedAt: new Date().toISOString(),
     featureFlags,
     profile: actor.profile,
+    activationState: entitlements.activationState,
+    careLane: entitlements.protocolContext.careLane,
+    protocolContext: entitlements.protocolContext,
+    recommendedModules: entitlements.recommendedModules,
+    recommendedActions: entitlements.recommendedActions,
+    productAppValue: entitlements.productAppValue,
+    entitlements,
     journey: {
       state: baseDashboard.journey.state,
       title: baseDashboard.journey.title,
@@ -497,6 +547,11 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       conciergeSlaHours: latestCareRequest?.conciergeSlaHours ?? 12,
     },
   });
+}
+
+export async function getEntitlementSnapshot(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const dashboard = await buildMobileDashboard(params);
+  return entitlementSnapshotSchema.parse(dashboard.entitlements);
 }
 
 export async function getJourney(params: { email: string | null; profile?: ProfileRecord | null }) {
@@ -740,7 +795,8 @@ export async function createCareRequest(params: {
       handoffToken,
       envelope.journey.program_slug,
       envelope.handoff_id,
-      envelope.correlation_id
+      envelope.correlation_id,
+      envelope.utm
     );
     status = 'handoff_created';
 

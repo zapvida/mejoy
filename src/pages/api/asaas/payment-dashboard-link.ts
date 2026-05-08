@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { asaasClient } from '@/lib/asaas/client';
 import { createMagicLink } from '@/lib/auth/magic-link';
-import { getProfileByEmail } from '@/lib/supabase/server';
-import { hasSupabaseAdminConfig, supabaseAdmin } from '@/lib/supabaseAdmin';
+import { hasSupabaseAdminConfig } from '@/lib/supabaseAdmin';
+import { ensureCheckoutProfile } from '@/lib/zapfarm/profile-link';
+import { upsertZapfarmOrderFromPayment } from '@/lib/zapfarm/order-sync';
 
 const PAID_STATUSES = new Set(['CONFIRMED', 'RECEIVED', 'RECEIVED_IN_CASH']);
 
@@ -61,32 +62,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    let profile = await getProfileByEmail(customerEmail);
+    const profile = await ensureCheckoutProfile({
+      email: customerEmail,
+      name: payment.metadata?.customer_name || null,
+      whatsapp: payment.metadata?.customer_phone || null,
+    });
 
-    if (!profile) {
-      const customerPhone = payment.metadata?.customer_phone?.replace(/\D/g, '') || null;
-      const customerName = payment.metadata?.customer_name?.trim() || null;
-      const { data, error } = await supabaseAdmin
-        .from('profiles')
-        .insert({
-          email: customerEmail,
-          name: customerName,
-          whatsapp: customerPhone,
-        })
-        .select('id, email')
-        .single();
-
-      if (error || !data) {
-        console.error('[payment-dashboard-link] profile insert failed', error);
-        return res.status(500).json({
-          status: 'error',
-          code: 'PROFILE_CREATE_FAILED',
-          message: 'Nao foi possivel liberar o dashboard.',
-        });
-      }
-
-      profile = data;
+    if (!profile?.id) {
+      return res.status(500).json({
+        status: 'error',
+        code: 'PROFILE_CREATE_FAILED',
+        message: 'Nao foi possivel liberar o dashboard.',
+      });
     }
+
+    await upsertZapfarmOrderFromPayment(payment, {
+      profileId: profile.id,
+    });
 
     const magic = await createMagicLink({
       profileId: profile.id,

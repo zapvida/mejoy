@@ -1,6 +1,6 @@
 export type Utm = Partial<{
   utm_source: string; utm_medium: string; utm_campaign: string; utm_content: string; utm_term: string;
-  gclid: string; fbclid: string; ttclid: string; referrer: string; first_landing: string;
+  gclid: string; fbclid: string; ttclid: string; msclkid: string; referrer: string; first_landing: string;
 }>;
 
 const UTM_KEY = 'zapfarm_utms_v1';
@@ -11,7 +11,7 @@ export function captureUtms(now = Date.now()) {
   const url = new URL(window.location.href);
   const q = url.searchParams;
   const current: Utm = {};
-  const maybe = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid','ttclid'] as const;
+  const maybe = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid','ttclid','msclkid'] as const;
   maybe.forEach(k => { const v = q.get(k); if (v) current[k] = v; });
 
   const existingRaw = localStorage.getItem(UTM_KEY);

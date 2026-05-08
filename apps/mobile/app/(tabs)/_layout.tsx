@@ -6,9 +6,10 @@ export default function TabsLayout() {
   return (
     <NativeTabs
       tintColor={colors.brand}
-      backgroundColor={colors.card}
+      backgroundColor={colors.cardSubtle}
       labelStyle={{
         fontWeight: '700',
+        fontSize: 11,
       }}
       disableTransparentOnScrollEdge
       minimizeBehavior="onScrollDown"

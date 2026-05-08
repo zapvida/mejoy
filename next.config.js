@@ -197,6 +197,7 @@ const nextConfig = {
   // Configurações experimentais para performance
   experimental: {
     optimizePackageImports: ['@react-pdf/renderer', 'openai'],
+    useWasmBinary: process.env.NODE_ENV === 'test',
   },
 
   i18n: {

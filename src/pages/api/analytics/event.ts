@@ -116,7 +116,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({ ok:true, contactId });
   } catch (e:any) {
     logger.error({ event, payload, error: e?.message }, 'analytics_event_error');
-    return res.status(500).json({ ok:false, error: e?.message });
+    return res.status(200).json({
+      ok: true,
+      degraded: true,
+      error: e?.message,
+    });
   }
 }
 

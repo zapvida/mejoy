@@ -5,6 +5,8 @@
 - `session_pseudo_id` é permitido; PII não.
 - Eventos analíticos e payload clínico ficam separados.
 - Click IDs devem ser preservados: `gclid`, `fbclid`, `ttclid`, `msclkid`.
+- `src/lib/funnel/events-client.ts` é o contrato canônico client-side do launch.
+- GTM é o orquestrador principal; `gtag` direto fica apenas como fallback sem GTM.
 
 ## Eventos client-side atuais
 | Evento atual | Uso | Campos mínimos |
@@ -19,6 +21,11 @@
 | `handoff_created` | frontend recebeu redirect de handoff | `report_id`, `correlation_id` |
 | `handoff_opened` | navegação para ZapVida iniciada | `report_id`, `correlation_id` |
 | `clinical_payment_started` | fallback direto / plantão | `report_id`, `source`, `correlation_id` |
+
+## Consentimento e Google
+- O banner publica `analytics` e `marketing` em `dataLayer` via `mejoy_consent_bootstrap` / `mejoy_consent_update`.
+- `analytics_storage`, `ad_storage`, `ad_user_data` e `ad_personalization` saem do mesmo estado de consentimento.
+- `NEXT_PUBLIC_GOOGLE_CONSENT_MODE=strict` habilita bootstrap com default negado antes de carregar GTM/GA.
 
 ## Eventos server-side persistidos em `handoff_events.event_name`
 | Evento | Origem |

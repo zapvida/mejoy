@@ -4,27 +4,22 @@ import { useEffect, useMemo, useState } from 'react';
 import { Check, Cookie, Settings, X } from 'lucide-react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import {
+  COOKIE_CONSENT_KEY,
+  COOKIE_PREFERENCES_KEY,
+  COOKIE_POLICY_VERSION_KEY,
+  COOKIE_VERSION,
+  DEFAULT_COOKIE_PREFERENCES,
+  publishCookieConsentUpdate,
+  type CookiePreferences,
+} from '@/lib/analytics/consent';
 import { RefinedButton } from '@/components/ui/RefinedButton';
-
-interface CookiePreferences {
-  essential: boolean;
-  analytics: boolean;
-  marketing: boolean;
-}
-
-const COOKIE_CONSENT_KEY = 'zapfarm_cookie_consent';
-const COOKIE_PREFERENCES_KEY = 'zapfarm_cookie_preferences';
-const COOKIE_VERSION = '1.0.0';
 
 export function CookieBanner() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [preferences, setPreferences] = useState<CookiePreferences>({
-    essential: true,
-    analytics: false,
-    marketing: false,
-  });
+  const [preferences, setPreferences] = useState<CookiePreferences>(DEFAULT_COOKIE_PREFERENCES);
   const [isLoading, setIsLoading] = useState(false);
 
   const currentPath = useMemo(() => (router.asPath || '').split('?')[0].toLowerCase(), [router.asPath]);
@@ -42,7 +37,7 @@ export function CookieBanner() {
 
   useEffect(() => {
     const consent = Cookies.get(COOKIE_CONSENT_KEY);
-    const storedVersion = Cookies.get('cookie_policy_version');
+    const storedVersion = Cookies.get(COOKIE_POLICY_VERSION_KEY);
 
     if (!consent || storedVersion !== COOKIE_VERSION) {
       setIsVisible(true);
@@ -55,7 +50,10 @@ export function CookieBanner() {
     try {
       const parsed = JSON.parse(savedPrefs);
       setPreferences(parsed);
-      applyCookiePreferences(parsed);
+      publishCookieConsentUpdate(parsed, {
+        source: 'cookie_banner_restore',
+        mode: 'update',
+      });
     } catch (error) {
       console.error('Erro ao carregar preferências:', error);
     }
@@ -88,14 +86,6 @@ export function CookieBanner() {
     };
   }, [isCompactLanding, isSensitiveFlow, isVisible, showSettings]);
 
-  const applyCookiePreferences = (prefs: CookiePreferences) => {
-    if (typeof window === 'undefined' || !(window as any).gtag) return;
-
-    (window as any).gtag('consent', 'update', {
-      analytics_storage: prefs.analytics ? 'granted' : 'denied',
-    });
-  };
-
   const saveConsent = (prefs: CookiePreferences) => {
     Cookies.set(COOKIE_CONSENT_KEY, 'true', {
       expires: 365,
@@ -103,7 +93,7 @@ export function CookieBanner() {
       secure: process.env.NODE_ENV === 'production',
     });
 
-    Cookies.set('cookie_policy_version', COOKIE_VERSION, {
+    Cookies.set(COOKIE_POLICY_VERSION_KEY, COOKIE_VERSION, {
       expires: 365,
       sameSite: 'Lax',
       secure: process.env.NODE_ENV === 'production',
@@ -115,7 +105,10 @@ export function CookieBanner() {
       secure: process.env.NODE_ENV === 'production',
     });
 
-    applyCookiePreferences(prefs);
+    publishCookieConsentUpdate(prefs, {
+      source: 'cookie_banner_save',
+      mode: 'update',
+    });
 
     if (typeof window !== 'undefined') {
       fetch('/api/lgpd/cookie-consent', {

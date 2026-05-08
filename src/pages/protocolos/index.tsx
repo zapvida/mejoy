@@ -1,429 +1,529 @@
-import { motion } from 'framer-motion';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { useState, useEffect, useMemo } from 'react';
+import { motion } from "framer-motion";
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useState } from "react";
 
-import MobileTabBar from '@/components/mobile/MobileTabBar';
-import MobileTopBar from '@/components/mobile/MobileTopBar';
-import { formularios } from '@/forms';
-import { track } from '@/lib/analytics';
-import { ZAPFARM_PRODUCTS } from '@/config/zapfarm/products';
-import { getSearchSuggestions } from '@/lib/search/intelligent-search';
+import MobileTabBar from "@/components/mobile/MobileTabBar";
+import MobileTopBar from "@/components/mobile/MobileTopBar";
+import { AppValueSection } from "@/components/mejoy-app/AppValueSection";
+import { formularios } from "@/forms";
+import { ZAPFARM_PRODUCTS } from "@/config/zapfarm/products";
+import { track } from "@/lib/analytics";
+import {
+  getRelatedProtocols,
+  SUPPORTED_PROTOCOLS,
+} from "@/lib/emagrecimento/protocolCatalog";
+import { buildProductAppValue } from "@/lib/mejoy-app/value";
+import { getSearchSuggestions } from "@/lib/search/intelligent-search";
 
-// Lista dos 10 protocolos específicos do lançamento
-const PROTOCOLOS_SLUGS = [
-  'emagrecimento',
-  'calvicie',
-  'sono',
-  'ansiedade',
-  'intestino',
-  'figado',
-  'libido-masculina',
-  'menopausa',
-  'articulacoes',
-  'imunidade',
-] as const;
-
-interface ProtocoloCard {
+interface ProtocolCardViewModel {
   slug: string;
-  titulo: string;
-  subtitulo?: string;
-  descricao: string;
-  descricaoDetalhada?: string;
-  icon?: string;
-  duracao?: string;
-  rating?: number;
-  participantes?: number;
-  tags?: string[];
-  categoria?: string;
-  isFree: boolean;
-  colors?: {
-    primary: string;
-    secondary: string;
-    gradient: string;
-  };
+  title: string;
+  subtitle: string;
+  description: string;
+  badge: string;
+  category: string;
+  duration: string;
+  rating: number;
+  participants: number;
+  tags: string[];
+  imageSrc: string;
+  imageAlt: string;
 }
 
 export default function ProtocolosIndex() {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Criar lista de protocolos combinando dados de produtos e formulários
-  const protocolos: ProtocoloCard[] = useMemo(() => {
-    return PROTOCOLOS_SLUGS.map(slug => {
-      const product = ZAPFARM_PRODUCTS[slug];
-      const form = formularios[slug as keyof typeof formularios];
-      
-      if (!product || !form) {
-        // Fallback caso não encontre - com cores padrão
-        const fallbackColors = {
-          primary: 'purple',
-          secondary: 'orange',
-          gradient: 'from-purple-700 via-purple-600 to-orange-600',
-        };
-        return {
-          slug,
-          titulo: slug,
-          descricao: 'Protocolo de saúde personalizado',
-          isFree: true,
-          colors: fallbackColors,
-        };
+  const protocols = useMemo<ProtocolCardViewModel[]>(() => {
+    return SUPPORTED_PROTOCOLS.flatMap((meta) => {
+      const product = ZAPFARM_PRODUCTS[meta.slug];
+      const form = formularios[meta.slug as keyof typeof formularios];
+
+      if (!meta.supported || !product || !form) {
+        return [];
       }
 
-      return {
-        slug,
-        titulo: form.titulo || product.displayName,
-        subtitulo: form.subtitulo || product.shortDescription,
-        descricao: form.descricao || product.shortDescription,
-        descricaoDetalhada: form.descricaoDetalhada || product.description,
-        icon: form.icon || '💊',
-        duracao: form.duracao || '2-3 min',
-        rating: form.rating || 4.7,
-        participantes: form.participantes || 0,
-        tags: form.tags || [],
-        categoria: form.categoria || product.category,
-        isFree: form.isFree !== undefined ? form.isFree : true,
-        colors: product.colors,
-      };
+      return [
+        {
+          slug: meta.slug,
+          title: meta.title || form.titulo || product.displayName,
+          subtitle: meta.tagline || form.subtitulo || product.shortDescription,
+          description:
+            meta.summary ||
+            form.descricaoDetalhada ||
+            form.descricao ||
+            product.description,
+          badge: meta.badge,
+          category: meta.category,
+          duration: form.duracao || "2-3 min",
+          rating: form.rating || 4.8,
+          participants: form.participantes || 0,
+          tags: form.tags || [],
+          imageSrc: meta.imageSrc,
+          imageAlt: meta.imageAlt,
+        },
+      ];
     });
   }, []);
 
-  // Busca inteligente com sugestões
+  const filteredProtocols = useMemo(() => {
+    if (!searchTerm.trim()) return protocols;
+
+    const lowered = searchTerm.toLowerCase();
+    return protocols.filter((protocol) =>
+      [
+        protocol.title,
+        protocol.subtitle,
+        protocol.description,
+        protocol.badge,
+        protocol.category,
+        ...protocol.tags,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(lowered),
+    );
+  }, [protocols, searchTerm]);
+
+  const featuredProtocols = useMemo(
+    () => getRelatedProtocols("emagrecimento", 4),
+    [],
+  );
+  const appValue = useMemo(
+    () =>
+      buildProductAppValue({
+        productSlug: "emagrecimento",
+        productName: "Protocolos MeJoy",
+      }),
+    [],
+  );
+
   useEffect(() => {
-    if (searchTerm.trim()) {
-      const suggestions = getSearchSuggestions(searchTerm);
-      setSearchSuggestions(suggestions);
-      setShowSuggestions(suggestions.length > 0);
-    } else {
+    if (!searchTerm.trim()) {
       setSearchSuggestions([]);
       setShowSuggestions(false);
+      return;
     }
+
+    const suggestions = getSearchSuggestions(searchTerm).slice(0, 6);
+    setSearchSuggestions(suggestions);
+    setShowSuggestions(suggestions.length > 0);
   }, [searchTerm]);
 
-  // Busca inteligente nos protocolos
-  const filteredProtocolos = useMemo(() => {
-    if (!searchTerm.trim()) return protocolos;
-    
-    const searchLower = searchTerm.toLowerCase();
-    return protocolos.filter(proto => {
-      const searchableText = [
-        proto.titulo,
-        proto.subtitulo,
-        proto.descricao,
-        proto.descricaoDetalhada,
-        ...(proto.tags || []),
-        proto.categoria,
-      ].join(' ').toLowerCase();
-      
-      return searchableText.includes(searchLower);
-    });
-  }, [protocolos, searchTerm]);
-
-  const handleProtocoloClick = (slug: string) => {
-    track('protocolo_start', { protocolo: slug });
+  const handleProtocolClick = (slug: string) => {
+    track("protocolo_start", { protocolo: slug, surface: "protocolos_hub" });
     router.push(`/triagem/${slug}`);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setSearchTerm(suggestion);
-    setShowSuggestions(false);
-  };
-
   const handleSearchFocus = () => {
-    if (searchTerm.trim() && searchSuggestions.length > 0) {
-      setShowSuggestions(true);
-    }
+    if (searchSuggestions.length > 0) setShowSuggestions(true);
   };
 
   const handleSearchBlur = () => {
-    setTimeout(() => setShowSuggestions(false), 150);
-  };
-
-  // Cores dos cards baseadas nos produtos - sempre vibrantes
-  // Mapeamento específico para cada protocolo (cores vibrantes e únicas)
-  const PROTOCOL_COLORS: Record<string, string> = {
-    'emagrecimento': 'bg-gradient-to-br from-purple-700 via-purple-600 to-orange-600',
-    'calvicie': 'bg-gradient-to-br from-indigo-700 via-indigo-600 to-blue-600',
-    'sono': 'bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-600',
-    'ansiedade': 'bg-gradient-to-br from-green-700 via-green-600 to-teal-600',
-    'intestino': 'bg-gradient-to-br from-emerald-700 via-emerald-600 to-green-600',
-    'figado': 'bg-gradient-to-br from-amber-700 via-amber-600 to-yellow-600',
-    'libido-masculina': 'bg-gradient-to-br from-red-700 via-red-600 to-rose-600',
-    'menopausa': 'bg-gradient-to-br from-pink-700 via-pink-600 to-rose-600',
-    'articulacoes': 'bg-gradient-to-br from-slate-700 via-slate-600 to-gray-600',
-    'imunidade': 'bg-gradient-to-br from-cyan-700 via-cyan-600 to-blue-600',
-  };
-
-  const getCardColor = (slug: string, colors?: { gradient: string }, index: number = 0): string => {
-    // Primeiro, tenta usar a cor específica do produto (se existir e for válida)
-    if (colors?.gradient && colors.gradient.trim()) {
-      // O gradient já vem como 'from-X via-Y to-Z', só precisa adicionar bg-gradient-to-br
-      return `bg-gradient-to-br ${colors.gradient}`;
-    }
-    
-    // Se tem cor específica para o protocolo no mapeamento, usa ela (prioridade)
-    if (PROTOCOL_COLORS[slug]) {
-      return PROTOCOL_COLORS[slug];
-    }
-    
-    // Fallback final com cores vibrantes (não deve chegar aqui, mas garante)
-    const fallbackColors = [
-      'bg-gradient-to-br from-purple-600 to-orange-500',
-      'bg-gradient-to-br from-indigo-600 to-blue-500',
-      'bg-gradient-to-br from-blue-600 to-cyan-500',
-      'bg-gradient-to-br from-green-600 to-emerald-500',
-      'bg-gradient-to-br from-pink-600 to-rose-500',
-      'bg-gradient-to-br from-yellow-600 to-orange-500',
-      'bg-gradient-to-br from-teal-600 to-green-500',
-      'bg-gradient-to-br from-red-600 to-pink-500',
-      'bg-gradient-to-br from-violet-600 to-purple-500',
-      'bg-gradient-to-br from-amber-600 to-yellow-500',
-    ];
-    
-    return fallbackColors[index % fallbackColors.length];
+    window.setTimeout(() => setShowSuggestions(false), 120);
   };
 
   return (
     <>
       <Head>
         <title>Protocolos de Saúde | MeJoy</title>
-        <meta name="description" content="Escolha seu protocolo de saúde personalizado com acompanhamento médico especializado" />
+        <meta
+          name="description"
+          content="Hub premium de protocolos MeJoy com entrada clara para triagem, acompanhamento médico e saúde integral."
+        />
       </Head>
 
       <MobileTopBar title="Protocolos" />
       <MobileTabBar />
 
       <main
-        className="min-h-screen bg-white pb-[calc(64px+env(safe-area-inset-bottom))] pt-20 text-gray-900 md:pb-0 md:pt-0"
+        className="min-h-screen bg-[#faf7f1] pb-[calc(64px+env(safe-area-inset-bottom))] pt-20 text-slate-900 md:pb-0 md:pt-0"
         data-testid="page-protocolos"
       >
-        {/* Navigation Bar - Desktop Only */}
-        <div className="hidden px-4 py-3 md:block">
-            <div className="flex items-center justify-between max-w-6xl mx-auto">
-              <button
-                onClick={() => router.push('/')}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 text-gray-700 text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="hidden sm:inline">Início</span>
-                <span className="sm:hidden">Voltar</span>
-              </button>
-              
-              <div className="text-gray-700 text-sm">
-                <span className="text-gray-500">Acesso:</span>
-                <span className="ml-2 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                  Gratuito
-                </span>
-              </div>
-            </div>
-        </div>
-
-        {/* Header Enriquecido */}
-        <div className="px-4 pb-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-              Protocolos de Saúde
-            </h1>
-            <p className="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto mb-4">
-              Escolha seu protocolo personalizado com produtos manipulados e suplementos selecionados por médicos. 
-              Check-up gratuito para avaliar sua elegibilidade.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-              <div className="flex items-center gap-1">
-                <span>⏱️</span>
-                <span>1-3 min</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span>⭐</span>
-                <span>4.8 avaliação</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span>👥</span>
-                <span>+15k usuários</span>
-              </div>
+        <div className="hidden px-4 py-4 md:block">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+            <button
+              onClick={() => router.push("/")}
+              className="inline-flex items-center gap-2 rounded-full border border-[#dde5d7] bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-[#f7faf6]"
+            >
+              Voltar ao início
+            </button>
+            <div className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-800">
+              Protocolos ativos MeJoy
             </div>
           </div>
         </div>
 
-        {/* Busca Compacta */}
-        <div className="px-4 pb-6">
-          <div className="max-w-md mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar protocolos..."
-                className="w-full rounded-xl bg-gray-50 border border-gray-200 p-3 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 text-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={handleSearchFocus}
-                onBlur={handleSearchBlur}
-                aria-label="Buscar protocolos"
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                  aria-label="Limpar busca"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-            
-            {/* Sugestões de Busca */}
-            {showSuggestions && searchSuggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
-                {searchSuggestions.map((suggestion, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:outline-none focus:bg-gray-50"
+        <section className="px-4 pb-8 pt-2 sm:px-6 lg:pb-10">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.96fr_1.04fr] lg:items-end">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#4b6b50]">
+                Hub premium de saúde integral
+              </p>
+              <h1 className="mt-4 max-w-3xl text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.06em] text-slate-900 sm:text-[3.3rem]">
+                O melhor protocolo é o que faz sentido para o seu momento, sem
+                fricção para começar.
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                Este hub organiza os protocolos realmente suportados pela MeJoy,
+                com entrada clara para triagem, acompanhamento, continuidade e
+                saúde integral.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                {[
+                  { value: `${protocols.length}`, label: "protocolos ativos" },
+                  { value: "1 triagem", label: "para começar com contexto" },
+                  { value: "1 painel", label: "para acompanhar tudo depois" },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[24px] border border-[#dbe4d7] bg-white px-4 py-4 shadow-[0_14px_35px_rgba(15,23,42,0.04)]"
                   >
-                    <span className="text-sm font-medium">{suggestion}</span>
-                  </button>
+                    <p className="text-lg font-semibold tracking-[-0.03em] text-slate-900">
+                      {item.value}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      {item.label}
+                    </p>
+                  </div>
                 ))}
               </div>
-            )}
-          </div>
-        </div>
 
-        {/* Grid de Protocolos - Mobile First */}
-        <div className="px-4 pb-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-              {filteredProtocolos.map((protocolo, index) => {
-                const cardColor = getCardColor(protocolo.slug, protocolo.colors, index);
-                
-                return (
-                  <motion.div
-                    key={protocolo.slug}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
+              <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-600">
+                {[
+                  "Mais imagem, menos ruído",
+                  "Elegibilidade e próxima ação claras",
+                  "Suporte e continuidade no mesmo ecossistema",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-[#d8ddd5] bg-white px-4 py-2 shadow-sm"
                   >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
+              <div className="grid gap-4">
+                <div className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
+                  <div className="relative aspect-[0.86] overflow-hidden rounded-[22px]">
+                    <Image
+                      src="/images/emagrecimento/medvi/hero-main.webp"
+                      alt="Jornada MeJoy"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 18vw"
+                      priority
+                    />
+                  </div>
+                </div>
+                <div className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
+                  <div className="relative aspect-[1.05] overflow-hidden rounded-[22px]">
+                    <Image
+                      src="/images/emagrecimento/medvi/journey-acompanhamento.avif"
+                      alt="Cuidado contínuo MeJoy"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 18vw"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  {featuredProtocols.slice(0, 2).map((item) => (
                     <div
-                      className={`${cardColor} rounded-2xl p-4 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-[200px] sm:h-[220px] lg:h-[240px] relative overflow-hidden group text-white border-2 border-white/20 shadow-lg`}
-                      onClick={() => handleProtocoloClick(protocolo.slug)}
-                      data-testid={`protocolo-card-${protocolo.slug}`}
+                      key={item.slug}
+                      className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]"
                     >
-                      {/* Efeito de brilho encrustrado */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 pointer-events-none rounded-2xl"></div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none rounded-2xl"></div>
-                      
-                      {/* Borda interna encrustrada */}
-                      <div className="absolute inset-1 border border-white/30 rounded-xl pointer-events-none"></div>
-                      
-                      {/* Header Compacto */}
-                      <div className="flex items-start justify-between mb-2 relative z-10">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <div className="text-lg sm:text-xl drop-shadow-lg flex-shrink-0">
-                            {protocolo.icon || '💊'}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-xs sm:text-sm font-bold text-white leading-tight drop-shadow-lg line-clamp-1">
-                              {protocolo.titulo}
-                            </h3>
-                            {protocolo.subtitulo && (
-                              <p className="text-xs text-white/90 line-clamp-1 font-medium">
-                                {protocolo.subtitulo}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        
-                        {/* Badge Compacto */}
-                        <div className="flex-shrink-0 ml-1">
-                          {protocolo.isFree ? (
-                            <span className="bg-white/25 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-bold border border-white/40 shadow-lg">
-                              🔓
-                            </span>
-                          ) : (
-                            <span className="bg-white/25 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-bold border border-white/40 shadow-lg">
-                              🔒
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Informações de Metadados Compactas */}
-                      <div className="flex items-center gap-2 mb-2 relative z-10 text-xs text-white/80">
-                        <div className="flex items-center gap-1">
-                          <span>⏱️</span>
-                          <span>{protocolo.duracao || '2-3 min'}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span>⭐</span>
-                          <span>{protocolo.rating || '4.7'}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span>👥</span>
-                          <span>{protocolo.participantes ? `${protocolo.participantes}+` : '1k+'}</span>
-                        </div>
-                      </div>
-
-                      {/* Tags Compactas */}
-                      {protocolo.tags && protocolo.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-2 relative z-10">
-                          {protocolo.tags.slice(0, 2).map((tag: string, tagIndex: number) => (
-                            <span
-                              key={tagIndex}
-                              className="bg-white/25 backdrop-blur-sm text-white/95 px-2 py-0.5 rounded-full text-xs font-semibold border border-white/40 shadow-md"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Descrição Compacta */}
-                      <div className="flex-1 mb-3 relative z-10 min-h-0">
-                        <p className="text-white/90 leading-tight text-xs line-clamp-2">
-                          {protocolo.descricaoDetalhada || protocolo.descricao || 'Check-up gratuito para avaliar sua elegibilidade.'}
-                        </p>
-                      </div>
-
-                      {/* Footer com Botão Compacto */}
-                      <div className="flex items-center justify-end relative z-10 mt-auto pt-2">
-                        <button
-                          className="bg-white/25 backdrop-blur-sm hover:bg-white/35 text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-300 border border-white/40 hover:border-white/60 text-xs flex items-center gap-1 shadow-[0_1px_2px_rgba(0,0,0,0.1)] hover:shadow-[0_2px_4px_rgba(0,0,0,0.15)] transform hover:scale-105"
-                          data-testid={`btn-protocolo-start-${protocolo.slug}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleProtocoloClick(protocolo.slug);
-                          }}
-                        >
-                          <span className="text-xs">▶️</span>
-                          <span>Iniciar</span>
-                          <span className="text-xs">→</span>
-                        </button>
+                      <div className="relative aspect-[0.94] overflow-hidden rounded-[22px]">
+                        <Image
+                          src={item.imageSrc}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 50vw, 16vw"
+                        />
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
+                  ))}
+                </div>
+
+                <div className="rounded-[32px] border border-[#dbe4d7] bg-[linear-gradient(180deg,#ffffff_0%,#f3f7f0_100%)] p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                    Como usar este hub
+                  </p>
+                  <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+                    Escolha o tema principal e entre pela triagem certa.
+                  </p>
+                  <div className="mt-5 space-y-3">
+                    {[
+                      "Cada protocolo mostra proposta, foco clínico e entrada direta.",
+                      "Você só vê protocolos que já têm operação e jornada suportadas.",
+                      "Depois da compra, o cuidado continua no mesmo dashboard.",
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-[20px] border border-[#e3e7df] bg-white px-4 py-3 text-sm text-slate-700"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Seção de Segurança Moderna */}
-        <div className="px-4 py-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-lg" aria-hidden="true">🛡️</span>
-                <h3 className="text-sm font-semibold text-gray-900">100% Seguro e Confidencial</h3>
+        <section className="px-4 pb-8 sm:px-6">
+          <div className="mx-auto max-w-6xl">
+            <AppValueSection
+              value={appValue}
+              surface="protocols"
+              compact
+              title="Cada protocolo MeJoy tambem libera o App MeJoy Premium"
+            />
+          </div>
+        </section>
+
+        <section className="px-4 pb-8 sm:px-6">
+          <div className="mx-auto max-w-6xl rounded-[32px] border border-[#dde5d7] bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
+            <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                  Buscar protocolo
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-slate-900">
+                  Menos fricção para encontrar o cuidado certo
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Pesquise por sintomas, metas ou áreas da saúde. O hub cruza
+                  intenção com os protocolos já prontos para operar.
+                </p>
               </div>
-              <p className="text-center text-gray-600 text-xs max-w-2xl mx-auto">
-                Seus dados são protegidos com criptografia de ponta a ponta. 
-                Todas as informações são mantidas em total confidencialidade.
+
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar por sono, peso, intestino, ansiedade..."
+                  className="w-full rounded-[22px] border border-[#d8dfd5] bg-[#fafbf8] px-5 py-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f6a49] focus:ring-4 focus:ring-[#e5efe4]"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                  aria-label="Buscar protocolos"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 hover:text-slate-700"
+                    aria-label="Limpar busca"
+                  >
+                    Limpar
+                  </button>
+                )}
+
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-20 overflow-hidden rounded-[22px] border border-[#dde5d7] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
+                    {searchSuggestions.map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        onClick={() => {
+                          setSearchTerm(suggestion);
+                          setShowSuggestions(false);
+                        }}
+                        className="w-full border-b border-[#edf2ea] px-4 py-3 text-left text-sm text-slate-700 transition last:border-b-0 hover:bg-[#f7faf6]"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 pb-8 sm:px-6">
+          <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-3">
+            {[
+              {
+                title: "Escolha guiada",
+                body: "Cada card deixa claro o foco do protocolo e a entrada correta para começar com menos dúvida.",
+              },
+              {
+                title: "Prova de continuidade",
+                body: "O protocolo não termina na compra. O dashboard organiza o que acontece depois com suporte e acompanhamento.",
+              },
+              {
+                title: "Saúde integral",
+                body: "Protocolos vizinhos ficam conectados para aumentar retenção e aprofundar cuidado ao longo do tempo.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[28px] border border-[#dde5d7] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.05)]"
+              >
+                <p className="text-lg font-semibold text-slate-900">
+                  {item.title}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-4 pb-10 sm:px-6">
+          <div className="mx-auto max-w-6xl">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                  Protocolos disponíveis
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-900">
+                  Escolha o protocolo que mais se parece com a sua necessidade
+                  agora
+                </h2>
+              </div>
+              <p className="text-sm text-slate-500">
+                {filteredProtocols.length} protocolo(s) encontrados
               </p>
             </div>
+
+            <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {filteredProtocols.map((protocol, index) => (
+                <motion.article
+                  key={protocol.slug}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: index * 0.03 }}
+                  className="overflow-hidden rounded-[30px] border border-[#dde5d7] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.06)]"
+                >
+                  <div className="relative aspect-[1.08] overflow-hidden">
+                    <Image
+                      src={protocol.imageSrc}
+                      alt={protocol.imageAlt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 30vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent" />
+                    <div className="absolute left-4 top-4 inline-flex rounded-full bg-white/92 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-800">
+                      {protocol.badge}
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <span className="inline-flex rounded-full border border-white/35 bg-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur">
+                        {protocol.category}
+                      </span>
+                      <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">
+                        {protocol.title}
+                      </p>
+                      <p className="mt-2 max-w-[28rem] text-sm leading-relaxed text-white/90">
+                        {protocol.subtitle}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                        {protocol.duration}
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                        {protocol.rating.toFixed(1)} de avaliação
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                        {protocol.participants > 0
+                          ? `+${protocol.participants} participantes`
+                          : "Acompanhamento oficial"}
+                      </span>
+                    </div>
+
+                    <p className="mt-4 text-sm leading-relaxed text-slate-600">
+                      {protocol.description}
+                    </p>
+
+                    {protocol.tags.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {protocol.tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-[#f4f7f3] px-3 py-1 text-xs font-medium text-slate-600"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="mt-5 grid gap-3">
+                      <button
+                        onClick={() => handleProtocolClick(protocol.slug)}
+                        className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#2f6a49] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(47,106,73,0.18)] transition hover:bg-[#25563b]"
+                        data-testid={`btn-protocolo-start-${protocol.slug}`}
+                      >
+                        Iniciar triagem deste protocolo
+                      </button>
+                      <button
+                        onClick={() => handleProtocolClick(protocol.slug)}
+                        className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#dde5d7] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-[#f7faf6]"
+                        data-testid={`protocolo-card-${protocol.slug}`}
+                      >
+                        Ver foco clínico e elegibilidade
+                      </button>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
+
+        <section className="px-4 pb-8 sm:px-6">
+          <div className="mx-auto max-w-6xl rounded-[30px] border border-[#dde5d7] bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                  Segurança e confiança
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-900">
+                  Só permanece ativo aqui o que a MeJoy consegue operar com
+                  clareza.
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Triagem, relatório, pagamento, suporte e continuidade precisam
+                  conversar entre si. É isso que transforma um protocolo em
+                  experiência robusta.
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {[
+                  "Dados protegidos e jornada rastreável.",
+                  "Entrada clínica organizada antes do fechamento.",
+                  "Painel único para compra, suporte e próximos passos.",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[22px] border border-[#e3e7df] bg-[#fafbf8] px-4 py-4 text-sm text-slate-700"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );

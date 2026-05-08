@@ -226,6 +226,79 @@ export const examListResponseSchema = z.object({
   timeline: z.array(examTimelineItemSchema),
 });
 
+export const recommendedModuleSchema = z.enum([
+  'dashboard',
+  'journey',
+  'glp1',
+  'meal-ai',
+  'sleep',
+  'rituals',
+  'notifications',
+  'exams',
+  'consult',
+  'bundle',
+  'refill',
+  'reports',
+]);
+
+export const productAppFeatureMatrixItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  webValue: z.string(),
+  appValue: z.string(),
+  summary: z.string(),
+  featured: z.boolean(),
+});
+
+export const productAppValueSchema = z.object({
+  appIncluded: z.boolean(),
+  appTier: z.enum(['premium_full_access']),
+  headline: z.string(),
+  summary: z.string(),
+  featureMatrix: z.array(productAppFeatureMatrixItemSchema),
+});
+
+export const protocolContextSchema = z.object({
+  primaryProtocolSlug: z.enum([
+    'emagrecimento',
+    'sono',
+    'ansiedade',
+    'intestino',
+    'figado',
+    'menopausa',
+    'imunidade',
+    'articulacoes',
+    'calvicie',
+    'libido-masculina',
+  ]),
+  primaryProtocolTitle: z.string(),
+  careLane: z.enum(['glp1_integral', 'whole_person_care']),
+  relatedProtocols: z.array(z.string()),
+});
+
+export const recommendedActionSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+  reason: z.string(),
+});
+
+export const activationStateSchema = z.enum([
+  'visitor',
+  'buyer',
+  'activated_patient',
+  'care_active',
+]);
+
+export const entitlementSnapshotSchema = z.object({
+  generatedAt: z.string(),
+  accessLevel: z.enum(['full_app']),
+  activationState: activationStateSchema,
+  protocolContext: protocolContextSchema,
+  recommendedModules: z.array(recommendedModuleSchema),
+  recommendedActions: z.array(recommendedActionSchema),
+  productAppValue: productAppValueSchema,
+});
+
 export const examUploadInputSchema = z.object({
   fileName: z.string().min(3).max(180),
   mimeType: z.string().min(3).max(120),
@@ -345,6 +418,9 @@ export const mobileAnalyticsEventNameSchema = z.enum([
   'onboarding_started',
   'onboarding_checkout_opened',
   'activation_completed',
+  'app_activation_completed',
+  'entitlement_seen',
+  'protocol_personalized_home_loaded',
   'push_permission_prompted',
   'deeplink_opened',
 ]);
@@ -398,6 +474,13 @@ export const patientDashboardSchema = z.object({
   generatedAt: z.string(),
   featureFlags: mobileFeatureFlagsSchema,
   profile: mobileProfileSchema.nullable(),
+  activationState: activationStateSchema,
+  careLane: z.enum(['glp1_integral', 'whole_person_care']),
+  protocolContext: protocolContextSchema,
+  recommendedModules: z.array(recommendedModuleSchema),
+  recommendedActions: z.array(recommendedActionSchema),
+  productAppValue: productAppValueSchema,
+  entitlements: entitlementSnapshotSchema,
   journey: z.object({
     state: z.string(),
     title: z.string(),
@@ -456,6 +539,11 @@ export type CareRequestResponse = z.infer<typeof careRequestResponseSchema>;
 export type ExamDocument = z.infer<typeof examDocumentSchema>;
 export type ExamTimelineItem = z.infer<typeof examTimelineItemSchema>;
 export type ExamListResponse = z.infer<typeof examListResponseSchema>;
+export type ProductAppFeatureMatrixItem = z.infer<typeof productAppFeatureMatrixItemSchema>;
+export type ProductAppValue = z.infer<typeof productAppValueSchema>;
+export type ProtocolContext = z.infer<typeof protocolContextSchema>;
+export type RecommendedAction = z.infer<typeof recommendedActionSchema>;
+export type EntitlementSnapshot = z.infer<typeof entitlementSnapshotSchema>;
 export type NotificationListResponse = z.infer<typeof notificationListResponseSchema>;
 export type MobileAnalyticsEventInput = z.infer<typeof mobileAnalyticsEventInputSchema>;
 export type ClinicalShareBundleResponse = z.infer<typeof shareBundleResponseSchema>;

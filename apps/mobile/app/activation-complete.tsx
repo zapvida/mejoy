@@ -24,7 +24,7 @@ export default function ActivationCompleteRoute() {
     void trackMobileEvent(
       { apiBaseUrl: session.apiBaseUrl, email: session.email },
       {
-        event: 'activation_completed',
+        event: 'app_activation_completed',
         screen: 'activation-complete',
         status: params.status === 'confirmed' ? 'ok' : 'info',
         metadata: {
@@ -53,20 +53,26 @@ export default function ActivationCompleteRoute() {
     <ScreenShell
       eyebrow="Ativação"
       title="Retorno do checkout"
-      summary="Quando o fluxo web termina, o app recebe a continuidade e mantém o paciente dentro da experiência nativa."
+      summary="Quando o fluxo web termina, o app recebe a continuidade e mantem o paciente dentro da experiencia nativa."
     >
-      <HeroCard eyebrow="Launch continuity" title={title} summary={summary} />
+      <HeroCard eyebrow="Launch continuity" title={title} summary={summary}>
+        <PrimaryButton
+          label={session.email ? 'Abrir meu painel' : 'Entrar com minha conta'}
+          detail={session.email ? 'Continuar a jornada no app' : 'Ativar acesso para seguir'}
+          onPress={() => router.replace(session.email ? '/(tabs)' : '/sign-in')}
+        />
+      </HeroCard>
 
-      <SectionCard eyebrow="Status" title="Sinal recebido do checkout">
+      <SectionCard eyebrow="Status" title="Sinal recebido do checkout" support="Esses dados ajudam a validar o retorno do checkout e a continuidade da ativacao.">
         <Text selectable style={{ color: colors.textStrong, fontSize: typography.bodyStrong, fontWeight: '700' }}>
-          Payment ID: {params.paymentId || 'não informado'}
+          Payment ID: {params.paymentId || 'nao informado'}
         </Text>
         <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
           Fonte: {params.source || 'checkout'}
         </Text>
       </SectionCard>
 
-      <SectionCard eyebrow="Próximo passo" title="Continuar no app" tone="muted">
+      <SectionCard eyebrow="Proximo passo" title="Continuar no app" support="O retorno foi reconhecido. Agora a meta e reduzir qualquer friccao para entrar na area do paciente." tone="muted">
         {session.email ? (
           <PrimaryButton label="Abrir meu painel" onPress={() => router.replace('/(tabs)')} />
         ) : (

@@ -91,6 +91,8 @@ export default function PartnerCTA({
       setIsLoadingHandoff(true);
       trackFunnelEvent('cta_clinical_handoff', {
         source: context,
+        origin: context,
+        program_slug: 'emagrecimento',
         triage_id: triageId,
         report_id: reportId
       });
@@ -103,10 +105,16 @@ export default function PartnerCTA({
         });
 
         trackFunnelEvent('handoff_created', {
+          handoff_id: json.handoffId,
+          correlation_id: json.correlationId,
+          program_slug: 'emagrecimento',
           triage_id: triageId,
           report_id: reportId
         });
         trackFunnelEvent('handoff_opened', {
+          handoff_id: json.handoffId,
+          correlation_id: json.correlationId,
+          program_slug: 'emagrecimento',
           triage_id: triageId,
           report_id: reportId
         });
@@ -117,6 +125,7 @@ export default function PartnerCTA({
         trackFunnelEvent('handoff_failed', {
           triage_id: triageId,
           report_id: reportId,
+          program_slug: 'emagrecimento',
           origin: context,
           surface: 'partner_cta'
         });

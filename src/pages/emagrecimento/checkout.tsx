@@ -1,16 +1,24 @@
 'use client';
 
+import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
 import { EmagrecimentoCheckoutExperience } from '@/components/checkout/EmagrecimentoCheckoutExperience';
+import type { EmagrecimentoPlan } from '@/config/zapfarm/emagrecimento-plans';
+import { buildEmagrecimentoCheckoutPlanCatalog } from '@/lib/emagrecimento/checkout-plan-catalog';
 import {
   normalizeCheckoutTrilhaParam,
   trilhaFromPreferencia,
   type EmagrecimentoTrilha,
 } from '@/lib/emagrecimento/checkoutUrls';
 
-export default function CheckoutPage() {
+interface CheckoutPageProps {
+  planCatalog: EmagrecimentoPlan[];
+  checkoutIsTestMode: boolean;
+}
+
+export default function CheckoutPage({ planCatalog, checkoutIsTestMode }: CheckoutPageProps) {
   const router = useRouter();
   const reportId = readStringQuery(router.query.reportId);
   const triageId = readStringQuery(router.query.triageId);
@@ -60,6 +68,8 @@ export default function CheckoutPage() {
               defaultPlanId={plano}
               defaultTrilha={trilha}
               defaultPrincipio={principio}
+              planCatalog={planCatalog}
+              isTestMode={checkoutIsTestMode}
             />
           </div>
         </div>
@@ -71,3 +81,14 @@ export default function CheckoutPage() {
 function readStringQuery(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
+
+export const getServerSideProps: GetServerSideProps<CheckoutPageProps> = async () => {
+  const { planCatalog, isTestMode: checkoutIsTestMode } = buildEmagrecimentoCheckoutPlanCatalog();
+
+  return {
+    props: {
+      planCatalog,
+      checkoutIsTestMode,
+    },
+  };
+};

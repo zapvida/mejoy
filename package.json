@@ -69,6 +69,7 @@
     "validate:handoff:env": "tsx scripts/validate-handoff-env.ts",
     "mejoy:predeploy": "bash scripts/mejoy-pre-deploy.sh",
     "mejoy:postdeploy": "bash scripts/mejoy-post-deploy.sh",
+    "tracking:launch:gate": "tsx scripts/tracking-launch-gate.ts",
     "test:emagrecimento": "PLAYWRIGHT_LANE=prod-smoke playwright test tests/e2e/public/prod-smoke.spec.ts --project=chromium",
     "audit:prices": "tsx scripts/zapfarm/audit-prices.ts",
     "audit:routes": "tsx scripts/audit-routes-forensic.ts",

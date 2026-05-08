@@ -34,7 +34,9 @@ const CookieBanner = dynamic(() => import('@/components/lgpd/CookieBanner').then
   loading: () => null,
 })
 import { initPixels, track } from '@/lib/analytics';
+import { buildGoogleConsentBootstrapScript } from '@/lib/analytics/consent';
 import { env } from '@/lib/env';
+import { isStrictGoogleConsentModeEnabled } from '@/lib/env';
 import { resetGADeDup } from "@/lib/ga4";
 import { orgJsonLd, websiteJsonLd } from '@/lib/seo';
 import { detectTenantByHost } from '@/lib/tenancy/tenant';
@@ -181,6 +183,14 @@ function MyApp({ Component, pageProps }: AppProps) {
               <link rel="icon" href={BRAND_ASSETS.meta.favicon32} />
               <meta name="theme-color" content={BRAND_THEME_COLOR} />
             </Head>
+
+            {(env.NEXT_PUBLIC_GTM_ID || env.NEXT_PUBLIC_GA4_MEASUREMENT_ID) && (
+              <Script id="google-consent-bootstrap" strategy="beforeInteractive">
+                {buildGoogleConsentBootstrapScript({
+                  strictMode: isStrictGoogleConsentModeEnabled(),
+                })}
+              </Script>
+            )}
             
             {/* Tracking global (fallback para GTM global) */}
             {env.NEXT_PUBLIC_GTM_ID && (

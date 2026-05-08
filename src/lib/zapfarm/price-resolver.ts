@@ -8,6 +8,7 @@ import { ZAPFARM_PRODUCTS } from '@/config/zapfarm/products';
 
 const PLANS = ['basico', 'completo', 'premium'] as const;
 type PlanKey = (typeof PLANS)[number];
+const TEST_SEQUENCE_PRODUCTS = Object.keys(ZAPFARM_PRODUCTS);
 
 /** Tirzepatida: planKey -> env suffix */
 const TIRZEPATIDA_SUFFIX: Record<PlanKey, string> = {
@@ -46,6 +47,26 @@ function getPriceSource(): 'env' | 'productsTs' {
   return v === 'productsTs' ? 'productsTs' : 'env';
 }
 
+export function isTestPriceSequenceEnabled() {
+  const flag = process.env.ZAPFARM_TEST_PRICE_SEQUENCE ?? '';
+  return flag === '1' || flag.toLowerCase() === 'true';
+}
+
+function getTestSequencePriceCents(productSlug: string, planKey: PlanKey) {
+  if (!isTestPriceSequenceEnabled()) {
+    return null;
+  }
+
+  const productIndex = TEST_SEQUENCE_PRODUCTS.indexOf(productSlug);
+  const planIndex = PLANS.indexOf(planKey);
+
+  if (productIndex === -1 || planIndex === -1) {
+    return null;
+  }
+
+  return (10 + productIndex * PLANS.length + planIndex) * 100;
+}
+
 /**
  * Normaliza slug do produto para chave de env.
  * libido-masculina -> LIBIDO_MASCULINA
@@ -66,6 +87,11 @@ export function getEnvPriceCents(
   planKey: PlanKey,
   variant?: VariantKey
 ): number | null {
+  const testPriceCents = getTestSequencePriceCents(productSlug, planKey);
+  if (testPriceCents !== null) {
+    return testPriceCents;
+  }
+
   if (productSlug === 'teste') {
     const val = process.env.ASAAS_PRICE_TESTE;
     if (!val) return null;
@@ -153,7 +179,7 @@ export interface PricesForProduct {
   basico: number;
   completo: number;
   premium: number;
-  source: 'env' | 'fallback';
+  source: 'env' | 'fallback' | 'test-sequence';
   missing: string[];
 }
 
@@ -214,7 +240,11 @@ export function getPricesForProduct(
     basico: prices.basico,
     completo: prices.completo,
     premium: prices.premium,
-    source: source === 'productsTs' && missing.length > 0 ? 'fallback' : 'env',
+    source: isTestPriceSequenceEnabled()
+      ? 'test-sequence'
+      : source === 'productsTs' && missing.length > 0
+        ? 'fallback'
+        : 'env',
     missing,
   };
 }

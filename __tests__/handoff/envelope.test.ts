@@ -110,10 +110,21 @@ describe("handoff envelope", () => {
   });
 
   it("adds correlation_id to the ZapVida redirect url", () => {
-    const url = buildZapVidaHandoffUrl("signed.token", "emagrecimento", "handoff-123", "corr-123");
+    const url = buildZapVidaHandoffUrl("signed.token", "emagrecimento", "handoff-123", "corr-123", {
+      source: "google",
+      medium: "cpc",
+      campaign: "launch",
+      gclid: "gclid-123",
+      msclkid: "msclkid-123",
+    });
 
     expect(url).toContain("handoff=signed.token");
     expect(url).toContain("handoff_id=handoff-123");
     expect(url).toContain("correlation_id=corr-123");
+    expect(url).toContain("origin_utm_source=google");
+    expect(url).toContain("origin_utm_medium=cpc");
+    expect(url).toContain("origin_utm_campaign=launch");
+    expect(url).toContain("gclid=gclid-123");
+    expect(url).toContain("msclkid=msclkid-123");
   });
 });

@@ -12,5 +12,6 @@ pnpm qa:emagrecimento:prod
 pnpm smoke:checkout
 BASE_URL="$BASE_URL" pnpm soft-launch:gate
 BASE_URL="$BASE_URL" pnpm official-launch:gate
+BASE_URL="$BASE_URL" pnpm tracking:launch:gate
 echo "== MeJoy post-deploy: OK =="
 echo "Opcional (E2E contra PRODUCTION_URL, pode ser flaky): CI=1 PRODUCTION_URL=$PRODUCTION_URL pnpm test:emagrecimento"

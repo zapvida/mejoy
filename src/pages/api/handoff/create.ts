@@ -67,7 +67,8 @@ export async function createHandoffHandler(
         handoffToken,
         reusable.envelope.journey.program_slug,
         reusable.envelope.handoff_id,
-        reusable.envelope.correlation_id
+        reusable.envelope.correlation_id,
+        reusable.envelope.utm
       );
 
       return res.status(200).json({
@@ -124,7 +125,8 @@ export async function createHandoffHandler(
       handoffToken,
       envelope.journey.program_slug,
       envelope.handoff_id,
-      envelope.correlation_id
+      envelope.correlation_id,
+      envelope.utm
     );
 
     const createdEventName = mapStatusToAnalyticsEvent("created");

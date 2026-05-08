@@ -105,6 +105,16 @@ export function ReportDecisionFold({
     onSelectTrack?.(trilha);
   };
 
+  const handleOpenCheckout = () => {
+    trackFunnelEvent('cta_clinical_handoff', {
+      report_id: reportId,
+      triage_id: vm.triageId || reportId,
+      surface: 'decision_fold',
+      trilha: selectedTrilha,
+    });
+    onOpenInlineCheckout?.();
+  };
+
   return (
     <section className="container mx-auto px-4 pb-2 pt-4 sm:px-6" aria-label="Decisao do programa">
       <div className="overflow-hidden rounded-[34px] border border-[#d7e3da] bg-white shadow-[0_30px_90px_rgba(15,23,42,0.08)]">
@@ -114,12 +124,12 @@ export function ReportDecisionFold({
               Relatorio pos-triagem
             </span>
 
-            <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl lg:text-[3.25rem] lg:leading-[1.02]">
-              Seu programa pode ser fechado agora, nesta mesma pagina
+            <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl lg:text-[3.2rem] lg:leading-[1.02]">
+              Seu proximo passo ja esta definido: fechar o programa aqui e seguir para a avaliacao medica.
             </h1>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Elegibilidade, trilha, plano e pagamento ficam no mesmo fluxo. O dashboard da MeJoy so abre depois da confirmacao real do pagamento.
+              Elegibilidade, trilha, plano e pagamento continuam na mesma pagina. O dashboard da MeJoy so abre depois da confirmacao real do pagamento.
             </p>
 
             <div className={cn('mt-6 rounded-[28px] border p-5', eligibility.tone)}>
@@ -131,7 +141,7 @@ export function ReportDecisionFold({
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                  Recomendacao resumida
+                  Leitura imediata
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-700">{recommendation}</p>
               </div>
@@ -154,38 +164,63 @@ export function ReportDecisionFold({
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={onOpenInlineCheckout}
-                className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
-              >
-                Continuar com meu plano
-              </button>
-              <a
-                href={buildEmagrecimentoReportWhatsappUrl({
-                  reportId,
-                  firstName: vm.basics.firstName,
-                  triageSlug: 'emagrecimento',
-                })}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() =>
-                  trackFunnelEvent('whatsapp_report_cta', {
-                    report_id: reportId,
-                    surface: 'decision_fold',
-                  })
-                }
-                className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-6 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
-              >
-                WhatsApp oficial
-              </a>
+            <div className="mt-6 grid gap-3 xl:grid-cols-[minmax(0,1fr)_260px]">
+              <div className="rounded-[28px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  Proximo passo agora
+                </p>
+                <h3 className="mt-2 text-2xl font-bold text-slate-950">
+                  Fechar o programa nesta pagina
+                </h3>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
+                  Seu relatorio ja fez a parte diagnostica. Agora voce escolhe a trilha, confirma o plano e paga sem sair do fluxo.
+                </p>
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <button
+                    type="button"
+                    onClick={handleOpenCheckout}
+                    className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
+                  >
+                    Fechar meu programa agora
+                  </button>
+                  <p className="text-sm text-slate-600">
+                    O app libera so depois da confirmacao real do pagamento.
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-[28px] border border-zinc-200 bg-white p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                  Suporte oficial
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                  Se quiser validar algo antes de pagar, o WhatsApp oficial entra sem quebrar a jornada.
+                </p>
+                <a
+                  href={buildEmagrecimentoReportWhatsappUrl({
+                    reportId,
+                    firstName: vm.basics.firstName,
+                    triageSlug: 'emagrecimento',
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackFunnelEvent('whatsapp_report_cta', {
+                      report_id: reportId,
+                      surface: 'decision_fold',
+                    })
+                  }
+                  className="mt-4 inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
+                >
+                  Falar no WhatsApp oficial
+                </a>
+              </div>
             </div>
           </div>
 
-          <div className="border-t border-[#d7e3da] bg-[#f3f7f3] lg:border-l lg:border-t-0">
+          <div className="border-t border-[#d7e3da] bg-[#f6f7f1] lg:border-l lg:border-t-0">
             <div className="grid h-full gap-4 p-6 sm:p-8">
-              <div className="grid grid-cols-[1.05fr_0.95fr] gap-4">
+              <div className="grid grid-cols-[1.02fr_0.98fr] gap-4">
                 <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
                   <div className="relative aspect-[0.96] overflow-hidden rounded-[22px]">
                     <Image
@@ -198,15 +233,28 @@ export function ReportDecisionFold({
                     />
                   </div>
                 </div>
-                <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
-                  <div className="relative aspect-[0.78] overflow-hidden rounded-[22px]">
-                    <Image
-                      src="/images/emagrecimento/medvi/hero-secondary.webp"
-                      alt="Suporte do programa"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 44vw, 22vw"
-                    />
+                <div className="grid gap-4">
+                  <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
+                    <div className="relative aspect-[0.82] overflow-hidden rounded-[22px]">
+                      <Image
+                        src="/mejoyimagens/mejoy19.png"
+                        alt="Paciente MeJoy"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 44vw, 22vw"
+                      />
+                    </div>
+                  </div>
+                  <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
+                    <div className="relative aspect-[1.12] overflow-hidden rounded-[22px]">
+                      <Image
+                        src="/images/emagrecimento/medvi/hero-secondary.webp"
+                        alt="Suporte do programa"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 44vw, 22vw"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

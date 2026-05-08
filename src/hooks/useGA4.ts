@@ -28,7 +28,7 @@ export function useGA4() {
 
     const handleRouteChange = (url: string) => {
       if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('config', process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID, {
+        window.gtag('config', env.NEXT_PUBLIC_GA4_MEASUREMENT_ID, {
           page_path: url,
           page_title: document.title
         });

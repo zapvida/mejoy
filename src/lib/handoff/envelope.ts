@@ -262,7 +262,8 @@ export function buildZapVidaHandoffUrl(
   token: string,
   programSlug = "emagrecimento",
   handoffId?: string,
-  correlationId?: string
+  correlationId?: string,
+  utm: Partial<HandoffEnvelopeV1["utm"]> = {}
 ): string {
   const base =
     process.env.NEXT_PUBLIC_ZAPVIDA_HANDOFF_URL ||
@@ -279,5 +280,17 @@ export function buildZapVidaHandoffUrl(
   url.searchParams.set("utm_source", "mejoy");
   url.searchParams.set("utm_medium", "handoff");
   url.searchParams.set("utm_campaign", `emagrecimento_${programSlug}`);
+
+  if (utm.source) url.searchParams.set("origin_utm_source", utm.source);
+  if (utm.medium) url.searchParams.set("origin_utm_medium", utm.medium);
+  if (utm.campaign) url.searchParams.set("origin_utm_campaign", utm.campaign);
+  if (utm.content) url.searchParams.set("origin_utm_content", utm.content);
+  if (utm.term) url.searchParams.set("origin_utm_term", utm.term);
+  if (utm.ref) url.searchParams.set("origin_ref", utm.ref);
+  if (utm.gclid) url.searchParams.set("gclid", utm.gclid);
+  if (utm.fbclid) url.searchParams.set("fbclid", utm.fbclid);
+  if (utm.ttclid) url.searchParams.set("ttclid", utm.ttclid);
+  if (utm.msclkid) url.searchParams.set("msclkid", utm.msclkid);
+
   return url.toString();
 }

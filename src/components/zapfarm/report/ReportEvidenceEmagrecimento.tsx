@@ -1,70 +1,96 @@
-import type { ReportViewModel } from '@/lib/report/derive';
-import { getEvidenceForProfile, type Classification } from '@/lib/emagrecimento/evidence';
+import type { ReportViewModel } from "@/lib/report/derive";
+import {
+  getEvidenceForProfile,
+  type Classification,
+} from "@/lib/emagrecimento/evidence";
 
 interface Props {
   vm?: ReportViewModel;
 }
 
 export function ReportEvidenceEmagrecimento({ vm }: Props) {
-  // Se não há vm, usar evidências genéricas
-  let evidence;
-  
-  if (vm) {
-    const answers = (vm as any).answers || {};
-    const classification = (vm as any).classification as Classification | undefined;
-    const comorbidades = Array.isArray(answers.comorbidades)
-      ? answers.comorbidades.filter((c: string) => c !== 'nenhuma')
-      : [];
-    
-    evidence = getEvidenceForProfile(
-      { age: vm.basics.age, sex: vm.basics.sex, bmi: vm.basics.bmi },
-      classification || 'any',
-      comorbidades
-    );
-  } else {
-    // Fallback: evidências genéricas
-    evidence = [
-      {
-        id: 'lifestyle-generic',
-        title: 'Mudanças de estilo de vida reduzem risco de diabetes',
-        summary: 'Grandes estudos mostram que pessoas que perderam cerca de 7% do peso e fizeram atividade física regular reduziram de forma importante o risco de desenvolver diabetes tipo 2.',
-        source: 'Estudo clínico randomizado',
-        appliesTo: { classification: 'any' }
-      },
-      {
-        id: 'weight-loss-benefits-generic',
-        title: 'Perder 5-10% do peso traz grandes benefícios',
-        summary: 'Mesmo perdas modestas de peso (5-10% do peso corporal) já melhoram de forma importante o controle da glicose, pressão arterial e saúde do fígado.',
-        source: 'Diretrizes de tratamento de obesidade',
-        appliesTo: { classification: 'any' }
-      }
-    ];
-  }
+  const answers = vm ? (vm as any).answers || {} : {};
+  const classification = vm
+    ? ((vm as any).classification as Classification | undefined)
+    : undefined;
+  const comorbidades = Array.isArray(answers.comorbidades)
+    ? answers.comorbidades.filter((item: string) => item !== "nenhuma")
+    : [];
+
+  const evidence = vm
+    ? getEvidenceForProfile(
+        { age: vm.basics.age, sex: vm.basics.sex, bmi: vm.basics.bmi },
+        classification || "any",
+        comorbidades,
+      )
+    : getEvidenceForProfile({}, "any", []);
 
   return (
-    <section className="bg-gradient-to-br from-purple-50 to-orange-50 rounded-xl sm:rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-purple-100">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Evidências Científicas</h2>
-      <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 leading-relaxed">
-        As recomendações deste relatório são baseadas em evidências científicas robustas:
-      </p>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+    <section className="rounded-[28px] border border-[#d7e3da] bg-white p-5 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-6">
+      <div className="max-w-3xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+          Evidência rastreável
+        </p>
+        <h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-slate-950 sm:text-3xl">
+          O valor deste relatório depende de informação verdadeira, não de hype
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+          A leitura abaixo usa estudos e diretrizes reconhecidos para explicar o
+          que costuma mudar com perda de peso, mudança de hábitos e tratamento
+          medicamentoso quando ele é clinicamente indicado.
+        </p>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
         {evidence.map((item) => (
-          <div key={item.id} className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 border border-purple-100">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3 leading-tight">{item.title}</h3>
-            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-3">{item.summary}</p>
-            <p className="text-xs text-gray-500 italic">Fonte: {item.source}</p>
-          </div>
+          <article
+            key={item.id}
+            className="rounded-[24px] border border-[#e1e8df] bg-[linear-gradient(180deg,#fbfcfa_0%,#f5f8f4_100%)] p-5"
+          >
+            <div className="flex flex-wrap gap-2">
+              {item.study ? (
+                <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-800">
+                  {item.study}
+                </span>
+              ) : null}
+              {item.year ? (
+                <span className="rounded-full border border-[#d5e1d7] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                  {item.year}
+                </span>
+              ) : null}
+            </div>
+
+            <h3 className="mt-4 text-lg font-bold text-slate-950">
+              {item.title}
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+              {item.summary}
+            </p>
+
+            {item.impact ? (
+              <div className="mt-4 rounded-[18px] border border-white bg-white px-4 py-3 text-sm text-slate-700">
+                {item.impact}
+              </div>
+            ) : null}
+
+            <p className="mt-4 text-xs font-medium text-slate-500">
+              Fonte-base: {item.source}
+            </p>
+          </article>
         ))}
       </div>
 
-      <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-white rounded-lg sm:rounded-xl border-l-4 border-purple-600">
-        <p className="text-sm sm:text-base text-gray-700 italic leading-relaxed">
-          "Obesidade é uma doença crônica tratável. Pessoas com obesidade merecem opções eficazes e seguras."
+      <div className="mt-6 rounded-[24px] border border-[#d7e3da] bg-[#f6fbf7] p-5">
+        <p className="text-sm font-semibold text-slate-900">
+          O ponto central para o paciente
         </p>
-        <p className="text-xs sm:text-sm text-gray-500 mt-2">— Dr. Ania Jastreboff, Yale School of Medicine</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-700">
+          Em obesidade e sobrepeso, o objetivo clínico mais valioso costuma ser
+          reduzir risco cardiometabólico, melhorar saciedade, sono, energia e
+          capacidade de manter hábitos. A estética pode vir junto, mas não é o
+          único marcador relevante de sucesso.
+        </p>
       </div>
     </section>
   );
 }
-
