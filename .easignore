@@ -1,8 +1,14 @@
 /.git
+/.github
 /.next
 /.reports
 /.swc
 /.vercel
+/node_modules
+/apps/mobile/node_modules
+/apps/mobile/.expo
+/apps/mobile/dist
+/apps/mobile/web-build
 /coverage
 /docs
 /playwright-report
@@ -11,5 +17,10 @@
 /__tests__
 /public
 /src
+/codex-artifacts
+/driveevidencias
+/tmp
+/generated
+/scripts/generated
 /*.md
 /*.txt

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeJoy Native Premium Hero</title>
+    <style>
+      :root {
+        --bg: #f3f4ef;
+        --bg-accent: #e6ece6;
+        --card: rgba(255, 255, 255, 0.82);
+        --ink: #0c1a16;
+        --ink-soft: #557468;
+        --brand: #167c5a;
+        --brand-strong: #0e5b41;
+        --brand-soft: #ddefe7;
+        --accent: #ff8a3d;
+        --accent-soft: #fbe8da;
+        --border: rgba(22, 124, 90, 0.12);
+        --shadow-strong: 0 42px 90px rgba(12, 26, 22, 0.18);
+        --shadow-soft: 0 18px 48px rgba(12, 26, 22, 0.09);
+        --radius-xl: 42px;
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --radius-pill: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        width: 1600px;
+        height: 1400px;
+        overflow: hidden;
+        font-family:
+          "SF Pro Display",
+          "Segoe UI",
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 13% 18%, rgba(255, 255, 255, 0.88), transparent 26%),
+          radial-gradient(circle at 82% 16%, rgba(22, 124, 90, 0.12), transparent 24%),
+          radial-gradient(circle at 76% 72%, rgba(255, 138, 61, 0.12), transparent 20%),
+          linear-gradient(135deg, var(--bg) 0%, #eef5f0 42%, #eff4ef 100%);
+      }
+
+      .canvas {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 72px;
+      }
+
+      .blur-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(18px);
+        opacity: 0.9;
+      }
+
+      .orb-a {
+        top: 90px;
+        right: 160px;
+        width: 340px;
+        height: 340px;
+        background: rgba(22, 124, 90, 0.1);
+      }
+
+      .orb-b {
+        bottom: 120px;
+        left: 690px;
+        width: 280px;
+        height: 280px;
+        background: rgba(255, 138, 61, 0.13);
+      }
+
+      .copy {
+        position: absolute;
+        left: 72px;
+        top: 72px;
+        width: 548px;
+        z-index: 2;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(12, 26, 22, 0.06);
+        box-shadow: var(--shadow-soft);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--brand-strong);
+      }
+
+      .eyebrow-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #20a271 0%, #0e5b41 100%);
+        box-shadow: 0 0 0 6px rgba(22, 124, 90, 0.1);
+      }
+
+      .logo-wrap {
+        margin-top: 26px;
+        margin-bottom: 24px;
+      }
+
+      .logo-wrap img {
+        width: 180px;
+        height: auto;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 72px;
+        line-height: 0.96;
+        letter-spacing: -0.045em;
+        font-weight: 800;
+      }
+
+      .headline-accent {
+        display: block;
+        color: var(--brand);
+      }
+
+      .subhead {
+        margin-top: 22px;
+        max-width: 500px;
+        font-size: 21px;
+        line-height: 1.45;
+        color: var(--ink-soft);
+      }
+
+      .proof-bar {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .proof-card {
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(12, 26, 22, 0.06);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .proof-label {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--brand-strong);
+      }
+
+      .proof-value {
+        margin-top: 8px;
+        font-size: 18px;
+        line-height: 1.35;
+        font-weight: 700;
+      }
+
+      .feature-grid {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .feature-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(12, 26, 22, 0.06);
+        box-shadow: 0 8px 18px rgba(12, 26, 22, 0.05);
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .feature-pill .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .stage-card {
+        margin-top: 18px;
+        padding: 20px 20px 18px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(248, 250, 249, 0.84));
+        border: 1px solid rgba(12, 26, 22, 0.07);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .stage-title {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand-strong);
+      }
+
+      .stage-list {
+        margin-top: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .stage-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        font-size: 17px;
+      }
+
+      .stage-row strong {
+        font-size: 18px;
+      }
+
+      .stage-badge {
+        padding: 9px 14px;
+        border-radius: var(--radius-pill);
+        background: var(--brand-soft);
+        color: var(--brand-strong);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .phone-scene {
+        position: absolute;
+        right: 104px;
+        top: 110px;
+        width: 700px;
+        height: 1160px;
+        z-index: 3;
+      }
+
+      .device-shadow {
+        position: absolute;
+        left: 120px;
+        top: 96px;
+        width: 430px;
+        height: 860px;
+        border-radius: 90px;
+        background: rgba(12, 26, 22, 0.14);
+        filter: blur(36px);
+        opacity: 0.34;
+      }
+
+      .phone {
+        position: absolute;
+        left: 140px;
+        top: 0;
+        width: 430px;
+        height: 920px;
+        border-radius: 74px;
+        background:
+          linear-gradient(180deg, rgba(31, 38, 44, 0.98) 0%, rgba(12, 18, 22, 1) 100%);
+        box-shadow: 0 56px 120px rgba(12, 26, 22, 0.32);
+        padding: 14px;
+      }
+
+      .phone:before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border-radius: 64px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+      }
+
+      .notch {
+        position: absolute;
+        left: 50%;
+        top: 18px;
+        transform: translateX(-50%);
+        width: 138px;
+        height: 34px;
+        border-radius: 20px;
+        background: rgba(6, 10, 13, 0.98);
+        z-index: 3;
+      }
+
+      .screen {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 60px;
+        padding: 34px 22px 24px;
+        background:
+          radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.82), transparent 23%),
+          linear-gradient(180deg, #f9fbf9 0%, #eef3f0 100%);
+      }
+
+      .screen-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 18px;
+      }
+
+      .screen-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--brand-strong);
+      }
+
+      .screen-brand .mini {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #21a975 0%, #167c5a 100%);
+        box-shadow: 0 10px 18px rgba(22, 124, 90, 0.25);
+      }
+
+      .screen-kicker {
+        margin-top: 16px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand-strong);
+      }
+
+      .screen-title {
+        margin-top: 10px;
+        font-size: 31px;
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .screen-subtitle {
+        margin-top: 10px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+      }
+
+      .screen-hero {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(244, 248, 246, 0.9));
+        border: 1px solid rgba(22, 124, 90, 0.12);
+        box-shadow: 0 20px 42px rgba(12, 26, 22, 0.08);
+      }
+
+      .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .status-chip {
+        padding: 9px 12px;
+        border-radius: var(--radius-pill);
+        background: var(--brand-soft);
+        color: var(--brand-strong);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .status-label {
+        font-size: 13px;
+        color: var(--ink-soft);
+      }
+
+      .metric-row {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .metric-card {
+        padding: 14px 12px;
+        border-radius: 18px;
+        background: rgba(248, 252, 249, 0.92);
+        border: 1px solid rgba(12, 26, 22, 0.05);
+      }
+
+      .metric-name {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+        font-weight: 800;
+      }
+
+      .metric-value {
+        margin-top: 6px;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+        font-weight: 800;
+      }
+
+      .metric-caption {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+
+      .cta-card {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+        color: white;
+      }
+
+      .cta-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+        opacity: 0.76;
+      }
+
+      .cta-title {
+        margin-top: 8px;
+        font-size: 20px;
+        line-height: 1.18;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .cta-copy {
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 1.45;
+        opacity: 0.88;
+      }
+
+      .section-title {
+        margin-top: 18px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+        font-weight: 800;
+      }
+
+      .insight-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .insight {
+        display: grid;
+        grid-template-columns: 46px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 14px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(12, 26, 22, 0.05);
+      }
+
+      .insight-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        font-size: 18px;
+        color: var(--brand-strong);
+        background: linear-gradient(180deg, #edf7f1 0%, #dfeee7 100%);
+      }
+
+      .insight-title {
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .insight-copy {
+        margin-top: 4px;
+        font-size: 13px;
+        line-height: 1.35;
+        color: var(--ink-soft);
+      }
+
+      .insight-badge {
+        padding: 8px 11px;
+        border-radius: var(--radius-pill);
+        background: var(--accent-soft);
+        color: #8c4e1d;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .dock {
+        position: absolute;
+        left: 22px;
+        right: 22px;
+        bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 12px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(12, 26, 22, 0.06);
+        box-shadow: 0 16px 34px rgba(12, 26, 22, 0.08);
+      }
+
+      .dock-item {
+        display: grid;
+        justify-items: center;
+        gap: 7px;
+        font-size: 11px;
+        color: var(--ink-soft);
+        font-weight: 700;
+      }
+
+      .dock-item .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: rgba(22, 124, 90, 0.08);
+        color: var(--brand-strong);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .callout {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(12, 26, 22, 0.06);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(14px);
+      }
+
+      .callout-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #eff8f2 0%, #dfeee7 100%);
+        color: var(--brand-strong);
+        font-weight: 900;
+        font-size: 18px;
+      }
+
+      .callout-title {
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .callout-copy {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--ink-soft);
+      }
+
+      .callout-a {
+        left: 18px;
+        top: 196px;
+        width: 252px;
+      }
+
+      .callout-b {
+        right: 8px;
+        top: 140px;
+        width: 238px;
+      }
+
+      .callout-c {
+        left: 2px;
+        top: 612px;
+        width: 254px;
+      }
+
+      .callout-d {
+        right: 8px;
+        top: 570px;
+        width: 238px;
+      }
+
+      .callout-e {
+        left: 74px;
+        bottom: 128px;
+        width: 254px;
+      }
+
+      .callout-f {
+        right: 14px;
+        bottom: 126px;
+        width: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="canvas">
+      <div class="blur-orb orb-a"></div>
+      <div class="blur-orb orb-b"></div>
+
+      <section class="copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> App nativo premium incluso</div>
+        <div class="logo-wrap">
+          <img src="../public/logosmejoy/logomejoy.svg" alt="MeJoy" />
+        </div>
+        <h1>
+          A central mais bonita e inteligente da sua
+          <span class="headline-accent">saude integral.</span>
+        </h1>
+        <p class="subhead">
+          Quem compra MeJoy ganha continuidade real em um app nativo premium: GLP-1,
+          calorias, sono, meditacao, exames, consulta e sinais prioritarios no mesmo painel.
+        </p>
+
+        <div class="proof-bar">
+          <div class="proof-card">
+            <div class="proof-label">Valor imediato</div>
+            <div class="proof-value">Produto web + acompanhamento nativo sem friccao.</div>
+          </div>
+          <div class="proof-card">
+            <div class="proof-label">Percepcao premium</div>
+            <div class="proof-value">Uma experiencia que parece concierge clinico, nao app generico.</div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-pill"><span class="dot"></span> Dashboard adaptativo</div>
+          <div class="feature-pill"><span class="dot"></span> Meal AI</div>
+          <div class="feature-pill"><span class="dot"></span> Sono + recuperacao</div>
+          <div class="feature-pill"><span class="dot"></span> Rituais guiados</div>
+          <div class="feature-pill"><span class="dot"></span> Exames e bundle medico</div>
+          <div class="feature-pill"><span class="dot"></span> Consulta concierge</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-title">Por que converte melhor</div>
+          <div class="stage-list">
+            <div class="stage-row">
+              <strong>Mostra cuidado diario, nao so promessa.</strong>
+              <span class="stage-badge">Retencao real</span>
+            </div>
+            <div class="stage-row">
+              <strong>Explica o valor do produto web com continuidade nativa.</strong>
+              <span class="stage-badge">Mais valor percebido</span>
+            </div>
+            <div class="stage-row">
+              <strong>Entrega uma rotina individualizada por protocolo e sinais.</strong>
+              <span class="stage-badge">Personalizado</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="phone-scene">
+        <div class="device-shadow"></div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="screen-top">
+              <div class="screen-brand">
+                <div class="mini"></div>
+                MeJoy Premium
+              </div>
+              <div class="status-chip">Rotina estavel</div>
+            </div>
+
+            <div class="screen-kicker">Painel de continuidade</div>
+            <div class="screen-title">Sua jornada de hoje, clara e priorizada.</div>
+            <div class="screen-subtitle">
+              O app organiza peso, adesao, refeicoes, sono, exames, refill e apoio clinico num
+              unico fluxo elegante.
+            </div>
+
+            <div class="screen-hero">
+              <div class="status-row">
+                <div class="status-label">Sinais consolidados desde 7:20 AM</div>
+                <div class="status-chip">GLP-1 em dia</div>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-card">
+                  <div class="metric-name">Peso</div>
+                  <div class="metric-value">78.4</div>
+                  <div class="metric-caption">kg | ultima leitura</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-name">Adesao</div>
+                  <div class="metric-value">89%</div>
+                  <div class="metric-caption">dose e rotina</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-name">Sono</div>
+                  <div class="metric-value">84</div>
+                  <div class="metric-caption">score de consistencia</div>
+                </div>
+              </div>
+
+              <div class="cta-card">
+                <div class="cta-label">Melhor proximo passo</div>
+                <div class="cta-title">Registrar refeicao e reduzir craving da tarde.</div>
+                <div class="cta-copy">
+                  Meal AI interpreta prato ou cardapio, estima risco e sugere a melhor escolha.
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Insights premium do dia</div>
+            <div class="insight-list">
+              <div class="insight">
+                <div class="insight-icon">M</div>
+                <div>
+                  <div class="insight-title">Meal AI ativo</div>
+                  <div class="insight-copy">Leitura de calorias, macros e melhor escolha para sua fase.</div>
+                </div>
+                <div class="insight-badge">Agora</div>
+              </div>
+
+              <div class="insight">
+                <div class="insight-icon">S</div>
+                <div>
+                  <div class="insight-title">Sono e recuperacao</div>
+                  <div class="insight-copy">Noite consistente. O app sugere nutricao e ritmo ideais.</div>
+                </div>
+                <div class="insight-badge">84/100</div>
+              </div>
+
+              <div class="insight">
+                <div class="insight-icon">R</div>
+                <div>
+                  <div class="insight-title">Ritual anti-craving</div>
+                  <div class="insight-copy">Audio guiado de 4 minutos para manter foco e adesao.</div>
+                </div>
+                <div class="insight-badge">4 min</div>
+              </div>
+
+              <div class="insight">
+                <div class="insight-icon">E</div>
+                <div>
+                  <div class="insight-title">Exames e consulta</div>
+                  <div class="insight-copy">Documentos prontos para bundle medico e concierge clinico.</div>
+                </div>
+                <div class="insight-badge">Pronto</div>
+              </div>
+            </div>
+
+            <div class="dock">
+              <div class="dock-item">
+                <div class="icon">H</div>
+                Home
+              </div>
+              <div class="dock-item">
+                <div class="icon">J</div>
+                Jornada
+              </div>
+              <div class="dock-item">
+                <div class="icon">R</div>
+                Rituais
+              </div>
+              <div class="dock-item">
+                <div class="icon">P</div>
+                Perfil
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-a">
+          <div class="callout-icon">G</div>
+          <div>
+            <div class="callout-title">GLP-1 e peso</div>
+            <div class="callout-copy">Dose, titulacao, sintomas, adesao e refill em um fluxo unico.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-b">
+          <div class="callout-icon">C</div>
+          <div>
+            <div class="callout-title">Calorias no cardapio</div>
+            <div class="callout-copy">Foto, texto ou menu com recomendacao pratica e clara.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-c">
+          <div class="callout-icon">N</div>
+          <div>
+            <div class="callout-title">Notificacoes inteligentes</div>
+            <div class="callout-copy">Peso, medicao, sono, exames, refill e handoff sem ruido.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-d">
+          <div class="callout-icon">S</div>
+          <div>
+            <div class="callout-title">Sono + recuperacao</div>
+            <div class="callout-copy">Consistencia, energia e coaching alinhados ao seu protocolo.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-e">
+          <div class="callout-icon">X</div>
+          <div>
+            <div class="callout-title">Exames e bundle medico</div>
+            <div class="callout-copy">Upload, resumo e compartilhamento seguro para consulta externa.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-f">
+          <div class="callout-icon">Q</div>
+          <div>
+            <div class="callout-title">Consulta concierge</div>
+            <div class="callout-copy">Pedido assistido, status claro e continuidade sem friccao.</div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </body>
+</html>

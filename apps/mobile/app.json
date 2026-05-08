@@ -71,8 +71,7 @@
             "DEFAULT"
           ]
         }
-      ],
-      "versionCode": 2
+      ]
     },
     "web": {
       "bundler": "metro"
