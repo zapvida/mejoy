@@ -24,6 +24,18 @@ type UpdateProfileData = {
   height_cm?: number;
 };
 
+function isAbortLikeError(error: unknown) {
+  if (error instanceof DOMException) {
+    return error.name === 'AbortError';
+  }
+
+  if (error instanceof Error) {
+    return /abort|failed to fetch/i.test(error.message);
+  }
+
+  return false;
+}
+
 export function useProfile() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -31,7 +43,7 @@ export function useProfile() {
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
 
-  const fetchProfile = useCallback(async () => {
+  const fetchProfile = useCallback(async (signal?: AbortSignal) => {
     if (!user?.email) {
       setProfile(null);
       setLoading(false);
@@ -42,7 +54,7 @@ export function useProfile() {
       setLoading(true);
       setError(null);
 
-      const response = await fetchWithUserSession<ProfileData>('/api/profile');
+      const response = await fetchWithUserSession<ProfileData>('/api/profile', { signal });
       if (response.ok === false) {
         if (response.status === 404) {
           setProfile(null);
@@ -52,6 +64,9 @@ export function useProfile() {
       }
       setProfile(response.data);
     } catch (err: any) {
+      if (signal?.aborted || isAbortLikeError(err)) {
+        return;
+      }
       console.error('[useProfile] Error:', err);
       setError(err.message || 'Erro ao carregar perfil');
       setProfile(null);
@@ -61,7 +76,9 @@ export function useProfile() {
   }, [user?.email]);
 
   useEffect(() => {
-    fetchProfile();
+    const controller = new AbortController();
+    fetchProfile(controller.signal);
+    return () => controller.abort();
   }, [fetchProfile]);
 
   const updateProfile = useCallback(async (data: UpdateProfileData) => {
