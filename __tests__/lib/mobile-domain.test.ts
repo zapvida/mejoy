@@ -3,6 +3,10 @@
 
 import {
   buildAdherenceScore,
+  buildGoalProgressItems,
+  buildHealthScore,
+  buildPreventionChecklist,
+  buildReferralGamificationStatus,
   calculateBmi,
   classifyWeightTrend,
   estimateMealFromText,
@@ -55,5 +59,41 @@ describe('mobile domain foundation', () => {
       })
     ).toBeLessThan(60);
     expect(getSleepCoachingTip(5.5)).toContain('cafeína');
+  });
+
+  it('builds score, prevention and referral artifacts for preventive premium flows', () => {
+    const goals = buildGoalProgressItems({
+      tierDurationMonths: 6,
+      completionMap: {
+        'weight-log': true,
+        'dose-log': true,
+        'sleep-sync': true,
+        'prevention-review': true,
+      },
+    });
+
+    const score = buildHealthScore({
+      goals,
+      sleepScore: 82,
+      adherenceScore: 88,
+      preventionDueCount: 1,
+    });
+    const prevention = buildPreventionChecklist({
+      birthDate: '1980-03-12',
+      sexAtBirth: 'female',
+      protocolSlug: 'emagrecimento',
+      riskLevel: 'attention',
+      hasExamDocuments: false,
+    });
+    const referral = buildReferralGamificationStatus({
+      profileId: 'profile-123456',
+      planDurationMonths: 6,
+    });
+
+    expect(goals.some((goal) => goal.id === 'prevention-checkup')).toBe(true);
+    expect(score.overallScore).toBeGreaterThan(0);
+    expect(score.nextBestActions.length).toBeGreaterThan(0);
+    expect(prevention.dueTasks.length).toBeGreaterThan(0);
+    expect(referral.inviteCode).toContain('MEJOY-');
   });
 });

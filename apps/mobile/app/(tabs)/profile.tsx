@@ -12,13 +12,14 @@ import { ScreenShell } from '@/components/screen-shell';
 import { SectionCard } from '@/components/section-card';
 import { useSession } from '@/context/session-context';
 import { trackMobileEvent } from '@/lib/analytics';
-import { getNotifications, getProfile } from '@/lib/api';
+import { getDashboard, getNotifications, getProfile } from '@/lib/api';
 import { formatCampaignLabel } from '@/lib/formatters';
 
 export default function ProfileRoute() {
   const session = useSession();
   const [profile, setProfile] = React.useState<Awaited<ReturnType<typeof getProfile>> | null>(null);
   const [notifications, setNotifications] = React.useState<Awaited<ReturnType<typeof getNotifications>> | null>(null);
+  const [dashboard, setDashboard] = React.useState<Awaited<ReturnType<typeof getDashboard>> | null>(null);
   const [permission, setPermission] = React.useState<Awaited<ReturnType<typeof Notifications.getPermissionsAsync>> | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -27,14 +28,16 @@ export default function ProfileRoute() {
     setLoading(true);
     setError(null);
     try {
-      const [profileResponse, notificationResponse, permissionResponse] = await Promise.all([
+      const [profileResponse, notificationResponse, permissionResponse, dashboardResponse] = await Promise.all([
         getProfile(session),
         getNotifications(session),
         Notifications.getPermissionsAsync(),
+        getDashboard(session),
       ]);
       setProfile(profileResponse);
       setNotifications(notificationResponse);
       setPermission(permissionResponse);
+      setDashboard(dashboardResponse);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar perfil');
     } finally {
@@ -135,12 +138,46 @@ export default function ProfileRoute() {
                 caption={notification.dismissState === 'completed' ? 'Concluído' : 'Abrir fluxo'}
               />
             ))}
+            <ActionTile
+              eyebrow="Detalhe completo"
+              title="Abrir central de notificações"
+              description="Veja prioridades, categorias, quiet hours e toda a fila clínica em uma única tela."
+              href="/notifications-center"
+              tone="brand"
+              caption="Abrir central"
+            />
           </>
         ) : (
           <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
             As preferências aparecem assim que o app sincronizar o centro de notificações.
           </Text>
         )}
+      </SectionCard>
+
+      <SectionCard eyebrow="Plano e benefícios" title="Status do cuidado premium">
+        <ActionTile
+          eyebrow={dashboard?.tier.planId.replace('programa_', '').replace('_', ' ') || 'preview'}
+          title={
+            dashboard?.tier.specialistChannelEligible
+              ? 'Seu plano já cobre o canal premium ativado pela equipe'
+              : 'Seu plano ainda pode destravar mais continuidade'
+          }
+          description={
+            dashboard?.tier.specialistChannelEligible
+              ? 'Referral, prevenção, exames e pedido de especialista já fazem parte da sua experiência.'
+              : 'Veja o comparativo de tiers para entender o que muda ao aprofundar o acompanhamento.'
+          }
+          href={dashboard?.tier.specialistChannelEligible ? '/specialist-request' : '/premium-benefits'}
+          tone="accent"
+          caption={dashboard?.tier.specialistChannelEligible ? 'Pedir ativação' : 'Comparar planos'}
+        />
+        <ActionTile
+          eyebrow="Referral"
+          title="Abrir progresso de indicação"
+          description="Confira código, QR, progresso e próxima recompensa operacional disponível."
+          href="/referral-gamification"
+          caption="Abrir referral"
+        />
       </SectionCard>
 
       <SectionCard eyebrow="Feature flags" title="Capacidades liberadas neste rollout">

@@ -198,6 +198,33 @@ export default function OnboardingRoute() {
       ) : null}
 
       <SectionCard
+        eyebrow="Planos"
+        title="Como o app evolui por duração do cuidado"
+        support="A narrativa comercial precisa ser simples: quanto maior a continuidade, maior a camada de prevenção, suporte e inteligência prática no app."
+      >
+        <ActionTile
+          eyebrow="1 mês"
+          title="Entrada rápida na rotina"
+          description="Dashboard, jornada GLP-1 e Meal AI para organizar execução com baixa fricção."
+          tone="brand"
+          caption="Base do sistema"
+        />
+        <ActionTile
+          eyebrow="3 meses"
+          title="Proteção de consistência"
+          description="Sono, rituais e concierge entram para reduzir recaída e dar mais estabilidade clínica."
+          tone="accent"
+          caption="Mais continuidade"
+        />
+        <ActionTile
+          eyebrow="6 meses"
+          title="Cuidado integral preventivo"
+          description="As 10 features, prevenção, hub de exames, referral e canal premium operado pela equipe."
+          caption="Valor máximo"
+        />
+      </SectionCard>
+
+      <SectionCard
         eyebrow="Entrada inteligente"
         title="Escolha o melhor comeco"
         support="O objetivo aqui e reduzir friccao: voce entra pela porta que melhor combina com o seu momento."

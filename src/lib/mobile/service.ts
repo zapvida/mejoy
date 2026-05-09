@@ -23,6 +23,8 @@ import {
   examListResponseSchema,
   examTimelineItemSchema,
   examUploadInputSchema,
+  goalProgressItemSchema,
+  healthScoreSnapshotSchema,
   journeyResponseSchema,
   mealAnalysisInputSchema,
   mealAnalysisResponseSchema,
@@ -31,8 +33,10 @@ import {
   mobileWeightLogSchema,
   notificationListResponseSchema,
   patientDashboardSchema,
+  preventionChecklistResponseSchema,
   refillRequestInputSchema,
   refillRequestSchema,
+  referralGamificationStatusSchema,
   ritualListResponseSchema,
   ritualSessionInputSchema,
   ritualSessionSchema,
@@ -40,15 +44,23 @@ import {
   sideEffectLogInputSchema,
   sideEffectLogSchema,
   sleepSnapshotSchema,
+  specialistChannelRequestInputSchema,
+  specialistChannelRequestResponseSchema,
+  tierEntitlementSchema,
   wearablesSyncInputSchema,
   wearablesSyncResponseSchema,
   weightLogInputSchema,
 } from '@mejoy/api-contracts/mobile';
-import { buildEntitlementSnapshot } from '@/lib/mejoy-app/value';
+import { buildEntitlementSnapshot, buildLockedFeatures, buildTierEntitlement } from '@/lib/mejoy-app/value';
 import {
   buildAdherenceScore,
+  buildDailyCuriosity,
   buildDashboardInsights,
+  buildGoalProgressItems,
+  buildHealthScore,
   buildJourneyInsights,
+  buildPreventionChecklist,
+  buildReferralGamificationStatus,
   buildRiskStatus,
   calculateBmi,
   classifyWeightTrend,
@@ -87,7 +99,9 @@ type MobileActor = {
 const CARE_REQUEST_ACTION = 'mobile.care_request.created';
 const DOSE_LOG_ACTION = 'mobile.glp1.dose_log.created';
 const EXAM_UPLOAD_ACTION = 'mobile.exam_document.created';
+const GOAL_TOGGLE_ACTION = 'mobile.goal.toggle';
 const REFILL_REQUEST_ACTION = 'mobile.refill_request.created';
+const SPECIALIST_CHANNEL_ACTION = 'mobile.specialist_channel.requested';
 const RITUAL_SESSION_ACTION = 'mobile.ritual_session.created';
 const SHARE_BUNDLE_ACTION = 'mobile.share_bundle.created';
 const SIDE_EFFECT_LOG_ACTION = 'mobile.glp1.side_effect_log.created';
@@ -312,11 +326,51 @@ function deriveEntitlementSeed(params: {
   const relatedProtocol = params.relatedProtocols[0] ?? null;
   const orderLabel = params.recentOrders[0]?.label ?? null;
   const orderProductSlug = orderLabel?.split(' • ')[0]?.trim() || null;
+  const orderPlanSlug = orderLabel?.split(' • ')[1]?.trim() || null;
 
   return {
     protocolSlug: reportProtocolSlug ?? relatedProtocol?.slug ?? orderProductSlug,
     productSlug: relatedProtocol?.slug ?? orderProductSlug,
     productName: relatedProtocol?.title ?? orderLabel,
+    planSlug: orderPlanSlug,
+  };
+}
+
+async function listGoalToggles(actorId: string) {
+  const goalEntries = await findAuditEntries(
+    actorId,
+    GOAL_TOGGLE_ACTION,
+    (input) =>
+      goalProgressItemSchema.pick({
+        id: true,
+        completed: true,
+      }).parse(input),
+    64
+  );
+
+  return goalEntries.reduce<Record<string, boolean>>((accumulator, entry) => {
+    if (!(entry.id in accumulator)) {
+      accumulator[entry.id] = entry.completed;
+    }
+    return accumulator;
+  }, {});
+}
+
+function buildGoalCompletionMap(params: {
+  toggledGoals: Record<string, boolean>;
+  latestWeight: Awaited<ReturnType<typeof listWeightLogs>>[number] | null;
+  latestDose: Awaited<ReturnType<typeof listDoseLogs>>[number] | null;
+  latestSleep: Awaited<ReturnType<typeof getLatestSleepSnapshot>>;
+  ritualSessionsCompleted: number;
+  hasExamDocuments: boolean;
+}) {
+  return {
+    'weight-log': Boolean(params.latestWeight),
+    'dose-log': Boolean(params.latestDose),
+    'sleep-sync': Boolean(params.latestSleep?.recordedAt),
+    'ritual-session': params.ritualSessionsCompleted > 0,
+    'prevention-checkup': params.hasExamDocuments,
+    ...params.toggledGoals,
   };
 }
 
@@ -400,6 +454,7 @@ export async function buildMobileDashboard(params: { email: string | null; profi
   const examDocuments = actor.actorId ? await listExamDocuments(actor.actorId) : [];
   const latestCareRequest = actor.actorId ? await getLatestCareRequest(actor.actorId) : null;
   const latestRefill = actor.actorId ? (await listRefillRequests(actor.actorId))[0] || null : null;
+  const goalToggles = actor.actorId ? await listGoalToggles(actor.actorId) : {};
 
   const recentOrders = [...baseDashboard.orders.storeV2, ...baseDashboard.orders.protocol]
     .slice(0, 6)
@@ -458,6 +513,15 @@ export async function buildMobileDashboard(params: { email: string | null; profi
     adherenceScore,
     stressSignal: riskStatus.level !== 'low',
   });
+  const ritualSessions = actor.actorId ? await listRitualSessions(actor.actorId) : [];
+  const goalCompletionMap = buildGoalCompletionMap({
+    toggledGoals: goalToggles,
+    latestWeight,
+    latestDose,
+    latestSleep,
+    ritualSessionsCompleted: ritualSessions.filter((session) => session.outcome === 'completed').length,
+    hasExamDocuments: examDocuments.length > 0,
+  });
   const insights = buildDashboardInsights({
     adherenceScore,
     sleepScore: latestSleep?.score ?? null,
@@ -495,7 +559,45 @@ export async function buildMobileDashboard(params: { email: string | null; profi
     hasRecentSleepSignal: Boolean(latestSleep?.recordedAt),
     hasRecentExams: examDocuments.length > 0,
     hasRefillFlow: Boolean(latestRefill),
+    planSlug: entitlementSeed.planSlug,
   });
+  const rawTier = buildTierEntitlement({
+    activationState: entitlements.activationState,
+    planSlug: entitlementSeed.planSlug,
+    productName: entitlementSeed.productName,
+  });
+  const tier = tierEntitlementSchema.parse(rawTier);
+  const goals = goalProgressItemSchema.array().parse(
+    buildGoalProgressItems({
+      completionMap: goalCompletionMap,
+      tierDurationMonths: tier.durationMonths,
+    })
+  );
+  const prevention = preventionChecklistResponseSchema.parse(
+    buildPreventionChecklist({
+      birthDate: actor.profile?.birthDate ?? null,
+      sexAtBirth: actor.profile?.sex ?? null,
+      protocolSlug: entitlements.protocolContext.primaryProtocolSlug,
+      riskLevel: riskStatus.level,
+      hasExamDocuments: examDocuments.length > 0,
+    })
+  );
+  const healthScore = healthScoreSnapshotSchema.parse(
+    buildHealthScore({
+      goals,
+      sleepScore: latestSleep?.score ?? null,
+      adherenceScore,
+      preventionDueCount: prevention.dueTasks.length,
+    })
+  );
+  const dailyCuriosity = buildDailyCuriosity(entitlements.protocolContext.primaryProtocolSlug);
+  const referral = referralGamificationStatusSchema.parse(
+    buildReferralGamificationStatus({
+      profileId: actor.profile?.id ?? actor.actorId,
+      planDurationMonths: tier.durationMonths,
+    })
+  );
+  const lockedFeatures = buildLockedFeatures(rawTier);
 
   return patientDashboardSchema.parse({
     generatedAt: new Date().toISOString(),
@@ -514,6 +616,8 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       summary: baseDashboard.journey.summary,
       primaryAction: baseDashboard.journey.primaryAction || null,
     },
+    tier,
+    lockedFeatures,
     metrics: {
       bmi: latestWeight?.bmi ?? actor.profile?.bmi ?? null,
       currentWeightKg: latestWeight?.weightKg ?? actor.profile?.weightKg ?? null,
@@ -529,6 +633,10 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       sideEffectFlags: [...new Set([...sideEffectLogs.map((log) => log.symptom), ...(latestDose?.sideEffects ?? [])])].slice(0, 6),
     },
     sleep: sleepSummary,
+    healthScore,
+    prevention,
+    goals,
+    dailyCuriosity,
     insights,
     ritualSuggestion,
     refill: latestRefill,
@@ -546,6 +654,7 @@ export async function buildMobileDashboard(params: { email: string | null; profi
       latestRequestStatus: latestCareRequest?.status ?? null,
       conciergeSlaHours: latestCareRequest?.conciergeSlaHours ?? 12,
     },
+    referral,
   });
 }
 
@@ -615,6 +724,69 @@ export async function getNotificationFeed(params: { email: string | null; profil
     },
     featureFlags: dashboard.featureFlags,
   });
+}
+
+export async function getHealthScore(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const dashboard = await buildMobileDashboard(params);
+  return healthScoreSnapshotSchema.parse(dashboard.healthScore);
+}
+
+export async function getPreventionChecklist(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const dashboard = await buildMobileDashboard(params);
+  return preventionChecklistResponseSchema.parse(dashboard.prevention);
+}
+
+export async function getTierDetails(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const dashboard = await buildMobileDashboard(params);
+  return tierEntitlementSchema.parse(dashboard.tier);
+}
+
+export async function getReferralStatus(params: { email: string | null; profile?: ProfileRecord | null }) {
+  const dashboard = await buildMobileDashboard(params);
+  return referralGamificationStatusSchema.parse(dashboard.referral);
+}
+
+export async function toggleGoalProgress(params: {
+  actorId: string;
+  input: unknown;
+}) {
+  const parsedInput = goalProgressItemSchema
+    .pick({
+      id: true,
+      completed: true,
+    })
+    .parse(params.input);
+
+  const payload = goalProgressItemSchema.parse({
+    id: parsedInput.id,
+    title: parsedInput.id,
+    pillar: 'adherence',
+    completed: parsedInput.completed,
+    scoreImpact: 1,
+    requiresProof: false,
+    dueAt: null,
+  });
+
+  await createAuditEntry(params.actorId, GOAL_TOGGLE_ACTION, payload);
+  return payload;
+}
+
+export async function requestSpecialistChannel(params: {
+  actorId: string;
+  input: unknown;
+}) {
+  const parsedInput = specialistChannelRequestInputSchema.parse(params.input);
+  const payload = specialistChannelRequestResponseSchema.parse({
+    id: crypto.randomUUID(),
+    status: 'queued_for_review',
+    specialty: parsedInput.specialty,
+    createdAt: new Date().toISOString(),
+    slaHours: 24,
+    nextStep: 'A equipe vai revisar contexto, tier e objetivo antes de ativar a melhor linha de cuidado.',
+  });
+
+  await createAuditEntry(params.actorId, SPECIALIST_CHANNEL_ACTION, payload);
+  return payload;
 }
 
 export async function createWeightLog(params: {

@@ -78,6 +78,13 @@ function AppRuntimeBridge() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="activation-complete" options={{ title: 'Ativação', headerLargeTitle: false }} />
         <Stack.Screen name="sign-in" options={{ title: 'Acesso MeJoy' }} />
+        <Stack.Screen name="review/[screenId]" options={{ title: 'Review de tela', headerLargeTitle: false }} />
+        <Stack.Screen name="goals" options={{ title: 'Metas do dia' }} />
+        <Stack.Screen name="prevention-checklist" options={{ title: 'Checklist preventivo' }} />
+        <Stack.Screen name="notifications-center" options={{ title: 'Notificações' }} />
+        <Stack.Screen name="referral-gamification" options={{ title: 'Referral MeJoy' }} />
+        <Stack.Screen name="premium-benefits" options={{ title: 'Benefícios dos planos' }} />
+        <Stack.Screen name="specialist-request" options={{ title: 'Canal premium' }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="meal-analysis"

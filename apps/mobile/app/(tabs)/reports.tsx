@@ -145,6 +145,12 @@ export default function ReportsRoute() {
           href="/exam-upload"
           tone="accent"
         />
+        <ActionTile
+          eyebrow="Prevenção"
+          title="Revisar checklist preventivo"
+          description="Transforme relatórios e exames em ação preventiva, não só em arquivo guardado."
+          href="/prevention-checklist"
+        />
       </SectionCard>
     </ScreenShell>
   );

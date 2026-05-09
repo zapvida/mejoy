@@ -32,6 +32,7 @@ describe('mejoy app value and entitlement snapshot', () => {
     const entitlement = buildEntitlementSnapshot({
       email: 'paciente@mejoy.com.br',
       productSlug: 'emagrecimento',
+      planSlug: 'programa-6m',
       recentOrdersCount: 1,
       recentReportsCount: 1,
       riskLevel: 'high',
@@ -44,6 +45,8 @@ describe('mejoy app value and entitlement snapshot', () => {
     expect(entitlement.protocolContext.primaryProtocolSlug).toBe('emagrecimento');
     expect(entitlement.recommendedModules).toContain('consult');
     expect(entitlement.recommendedModules).toContain('sleep');
+    expect(entitlement.planId).toBe('programa_6m');
+    expect(entitlement.unlockedFeatures).toContain('prevention');
     expect(entitlement.recommendedActions.some((action) => action.href === '/consult-request')).toBe(true);
   });
 });
