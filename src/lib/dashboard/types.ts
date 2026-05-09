@@ -154,6 +154,17 @@ export interface CustomerClinicalSummary {
   status: ClinicalHandoffState;
   latestHandoffId: string | null;
   lastUpdatedAt: string | null;
+  prescriptionState?: "not_started" | "issued";
+  medicationState?: "not_started" | "quoted" | "paid" | "in_transit" | "delivered";
+  followupState?: "idle" | "required" | "active";
+  nextBestAction?:
+    | "book_consult"
+    | "review_prescription"
+    | "complete_checkout"
+    | "track_delivery"
+    | "start_treatment"
+    | "schedule_followup"
+    | "keep_followup";
   timeline: OrderTimelineEvent[];
 }
 

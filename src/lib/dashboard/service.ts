@@ -27,6 +27,10 @@ import type {
   OrderTimelineEvent,
 } from "@/lib/dashboard/types";
 import {
+  deriveEcosystemJourneySignals,
+  type DashboardEcosystemEvent,
+} from "@/lib/dashboard/ecosystem-journey";
+import {
   getRelatedProtocols,
   getSupportedProtocolBySlug,
 } from "@/lib/emagrecimento/protocolCatalog";
@@ -45,6 +49,15 @@ type HandoffEventRow = {
   program_slug: string | null;
   created_at: string;
   metadata?: Record<string, unknown> | null;
+};
+
+type EcosystemEventRow = {
+  event_id: string;
+  event_name: string;
+  correlation_id: string;
+  source_system: string | null;
+  occurred_at: string;
+  payload?: Record<string, unknown> | null;
 };
 
 const SUPPORT_EMAIL = process.env.EMAIL_REPLY_TO || "suporte@mejoy.com.br";
@@ -379,6 +392,87 @@ function mapHandoffLabel(status: string): string {
   return labels[status] || status;
 }
 
+function mapEcosystemEventLabel(eventName: string): string {
+  const labels: Record<string, string> = {
+    "clinical.consult.completed": "Consulta concluída",
+    "prescription.created": "Prescrição criada",
+    "prescription.signed": "Prescrição assinada",
+    "quote.created": "Cotação criada",
+    "payment.confirmed": "Pagamento confirmado",
+    "order.in_transit": "Pedido em rota",
+    "order.delivered": "Entrega concluída",
+    "program.purchased": "Programa ativado",
+    "program.task.unlocked": "Tarefa liberada",
+    "program.followup.required": "Follow-up necessário",
+  };
+
+  return labels[eventName] || eventName;
+}
+
+function mapEcosystemEventDescription(event: EcosystemEventRow): string {
+  const sourceLabel = event.source_system || "ecossistema";
+
+  switch (event.event_name) {
+    case "clinical.consult.completed":
+      return `A consulta foi concluída e o contexto clínico voltou para o painel a partir de ${sourceLabel}.`;
+    case "prescription.created":
+    case "prescription.signed":
+      return `A prescrição já está disponível e pode seguir para compra ou continuidade sem perder contexto.`;
+    case "quote.created":
+      return `O fluxo farmacêutico já produziu uma cotação vinculada à mesma jornada.`;
+    case "payment.confirmed":
+      return `O pagamento foi confirmado e a etapa operacional já pode avançar.`;
+    case "order.in_transit":
+      return `O medicamento já está em rota de entrega com atualização operacional do ecossistema.`;
+    case "order.delivered":
+      return `A entrega foi concluída e a jornada entra em fase de adesão e acompanhamento.`;
+    case "program.purchased":
+      return `O programa foi ativado e já pode destravar próximos passos de cuidado.`;
+    case "program.task.unlocked":
+      return `Uma nova tarefa do programa foi liberada com base no estado real da jornada.`;
+    case "program.followup.required":
+      return `A jornada identificou necessidade de retorno para manter continuidade e resultado.`;
+    default:
+      return `Evento ${event.event_name} recebido de ${sourceLabel}.`;
+  }
+}
+
+function extractCorrelationIdsFromHandoffEvents(
+  handoffEvents: HandoffEventRow[],
+  storeOrderSummaries: CustomerOrderSummary[],
+): string[] {
+  const values = new Set<string>();
+
+  for (const event of handoffEvents) {
+    const metadata = event.metadata || {};
+    const candidates = [
+      typeof metadata.correlation_id === "string"
+        ? metadata.correlation_id
+        : null,
+      typeof metadata.correlationId === "string" ? metadata.correlationId : null,
+      event.order_id,
+      event.handoff_id,
+    ];
+
+    for (const candidate of candidates) {
+      if (typeof candidate !== "string") continue;
+      const normalized = candidate.trim();
+      if (normalized) {
+        values.add(normalized);
+      }
+    }
+  }
+
+  for (const order of storeOrderSummaries) {
+    const normalized = order.id.trim();
+    if (normalized) {
+      values.add(normalized);
+    }
+  }
+
+  return Array.from(values);
+}
+
 function normalizeProfile(profile: any): CustomerProfileSummary {
   return {
     id: profile.id,
@@ -494,6 +588,33 @@ async function getHandoffEventsForCustomer(params: {
   return deduped;
 }
 
+async function getEcosystemEventsForCustomer(params: {
+  correlationIds: string[];
+  degradedReasons: DegradedReason[];
+}): Promise<EcosystemEventRow[]> {
+  if (!hasSupabaseAdminConfig || params.correlationIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("ecosystem_events")
+    .select("event_id,event_name,correlation_id,source_system,occurred_at,payload")
+    .in("correlation_id", params.correlationIds.slice(0, 50))
+    .order("occurred_at", { ascending: false })
+    .limit(200);
+
+  if (error) {
+    pushReason(params.degradedReasons, {
+      source: "ecosystem",
+      message: `Falha ao buscar eventos canônicos do ecossistema: ${error.message}`,
+      severity: "warning",
+    });
+    return [];
+  }
+
+  return (data || []) as EcosystemEventRow[];
+}
+
 function orderSupportHref(orderId: string | null | undefined): string {
   if (!orderId) return "/dashboard#support";
   return `/pedidos/${orderId}`;
@@ -521,7 +642,73 @@ function buildNextActionCard(params: {
   latestOrder: CustomerOrderSummary | null;
   latestReport: CustomerReportSummary | null;
   latestClinicalStatus: ClinicalHandoffState;
+  ecosystemSignals?: ReturnType<typeof deriveEcosystemJourneySignals>;
 }): CustomerNextAction {
+  if (params.ecosystemSignals?.followupState === "required") {
+    return {
+      eyebrow: "Follow-up necessário",
+      title: "Agendar seu próximo acompanhamento",
+      body: "A jornada já sinalizou necessidade de retorno. O próximo ganho de resultado vem de follow-up, ajuste e continuidade clínica.",
+      eta: "Priorize hoje",
+      cta:
+        params.primaryAction || {
+          label: "Ver jornada clínica",
+          href: "/dashboard#clinical",
+          variant: "primary",
+        },
+    };
+  }
+
+  if (
+    params.ecosystemSignals?.prescriptionState === "issued" &&
+    params.ecosystemSignals.medicationState !== "paid" &&
+    params.ecosystemSignals.medicationState !== "in_transit" &&
+    params.ecosystemSignals.medicationState !== "delivered"
+  ) {
+    return {
+      eyebrow: "Prescrição disponível",
+      title: "Converter a prescrição em compra ou continuidade",
+      body: "Sua prescrição já foi emitida. Agora o foco é sair da clínica com o próximo passo resolvido, sem perder o contexto do tratamento.",
+      eta: "Ação recomendada agora",
+      cta:
+        params.primaryAction || {
+          label: "Ver jornada clínica",
+          href: "/dashboard#clinical",
+          variant: "primary",
+        },
+    };
+  }
+
+  if (params.ecosystemSignals?.medicationState === "in_transit") {
+    return {
+      eyebrow: "Pedido em rota",
+      title: "Acompanhar entrega e preparar o início do tratamento",
+      body: "Seu medicamento já está a caminho. O melhor próximo passo é acompanhar a entrega e deixar o plano pronto para começar sem atraso.",
+      eta: "Conforme transportadora",
+      cta:
+        params.primaryAction || {
+          label: "Ver pedido",
+          href: "/dashboard#orders",
+          variant: "primary",
+        },
+    };
+  }
+
+  if (params.ecosystemSignals?.medicationState === "delivered") {
+    return {
+      eyebrow: "Pós-entrega",
+      title: "Iniciar tratamento e manter adesão alta",
+      body: "A entrega já aconteceu. Agora o ganho vem de começar direito, acompanhar sinais de tolerância e não quebrar a continuidade da jornada.",
+      eta: "Hoje",
+      cta:
+        params.primaryAction || {
+          label: "Ver suporte",
+          href: "/dashboard#support",
+          variant: "secondary",
+        },
+    };
+  }
+
   switch (params.state) {
     case "checkout_pending":
       return {
@@ -901,7 +1088,29 @@ export async function buildMeDashboard(params: {
   const latestProtocolOrder = protocolOrderSummaries[0] || null;
   const latestReport = reportSummaries[0] || null;
   const latestHandoff = handoffEvents[0] || null;
-  const latestClinicalStatus = mapClinicalState(latestHandoff?.status);
+  const correlationIds = extractCorrelationIdsFromHandoffEvents(
+    handoffEvents,
+    storeOrderSummaries,
+  );
+  const ecosystemEvents = await getEcosystemEventsForCustomer({
+    correlationIds,
+    degradedReasons,
+  });
+  const dashboardEcosystemEvents: DashboardEcosystemEvent[] = ecosystemEvents.map(
+    (event) => ({
+      eventName: event.event_name,
+      occurredAt: event.occurred_at,
+      sourceSystem: event.source_system,
+      payload: event.payload ?? null,
+    }),
+  );
+  const ecosystemSignals =
+    dashboardEcosystemEvents.length > 0
+      ? deriveEcosystemJourneySignals(dashboardEcosystemEvents)
+      : null;
+  const latestClinicalStatus =
+    ecosystemSignals?.clinicalStatusOverride ??
+    mapClinicalState(latestHandoff?.status);
   const latestAnswers = (triageSessions[0]?.answers || {}) as Record<
     string,
     any
@@ -912,9 +1121,7 @@ export async function buildMeDashboard(params: {
     triageSessions,
   });
 
-  const state: CustomerJourneyState = (() => {
-    if (!profile) return "action_required";
-
+  const localOrderState: CustomerJourneyState | null = (() => {
     if (latestStoreOrder?.status === "PENDING_PAYMENT")
       return "checkout_pending";
     if (
@@ -925,6 +1132,21 @@ export async function buildMeDashboard(params: {
       )
     ) {
       return "rx_pending";
+    }
+    if (latestStoreOrder?.status === "PAID") return "payment_confirmed";
+    if (latestStoreOrder?.status === "PREPARING") return "fulfillment";
+    if (latestStoreOrder?.status === "SHIPPED") return "shipped";
+    if (latestStoreOrder?.status === "DELIVERED") return "delivered";
+    if (latestProtocolOrder?.status === "PAID") return "payment_confirmed";
+    return null;
+  })();
+
+  const state: CustomerJourneyState = (() => {
+    if (!profile) return "action_required";
+
+    if (localOrderState) return localOrderState;
+    if (ecosystemSignals?.journeyStateOverride) {
+      return ecosystemSignals.journeyStateOverride;
     }
     if (latestClinicalStatus === "blocked") return "action_required";
     if (
@@ -940,13 +1162,8 @@ export async function buildMeDashboard(params: {
     ) {
       return "consult_in_progress";
     }
-    if (latestStoreOrder?.status === "PAID") return "payment_confirmed";
-    if (latestStoreOrder?.status === "PREPARING") return "fulfillment";
-    if (latestStoreOrder?.status === "SHIPPED") return "shipped";
-    if (latestStoreOrder?.status === "DELIVERED") return "delivered";
     if (latestReport && latestReport.status === "completed")
       return "report_ready";
-    if (latestProtocolOrder?.status === "PAID") return "payment_confirmed";
     return "action_required";
   })();
 
@@ -970,15 +1187,14 @@ export async function buildMeDashboard(params: {
     }
 
     if (
-      (state === "payment_confirmed" ||
-        state === "fulfillment" ||
-        state === "shipped" ||
-        state === "delivered") &&
-      latestStoreOrder?.href
+      state === "payment_confirmed" ||
+      state === "fulfillment" ||
+      state === "shipped" ||
+      state === "delivered"
     ) {
       return {
-        label: "Ver pedido",
-        href: latestStoreOrder.href,
+        label: latestStoreOrder?.href ? "Ver pedido" : "Acompanhar jornada",
+        href: latestStoreOrder?.href || "/dashboard#orders",
         variant: "primary",
       };
     }
@@ -991,7 +1207,11 @@ export async function buildMeDashboard(params: {
       };
     }
 
-    if (state === "handoff_pending" || state === "consult_in_progress") {
+    if (
+      state === "rx_pending" ||
+      state === "handoff_pending" ||
+      state === "consult_in_progress"
+    ) {
       return {
         label: "Ver jornada clínica",
         href: "/dashboard#clinical",
@@ -1020,6 +1240,7 @@ export async function buildMeDashboard(params: {
     latestOrder: latestStoreOrder || latestProtocolOrder,
     latestReport,
     latestClinicalStatus,
+    ecosystemSignals: ecosystemSignals || undefined,
   });
   const careHighlights = buildCareHighlights({
     profile,
@@ -1115,7 +1336,24 @@ export async function buildMeDashboard(params: {
             : "done",
     }));
 
+  const ecosystemTimeline: OrderTimelineEvent[] = ecosystemEvents
+    .slice(0, 8)
+    .map((event, index) => ({
+      id: `ecosystem-${event.event_id}`,
+      at: event.occurred_at,
+      label: mapEcosystemEventLabel(event.event_name),
+      description: mapEcosystemEventDescription(event),
+      source: "system",
+      status:
+        index === 0 &&
+        ecosystemSignals?.nextBestAction !== "start_treatment" &&
+        event.event_name !== "order.delivered"
+          ? "current"
+          : "done",
+    }));
+
   allTimelineEvents.push(...clinicalTimeline);
+  allTimelineEvents.push(...ecosystemTimeline);
   allTimelineEvents.sort(
     (a, b) => new Date(b.at || 0).getTime() - new Date(a.at || 0).getTime(),
   );
@@ -1211,8 +1449,18 @@ export async function buildMeDashboard(params: {
     clinical: {
       status: latestClinicalStatus,
       latestHandoffId: latestHandoff?.handoff_id || null,
-      lastUpdatedAt: latestHandoff?.created_at || null,
-      timeline: clinicalTimeline,
+      lastUpdatedAt:
+        ecosystemEvents[0]?.occurred_at || latestHandoff?.created_at || null,
+      prescriptionState: ecosystemSignals?.prescriptionState,
+      medicationState: ecosystemSignals?.medicationState,
+      followupState: ecosystemSignals?.followupState,
+      nextBestAction: ecosystemSignals?.nextBestAction,
+      timeline: [...ecosystemTimeline, ...clinicalTimeline]
+        .sort(
+          (a, b) =>
+            new Date(b.at || 0).getTime() - new Date(a.at || 0).getTime(),
+        )
+        .slice(0, 12),
     },
     support: {
       whatsappUrl: `${SUPPORT_WHATSAPP}?text=${encodeURIComponent("Olá! Preciso de ajuda com minha jornada no dashboard MeJoy.")}`,
