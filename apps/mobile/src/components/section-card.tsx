@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 
-import { colors, radii, shadows, spacing, typography } from '@mejoy/design-tokens';
+import { colors, spacing, typography } from '@mejoy/design-tokens';
+import { PremiumCard } from '@/components/premium-card';
 
 export function SectionCard({
   eyebrow,
@@ -15,21 +16,8 @@ export function SectionCard({
   children: React.ReactNode;
   tone?: 'default' | 'muted';
 }) {
-  const backgroundColor = tone === 'muted' ? colors.cardSubtle : colors.card;
-
   return (
-    <View
-      style={{
-        backgroundColor,
-        borderRadius: radii.lg,
-        borderCurve: 'continuous',
-        padding: spacing.xl,
-        gap: spacing.md,
-        borderWidth: 1,
-        borderColor: colors.border,
-        boxShadow: shadows.elevation1,
-      }}
-    >
+    <PremiumCard tone={tone === 'muted' ? 'muted' : 'default'}>
       {eyebrow ? (
         <Text
           selectable
@@ -55,6 +43,6 @@ export function SectionCard({
         </Text>
       ) : null}
       {children}
-    </View>
+    </PremiumCard>
   );
 }

@@ -1,380 +1,537 @@
 {
-  "generatedAt": "2026-05-09T17:51:14.211Z",
+  "generatedAt": "2026-05-09T20:29:59.974Z",
   "reviewPack": "mejoy-native-release-review",
-  "totalScreens": 25,
+  "totalScreens": 33,
   "screens": [
     {
-      "screenId": "00-onboarding",
+      "screenId": "00-splash-premium",
       "route": "/onboarding",
       "tier": "preview",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Aquisição",
-      "title": "Entre no cuidado premium MeJoy",
-      "summary": "Avaliação, comparação de planos e explicação visual do que o app adiciona ao produto web.",
+      "eyebrow": "Splash",
+      "title": "MeJoy, seu cuidado integral em uma interface só",
+      "summary": "A entrada precisa parecer premium, médica e simples: sem ruído, sem template barato e com valor entendido em segundos.",
       "badge": {
-        "label": "preview",
-        "tone": "attention"
+        "label": "store-safe v1",
+        "tone": "good"
       },
       "metrics": [
         {
-          "label": "Planos",
-          "value": "3",
-          "caption": "1, 3 e 6 meses",
+          "label": "Ecossistema",
+          "value": "4 hubs",
+          "caption": "MeJoy, ZapVida, Aimnesis e ZapFarm",
           "tone": "brand"
         },
         {
-          "label": "Features",
-          "value": "10",
-          "caption": "No plano completo",
+          "label": "Experiência",
+          "value": "1 fluxo",
+          "caption": "paciente no centro",
           "tone": "accent"
         }
       ],
       "sections": [
         {
-          "eyebrow": "Planos",
-          "title": "Como o valor cresce com a continuidade",
+          "eyebrow": "Valor",
+          "title": "O paciente entra e já entende o que ganha",
+          "items": [
+            {
+              "type": "text",
+              "body": "Plano, IA, médico, GLP-1, farmácia, sono e comportamento entram em uma experiência única de saúde integral."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/00-splash-premium.svg",
+      "pngFile": "screenshots/iphone-png/00-splash-premium.png",
+      "htmlFile": "html/00-splash-premium.html"
+    },
+    {
+      "screenId": "01-onboarding-premium",
+      "route": "/onboarding",
+      "tier": "preview",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Onboarding",
+      "title": "Agora você entende seu plano, o que fazer hoje e quem cuida com você",
+      "summary": "O onboarding deixa claro o valor do app sem virar apresentação longa demais.",
+      "badge": {
+        "label": "claro em 5s",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "Promessa real",
+          "title": "Três pilares que o app já mostra",
           "items": [
             {
               "type": "action",
-              "eyebrow": "1 mês",
-              "title": "Entrada rápida na rotina",
-              "description": "Dashboard, jornada GLP-1 e Meal AI com baixa fricção.",
+              "eyebrow": "Hoje",
+              "title": "Check-in, score e próxima ação",
+              "description": "O paciente sabe o que fazer no primeiro minuto.",
               "tone": "brand"
             },
             {
               "type": "action",
-              "eyebrow": "3 meses",
-              "title": "Proteção de consistência",
-              "description": "Sono, rituais e concierge clínico entram na rotina.",
+              "eyebrow": "Médico",
+              "title": "Telemedicina com resumo automático",
+              "description": "O atendimento começa com contexto e menos repetição.",
               "tone": "accent"
             },
             {
               "type": "action",
-              "eyebrow": "6 meses",
-              "title": "Cuidado integral preventivo",
-              "description": "As 10 features, prevenção, exames e canal premium governado."
+              "eyebrow": "Farmácia",
+              "title": "Prescrição, pedido e recompra organizados",
+              "description": "Tudo em um fluxo legível e seguro."
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/00-onboarding.svg",
-      "pngFile": "screenshots/iphone-png/00-onboarding.png",
-      "htmlFile": "html/00-onboarding.html"
+      "svgFile": "screenshots/iphone/01-onboarding-premium.svg",
+      "pngFile": "screenshots/iphone-png/01-onboarding-premium.png",
+      "htmlFile": "html/01-onboarding-premium.html"
     },
     {
-      "screenId": "01-sign-in",
-      "route": "/sign-in",
+      "screenId": "02-checkup-inicial",
+      "route": "/checkup",
       "tier": "preview",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Acesso",
-      "title": "Entrar na conta MeJoy",
-      "summary": "Acesso simples, sem ruído, já alinhado ao contexto do paciente.",
+      "eyebrow": "Check-up inicial",
+      "title": "Vamos entender seu ponto de partida em poucos minutos",
+      "summary": "Idade, rotina, peso, sintomas, objetivo e prevenção entram de forma simples para personalizar a jornada.",
       "badge": {
-        "label": "fluxo limpo",
+        "label": "2 min",
         "tone": "good"
       },
+      "metrics": [
+        {
+          "label": "Perguntas",
+          "value": "8",
+          "caption": "sem enrolação",
+          "tone": "brand"
+        },
+        {
+          "label": "Saída",
+          "value": "1 plano",
+          "caption": "com próxima ação",
+          "tone": "accent"
+        }
+      ],
       "sections": [
         {
-          "eyebrow": "Credenciais",
-          "title": "Entrada com fricção mínima",
+          "eyebrow": "O que entra",
+          "title": "Dados suficientes para um plano claro",
           "items": [
             {
-              "type": "text",
-              "body": "Email, senha e retorno imediato para a home personalizada."
+              "type": "timeline",
+              "title": "Peso, meta e fase atual",
+              "subtitle": "Sem pedir mais do que o paciente consegue informar.",
+              "tone": "success"
             },
             {
-              "type": "badges",
-              "badges": [
-                {
-                  "label": "deep link pronto",
-                  "tone": "good"
-                },
-                {
-                  "label": "retorno ao dashboard",
-                  "tone": "low"
-                }
-              ]
+              "type": "timeline",
+              "title": "Sono, compulsão e energia",
+              "subtitle": "O app usa isso para priorizar próximas ações.",
+              "tone": "default"
+            },
+            {
+              "type": "timeline",
+              "title": "Prevenção e consultas pendentes",
+              "subtitle": "A jornada começa antes do problema explodir.",
+              "tone": "warning"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/01-sign-in.svg",
-      "pngFile": "screenshots/iphone-png/01-sign-in.png",
-      "htmlFile": "html/01-sign-in.html"
+      "svgFile": "screenshots/iphone/02-checkup-inicial.svg",
+      "pngFile": "screenshots/iphone-png/02-checkup-inicial.png",
+      "htmlFile": "html/02-checkup-inicial.html"
     },
     {
-      "screenId": "02-activation",
-      "route": "/activation-complete",
+      "screenId": "03-checkup-resultado",
+      "route": "/checkup-result",
       "tier": "preview",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Ativação",
-      "title": "Compra concluída, app pronto",
-      "summary": "Tela de retorno elegante, com status claro e atalho direto para a área do paciente.",
+      "eyebrow": "Plano personalizado",
+      "title": "Seu plano foi ativado com uma próxima ação simples",
+      "summary": "Em vez de soltar um texto longo, o app mostra o que fazer hoje e como isso move o seu tratamento.",
       "badge": {
-        "label": "retorno limpo",
+        "label": "pronto",
         "tone": "good"
       },
+      "metrics": [
+        {
+          "label": "Meta 90 dias",
+          "value": "-8 kg",
+          "caption": "com foco em constância",
+          "tone": "brand"
+        },
+        {
+          "label": "Primeira prioridade",
+          "value": "check-in",
+          "caption": "abrir hoje",
+          "tone": "accent"
+        }
+      ],
       "sections": [
         {
-          "eyebrow": "Pagamento",
-          "title": "O próximo passo fica óbvio",
+          "eyebrow": "Leitura do momento",
+          "title": "O que mais mexe no seu resultado agora",
           "items": [
             {
               "type": "action",
-              "eyebrow": "Ativado",
-              "title": "Abrir meu painel MeJoy",
-              "description": "A partir daqui o paciente entra no cockpit preventivo e longitudinal.",
+              "eyebrow": "Hoje",
+              "title": "Registrar como você está se sentindo",
+              "description": "Seus sintomas e sua energia mudam a orientação do dia.",
+              "caption": "Abrir fluxo",
               "tone": "brand"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Semana",
+              "title": "Proteger água, proteína e sono",
+              "description": "Esses três pilares diminuem atrito e sustentam adesão.",
+              "caption": "Abrir fluxo",
+              "tone": "accent"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/02-activation.svg",
-      "pngFile": "screenshots/iphone-png/02-activation.png",
-      "htmlFile": "html/02-activation.html"
+      "svgFile": "screenshots/iphone/03-checkup-resultado.svg",
+      "pngFile": "screenshots/iphone-png/03-checkup-resultado.png",
+      "htmlFile": "html/03-checkup-resultado.html"
     },
     {
-      "screenId": "03-home-score",
-      "route": "/(tabs)",
+      "screenId": "04-hoje-dashboard",
+      "route": "/",
       "tier": "6m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Home",
-      "title": "Saúde em 78/100 hoje",
-      "summary": "Home com score, pilares, próxima ação, metas e leitura editorial do dia.",
+      "eyebrow": "Hoje",
+      "title": "Seu dia está organizado com score, próxima ação e suporte médico",
+      "summary": "A home virou cockpit: check-in, GLP-1, refeição, sintomas, sono, médico e farmácia convivem sem poluição.",
       "badge": {
-        "label": "consistente",
+        "label": "home aprovada",
         "tone": "good"
       },
       "metrics": [
         {
           "label": "Score",
-          "value": "78",
-          "caption": "Consistência boa",
+          "value": "78/100",
+          "caption": "hábitos + adesão + prevenção",
           "tone": "brand"
         },
         {
+          "label": "GLP-1",
+          "value": "7,5 mg",
+          "caption": "dose atual",
+          "tone": "accent"
+        },
+        {
           "label": "Sono",
-          "value": "84",
-          "caption": "Protegendo recuperação",
+          "value": "84/100",
+          "caption": "snapshot recente",
           "tone": "warning"
         },
         {
-          "label": "Adesão",
-          "value": "89%",
-          "caption": "Dose e rotina",
-          "tone": "accent"
+          "label": "Plano",
+          "value": "Dia 28",
+          "caption": "de 90 dias",
+          "tone": "default"
         }
       ],
       "sections": [
         {
-          "eyebrow": "Pilares",
-          "title": "O que está puxando o score hoje",
+          "eyebrow": "Primeira dobra",
+          "title": "O usuário entende a tela em até 5 segundos",
           "items": [
             {
-              "type": "timeline",
-              "title": "Alimentação · 14/20",
-              "subtitle": "Meal AI e refeição principal já confirmados.",
-              "tone": "success"
+              "type": "action",
+              "eyebrow": "CTA principal",
+              "title": "Começar check-in de hoje",
+              "description": "Sintomas, energia, fome e sono entram num fluxo curto e claro.",
+              "tone": "brand"
             },
             {
-              "type": "timeline",
-              "title": "Movimento · 8/20",
-              "subtitle": "Força ainda está pendente nesta janela.",
-              "tone": "warning"
+              "type": "action",
+              "eyebrow": "CTA secundário",
+              "title": "Falar com médico agora",
+              "description": "Resumo clínico já segue antes do contato com a equipe.",
+              "tone": "accent"
+            }
+          ]
+        },
+        {
+          "eyebrow": "As 10 features",
+          "title": "Tudo aparece como bloco útil, não como vitrine solta",
+          "items": [
+            {
+              "type": "action",
+              "eyebrow": "Meal AI",
+              "title": "Fotografe ou descreva a refeição",
+              "description": "A IA estima macros, qualidade metabólica e a melhor próxima troca.",
+              "tone": "brand"
             },
             {
-              "type": "timeline",
-              "title": "Prevenção · 12/20",
-              "subtitle": "Checklist do mês foi revisado.",
-              "tone": "success"
+              "type": "action",
+              "eyebrow": "Scanner",
+              "title": "Leia o rótulo antes de comprar",
+              "description": "O app mostra açúcar, sódio, ultraprocessado e alternativa melhor.",
+              "tone": "accent"
+            },
+            {
+              "type": "action",
+              "eyebrow": "GLP-1",
+              "title": "Registre aplicação e sintomas",
+              "description": "Dose, rotação de local, náusea e hidratação ficam na mesma linha.",
+              "tone": "default"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Mente e sono",
+              "title": "Proteja sua próxima escolha",
+              "description": "Uma trilha curta ajuda compulsão, ansiedade e sono.",
+              "tone": "default"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/03-home-score.svg",
-      "pngFile": "screenshots/iphone-png/03-home-score.png",
-      "htmlFile": "html/03-home-score.html"
+      "svgFile": "screenshots/iphone/04-hoje-dashboard.svg",
+      "pngFile": "screenshots/iphone-png/04-hoje-dashboard.png",
+      "htmlFile": "html/04-hoje-dashboard.html"
     },
     {
-      "screenId": "04-home-risco",
-      "route": "/(tabs)",
+      "screenId": "05-plano-90-dias",
+      "route": "/plan",
       "tier": "3m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Home",
-      "title": "Risco atual sob controle, mas com ajuste fino",
-      "summary": "Leitura clara de risco e CTA prioritário para remover ambiguidade.",
+      "eyebrow": "Plano",
+      "title": "Seu programa de 90 dias ficou claro, visual e acionável",
+      "summary": "A aba Plano mostra fase atual, metas semanais, evolução e educação curta sem transformar tudo em texto.",
       "badge": {
-        "label": "atenção",
-        "tone": "attention"
+        "label": "90 dias",
+        "tone": "good"
+      },
+      "metrics": [
+        {
+          "label": "Proteína",
+          "value": "5/7",
+          "caption": "Meta semanal",
+          "tone": "brand"
+        },
+        {
+          "label": "Água",
+          "value": "4/7",
+          "caption": "Janela diária",
+          "tone": "accent"
+        },
+        {
+          "label": "Força",
+          "value": "2/3",
+          "caption": "Treino previsto",
+          "tone": "brand"
+        },
+        {
+          "label": "Sono",
+          "value": "78",
+          "caption": "Score médio",
+          "tone": "warning"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Linha do tempo",
+          "title": "O plano mostra a curva do tratamento",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "Semana 1",
+              "subtitle": "Entrar na rotina com baixa fricção.",
+              "meta": "entrada",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Semana 4",
+              "subtitle": "Consolidar água, proteína e sintomas.",
+              "meta": "agora",
+              "tone": "warning"
+            },
+            {
+              "type": "timeline",
+              "title": "Semana 12",
+              "subtitle": "Fechar o ciclo com dados limpos e próximos passos.",
+              "meta": "meta",
+              "tone": "default"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/05-plano-90-dias.svg",
+      "pngFile": "screenshots/iphone-png/05-plano-90-dias.png",
+      "htmlFile": "html/05-plano-90-dias.html"
+    },
+    {
+      "screenId": "06-medico-tab",
+      "route": "/medical",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Médico",
+      "title": "Telemedicina, resumo clínico e histórico em um hub claro",
+      "summary": "O paciente sabe como chamar ajuda, o que o médico já vai ver e o que fica salvo depois.",
+      "badge": {
+        "label": "ZapVida preparado",
+        "tone": "low"
       },
       "sections": [
         {
-          "eyebrow": "Agora",
-          "title": "O melhor próximo passo",
+          "eyebrow": "Canais",
+          "title": "Escolha o modo de atendimento",
           "items": [
             {
               "type": "action",
-              "eyebrow": "Ação principal",
-              "title": "Registrar peso e dose",
-              "description": "Atualizar sinais agora melhora risco, score e precisão do dia seguinte.",
+              "eyebrow": "ZapVida",
+              "title": "Falar com médico agora",
+              "description": "O médico recebe resumo automático com queixa, dose, sintomas e exames antes do contato.",
               "tone": "brand"
             },
             {
               "type": "action",
-              "eyebrow": "Sinal prioritário",
-              "title": "Seu sono merece atenção hoje",
-              "description": "Dormir pouco está puxando fome, energia e foco para baixo.",
+              "eyebrow": "Fila",
+              "title": "Ver atendimento em andamento",
+              "description": "Tempo estimado, modo de atendimento e orientações pré-consulta ficam claros.",
+              "tone": "default"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Especialista",
+              "title": "Pedir linha premium",
+              "description": "Nutrologia, endócrino, nutrição ou psicologia entram por governança clínica.",
+              "tone": "brand"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/06-medico-tab.svg",
+      "pngFile": "screenshots/iphone-png/06-medico-tab.png",
+      "htmlFile": "html/06-medico-tab.html"
+    },
+    {
+      "screenId": "07-farmacia-tab",
+      "route": "/pharmacy",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Farmácia",
+      "title": "Prescrição, pedido e recompra aparecem com menos ruído",
+      "summary": "A aba Farmácia transmite organização e confiança, não catálogo quebrado.",
+      "badge": {
+        "label": "ZapFarm modelado",
+        "tone": "attention"
+      },
+      "sections": [
+        {
+          "eyebrow": "Fluxos",
+          "title": "Tudo o que o paciente precisa ver",
+          "items": [
+            {
+              "type": "action",
+              "eyebrow": "Prescrição",
+              "title": "Tudo o que foi prescrito está organizado aqui",
+              "description": "Medicamentos, manipulados, suplementos e GLP-1 ficam separados com clareza.",
+              "tone": "brand"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Pedido",
+              "title": "Acompanhar produção e entrega",
+              "description": "Seu pedido passa por análise, produção, envio e recompra sem você se perder.",
+              "tone": "default"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Recompra",
+              "title": "Solicitar a próxima janela",
+              "description": "Recomprar cedo evita ruptura de rotina e queda de adesão.",
               "tone": "accent"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/04-home-risco.svg",
-      "pngFile": "screenshots/iphone-png/04-home-risco.png",
-      "htmlFile": "html/04-home-risco.html"
+      "svgFile": "screenshots/iphone/07-farmacia-tab.svg",
+      "pngFile": "screenshots/iphone-png/07-farmacia-tab.png",
+      "htmlFile": "html/07-farmacia-tab.html"
     },
     {
-      "screenId": "05-home-prevencao",
-      "route": "/(tabs)",
+      "screenId": "08-profile",
+      "route": "/profile",
       "tier": "6m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Home",
-      "title": "Prevenção também mora na primeira dobra",
-      "summary": "A home mostra pendências preventivas sem ficar alarmista ou burocrática.",
+      "eyebrow": "Perfil",
+      "title": "Plano, integrações, segurança e suporte sem menu confuso",
+      "summary": "A conta virou base organizada do paciente, com o que está ativo e para onde ir em seguida.",
       "badge": {
-        "label": "prevenção ativa",
+        "label": "organizado",
         "tone": "good"
       },
       "sections": [
         {
-          "eyebrow": "Prevenção",
-          "title": "Não espere piorar para agir",
+          "eyebrow": "Ações rápidas",
+          "title": "O perfil abre destinos úteis, não páginas mortas",
           "items": [
             {
               "type": "action",
-              "eyebrow": "Prioridade alta",
-              "title": "Revisar exames cardiometabólicos do ciclo",
-              "description": "Peso, cintura, glicemia, HbA1c e pressão precisam continuar legíveis.",
+              "eyebrow": "Integrações",
+              "title": "Conectar HealthKit, Health Connect e wearable",
+              "description": "Quando não houver integração ativa, o fallback manual continua elegante.",
+              "tone": "default"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Plano",
+              "title": "Entender seu nível atual",
+              "description": "Veja o que está liberado no 1, 3 e 6 meses sem texto quebrado ou confusão.",
+              "tone": "brand"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Convites",
+              "title": "Ver progresso de indicação",
+              "description": "O programa mostra progresso, elegibilidade e próximos marcos sem wallet financeira.",
               "tone": "accent"
-            },
-            {
-              "type": "action",
-              "eyebrow": "Checklist",
-              "title": "Abrir checklist preventivo",
-              "description": "Rastreio, decisão compartilhada e fontes clínicas ficam claros."
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/05-home-prevencao.svg",
-      "pngFile": "screenshots/iphone-png/05-home-prevencao.png",
-      "htmlFile": "html/05-home-prevencao.html"
+      "svgFile": "screenshots/iphone/08-profile.svg",
+      "pngFile": "screenshots/iphone-png/08-profile.png",
+      "htmlFile": "html/08-profile.html"
     },
     {
-      "screenId": "06-journey-glp1",
-      "route": "/(tabs)/journey",
-      "tier": "1m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Jornada",
-      "title": "GLP-1 em uma linha contínua",
-      "summary": "Peso, dose, refill e execução da semana no mesmo lugar.",
-      "badge": {
-        "label": "jornada ativa",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Insights",
-          "title": "Tudo o que move a semana",
-          "items": [
-            {
-              "type": "timeline",
-              "title": "Peso 78,4 kg",
-              "subtitle": "Registro longitudinal salvo com leitura de direção.",
-              "tone": "success"
-            },
-            {
-              "type": "timeline",
-              "title": "Dose 7,5 mg",
-              "subtitle": "Fase de manutenção com adesão estável.",
-              "tone": "success"
-            },
-            {
-              "type": "action",
-              "eyebrow": "Refill",
-              "title": "Abrir pedido preventivo",
-              "description": "Antecipar reposição evita quebra operacional."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/06-journey-glp1.svg",
-      "pngFile": "screenshots/iphone-png/06-journey-glp1.png",
-      "htmlFile": "html/06-journey-glp1.html"
-    },
-    {
-      "screenId": "07-journey-sintomas",
-      "route": "/(tabs)/journey",
-      "tier": "3m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Jornada",
-      "title": "Sintomas e recovery entram cedo",
-      "summary": "O paciente registra sinais, intensidade e contexto antes do problema virar ruído.",
-      "badge": {
-        "label": "monitorado",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Recovery",
-          "title": "Sintoma + sono + contexto",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "Sintoma",
-              "title": "Registrar náusea com intensidade moderada",
-              "description": "Duração, gatilhos e correlação com dose entram no mesmo fluxo.",
-              "tone": "accent"
-            },
-            {
-              "type": "action",
-              "eyebrow": "Sono",
-              "title": "Sincronizar snapshot de recuperação",
-              "description": "O coaching responde de forma simples e contextual."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/07-journey-sintomas.svg",
-      "pngFile": "screenshots/iphone-png/07-journey-sintomas.png",
-      "htmlFile": "html/07-journey-sintomas.html"
-    },
-    {
-      "screenId": "08-meal-ai",
+      "screenId": "09-meal-photo",
       "route": "/meal-analysis",
       "tier": "1m",
       "state": "happy",
@@ -382,654 +539,1074 @@
       "build": "review-local",
       "reviewStatus": "ready_for_review",
       "eyebrow": "Meal AI",
-      "title": "Foto, texto ou cardápio",
-      "summary": "A decisão de refeição vira uma análise prática, sem planilha e sem excesso de texto.",
+      "title": "Foto do prato, texto ou cardápio no mesmo fluxo",
+      "summary": "A entrada da refeição ficou premium, simples e útil para o dia a dia real.",
       "badge": {
-        "label": "ao vivo",
+        "label": "multimodal",
         "tone": "good"
       },
       "sections": [
         {
-          "eyebrow": "Leitura prática",
-          "title": "O prato vira ação",
+          "eyebrow": "Entrada",
+          "title": "O paciente escolhe o jeito mais rápido",
           "items": [
             {
               "type": "action",
-              "eyebrow": "Calorias",
-              "title": "Estimativa rápida",
-              "description": "Calorias, macros, risco e melhor escolha para a fase atual.",
+              "eyebrow": "Foto",
+              "title": "Usar câmera ou galeria",
+              "description": "Imagem, OCR e texto caminham para a mesma análise final.",
               "tone": "brand"
+            },
+            {
+              "type": "action",
+              "eyebrow": "Texto",
+              "title": "Descrever a refeição em linguagem natural",
+              "description": "Sem bloquear o fluxo quando a foto não fizer sentido.",
+              "tone": "accent"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/09-meal-photo.svg",
+      "pngFile": "screenshots/iphone-png/09-meal-photo.png",
+      "htmlFile": "html/09-meal-photo.html"
+    },
+    {
+      "screenId": "10-meal-result",
+      "route": "/meal-result",
+      "tier": "1m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Meal AI",
+      "title": "Boa escolha para hoje, com uma troca simples ainda melhor",
+      "summary": "A resposta mostra macros, impacto metabólico e uma sugestão prática sem linguagem fria.",
+      "badge": {
+        "label": "qualidade boa",
+        "tone": "good"
+      },
+      "metrics": [
+        {
+          "label": "Calorias",
+          "value": "540 kcal",
+          "caption": "estimadas",
+          "tone": "brand"
+        },
+        {
+          "label": "Proteína",
+          "value": "34 g",
+          "caption": "saciedade melhor",
+          "tone": "accent"
+        },
+        {
+          "label": "Fibras",
+          "value": "9 g",
+          "caption": "bom suporte",
+          "tone": "warning"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Leitura",
+          "title": "O app ensina sem parecer bronca",
+          "items": [
+            {
+              "type": "text",
+              "body": "Boa base de proteína e volume. Se a náusea estiver sensível hoje, vale reduzir gordura pesada e reforçar água."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/10-meal-result.svg",
+      "pngFile": "screenshots/iphone-png/10-meal-result.png",
+      "htmlFile": "html/10-meal-result.html"
+    },
+    {
+      "screenId": "11-scanner",
+      "route": "/product-scanner",
+      "tier": "1m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Scanner metabólico",
+      "title": "Leia o rótulo e entenda em 5 segundos",
+      "summary": "O paciente escaneia o produto e recebe uma explicação clara, sem terrorismo e sem linguagem técnica desnecessária.",
+      "badge": {
+        "label": "câmera pronta",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "O que o scanner mostra",
+          "title": "Compra melhor com menos fricção",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "Nota metabólica",
+              "subtitle": "Uma leitura curta do quanto esse produto ajuda ou atrapalha seu objetivo.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Açúcar oculto, sódio e ultraprocessado",
+              "subtitle": "O app explica o problema em linguagem humana.",
+              "tone": "warning"
+            },
+            {
+              "type": "timeline",
+              "title": "Alternativa melhor",
+              "subtitle": "O usuário não fica só no “não pode”.",
+              "tone": "default"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/11-scanner.svg",
+      "pngFile": "screenshots/iphone-png/11-scanner.png",
+      "htmlFile": "html/11-scanner.html"
+    },
+    {
+      "screenId": "12-scan-result",
+      "route": "/scan-result",
+      "tier": "1m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Resultado do scanner",
+      "title": "Esse produto não é proibido, mas existe opção melhor",
+      "summary": "O foco é orientar troca mais inteligente, não gerar culpa.",
+      "badge": {
+        "label": "nota B-",
+        "tone": "attention"
+      },
+      "metrics": [
+        {
+          "label": "Açúcar",
+          "value": "12 g",
+          "caption": "por porção",
+          "tone": "accent"
+        },
+        {
+          "label": "Fibras",
+          "value": "2 g",
+          "caption": "baixo para o objetivo",
+          "tone": "warning"
+        },
+        {
+          "label": "Proteína",
+          "value": "5 g",
+          "caption": "pouca saciedade",
+          "tone": "default"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Leitura rápida",
+          "title": "O que vale ajustar",
+          "items": [
+            {
+              "type": "text",
+              "body": "Boa praticidade, mas pouco volume de proteína e fibra para quem quer mais saciedade e menos fome de rebote."
+            },
+            {
+              "type": "action",
+              "eyebrow": "Sugestão",
+              "title": "Procurar opção com mais proteína e menos açúcar",
+              "description": "Uma troca simples melhora saciedade e reduz compulsão no fim do dia.",
+              "caption": "Abrir fluxo",
+              "tone": "brand"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/12-scan-result.svg",
+      "pngFile": "screenshots/iphone-png/12-scan-result.png",
+      "htmlFile": "html/12-scan-result.html"
+    },
+    {
+      "screenId": "13-glp1-journey",
+      "route": "/glp1-journey",
+      "tier": "1m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Jornada GLP-1",
+      "title": "Dose, fase, aplicação e segurança no mesmo lugar",
+      "summary": "A jornada não tenta adivinhar dose. Ela organiza o cuidado e deixa o ajuste para validação médica.",
+      "badge": {
+        "label": "fase de evolução",
+        "tone": "good"
+      },
+      "metrics": [
+        {
+          "label": "Dose",
+          "value": "7,5 mg",
+          "caption": "prescrita",
+          "tone": "brand"
+        },
+        {
+          "label": "Próxima aplicação",
+          "value": "2 dias",
+          "caption": "lembrete ativo",
+          "tone": "accent"
+        },
+        {
+          "label": "Peso perdido",
+          "value": "4,8 kg",
+          "caption": "desde o início",
+          "tone": "brand"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Segurança",
+          "title": "O que sempre aparece com clareza",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "Rotação do local de aplicação",
+              "subtitle": "O app lembra para evitar repetição no mesmo ponto.",
+              "tone": "default"
+            },
+            {
+              "type": "timeline",
+              "title": "Ajuste de dose pede validação médica",
+              "subtitle": "A IA apoia, mas não sobe ou desce dose sozinha.",
+              "tone": "warning"
+            },
+            {
+              "type": "timeline",
+              "title": "Náusea, constipação e hidratação entram cedo",
+              "subtitle": "O paciente entende o que monitorar antes de piorar.",
+              "tone": "success"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/13-glp1-journey.svg",
+      "pngFile": "screenshots/iphone-png/13-glp1-journey.png",
+      "htmlFile": "html/13-glp1-journey.html"
+    },
+    {
+      "screenId": "14-dose-application",
+      "route": "/dose-application",
+      "tier": "1m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Aplicação",
+      "title": "Registrar a aplicação leva menos de um minuto",
+      "summary": "A tela mostra medicação, dose, local, sinais nas próximas horas e orientação clara de segurança.",
+      "badge": {
+        "label": "rápido",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "Depois da dose",
+          "title": "O que observar nas próximas horas",
+          "items": [
+            {
+              "type": "badges",
+              "badges": [
+                {
+                  "label": "náusea",
+                  "tone": "attention"
+                },
+                {
+                  "label": "hidratação",
+                  "tone": "good"
+                },
+                {
+                  "label": "proteína",
+                  "tone": "low"
+                }
+              ]
             },
             {
               "type": "text",
-              "body": "O app explica por que aquela mudança importa no corpo e no resto do dia."
+              "body": "Se houver dor intensa, vômitos persistentes ou fraqueza importante, fale com um médico."
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/08-meal-ai.svg",
-      "pngFile": "screenshots/iphone-png/08-meal-ai.png",
-      "htmlFile": "html/08-meal-ai.html"
+      "svgFile": "screenshots/iphone/14-dose-application.svg",
+      "pngFile": "screenshots/iphone-png/14-dose-application.png",
+      "htmlFile": "html/14-dose-application.html"
     },
     {
-      "screenId": "09-sleep",
-      "route": "/(tabs)/journey",
+      "screenId": "15-symptom-checkin",
+      "route": "/symptom-checkin",
       "tier": "3m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Sono",
-      "title": "Recuperação vira linguagem do dia",
-      "summary": "Sono não fica escondido em submenu; ele conversa com fome, energia e execução.",
+      "eyebrow": "Sintomas",
+      "title": "Registre como você está se sentindo hoje",
+      "summary": "O check-in diário não complica: ele só pede o que realmente muda conduta, risco e próxima ação.",
       "badge": {
-        "label": "84/100",
+        "label": "check-in diário",
         "tone": "good"
       },
       "sections": [
         {
-          "eyebrow": "Recuperação",
-          "title": "Coaching simples e convincente",
+          "eyebrow": "Monitoramento",
+          "title": "Sinais mais importantes na rotina GLP-1",
+          "items": [
+            {
+              "type": "badges",
+              "badges": [
+                {
+                  "label": "náusea",
+                  "tone": "attention"
+                },
+                {
+                  "label": "constipação",
+                  "tone": "attention"
+                },
+                {
+                  "label": "fome",
+                  "tone": "good"
+                },
+                {
+                  "label": "sono",
+                  "tone": "low"
+                },
+                {
+                  "label": "humor",
+                  "tone": "low"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "body": "O app registra intensidade e contexto para que o médico receba menos ruído e mais clareza."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/15-symptom-checkin.svg",
+      "pngFile": "screenshots/iphone-png/15-symptom-checkin.png",
+      "htmlFile": "html/15-symptom-checkin.html"
+    },
+    {
+      "screenId": "16-symptom-alert",
+      "route": "/symptom-alert",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Atenção",
+      "title": "Esse sintoma merece avaliação mais de perto",
+      "summary": "O app não minimiza sinal de alerta. Ele direciona o paciente para cuidado humano com contexto pronto.",
+      "badge": {
+        "label": "fale com médico",
+        "tone": "high"
+      },
+      "sections": [
+        {
+          "eyebrow": "Quando subir o nível",
+          "title": "Procure médico se houver intensidade ou persistência",
+          "items": [
+            {
+              "type": "text",
+              "body": "Dor intensa, fraqueza importante, vômitos persistentes ou piora progressiva precisam de avaliação médica. Essa orientação não substitui consulta."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/16-symptom-alert.svg",
+      "pngFile": "screenshots/iphone-png/16-symptom-alert.png",
+      "htmlFile": "html/16-symptom-alert.html"
+    },
+    {
+      "screenId": "17-telemedicine",
+      "route": "/telemedicine",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Médico agora",
+      "title": "Seu médico já vai receber o resumo antes do contato",
+      "summary": "Telemedicina em um clique, com preparação elegante e menos repetição para o paciente.",
+      "badge": {
+        "label": "ZapVida preparado",
+        "tone": "low"
+      },
+      "sections": [
+        {
+          "eyebrow": "Resumo automático",
+          "title": "O que já segue junto",
           "items": [
             {
               "type": "timeline",
-              "title": "7,2h registradas",
-              "subtitle": "Boa base para reduzir impulsividade e proteger foco.",
-              "tone": "success"
-            },
-            {
-              "type": "action",
-              "eyebrow": "Hoje",
-              "title": "Proteger a janela de desligamento",
-              "description": "Uma decisão de hoje muda sua fome amanhã.",
-              "tone": "accent"
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/09-sleep.svg",
-      "pngFile": "screenshots/iphone-png/09-sleep.png",
-      "htmlFile": "html/09-sleep.html"
-    },
-    {
-      "screenId": "10-rituals",
-      "route": "/(tabs)/rituals",
-      "tier": "3m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Rituais",
-      "title": "Regulação curta, bonita e útil",
-      "summary": "Nada de aba wellness genérica: só práticas curtas, com papel claro na jornada.",
-      "badge": {
-        "label": "sugerido agora",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Biblioteca",
-          "title": "Escolha a prática certa",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "Craving",
-              "title": "Ritual de 4 minutos",
-              "description": "Reduz impulso e devolve sensação de controle.",
-              "tone": "accent"
-            },
-            {
-              "type": "action",
-              "eyebrow": "Pré-sono",
-              "title": "Desacelerar antes de dormir",
-              "description": "Ajuda o corpo a entender que a janela de descanso começou."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/10-rituals.svg",
-      "pngFile": "screenshots/iphone-png/10-rituals.png",
-      "htmlFile": "html/10-rituals.html"
-    },
-    {
-      "screenId": "11-goals",
-      "route": "/goals",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Metas",
-      "title": "Metas que realmente mexem no score",
-      "summary": "Gamificação prática, com impacto por pilar e sem poluição visual.",
-      "badge": {
-        "label": "5/12 concluídas",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Hoje",
-          "title": "Confirmar e seguir",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "nutrition · +8",
-              "title": "Registrar a refeição mais crítica do dia",
-              "description": "Confirmação simples com impacto real no score.",
-              "tone": "brand"
-            },
-            {
-              "type": "action",
-              "eyebrow": "movement · +10",
-              "title": "Registrar sessão de força",
-              "description": "Força entra como pilar concreto de proteção metabólica."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/11-goals.svg",
-      "pngFile": "screenshots/iphone-png/11-goals.png",
-      "htmlFile": "html/11-goals.html"
-    },
-    {
-      "screenId": "12-prevention-checklist",
-      "route": "/prevention-checklist",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Prevenção",
-      "title": "Checklist preventivo governado",
-      "summary": "Rastreio e revisão clínica por idade, sexo e risco, sem parecer burocracia hospitalar.",
-      "badge": {
-        "label": "2 pendências",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Prioridade",
-          "title": "O que revisar neste ciclo",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "labs · high",
-              "title": "Revisar exames cardiometabólicos",
-              "description": "Peso, cintura, glicemia, HbA1c e pressão sustentam a base do tratamento.",
-              "tone": "accent"
-            },
-            {
-              "type": "action",
-              "eyebrow": "shared-decision",
-              "title": "Abrir revisão de prevenção colorretal",
-              "description": "A trilha aparece como conversa governada e não como diagnóstico automático."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/12-prevention-checklist.svg",
-      "pngFile": "screenshots/iphone-png/12-prevention-checklist.png",
-      "htmlFile": "html/12-prevention-checklist.html"
-    },
-    {
-      "screenId": "13-consult-concierge",
-      "route": "/consult-request",
-      "tier": "3m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Consulta",
-      "title": "Concierge clínico sem fricção",
-      "summary": "Pedido assistido, SLA claro e próximo passo legível para o paciente.",
-      "badge": {
-        "label": "12h SLA",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Pedido",
-          "title": "Abrir suporte no momento certo",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "Contexto",
-              "title": "Sintomas, objetivo e preferência do período",
-              "description": "Tudo entra no mesmo pedido para reduzir ida e volta."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/13-consult-concierge.svg",
-      "pngFile": "screenshots/iphone-png/13-consult-concierge.png",
-      "htmlFile": "html/13-consult-concierge.html"
-    },
-    {
-      "screenId": "14-exams",
-      "route": "/exam-upload",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Exames",
-      "title": "Upload bonito e objetivo",
-      "summary": "Documentos, OCR e timeline clínica organizados em um fluxo muito simples.",
-      "badge": {
-        "label": "hub ativo",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Fila",
-          "title": "Tudo o que entrou no hub",
-          "items": [
-            {
-              "type": "timeline",
-              "title": "Hemograma.pdf",
-              "subtitle": "Arquivo armazenado com sucesso para revisão clínica.",
+              "title": "Queixa principal e sintomas recentes",
+              "subtitle": "Náusea, fome, dor abdominal, humor e energia.",
               "tone": "success"
             },
             {
               "type": "timeline",
-              "title": "Perfil lipídico.jpg",
-              "subtitle": "OCR em fila para resumo assistivo.",
+              "title": "Dose, peso e última refeição",
+              "subtitle": "O médico entra com contexto, não no escuro.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Exames, pedidos e histórico relevante",
+              "subtitle": "O app organiza a conversa antes dela começar.",
+              "tone": "default"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/17-telemedicine.svg",
+      "pngFile": "screenshots/iphone-png/17-telemedicine.png",
+      "htmlFile": "html/17-telemedicine.html"
+    },
+    {
+      "screenId": "18-doctor-queue",
+      "route": "/doctor-queue",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Fila médica",
+      "title": "Seu atendimento está sendo preparado",
+      "summary": "Tempo estimado, canal escolhido e orientações do que deixar em mãos antes do médico entrar.",
+      "badge": {
+        "label": "12 min",
+        "tone": "attention"
+      },
+      "sections": [
+        {
+          "eyebrow": "Enquanto espera",
+          "title": "Deixe tudo pronto para ganhar tempo",
+          "items": [
+            {
+              "type": "badges",
+              "badges": [
+                {
+                  "label": "dose atual",
+                  "tone": "good"
+                },
+                {
+                  "label": "última refeição",
+                  "tone": "low"
+                },
+                {
+                  "label": "exames recentes",
+                  "tone": "low"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "body": "Você não precisa repetir todo o histórico. O app já enviou o essencial para a equipe."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/18-doctor-queue.svg",
+      "pngFile": "screenshots/iphone-png/18-doctor-queue.png",
+      "htmlFile": "html/18-doctor-queue.html"
+    },
+    {
+      "screenId": "19-doctor-chat",
+      "route": "/doctor-chat",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Chat médico",
+      "title": "Conversa direta, limpa e com contexto",
+      "summary": "O histórico do atendimento, a orientação final e os próximos passos ficam organizados sem parecer chat genérico.",
+      "badge": {
+        "label": "atendimento em andamento",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "Pós-consulta",
+          "title": "O que fica salvo depois",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "Orientação médica",
+              "subtitle": "Resumo curto em linguagem que o paciente entende.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Prescrição e pedido farmacêutico",
+              "subtitle": "Farmácia e médico ficam conectados no mesmo fluxo.",
+              "tone": "default"
+            },
+            {
+              "type": "timeline",
+              "title": "Próxima ação do paciente",
+              "subtitle": "Sem ambiguidade sobre o que fazer depois do atendimento.",
               "tone": "warning"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/14-exams.svg",
-      "pngFile": "screenshots/iphone-png/14-exams.png",
-      "htmlFile": "html/14-exams.html"
+      "svgFile": "screenshots/iphone/19-doctor-chat.svg",
+      "pngFile": "screenshots/iphone-png/19-doctor-chat.png",
+      "htmlFile": "html/19-doctor-chat.html"
     },
     {
-      "screenId": "15-reports-bundle",
-      "route": "/(tabs)/reports",
-      "tier": "6m",
+      "screenId": "20-nutrition-coach",
+      "route": "/nutrition-coach",
+      "tier": "3m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Relatórios",
-      "title": "Centro clínico reaproveitável",
-      "summary": "Relatórios MeJoy, exames e bundle seguro no mesmo hub.",
+      "eyebrow": "Assistente alimentar",
+      "title": "Pergunte o que vai comer e receba uma resposta curta",
+      "summary": "O app orienta por comportamento e contexto do dia, não como prescrição rígida.",
       "badge": {
-        "label": "bundle pronto",
+        "label": "tempo real",
         "tone": "good"
       },
       "sections": [
         {
-          "eyebrow": "Bundle",
-          "title": "Compartilhar contexto sem retrabalho",
+          "eyebrow": "Exemplos",
+          "title": "Respostas que ajudam de verdade",
           "items": [
             {
-              "type": "action",
-              "eyebrow": "Seguro",
-              "title": "Gerar pacote clínico expirável",
-              "description": "Relatórios, peso, sono e exames em um link utilizável pelo médico."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/15-reports-bundle.svg",
-      "pngFile": "screenshots/iphone-png/15-reports-bundle.png",
-      "htmlFile": "html/15-reports-bundle.html"
-    },
-    {
-      "screenId": "16-profile",
-      "route": "/(tabs)/profile",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Perfil",
-      "title": "Conta, preferências e tier",
-      "summary": "Push, quiet hours, referral e benefícios premium visíveis em um lugar só.",
-      "badge": {
-        "label": "push ativo",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Plano",
-          "title": "Status do cuidado premium",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "6 meses",
-              "title": "Canal premium já coberto",
-              "description": "Referral, prevenção e pedido de especialista já fazem parte da experiência.",
-              "tone": "accent"
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/16-profile.svg",
-      "pngFile": "screenshots/iphone-png/16-profile.png",
-      "htmlFile": "html/16-profile.html"
-    },
-    {
-      "screenId": "17-notifications",
-      "route": "/notifications-center",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Notificações",
-      "title": "Fila clínica com explicação",
-      "summary": "O paciente entende por que o app chamou sua atenção e para onde aquela notificação leva.",
-      "badge": {
-        "label": "4 sinais",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Fila atual",
-          "title": "Notificações que fazem sentido",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "sleep · high",
-              "title": "Seu sono merece atenção hoje",
-              "description": "Dormir pouco está puxando fome e foco para baixo.",
-              "tone": "accent"
+              "type": "timeline",
+              "title": "Pode comer, mas reduza a porção",
+              "subtitle": "Boa para hoje, desde que a fome esteja estável.",
+              "tone": "success"
             },
             {
-              "type": "action",
-              "eyebrow": "clinical · medium",
-              "title": "Planeje o próximo refill",
-              "description": "Antecipar reposição evita quebra do plano."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/17-notifications.svg",
-      "pngFile": "screenshots/iphone-png/17-notifications.png",
-      "htmlFile": "html/17-notifications.html"
-    },
-    {
-      "screenId": "18-referral-gamification",
-      "route": "/referral-gamification",
-      "tier": "6m",
-      "state": "happy",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Referral",
-      "title": "Indicação com progresso elegante",
-      "summary": "Código, QR e próxima recompensa operacional em uma tela leve e útil.",
-      "badge": {
-        "label": "55%",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Convite",
-          "title": "Seu código de entrada",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "MEJOY-84A1F2",
-              "title": "Compartilhar link ou QR",
-              "description": "A indicação ajuda a ampliar a jornada de saúde sem virar wallet dentro do app.",
-              "tone": "brand"
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/18-referral-gamification.svg",
-      "pngFile": "screenshots/iphone-png/18-referral-gamification.png",
-      "htmlFile": "html/18-referral-gamification.html"
-    },
-    {
-      "screenId": "19-tier-locked-states",
-      "route": "/premium-benefits",
-      "tier": "1m",
-      "state": "locked",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Estado bloqueado",
-      "title": "Bonito, claro e sem parecer quebrado",
-      "summary": "O paciente entende o que ainda não está liberado e por que vale subir de plano.",
-      "badge": {
-        "label": "feature bloqueada",
-        "tone": "attention"
-      },
-      "sections": [
-        {
-          "eyebrow": "Comparativo",
-          "title": "O que entra no próximo nível",
-          "items": [
-            {
-              "type": "action",
-              "eyebrow": "3 meses",
-              "title": "Sono, rituais e concierge",
-              "description": "Protegem consistência e diminuem recaída.",
-              "tone": "accent"
+              "type": "timeline",
+              "title": "Melhor trocar por mais proteína",
+              "subtitle": "Seu check-in sugere que isso vai dar mais saciedade.",
+              "tone": "warning"
             },
             {
-              "type": "action",
-              "eyebrow": "6 meses",
-              "title": "Prevenção, exames e canal premium",
-              "description": "Camada completa de cuidado integral."
+              "type": "timeline",
+              "title": "Hoje não é a melhor escolha",
+              "subtitle": "Você relatou náusea; gordura e volume alto podem piorar.",
+              "tone": "warning"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/19-tier-locked-states.svg",
-      "pngFile": "screenshots/iphone-png/19-tier-locked-states.png",
-      "htmlFile": "html/19-tier-locked-states.html"
+      "svgFile": "screenshots/iphone/20-nutrition-coach.svg",
+      "pngFile": "screenshots/iphone-png/20-nutrition-coach.png",
+      "htmlFile": "html/20-nutrition-coach.html"
     },
     {
-      "screenId": "20-premium-6m-benefits",
-      "route": "/premium-benefits",
+      "screenId": "21-metabolic-monitor",
+      "route": "/metabolic-monitor",
       "tier": "6m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Plano 6 meses",
-      "title": "As 10 features em seu formato máximo",
-      "summary": "Comparativo editorial que mostra por que o plano longo concentra mais valor real.",
+      "eyebrow": "Monitor metabólico",
+      "title": "Peso, cintura, sono e adesão em gráficos úteis",
+      "summary": "A tela cruza métricas sem parecer painel técnico demais e prepara integração futura com devices.",
       "badge": {
-        "label": "máximo valor",
+        "label": "healthkit-ready",
+        "tone": "good"
+      },
+      "metrics": [
+        {
+          "label": "Peso",
+          "value": "78,4 kg",
+          "caption": "último registro",
+          "tone": "brand"
+        },
+        {
+          "label": "Cintura",
+          "value": "93 cm",
+          "caption": "tendência estável",
+          "tone": "accent"
+        },
+        {
+          "label": "Passos",
+          "value": "6,8k",
+          "caption": "média diária",
+          "tone": "brand"
+        },
+        {
+          "label": "Água",
+          "value": "2,1 L",
+          "caption": "média recente",
+          "tone": "warning"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Insights automáticos",
+          "title": "O que o app explica sozinho",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "Seu peso caiu 1,2 kg em 7 dias",
+              "subtitle": "Com melhor adesão à água e ao registro alimentar.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Seu sono piorou nos dias com mais fome",
+              "subtitle": "Isso muda a prioridade da rotina do dia seguinte.",
+              "tone": "warning"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/21-metabolic-monitor.svg",
+      "pngFile": "screenshots/iphone-png/21-metabolic-monitor.png",
+      "htmlFile": "html/21-metabolic-monitor.html"
+    },
+    {
+      "screenId": "22-mind-sleep",
+      "route": "/mind-sleep",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Mente e sono",
+      "title": "Trilhas curtas para ansiedade, compulsão e recuperação",
+      "summary": "A área não é wellness solto: ela existe para proteger decisões e diminuir recaídas comportamentais.",
+      "badge": {
+        "label": "3 min agora",
         "tone": "good"
       },
       "sections": [
         {
-          "eyebrow": "Plano completo",
-          "title": "Tudo liberado",
+          "eyebrow": "Biblioteca",
+          "title": "O que você encontra aqui",
           "items": [
             {
-              "type": "badges",
-              "badges": [
-                {
-                  "label": "prevenção",
-                  "tone": "good"
-                },
-                {
-                  "label": "referral",
-                  "tone": "good"
-                },
-                {
-                  "label": "canal premium",
-                  "tone": "good"
-                },
-                {
-                  "label": "hub de exames",
-                  "tone": "good"
-                }
-              ]
+              "type": "timeline",
+              "title": "Respiração antes da refeição",
+              "subtitle": "Reduz ansiedade e melhora consciência da fome.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "Sono profundo",
+              "subtitle": "Ajuda o corpo a chegar mais regulado na próxima manhã.",
+              "tone": "default"
+            },
+            {
+              "type": "timeline",
+              "title": "Compulsão e fome emocional",
+              "subtitle": "O app ajuda a interromper impulso sem parecer moralista.",
+              "tone": "warning"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/20-premium-6m-benefits.svg",
-      "pngFile": "screenshots/iphone-png/20-premium-6m-benefits.png",
-      "htmlFile": "html/20-premium-6m-benefits.html"
+      "svgFile": "screenshots/iphone/22-mind-sleep.svg",
+      "pngFile": "screenshots/iphone-png/22-mind-sleep.png",
+      "htmlFile": "html/22-mind-sleep.html"
     },
     {
-      "screenId": "21-specialist-request",
-      "route": "/specialist-request",
-      "tier": "6m",
+      "screenId": "23-ritual-player",
+      "route": "/ritual-player",
+      "tier": "3m",
       "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Canal premium",
-      "title": "Pedido governado com humano no centro",
-      "summary": "O paciente pede uma revisão mais profunda sem transformar o app em promessa clínica imprudente.",
+      "eyebrow": "Player",
+      "title": "Uma pausa de 3 minutos pode mudar sua próxima escolha",
+      "summary": "O player é simples, bonito e direto: duração, foco da trilha e progresso atual.",
       "badge": {
-        "label": "governado",
-        "tone": "good"
-      },
-      "sections": [
-        {
-          "eyebrow": "Especialidade",
-          "title": "Quem deve revisar primeiro",
-          "items": [
-            {
-              "type": "badges",
-              "badges": [
-                {
-                  "label": "Endócrino",
-                  "tone": "low"
-                },
-                {
-                  "label": "Nutrologia",
-                  "tone": "good"
-                },
-                {
-                  "label": "Psicologia",
-                  "tone": "low"
-                }
-              ]
-            },
-            {
-              "type": "action",
-              "eyebrow": "Pedido",
-              "title": "Enviar contexto e objetivos",
-              "description": "A IA organiza o pedido, mas a decisão final continua humana.",
-              "tone": "brand"
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/21-specialist-request.svg",
-      "pngFile": "screenshots/iphone-png/21-specialist-request.png",
-      "htmlFile": "html/21-specialist-request.html"
-    },
-    {
-      "screenId": "22-empty-states",
-      "route": "/review/22-empty-states",
-      "tier": "preview",
-      "state": "empty",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Estados vazios",
-      "title": "Sem conteúdo também precisa parecer premium",
-      "summary": "O paciente não deve sentir que o app “quebrou” quando ainda não há dados.",
-      "badge": {
-        "label": "empty state",
+        "label": "03:00",
         "tone": "low"
       },
       "sections": [
         {
-          "eyebrow": "Sem exames",
-          "title": "O que aparece antes do primeiro upload",
+          "eyebrow": "Foco",
+          "title": "Respiração antes da refeição",
           "items": [
             {
               "type": "text",
-              "body": "Nenhum documento anexado ainda. O hub já está pronto para PDF, imagem e leitura clínica assistida."
+              "body": "Vamos reduzir ansiedade, desacelerar a refeição e proteger a saciedade. Pequenas ações diárias geram grandes resultados."
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/22-empty-states.svg",
-      "pngFile": "screenshots/iphone-png/22-empty-states.png",
-      "htmlFile": "html/22-empty-states.html"
+      "svgFile": "screenshots/iphone/23-ritual-player.svg",
+      "pngFile": "screenshots/iphone-png/23-ritual-player.png",
+      "htmlFile": "html/23-ritual-player.html"
     },
     {
-      "screenId": "23-error-states",
-      "route": "/review/23-error-states",
-      "tier": "preview",
-      "state": "error",
-      "device": "iphone",
-      "build": "review-local",
-      "reviewStatus": "ready_for_review",
-      "eyebrow": "Erro",
-      "title": "Falha clara, sem drama visual",
-      "summary": "A pessoa entende o problema, vê que a sessão foi preservada e sabe o que fazer em seguida.",
-      "badge": {
-        "label": "error state",
-        "tone": "high"
-      },
-      "sections": [
-        {
-          "eyebrow": "Recuperação",
-          "title": "A interface preserva confiança",
-          "items": [
-            {
-              "type": "text",
-              "body": "Não foi possível sincronizar sua home agora. Tente novamente em instantes. Sua sessão continua preservada."
-            },
-            {
-              "type": "action",
-              "eyebrow": "Ação",
-              "title": "Tentar novamente",
-              "description": "Reexecutar a leitura do painel com o mesmo contexto."
-            }
-          ]
-        }
-      ],
-      "svgFile": "screenshots/iphone/23-error-states.svg",
-      "pngFile": "screenshots/iphone-png/23-error-states.png",
-      "htmlFile": "html/23-error-states.html"
-    },
-    {
-      "screenId": "24-permission-fallbacks",
-      "route": "/review/24-permission-fallbacks",
+      "screenId": "24-prescriptions",
+      "route": "/prescriptions",
       "tier": "3m",
-      "state": "permission-denied",
+      "state": "happy",
       "device": "iphone",
       "build": "review-local",
       "reviewStatus": "ready_for_review",
-      "eyebrow": "Permissões",
-      "title": "Fallbacks nativos sem parecer bloqueio bruto",
-      "summary": "Quando push, câmera ou wearable não estão liberados, o app mostra caminho alternativo com elegância.",
+      "eyebrow": "Minha farmácia",
+      "title": "Tudo que foi prescrito fica organizado aqui",
+      "summary": "Prescrição, manipulados, suplementos, Loizil e GLP-1 aparecem separados, claros e acionáveis.",
       "badge": {
-        "label": "permissão negada",
+        "label": "ZapFarm modelado",
         "tone": "attention"
       },
       "sections": [
         {
-          "eyebrow": "Sono",
-          "title": "Sem wearable? Tudo bem",
+          "eyebrow": "Itens ativos",
+          "title": "Leitura simples do que está em jogo",
           "items": [
             {
-              "type": "action",
-              "eyebrow": "Fallback manual",
-              "title": "Registrar sono sem HealthKit",
-              "description": "O app mantém coaching e score mesmo sem permissão nativa.",
-              "tone": "brand"
+              "type": "timeline",
+              "title": "GLP-1 semanal",
+              "subtitle": "Janela atual protegida, com reposição planejada.",
+              "tone": "success"
             },
             {
-              "type": "action",
-              "eyebrow": "Push",
-              "title": "Abrir ajustes do aparelho",
-              "description": "Se preferir, a ativação fica a um toque do usuário."
+              "type": "timeline",
+              "title": "Manipulado metabólico",
+              "subtitle": "Em análise farmacêutica antes da produção.",
+              "tone": "warning"
+            },
+            {
+              "type": "timeline",
+              "title": "Suplemento de apoio",
+              "subtitle": "Recompra prevista para a próxima semana.",
+              "tone": "default"
             }
           ]
         }
       ],
-      "svgFile": "screenshots/iphone/24-permission-fallbacks.svg",
-      "pngFile": "screenshots/iphone-png/24-permission-fallbacks.png",
-      "htmlFile": "html/24-permission-fallbacks.html"
+      "svgFile": "screenshots/iphone/24-prescriptions.svg",
+      "pngFile": "screenshots/iphone-png/24-prescriptions.png",
+      "htmlFile": "html/24-prescriptions.html"
+    },
+    {
+      "screenId": "25-order-status",
+      "route": "/order-status",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Pedido",
+      "title": "Seu pedido está em produção com prazo claro",
+      "summary": "A pessoa entende se está em análise, produção, envio ou entrega sem precisar perguntar no suporte.",
+      "badge": {
+        "label": "em produção",
+        "tone": "attention"
+      },
+      "sections": [
+        {
+          "eyebrow": "Rastreamento",
+          "title": "Status que realmente importam",
+          "items": [
+            {
+              "type": "badges",
+              "badges": [
+                {
+                  "label": "prescrição recebida",
+                  "tone": "good"
+                },
+                {
+                  "label": "produção",
+                  "tone": "attention"
+                },
+                {
+                  "label": "entrega",
+                  "tone": "low"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "body": "Seu pedido está sendo preparado e a próxima recompra ficará sugerida antes de faltar produto."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/25-order-status.svg",
+      "pngFile": "screenshots/iphone-png/25-order-status.png",
+      "htmlFile": "html/25-order-status.html"
+    },
+    {
+      "screenId": "26-reorder",
+      "route": "/reorder",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Recompra",
+      "title": "A próxima recompra fica previsível e sem atrito",
+      "summary": "O app não espera o paciente acabar para lembrar. Ele antecipa a janela com contexto clínico e operacional.",
+      "badge": {
+        "label": "7 dias",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "Prevenção operacional",
+          "title": "Não interrompa a rotina por atraso simples",
+          "items": [
+            {
+              "type": "text",
+              "body": "Abrir a recompra com antecedência reduz risco de quebra na adesão e diminui urgência evitável."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/26-reorder.svg",
+      "pngFile": "screenshots/iphone-png/26-reorder.png",
+      "htmlFile": "html/26-reorder.html"
+    },
+    {
+      "screenId": "27-integrations",
+      "route": "/integrations",
+      "tier": "6m",
+      "state": "permission-denied",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Integrações",
+      "title": "Conecte seus dados ou use fallback manual sem perder clareza",
+      "summary": "HealthKit, Health Connect, balança e wearable entram quando disponíveis, com fallback elegante quando não estiverem conectados.",
+      "badge": {
+        "label": "parcialmente real",
+        "tone": "attention"
+      },
+      "sections": [
+        {
+          "eyebrow": "Status atual",
+          "title": "O que já existe e o que está preparado",
+          "items": [
+            {
+              "type": "badges",
+              "badges": [
+                {
+                  "label": "notificações reais",
+                  "tone": "good"
+                },
+                {
+                  "label": "healthkit preparado",
+                  "tone": "good"
+                },
+                {
+                  "label": "wearable mockado",
+                  "tone": "attention"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "body": "Quando a integração não estiver ativa, o app continua usável com input manual bem guiado."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/27-integrations.svg",
+      "pngFile": "screenshots/iphone-png/27-integrations.png",
+      "htmlFile": "html/27-integrations.html"
+    },
+    {
+      "screenId": "28-plan-membership",
+      "route": "/plan-membership",
+      "tier": "6m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Plano e assinatura",
+      "title": "Entenda o que seu plano libera sem texto quebrado",
+      "summary": "A assinatura explica o valor por tempo, o que está ativo agora e o que entra ao fazer upgrade.",
+      "badge": {
+        "label": "6 meses premium",
+        "tone": "good"
+      },
+      "metrics": [
+        {
+          "label": "Features ativas",
+          "value": "10",
+          "caption": "no plano atual",
+          "tone": "brand"
+        },
+        {
+          "label": "Canal premium",
+          "value": "ativo",
+          "caption": "sob governança",
+          "tone": "brand"
+        }
+      ],
+      "sections": [
+        {
+          "eyebrow": "Estrutura",
+          "title": "Como o cuidado cresce com a duração",
+          "items": [
+            {
+              "type": "timeline",
+              "title": "1 mês",
+              "subtitle": "Hoje, GLP-1 e Meal AI para entrar rápido na rotina.",
+              "tone": "default"
+            },
+            {
+              "type": "timeline",
+              "title": "3 meses",
+              "subtitle": "Sono, rituais e concierge para proteger consistência.",
+              "tone": "success"
+            },
+            {
+              "type": "timeline",
+              "title": "6 meses",
+              "subtitle": "As 10 features e a linha premium coordenada pela equipe.",
+              "tone": "success"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/28-plan-membership.svg",
+      "pngFile": "screenshots/iphone-png/28-plan-membership.png",
+      "htmlFile": "html/28-plan-membership.html"
+    },
+    {
+      "screenId": "29-empty-state",
+      "route": "/pharmacy",
+      "tier": "1m",
+      "state": "empty",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Estado vazio",
+      "title": "Nenhum pedido ativo por enquanto",
+      "summary": "Estados vazios não podem parecer erro nem abandono. Eles precisam orientar a próxima ação com calma.",
+      "badge": {
+        "label": "empty",
+        "tone": "low"
+      },
+      "sections": [
+        {
+          "eyebrow": "Sem ruído",
+          "title": "O usuário ainda sabe o que fazer",
+          "items": [
+            {
+              "type": "action",
+              "eyebrow": "Próximo passo",
+              "title": "Abrir primeira compra do ciclo",
+              "description": "Quando houver prescrição pronta, o fluxo farmacêutico entra aqui sem quebrar o resto do app.",
+              "tone": "brand"
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/29-empty-state.svg",
+      "pngFile": "screenshots/iphone-png/29-empty-state.png",
+      "htmlFile": "html/29-empty-state.html"
+    },
+    {
+      "screenId": "30-loading-state",
+      "route": "/medical",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Loading",
+      "title": "Montando sua área médica",
+      "summary": "O loading também precisa parecer premium: contexto curto, expectativa clara e sem tela branca vazia.",
+      "badge": {
+        "label": "carregando",
+        "tone": "low"
+      },
+      "sections": [
+        {
+          "eyebrow": "Percepção",
+          "title": "O sistema explica o que está fazendo",
+          "items": [
+            {
+              "type": "text",
+              "body": "Estou organizando fila, resumo clínico e histórico recente para você."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/30-loading-state.svg",
+      "pngFile": "screenshots/iphone-png/30-loading-state.png",
+      "htmlFile": "html/30-loading-state.html"
+    },
+    {
+      "screenId": "31-error-state",
+      "route": "/plan",
+      "tier": "3m",
+      "state": "error",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Erro amigável",
+      "title": "Não consegui abrir seu plano agora",
+      "summary": "A falha precisa ser legível, calma e recuperável, sem assustar nem abandonar o usuário.",
+      "badge": {
+        "label": "recuperável",
+        "tone": "attention"
+      },
+      "sections": [
+        {
+          "eyebrow": "Mensagem",
+          "title": "O app explica sem parecer quebrado",
+          "items": [
+            {
+              "type": "text",
+              "body": "Tente atualizar em instantes. Seus dados e sua jornada continuam preservados."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/31-error-state.svg",
+      "pngFile": "screenshots/iphone-png/31-error-state.png",
+      "htmlFile": "html/31-error-state.html"
+    },
+    {
+      "screenId": "32-success-state",
+      "route": "/success-state",
+      "tier": "3m",
+      "state": "happy",
+      "device": "iphone",
+      "build": "review-local",
+      "reviewStatus": "ready_for_review",
+      "eyebrow": "Tudo certo",
+      "title": "Seu passo foi registrado com sucesso",
+      "summary": "O app confirma o que aconteceu e deixa claro qual é a próxima ação, sem tela morta ou ambígua.",
+      "badge": {
+        "label": "registrado",
+        "tone": "good"
+      },
+      "sections": [
+        {
+          "eyebrow": "Próximo passo",
+          "title": "Continue a rotina sem se perder",
+          "items": [
+            {
+              "type": "text",
+              "body": "Seu registro já entrou no histórico e pode mudar score, orientação do dia e leitura médica quando necessário."
+            }
+          ]
+        }
+      ],
+      "svgFile": "screenshots/iphone/32-success-state.svg",
+      "pngFile": "screenshots/iphone-png/32-success-state.png",
+      "htmlFile": "html/32-success-state.html"
     }
   ]
 }

@@ -10,6 +10,8 @@ function ensureDir(target: string) {
   fs.mkdirSync(target, { recursive: true });
 }
 
+fs.rmSync(htmlDir, { recursive: true, force: true });
+
 function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -108,7 +110,6 @@ function renderScreen(screen: (typeof reviewScreenDefinitions)[number]) {
         color: var(--text);
       }
       .canvas {
-        min-height: 100vh;
         padding: 40px 24px 56px;
         display: flex;
         justify-content: center;

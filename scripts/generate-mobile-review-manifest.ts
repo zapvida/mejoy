@@ -14,25 +14,30 @@ function ensureDir(target: string) {
 function buildFlowMap() {
   return `# Fluxos auditados
 
-## Onboarding e ativação
-- 00-onboarding -> 01-sign-in -> 02-activation -> 03-home-score
+## Entrada do paciente
+- 00-splash-premium -> 01-onboarding-premium -> 02-checkup-inicial -> 03-checkup-resultado -> 04-hoje-dashboard
 
-## Uso diário
-- 03-home-score -> 06-journey-glp1 -> 08-meal-ai -> 09-sleep -> 10-rituals -> 11-goals
+## Rotina diária
+- 04-hoje-dashboard -> 09-meal-photo -> 10-meal-result -> 13-glp1-journey -> 15-symptom-checkin -> 21-metabolic-monitor
 
-## Prevenção e clínica
-- 03-home-prevencao -> 12-prevention-checklist -> 13-consult-concierge -> 14-exams -> 15-reports-bundle
+## Plano e comportamento
+- 05-plano-90-dias -> 13-glp1-journey -> 20-nutrition-coach -> 22-mind-sleep -> 23-ritual-player
 
-## Conta e retenção
-- 16-profile -> 17-notifications -> 18-referral-gamification -> 19-tier-locked-states -> 20-premium-6m-benefits -> 21-specialist-request
+## Cuidado médico
+- 06-medico-tab -> 17-telemedicine -> 18-doctor-queue -> 19-doctor-chat
+- 15-symptom-checkin -> 16-symptom-alert -> 17-telemedicine
 
-## Estados críticos
-- 22-empty-states
-- 23-error-states
-- 24-permission-fallbacks
+## Farmácia e continuidade
+- 07-farmacia-tab -> 24-prescriptions -> 25-order-status -> 26-reorder
 
-## Fluxos premium e retenção
-- 18-referral-gamification -> 20-premium-6m-benefits -> 21-specialist-request
+## Conta e assinatura
+- 08-profile -> 27-integrations -> 28-plan-membership
+
+## Estados de robustez
+- 29-empty-state
+- 30-loading-state
+- 31-error-state
+- 32-success-state
 `;
 }
 

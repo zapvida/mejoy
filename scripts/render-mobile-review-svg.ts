@@ -16,6 +16,8 @@ function ensureDir(target: string) {
   fs.mkdirSync(target, { recursive: true });
 }
 
+fs.rmSync(screenshotsDir, { recursive: true, force: true });
+
 function escapeXml(value: string) {
   return value
     .replaceAll('&', '&amp;')

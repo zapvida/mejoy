@@ -12,7 +12,26 @@ if (!fs.existsSync(manifestPath)) {
 }
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-const { chromium } = require('playwright');
+
+function loadPlaywright() {
+  const candidates = [process.cwd(), path.join(process.cwd(), 'node_modules', '.pnpm', 'node_modules')];
+
+  for (const candidate of candidates) {
+    try {
+      const resolved = require.resolve('playwright', { paths: [candidate] });
+      return require(resolved);
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error('Playwright module not found in workspace resolution paths.');
+}
+
+const { chromium } = loadPlaywright();
+
+const pngDir = path.join(artifactDir, 'screenshots', 'iphone-png');
+fs.rmSync(pngDir, { recursive: true, force: true });
 
 const browser = await chromium.launch({ headless: true });
 

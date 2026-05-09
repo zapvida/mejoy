@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1754" viewBox="0 0 860 1754" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="320" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="418" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">HOJE</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Seu dia está</tspan><tspan x="240" dy="42">organizado com</tspan><tspan x="240" dy="42">score, próxima</tspan><tspan x="240" dy="42">ação e suporte</tspan><tspan x="240" dy="42">médico</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">A home virou cockpit: check-in, GLP-1,</tspan><tspan x="240" dy="24">refeição, sintomas, sono, médico e</tspan><tspan x="240" dy="24">farmácia convivem sem poluição.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="131.9" height="34" rx="17" fill="#DDF5E7" />
+      <text x="496" y="174" fill="#106F4A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">home aprovada</text>
+    </g>
+  
+
+    <g>
+      <rect x="232" y="328" width="140" height="110" rx="22" fill="#1A4E3D" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="248" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="248" dy="0">SCORE</tspan>
+    </text>
+  
+      
+    <text x="248" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="248" dy="0">78/100</tspan>
+    </text>
+  
+      
+    <text x="248" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="248" dy="0">hábitos + adesão +</tspan><tspan x="248" dy="16">prevenção</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="380" y="328" width="140" height="110" rx="22" fill="#4E351E" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="396" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="396" dy="0">GLP-1</tspan>
+    </text>
+  
+      
+    <text x="396" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="396" dy="0">7,5 mg</tspan>
+    </text>
+  
+      
+    <text x="396" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="396" dy="0">dose atual</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="528" y="328" width="140" height="110" rx="22" fill="#22312C" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="544" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="544" dy="0">SONO</tspan>
+    </text>
+  
+      
+    <text x="544" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="544" dy="0">84/100</tspan>
+    </text>
+  
+      
+    <text x="544" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="544" dy="0">snapshot recente</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="676" y="328" width="140" height="110" rx="22" fill="#22312C" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="692" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="692" dy="0">PLANO</tspan>
+    </text>
+  
+      
+    <text x="692" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="692" dy="0">Dia 28</tspan>
+    </text>
+  
+      
+    <text x="692" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="692" dy="0">de 90 dias</tspan>
+    </text>
+  
+    </g>
+  
+<rect x="216" y="456" width="428" height="432" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="486" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">PRIMEIRA DOBRA</tspan>
+    </text>
+  
+
+    <text x="238" y="526" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">O usuário entende a tela</tspan><tspan x="238" dy="32">em até 5 segundos</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="568" width="412" height="142" rx="24" fill="#DEF3E8" stroke="#D4ECDD" />
+        
+    <text x="246" y="592" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">CTA PRINCIPAL</tspan>
+    </text>
+  
+        
+    <text x="246" y="620" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Começar check-in de hoje</tspan>
+    </text>
+  
+        
+    <text x="246" y="654" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Sintomas, energia, fome e sono entram num</tspan><tspan x="246" dy="22">fluxo curto e claro.</tspan>
+    </text>
+  
+        <text x="246" y="692" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="692" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+      <g>
+        <rect x="228" y="722" width="412" height="142" rx="24" fill="#FFF0DE" stroke="#F8DFBE" />
+        
+    <text x="246" y="746" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">CTA SECUNDÁRIO</tspan>
+    </text>
+  
+        
+    <text x="246" y="774" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Falar com médico agora</tspan>
+    </text>
+  
+        
+    <text x="246" y="808" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Resumo clínico já segue antes do contato com a</tspan><tspan x="246" dy="22">equipe.</tspan>
+    </text>
+  
+        <text x="246" y="846" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="846" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+<rect x="216" y="906" width="428" height="782" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="936" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">AS 10 FEATURES</tspan>
+    </text>
+  
+
+    <text x="238" y="976" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">Tudo aparece como bloco</tspan><tspan x="238" dy="32">útil, não como vitrine</tspan><tspan x="238" dy="32">solta</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="1018" width="412" height="156" rx="24" fill="#DEF3E8" stroke="#D4ECDD" />
+        
+    <text x="246" y="1042" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">MEAL AI</tspan>
+    </text>
+  
+        
+    <text x="246" y="1070" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Fotografe ou descreva a</tspan><tspan x="246" dy="28">refeição</tspan>
+    </text>
+  
+        
+    <text x="246" y="1132" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">A IA estima macros, qualidade metabólica e a</tspan><tspan x="246" dy="22">melhor próxima troca.</tspan>
+    </text>
+  
+        <text x="246" y="1156" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="1156" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+      <g>
+        <rect x="228" y="1186" width="412" height="156" rx="24" fill="#FFF0DE" stroke="#F8DFBE" />
+        
+    <text x="246" y="1210" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">SCANNER</tspan>
+    </text>
+  
+        
+    <text x="246" y="1238" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Leia o rótulo antes de</tspan><tspan x="246" dy="28">comprar</tspan>
+    </text>
+  
+        
+    <text x="246" y="1300" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">O app mostra açúcar, sódio, ultraprocessado e</tspan><tspan x="246" dy="22">alternativa melhor.</tspan>
+    </text>
+  
+        <text x="246" y="1324" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="1324" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+      <g>
+        <rect x="228" y="1354" width="412" height="156" rx="24" fill="#FFFFFF" stroke="#E4E8E5" />
+        
+    <text x="246" y="1378" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">GLP-1</tspan>
+    </text>
+  
+        
+    <text x="246" y="1406" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Registre aplicação e</tspan><tspan x="246" dy="28">sintomas</tspan>
+    </text>
+  
+        
+    <text x="246" y="1468" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Dose, rotação de local, náusea e hidratação</tspan><tspan x="246" dy="22">ficam na mesma linha.</tspan>
+    </text>
+  
+        <text x="246" y="1492" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="1492" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+      <g>
+        <rect x="228" y="1522" width="412" height="142" rx="24" fill="#FFFFFF" stroke="#E4E8E5" />
+        
+    <text x="246" y="1546" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">MENTE E SONO</tspan>
+    </text>
+  
+        
+    <text x="246" y="1574" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Proteja sua próxima escolha</tspan>
+    </text>
+  
+        
+    <text x="246" y="1608" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Uma trilha curta ajuda compulsão, ansiedade e</tspan><tspan x="246" dy="22">sono.</tspan>
+    </text>
+  
+        <text x="246" y="1646" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="1646" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+    <text x="246" y="1716" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/ · happy · 6m</tspan>
+    </text>
+  
+</svg>
