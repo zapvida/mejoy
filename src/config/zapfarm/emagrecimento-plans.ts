@@ -1,122 +1,294 @@
-/**
- * Configuração centralizada dos planos de emagrecimento
- *
- * Esta é a fonte única de verdade para todos os planos de emagrecimento
- * (checkout, APIs e valores numéricos em `ZAPFARM_PRODUCTS.emagrecimento` via `getPlanById`).
- * Todos os componentes devem usar esta configuração para garantir consistência.
- *
- * Última atualização: Março 2025
- * Estratégia: 3 acompanhamentos (clínico, nutricionista, psicólogo) + retorno + exames + acompanhamento mensal
- * Medicação: tirzepatida, semaglutida ou outras, conforme avaliação médica
- */
+import type { EmagrecimentoTrilha } from '@/lib/emagrecimento/checkoutUrls';
+
+export type EmagrecimentoPlanId = 'programa-1m' | 'programa-3m' | 'programa-6m';
+export type EmagrecimentoPlanKey = 'basico' | 'completo' | 'premium';
+export type EmagrecimentoMolecule =
+  | 'mounjaro'
+  | 'wegovy'
+  | 'rybelsus'
+  | 'contrave';
+export type EmagrecimentoBenefitTier = 'essential' | 'plus' | 'full';
+export type EmagrecimentoSupportTier = 'guided' | 'extended' | 'concierge';
+export type EmagrecimentoRefundPolicy = 'convert_or_refund_pre_shipment';
+export type EmagrecimentoCoverageMode = 'coverage_available' | 'coverage_pending';
 
 export interface EmagrecimentoPlan {
-  id: 'programa-1m' | 'programa-3m' | 'programa-6m';
+  id: EmagrecimentoPlanId;
+  planKey: EmagrecimentoPlanKey;
+  track: EmagrecimentoTrilha;
+  durationMonths: number;
+  duration: string;
+  molecule: EmagrecimentoMolecule;
+  moleculeLabel: string;
   badge: string;
   title: string;
   subtitle: string;
-  priceMain: string; // Ex: "12x de R$ 167"
-  priceDetail: string; // Ex: "Total de R$ 2.000 em até 12x sem juros no cartão"
-  totalAmount: number; // Valor total em reais (ex: 2000)
-  totalAmountCents: number; // Valor total em centavos para env vars (ex: 200000)
-  monthlyInstallment: number; // Valor da parcela mensal em reais (ex: 167)
-  installments: number; // Número de parcelas (12)
+  priceMain: string;
+  priceDetail: string;
+  totalAmount: number;
+  totalAmountCents: number;
+  installment12Cents: number;
+  monthlyInstallment: number;
+  installments: number;
   highlight: boolean;
   recommended: boolean;
   bullets: string[];
   ctaLabel: string;
   asaasEnvVar: string;
-  duration: string; // Duração do programa
+  benefitTier: EmagrecimentoBenefitTier;
+  supportTier: EmagrecimentoSupportTier;
+  refundPolicy: EmagrecimentoRefundPolicy;
+  coverageMode: EmagrecimentoCoverageMode;
 }
 
-/** Bullets comuns a todos os planos — benefícios que estimulam a compra */
-const BULLETS_BASE = [
-  'Consulta com clínico médico especialista',
-  'Consulta com nutricionista para plano alimentar personalizado',
-  'Consulta com psicólogo para suporte emocional e aderência',
-  'Consulta de retorno com clínico para ajustes e acompanhamento',
-  'Exames de check-up solicitados e acompanhados pelo médico',
-  'Acompanhamento mensal por WhatsApp com a equipe',
-  'Tratamento completo: medicação (tirzepatida, semaglutida ou outras) quando indicada',
-];
+type PlanTemplate = {
+  id: EmagrecimentoPlanId;
+  planKey: EmagrecimentoPlanKey;
+  badge: string;
+  title: string;
+  subtitle: string;
+  durationMonths: number;
+  duration: string;
+  highlight: boolean;
+  recommended: boolean;
+  ctaLabel: string;
+  benefitTier: EmagrecimentoBenefitTier;
+  supportTier: EmagrecimentoSupportTier;
+};
 
-export const emagrecimentoPlans: EmagrecimentoPlan[] = [
+const PLAN_TEMPLATES: PlanTemplate[] = [
   {
     id: 'programa-1m',
-    badge: 'Comece com segurança',
-    title: 'Programa 1 Mês',
-    subtitle: 'Um mês de acompanhamento completo para iniciar.',
-    priceMain: '12x de R$ 166,67',
-    priceDetail: 'Total de R$ 2.000 em até 12x sem juros no cartão.',
-    totalAmount: 2000,
-    totalAmountCents: 200000,
-    monthlyInstallment: 166.67,
-    installments: 12,
+    planKey: 'basico',
+    badge: 'Comece com seguranca',
+    title: 'Programa 1 Mes',
+    subtitle: 'Entrada clinica objetiva para iniciar o tratamento com avaliacao medica e acompanhamento real.',
+    durationMonths: 1,
+    duration: '1 mes',
     highlight: false,
     recommended: false,
-    bullets: [
-      ...BULLETS_BASE,
-      '1 mês de acompanhamento contínuo',
-      'Ideal para começar e validar o tratamento',
-    ],
-    ctaLabel: 'Começar com segurança',
-    asaasEnvVar: 'ASAAS_PRICE_EMAGRECIMENTO_BASICO',
-    duration: '1 mês',
+    ctaLabel: 'Comecar com seguranca',
+    benefitTier: 'essential',
+    supportTier: 'guided',
   },
   {
     id: 'programa-3m',
+    planKey: 'completo',
     badge: 'Mais escolhido',
     title: 'Programa 3 Meses',
-    subtitle: 'Três meses de cuidado contínuo.',
-    priceMain: '12x de R$ 333,33',
-    priceDetail: 'Total de R$ 4.000 em até 12x sem juros no cartão.',
-    totalAmount: 4000,
-    totalAmountCents: 400000,
-    monthlyInstallment: 333.33,
-    installments: 12,
+    subtitle: 'Tempo suficiente para avaliar resposta, ajustar conduta e consolidar aderencia.',
+    durationMonths: 3,
+    duration: '3 meses',
     highlight: true,
     recommended: true,
-    bullets: [
-      ...BULLETS_BASE,
-      '3 meses de acompanhamento contínuo',
-      'Consultas de retorno para ajustes finos',
-      'Melhor custo-benefício para resultados duradouros',
-    ],
     ctaLabel: 'Escolher plano recomendado',
-    asaasEnvVar: 'ASAAS_PRICE_EMAGRECIMENTO_COMPLETO',
-    duration: '3 meses',
+    benefitTier: 'plus',
+    supportTier: 'extended',
   },
   {
     id: 'programa-6m',
+    planKey: 'premium',
     badge: 'Mais completo',
     title: 'Programa 6 Meses',
-    subtitle: 'Seis meses com médico e time do seu lado.',
-    priceMain: '12x de R$ 500',
-    priceDetail: 'Total de R$ 6.000 em até 12x sem juros no cartão.',
-    totalAmount: 6000,
-    totalAmountCents: 600000,
-    monthlyInstallment: 500,
-    installments: 12,
+    subtitle: 'Continuacao premium com mais profundidade, suporte nomeado e manutencao da jornada.',
+    durationMonths: 6,
+    duration: '6 meses',
     highlight: false,
     recommended: false,
-    bullets: [
-      ...BULLETS_BASE,
-      '6 meses de acompanhamento contínuo',
-      'Consultas de retorno ampliadas ao longo do tratamento',
-      'Plano de manutenção para evitar reganho de peso',
-      'Prioridade no atendimento e suporte da equipe',
-    ],
     ctaLabel: 'Quero o mais completo',
-    asaasEnvVar: 'ASAAS_PRICE_EMAGRECIMENTO_PREMIUM',
-    duration: '6 meses',
+    benefitTier: 'full',
+    supportTier: 'concierge',
   },
 ];
 
-/** URL do plantão ZapVida — falar com médico antes de comprar */
-export const PLANTÃO_ZAPVIDA_URL = 'https://zapvida.com/pay/plantao';
+const MOLECULE_LABELS: Record<EmagrecimentoMolecule, string> = {
+  mounjaro: 'Mounjaro',
+  wegovy: 'Wegovy',
+  rybelsus: 'Rybelsus',
+  contrave: 'Contrave',
+};
+
+const MOLECULE_PRICE_MATRIX: Record<
+  EmagrecimentoMolecule,
+  Record<EmagrecimentoPlanId, number>
+> = {
+  mounjaro: {
+    'programa-1m': 2500,
+    'programa-3m': 7000,
+    'programa-6m': 14000,
+  },
+  wegovy: {
+    'programa-1m': 1500,
+    'programa-3m': 4000,
+    'programa-6m': 8000,
+  },
+  rybelsus: {
+    'programa-1m': 1200,
+    'programa-3m': 3300,
+    'programa-6m': 6500,
+  },
+  contrave: {
+    'programa-1m': 1200,
+    'programa-3m': 3300,
+    'programa-6m': 6500,
+  },
+};
+
+function normalizePrincipio(raw: string | null | undefined): string {
+  return (raw || '').trim().toLowerCase();
+}
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(Math.round(value * 100) / 100);
+}
+
+function buildPriceMain(totalAmount: number, installments = 12) {
+  return `${installments}x de ${formatCurrency(totalAmount / installments)}`;
+}
+
+function buildPriceDetail(totalAmount: number, installments = 12) {
+  return `Total de ${formatCurrency(totalAmount)} em ate ${installments}x sem juros no cartao.`;
+}
+
+function buildBulletsForTier(
+  template: PlanTemplate,
+  moleculeLabel: string,
+): string[] {
+  const clinicalGuardrail = `Medicacao com ${moleculeLabel} apenas se houver indicacao medica.`;
+
+  if (template.benefitTier === 'essential') {
+    return [
+      '1 consulta com endocrinologista ou nutrologo',
+      '1 retorno clinico apos o pedido de check-up',
+      '1 consulta com psicologa para aderencia',
+      'App MeJoy Essential com timeline, status de prescricao/entrega e agenda de retornos',
+      clinicalGuardrail,
+    ];
+  }
+
+  if (template.benefitTier === 'plus') {
+    return [
+      'Tudo do plano de 1 mes',
+      '1 consulta com nutricionista',
+      '1 retorno adicional com especialista',
+      'App MeJoy Plus com tarefas, lembretes, evolucao, documentos e trilha educacional',
+      'Ajustes clinicos ao longo de 3 meses conforme resposta e tolerancia',
+      clinicalGuardrail,
+    ];
+  }
+
+  return [
+    'Tudo do plano de 3 meses',
+    'App MeJoy Full com toda a jornada liberada',
+    'Linha dedicada do programa com roster medico nomeado e triagem 24/7',
+    'Escalonamento imediato para o ZapVida em nova dor ou urgencia',
+    'Follow-up prioritario e manutencao da jornada de 6 meses',
+    clinicalGuardrail,
+  ];
+}
+
+export function resolveEmagrecimentoCommercialSelection(input?: {
+  trilha?: EmagrecimentoTrilha | null;
+  principio?: string | null;
+}): {
+  track: EmagrecimentoTrilha;
+  molecule: EmagrecimentoMolecule;
+  moleculeLabel: string;
+} {
+  const track = input?.trilha || 'alternativas_clinicas';
+  const principio = normalizePrincipio(input?.principio);
+
+  if (track === 'tirzepatida' || principio.includes('mounjaro') || principio.includes('tirzepatida')) {
+    return {
+      track: 'tirzepatida',
+      molecule: 'mounjaro',
+      moleculeLabel: MOLECULE_LABELS.mounjaro,
+    };
+  }
+
+  if (track === 'contrave' || principio.includes('contrave')) {
+    return {
+      track: 'contrave',
+      molecule: 'contrave',
+      moleculeLabel: MOLECULE_LABELS.contrave,
+    };
+  }
+
+  if (principio.includes('rybelsus')) {
+    return {
+      track: 'semaglutida',
+      molecule: 'rybelsus',
+      moleculeLabel: MOLECULE_LABELS.rybelsus,
+    };
+  }
+
+  if (track === 'semaglutida' || principio.includes('wegovy') || principio.includes('semaglutida')) {
+    return {
+      track: 'semaglutida',
+      molecule: 'wegovy',
+      moleculeLabel: MOLECULE_LABELS.wegovy,
+    };
+  }
+
+  return {
+    track: 'alternativas_clinicas',
+    molecule: 'rybelsus',
+    moleculeLabel: MOLECULE_LABELS.rybelsus,
+  };
+}
+
+export function buildEmagrecimentoPlans(input?: {
+  trilha?: EmagrecimentoTrilha | null;
+  principio?: string | null;
+}): EmagrecimentoPlan[] {
+  const selection = resolveEmagrecimentoCommercialSelection(input);
+
+  return PLAN_TEMPLATES.map((template) => {
+    const totalAmount = MOLECULE_PRICE_MATRIX[selection.molecule][template.id];
+    const monthlyInstallment = Math.round((totalAmount / 12) * 100) / 100;
+    const installment12Cents = Math.round(monthlyInstallment * 100);
+
+    return {
+      id: template.id,
+      planKey: template.planKey,
+      track: selection.track,
+      durationMonths: template.durationMonths,
+      duration: template.duration,
+      molecule: selection.molecule,
+      moleculeLabel: selection.moleculeLabel,
+      badge: template.badge,
+      title: template.title,
+      subtitle: template.subtitle,
+      priceMain: buildPriceMain(totalAmount, 12),
+      priceDetail: buildPriceDetail(totalAmount, 12),
+      totalAmount,
+      totalAmountCents: Math.round(totalAmount * 100),
+      installment12Cents,
+      monthlyInstallment,
+      installments: 12,
+      highlight: template.highlight,
+      recommended: template.recommended,
+      bullets: buildBulletsForTier(template, selection.moleculeLabel),
+      ctaLabel: template.ctaLabel,
+      asaasEnvVar: `ASAAS_PRICE_EMAGRECIMENTO_${selection.molecule.toUpperCase()}_${template.planKey.toUpperCase()}`,
+      benefitTier: template.benefitTier,
+      supportTier: template.supportTier,
+      refundPolicy: 'convert_or_refund_pre_shipment',
+      coverageMode: 'coverage_available',
+    };
+  });
+}
+
+export const emagrecimentoPlans: EmagrecimentoPlan[] =
+  buildEmagrecimentoPlans();
+
+export const PLANTAO_ZAPVIDA_URL = 'https://zapvida.com/pay/plantao';
 
 export function buildZapVidaPlantaoUrl(utmContent: string): string {
-  const url = new URL(PLANTÃO_ZAPVIDA_URL);
+  const url = new URL(PLANTAO_ZAPVIDA_URL);
   url.searchParams.set('utm_source', 'mejoy');
   url.searchParams.set('utm_medium', 'clinical_direct');
   url.searchParams.set('utm_campaign', 'emagrecimento_clinico');
@@ -124,50 +296,62 @@ export function buildZapVidaPlantaoUrl(utmContent: string): string {
   return url.toString();
 }
 
-/**
- * Nota legal obrigatória para exibir junto com os planos
- */
 export const emagrecimentoLegalNote =
-  'O uso de medicações como GLP-1 (tirzepatida, semaglutida ou outras) depende sempre da avaliação do médico. Nenhuma prescrição é automática: o clínico decide junto com você, seguindo as diretrizes atuais de obesidade.';
+  'A conduta final e sempre medica. Se a molecula esperada nao for indicada, voce pode converter para um protocolo clinico alternativo ou solicitar reembolso integral antes do envio da medicacao.';
 
-/**
- * Mapeamento de IDs antigos (basico/completo/premium) para novos (programa-1m/3m/6m)
- * Usado pela API Asaas e pelo planRecommendation
- */
 export const planIdMapping = {
   basico: 'programa-1m',
   completo: 'programa-3m',
   premium: 'programa-6m',
-  /** Compatibilidade: mensal/trimestral/semestral do planRecommendation */
   mensal: 'programa-1m',
   trimestral: 'programa-3m',
   semestral: 'programa-6m',
 } as const;
 
-/**
- * Mapeamento reverso: plano ID → chave API (basico/completo/premium)
- */
-export const planIdToApiKey: Record<string, 'basico' | 'completo' | 'premium'> = {
+export const planIdToApiKey: Record<string, EmagrecimentoPlanKey> = {
   'programa-1m': 'basico',
   'programa-3m': 'completo',
   'programa-6m': 'premium',
-  // IDs legados
   'start-glp1': 'basico',
   'programa-glp1-3m': 'completo',
   'programa-glp1-6m-premium': 'premium',
 };
 
-/**
- * Função helper para obter plano por ID (suporta IDs antigos e novos)
- */
-export function getPlanById(id: string): EmagrecimentoPlan | undefined {
+export function getPlanById(
+  id: string,
+  input?: {
+    trilha?: EmagrecimentoTrilha | null;
+    principio?: string | null;
+  },
+): EmagrecimentoPlan | undefined {
   const mappedId = planIdMapping[id as keyof typeof planIdMapping] || id;
-  return emagrecimentoPlans.find((plan) => plan.id === mappedId);
+  return buildEmagrecimentoPlans(input).find((plan) => plan.id === mappedId);
 }
 
-/**
- * Função helper para obter plano recomendado
- */
-export function getRecommendedPlan(): EmagrecimentoPlan {
-  return emagrecimentoPlans.find((plan) => plan.recommended) || emagrecimentoPlans[1];
+export function getRecommendedPlan(
+  input?: {
+    trilha?: EmagrecimentoTrilha | null;
+    principio?: string | null;
+  },
+): EmagrecimentoPlan {
+  return (
+    buildEmagrecimentoPlans(input).find((plan) => plan.recommended) ||
+    buildEmagrecimentoPlans(input)[1]
+  );
+}
+
+export function getEmagrecimentoPlanByApiKey(
+  planKey: EmagrecimentoPlanKey,
+  input?: {
+    trilha?: EmagrecimentoTrilha | null;
+    principio?: string | null;
+  },
+): EmagrecimentoPlan {
+  const match = buildEmagrecimentoPlans(input).find((plan) => plan.planKey === planKey);
+
+  if (!match) {
+    throw new Error(`Plano de emagrecimento nao encontrado para ${planKey}`);
+  }
+
+  return match;
 }

@@ -8,6 +8,7 @@ import {
   normalizeProductKey,
 } from "@/lib/zapfarm/price-resolver";
 import { getSubscriptionPrice } from "@/config/zapfarm/pricing";
+import { getEmagrecimentoPlanByApiKey } from "@/config/zapfarm/emagrecimento-plans";
 import { calculateDueDate } from "@/lib/asaas/utils";
 import { readUtmFromReq } from "@/lib/analytics/utm";
 import { resolvePixTransaction } from "@/lib/asaas/pix";
@@ -457,12 +458,31 @@ export default async function handler(
   let amount: number;
   const planKey = plano as "basico" | "completo" | "premium";
   const envKey = normalizeProductKey(product);
-  const envVarUsed = validVariant
+  let envVarUsed = validVariant
     ? `ASAAS_PRICE_${envKey}_${validVariant.toUpperCase()}_${planKey.toUpperCase()}`
     : `ASAAS_PRICE_${envKey}_${planKey.toUpperCase()}`;
+  let emagrecimentoCommercialPlan:
+    | ReturnType<typeof getEmagrecimentoPlanByApiKey>
+    | null = null;
 
   try {
-    const unitPriceCents = getPriceCents(product, planKey, validVariant, true);
+    const unitPriceCents =
+      product === "emagrecimento"
+        ? (() => {
+            emagrecimentoCommercialPlan = getEmagrecimentoPlanByApiKey(planKey, {
+              trilha:
+                typeof emagrecimentoTrilha === "string"
+                  ? (emagrecimentoTrilha as any)
+                  : undefined,
+              principio:
+                typeof emagrecimentoPrincipio === "string"
+                  ? emagrecimentoPrincipio
+                  : undefined,
+            });
+            envVarUsed = `catalog:${emagrecimentoCommercialPlan.molecule}:${planKey}`;
+            return emagrecimentoCommercialPlan.totalAmountCents;
+          })()
+        : getPriceCents(product, planKey, validVariant, true);
     if (unitPriceCents === null || unitPriceCents <= 0) {
       throw new Error(
         `Preço não encontrado para ${product}/${plano}${validVariant ? `/${validVariant}` : ""}`,
@@ -612,7 +632,10 @@ export default async function handler(
       billingType: billingType as "PIX" | "CREDIT_CARD",
       value: valueInReais, // Valor em REAIS (convertido de centavos)
       dueDate: calculateDueDate(3),
-      description: `${productConfig.name} - ${planConfig.name}${quantity > 1 ? ` (${quantity}x)` : ""}`,
+      description:
+        product === "emagrecimento" && emagrecimentoCommercialPlan
+          ? `${emagrecimentoCommercialPlan.title} - ${emagrecimentoCommercialPlan.moleculeLabel}${quantity > 1 ? ` (${quantity}x)` : ""}`
+          : `${productConfig.name} - ${planConfig.name}${quantity > 1 ? ` (${quantity}x)` : ""}`,
       externalReference: `zapfarm_${product}_${plano}_${Date.now()}`,
       metadata: {
         tipo: "zapfarm",
@@ -631,6 +654,13 @@ export default async function handler(
         ...(bundleId && { bundleId: String(bundleId) }),
         ...(trilhaMeta && { emagrecimento_trilha: trilhaMeta }),
         ...(principioMeta && { emagrecimento_principio: principioMeta }),
+        ...(emagrecimentoCommercialPlan && {
+          emagrecimento_molecule: emagrecimentoCommercialPlan.molecule,
+          emagrecimento_benefit_tier: emagrecimentoCommercialPlan.benefitTier,
+          emagrecimento_support_tier: emagrecimentoCommercialPlan.supportTier,
+          emagrecimento_refund_policy:
+            emagrecimentoCommercialPlan.refundPolicy,
+        }),
         ...(utm.source && { utm_source: utm.source }),
         ...(utm.medium && { utm_medium: utm.medium }),
         ...(utm.campaign && { utm_campaign: utm.campaign }),

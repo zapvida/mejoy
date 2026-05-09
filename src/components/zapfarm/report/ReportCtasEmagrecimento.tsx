@@ -7,10 +7,10 @@ import { RefinedButton } from '@/components/ui/RefinedButton';
 import {
   buildZapVidaPlantaoUrl,
   emagrecimentoLegalNote,
-  emagrecimentoPlans,
   planIdMapping,
   type EmagrecimentoPlan,
 } from '@/config/zapfarm/emagrecimento-plans';
+import { buildEmagrecimentoCheckoutPlanCatalog } from '@/lib/emagrecimento/checkout-plan-catalog';
 import {
   estimateWeightLossRangeKg,
   getMedicationTrackCard,
@@ -60,7 +60,13 @@ export function ReportCtasEmagrecimento({
   onOpenInlineCheckout,
   planCatalog,
 }: Props) {
-  const availablePlans = planCatalog?.length ? planCatalog : emagrecimentoPlans;
+  const availablePlans =
+    planCatalog?.length
+      ? planCatalog
+      : buildEmagrecimentoCheckoutPlanCatalog(
+          selectedTrilha,
+          preferenciaPrincipioAtivo,
+        ).planCatalog;
   const triageContextId = vm?.triageId || reportId;
   const classification = vm
     ? ((vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined)
@@ -243,6 +249,9 @@ export function ReportCtasEmagrecimento({
                 </p>
                 <p className="mt-2">
                   <strong>Trilha ativa:</strong> {selectedTrackCard.shortTitle}
+                </p>
+                <p className="mt-2">
+                  <strong>Conduta prevista:</strong> {plan.moleculeLabel} quando indicado
                 </p>
                 <p className="mt-3 leading-relaxed text-slate-600">
                   {selected
