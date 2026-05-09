@@ -30,6 +30,33 @@ interface ProtocolCardViewModel {
   tags: string[];
   imageSrc: string;
   imageAlt: string;
+  evidenceLevel: string;
+  reviewedAtLabel: string;
+  scienceVisibility: string;
+  clinicalOwner: string;
+  scienceSourceLine: string;
+  scienceSummary: string;
+}
+
+function formatReviewedDate(value: string) {
+  const [year, month, day] = value.split("-");
+  const monthLabel =
+    {
+      "01": "jan",
+      "02": "fev",
+      "03": "mar",
+      "04": "abr",
+      "05": "mai",
+      "06": "jun",
+      "07": "jul",
+      "08": "ago",
+      "09": "set",
+      "10": "out",
+      "11": "nov",
+      "12": "dez",
+    }[month ?? ""] ?? month;
+
+  return `${day} ${monthLabel} ${year}`;
 }
 
 export default function ProtocolosIndex() {
@@ -65,6 +92,15 @@ export default function ProtocolosIndex() {
           tags: form.tags || [],
           imageSrc: meta.imageSrc,
           imageAlt: meta.imageAlt,
+          evidenceLevel: `Evidencia ${meta.science.evidenceLevel}`,
+          reviewedAtLabel: formatReviewedDate(meta.science.reviewedAt),
+          scienceVisibility:
+            meta.science.visibility === "patient-safe"
+              ? "Seguro para paciente"
+              : "Uso clinico",
+          clinicalOwner: meta.science.clinicalOwner,
+          scienceSourceLine: meta.science.sourceLine,
+          scienceSummary: meta.science.scienceSummary,
         },
       ];
     });
@@ -207,6 +243,31 @@ export default function ProtocolosIndex() {
                     {item}
                   </span>
                 ))}
+              </div>
+
+              <div className="mt-6 rounded-[28px] border border-[#dbe4d7] bg-white/90 px-5 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.04)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                  Camada de ciencia
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  Todo protocolo ativo aqui foi revisado por time clinico, com
+                  linguagem publica segura, fontes permitidas e atualizacao
+                  editorial continua.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
+                  {[
+                    "CFM, WHO e sociedades clinicas",
+                    "Revisao humana obrigatoria",
+                    "Sem promessas milagrosas",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-[#d8ddd5] bg-[#f7faf6] px-3 py-1"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -453,6 +514,29 @@ export default function ProtocolosIndex() {
                     <p className="mt-4 text-sm leading-relaxed text-slate-600">
                       {protocol.description}
                     </p>
+
+                    <div className="mt-4 rounded-[22px] border border-[#e4eadf] bg-[#f8fbf6] p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
+                        Base clinica revisada
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
+                        <span className="rounded-full border border-[#d6dfd1] bg-white px-3 py-1">
+                          {protocol.evidenceLevel}
+                        </span>
+                        <span className="rounded-full border border-[#d6dfd1] bg-white px-3 py-1">
+                          Revisado em {protocol.reviewedAtLabel}
+                        </span>
+                        <span className="rounded-full border border-[#d6dfd1] bg-white px-3 py-1">
+                          {protocol.scienceVisibility}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                        {protocol.scienceSummary}
+                      </p>
+                      <p className="mt-2 text-xs leading-relaxed text-slate-500">
+                        {protocol.clinicalOwner} • {protocol.scienceSourceLine}
+                      </p>
+                    </div>
 
                     {protocol.tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">

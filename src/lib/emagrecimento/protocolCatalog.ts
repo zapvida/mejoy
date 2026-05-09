@@ -20,6 +20,14 @@ export interface ProtocolExperienceMeta {
   imageSrc: string;
   imageAlt: string;
   supported: boolean;
+  science: {
+    evidenceLevel: "forte" | "moderada" | "emergente";
+    reviewedAt: string;
+    clinicalOwner: string;
+    visibility: "patient-safe" | "doctor-only";
+    sourceLine: string;
+    scienceSummary: string;
+  };
 }
 
 export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
@@ -34,6 +42,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/images/emagrecimento/medvi/hero-main.webp",
     imageAlt: "Paciente em jornada de emagrecimento",
     supported: true,
+    science: {
+      evidenceLevel: "forte",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "WHO, CFM, SBEM e sociedades de risco cardiometabolico.",
+      scienceSummary:
+        "Baseado em manejo clinico de obesidade, adesao, risco cardiometabolico e mudanca de estilo de vida com revisao humana.",
+    },
   },
   {
     slug: "calvicie",
@@ -46,6 +63,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy10.jpg",
     imageAlt: "Paciente em cuidado capilar",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "Dermatologia clinica, sociedades de cabelo e revisao medica.",
+      scienceSummary:
+        "Entrada guiada para sinais de alopecia, inflamacao, rotina capilar e necessidade de investigacao medica.",
+    },
   },
   {
     slug: "sono",
@@ -58,6 +84,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/images/emagrecimento/medvi/journey-acompanhamento.avif",
     imageAlt: "Paciente em descanso e recuperação",
     supported: true,
+    science: {
+      evidenceLevel: "forte",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "WHO, higiene do sono, medicina do estilo de vida e revisao clinica.",
+      scienceSummary:
+        "Triagem estruturada para sono, rotina, risco de apneia e impacto em energia, humor e metabolismo.",
+    },
   },
   {
     slug: "ansiedade",
@@ -70,6 +105,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy11.jpg",
     imageAlt: "Paciente em momento de cuidado emocional",
     supported: true,
+    science: {
+      evidenceLevel: "forte",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "WHO mental health at work, psiquiatria e psicologia baseadas em evidencia.",
+      scienceSummary:
+        "Organiza sintomas, impacto funcional e proxima melhor acao com suporte clinico responsavel e sem promessas vazias.",
+    },
   },
   {
     slug: "intestino",
@@ -83,6 +127,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/images/emagrecimento/medvi/metabolism-habits.avif",
     imageAlt: "Imagem editorial sobre hábitos e microbiota",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "Gastroenterologia clinica, dieta, fibra e revisao medica.",
+      scienceSummary:
+        "Roteiro para sintomas digestivos recorrentes, habitos e sinais que mudam a necessidade de consulta e exame.",
+    },
   },
   {
     slug: "figado",
@@ -95,6 +148,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/images/emagrecimento/medvi/metabolism-results.avif",
     imageAlt: "Imagem editorial sobre saúde metabólica",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "Hepatologia, obesidade, glicemia, lipideos e revisao clinica.",
+      scienceSummary:
+        "Ajuda a conectar esteatose, peso, glicemia e laboratorio no mesmo raciocinio clinico longitudinal.",
+    },
   },
   {
     slug: "libido-masculina",
@@ -108,6 +170,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy12.jpg",
     imageAlt: "Paciente em contexto de performance e vitalidade",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "Endocrinologia, medicina do sono e saude do homem.",
+      scienceSummary:
+        "Avalia energia, peso, desejo, sono e estresse antes de qualquer promessa comercial ou hormonal.",
+    },
   },
   {
     slug: "menopausa",
@@ -121,6 +192,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy13.jpg",
     imageAlt: "Paciente em cuidado hormonal feminino",
     supported: true,
+    science: {
+      evidenceLevel: "forte",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "FEBRASGO, climatério, sono, metabolismo e revisao clinica.",
+      scienceSummary:
+        "Entrada estruturada para sintomas do climatério com leitura conjunta de sono, humor, peso e composicao corporal.",
+    },
   },
   {
     slug: "articulacoes",
@@ -134,6 +214,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy14.jpg",
     imageAlt: "Paciente em mobilidade e recuperação articular",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "Ortopedia, reabilitacao, carga mecanica e revisao medica.",
+      scienceSummary:
+        "Ajuda a diferenciar dor, mobilidade, carga corporal e sinais que pedem avaliacao medica mais rapida.",
+    },
   },
   {
     slug: "imunidade",
@@ -147,6 +236,15 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
     imageSrc: "/mejoyimagens/mejoy17.jpg",
     imageAlt: "Paciente em contexto de prevenção e imunidade",
     supported: true,
+    science: {
+      evidenceLevel: "moderada",
+      reviewedAt: "2026-05-09",
+      clinicalOwner: "Time clinico TecMed",
+      visibility: "patient-safe",
+      sourceLine: "WHO healthy diet, sono, recuperacao e revisao clinica.",
+      scienceSummary:
+        "Mapeia sono, rotina, estresse e base metabolica antes de sugerir qualquer caminho de suporte.",
+    },
   },
 ];
 
