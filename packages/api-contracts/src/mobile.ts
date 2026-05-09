@@ -201,6 +201,22 @@ export const careRequestResponseSchema = z.object({
   redirectUrl: z.string().nullable(),
 });
 
+export const specialistChannelRequestInputSchema = z.object({
+  specialty: z.enum(['endocrino', 'nutrologia', 'psicologia', 'nutricao', 'clinica-geral']),
+  reason: z.string().min(3).max(160),
+  goals: z.array(z.string().min(2).max(120)).max(6).optional(),
+  note: z.string().max(500).optional(),
+});
+
+export const specialistChannelRequestResponseSchema = z.object({
+  id: z.string(),
+  status: z.enum(['requested', 'queued_for_review']),
+  specialty: z.enum(['endocrino', 'nutrologia', 'psicologia', 'nutricao', 'clinica-geral']),
+  createdAt: z.string(),
+  slaHours: z.number().int().min(1).max(72),
+  nextStep: z.string(),
+});
+
 export const examDocumentSchema = z.object({
   id: z.string(),
   fileName: z.string(),
@@ -239,6 +255,10 @@ export const recommendedModuleSchema = z.enum([
   'bundle',
   'refill',
   'reports',
+  'prevention',
+  'goals',
+  'referral',
+  'specialist',
 ]);
 
 export const productAppFeatureMatrixItemSchema = z.object({
@@ -282,6 +302,101 @@ export const recommendedActionSchema = z.object({
   reason: z.string(),
 });
 
+export const tierPlanIdSchema = z.enum(['visitor_preview', 'programa_1m', 'programa_3m', 'programa_6m']);
+
+export const tierEntitlementSchema = z.object({
+  planId: tierPlanIdSchema,
+  durationMonths: z.number().int().min(0).max(12),
+  unlockedFeatures: z.array(recommendedModuleSchema),
+  includedCare: z.array(z.string()),
+  deviceRewardEligible: z.boolean(),
+  specialistChannelEligible: z.boolean(),
+});
+
+export const goalPillarSchema = z.enum([
+  'nutrition',
+  'movement',
+  'sleep',
+  'regulation',
+  'prevention',
+  'adherence',
+]);
+
+export const goalProgressItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  pillar: goalPillarSchema,
+  completed: z.boolean(),
+  scoreImpact: z.number().int().min(1).max(20),
+  requiresProof: z.boolean(),
+  dueAt: z.string().nullable(),
+});
+
+export const healthScorePillarSchema = z.object({
+  id: goalPillarSchema,
+  label: z.string(),
+  currentScore: z.number().int().min(0).max(20),
+  maxScore: z.number().int().min(5).max(20),
+  status: z.enum(['good', 'attention', 'critical']),
+  explanation: z.string(),
+});
+
+export const healthScoreActionSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  reason: z.string(),
+  href: z.string(),
+  scoreImpact: z.number().int().min(1).max(20),
+});
+
+export const healthScoreSnapshotSchema = z.object({
+  overallScore: z.number().int().min(0).max(100),
+  pillars: z.array(healthScorePillarSchema),
+  trend: z.enum(['improving', 'stable', 'attention']),
+  delta24h: z.number().int().min(-20).max(20),
+  nextBestActions: z.array(healthScoreActionSchema),
+  scoreDrivers: z.array(z.string()),
+});
+
+export const preventionTaskSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  category: z.enum(['checkup', 'labs', 'shared-decision', 'lifestyle']),
+  priority: z.enum(['high', 'medium', 'low']),
+  dueLabel: z.string(),
+  href: z.string(),
+  source: z.string(),
+});
+
+export const preventionChecklistResponseSchema = z.object({
+  generatedAt: z.string(),
+  ageBand: z.string(),
+  sexAtBirth: z.enum(['female', 'male', 'unknown']),
+  riskFlags: z.array(z.string()),
+  dueTasks: z.array(preventionTaskSchema),
+  upcomingTasks: z.array(preventionTaskSchema),
+  sharedDecisionTasks: z.array(preventionTaskSchema),
+  sources: z.array(z.string()),
+});
+
+export const referralGamificationStatusSchema = z.object({
+  inviteCode: z.string(),
+  qrCode: z.string(),
+  invitesAccepted: z.number().int().min(0),
+  streak: z.number().int().min(0),
+  rewardProgress: z.number().int().min(0).max(100),
+  nextReward: z.string(),
+});
+
+export const dailyCuriositySchema = z.object({
+  id: z.string(),
+  eyebrow: z.string(),
+  title: z.string(),
+  body: z.string(),
+  takeaway: z.string(),
+});
+
 export const activationStateSchema = z.enum([
   'visitor',
   'buyer',
@@ -297,6 +412,12 @@ export const entitlementSnapshotSchema = z.object({
   recommendedModules: z.array(recommendedModuleSchema),
   recommendedActions: z.array(recommendedActionSchema),
   productAppValue: productAppValueSchema,
+  planId: tierPlanIdSchema,
+  durationMonths: z.number().int().min(0).max(12),
+  unlockedFeatures: z.array(recommendedModuleSchema),
+  includedCare: z.array(z.string()),
+  specialistChannelEligible: z.boolean(),
+  deviceRewardEligible: z.boolean(),
 });
 
 export const examUploadInputSchema = z.object({
@@ -420,6 +541,11 @@ export const mobileAnalyticsEventNameSchema = z.enum([
   'activation_completed',
   'app_activation_completed',
   'entitlement_seen',
+  'app_value_block_viewed',
+  'goal_toggled',
+  'prevention_checklist_viewed',
+  'referral_status_viewed',
+  'specialist_request_submitted',
   'protocol_personalized_home_loaded',
   'push_permission_prompted',
   'deeplink_opened',
@@ -487,6 +613,8 @@ export const patientDashboardSchema = z.object({
     summary: z.string(),
     primaryAction: dashboardPrimaryActionSchema,
   }),
+  tier: tierEntitlementSchema,
+  lockedFeatures: z.array(recommendedModuleSchema),
   metrics: z.object({
     bmi: z.number().nullable(),
     currentWeightKg: z.number().nullable(),
@@ -507,6 +635,10 @@ export const patientDashboardSchema = z.object({
     lastSyncedAt: z.string().nullable(),
     coachingTip: z.string(),
   }),
+  healthScore: healthScoreSnapshotSchema,
+  prevention: preventionChecklistResponseSchema,
+  goals: z.array(goalProgressItemSchema),
+  dailyCuriosity: dailyCuriositySchema,
   insights: z.array(dashboardInsightBlockSchema),
   ritualSuggestion: ritualTrackSchema.nullable(),
   refill: refillRequestSchema.nullable(),
@@ -524,6 +656,7 @@ export const patientDashboardSchema = z.object({
     latestRequestStatus: z.string().nullable(),
     conciergeSlaHours: z.number(),
   }),
+  referral: referralGamificationStatusSchema,
 });
 
 export type MobileFeatureFlags = z.infer<typeof mobileFeatureFlagsSchema>;
@@ -544,6 +677,11 @@ export type ProductAppValue = z.infer<typeof productAppValueSchema>;
 export type ProtocolContext = z.infer<typeof protocolContextSchema>;
 export type RecommendedAction = z.infer<typeof recommendedActionSchema>;
 export type EntitlementSnapshot = z.infer<typeof entitlementSnapshotSchema>;
+export type TierEntitlement = z.infer<typeof tierEntitlementSchema>;
+export type GoalProgressItem = z.infer<typeof goalProgressItemSchema>;
+export type HealthScoreSnapshot = z.infer<typeof healthScoreSnapshotSchema>;
+export type PreventionChecklistResponse = z.infer<typeof preventionChecklistResponseSchema>;
+export type ReferralGamificationStatus = z.infer<typeof referralGamificationStatusSchema>;
 export type NotificationListResponse = z.infer<typeof notificationListResponseSchema>;
 export type MobileAnalyticsEventInput = z.infer<typeof mobileAnalyticsEventInputSchema>;
 export type ClinicalShareBundleResponse = z.infer<typeof shareBundleResponseSchema>;
@@ -553,3 +691,4 @@ export type RitualListResponse = z.infer<typeof ritualListResponseSchema>;
 export type JourneyInsight = z.infer<typeof journeyInsightSchema>;
 export type JourneyResponse = z.infer<typeof journeyResponseSchema>;
 export type RefillRequest = z.infer<typeof refillRequestSchema>;
+export type SpecialistChannelRequestResponse = z.infer<typeof specialistChannelRequestResponseSchema>;

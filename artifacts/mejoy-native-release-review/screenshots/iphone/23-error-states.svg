@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="236" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="334" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">ERRO</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Falha clara, sem</tspan><tspan x="240" dy="42">drama visual</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">A pessoa entende o problema, vê que a</tspan><tspan x="240" dy="24">sessão foi preservada e sabe o que</tspan><tspan x="240" dy="24">fazer em seguida.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="115.30000000000001" height="34" rx="17" fill="#FADDDD" />
+      <text x="496" y="174" fill="#9C3030" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">error state</text>
+    </g>
+  
+<rect x="216" y="372" width="428" height="375" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="402" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">RECUPERAÇÃO</tspan>
+    </text>
+  
+
+    <text x="238" y="442" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">A interface preserva</tspan><tspan x="238" dy="32">confiança</tspan>
+    </text>
+  
+
+    <text x="238" y="504" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="238" dy="0">Não foi possível sincronizar sua home agora.</tspan><tspan x="238" dy="23">Tente novamente em instantes. Sua sessão</tspan><tspan x="238" dy="23">continua preservada.</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="581" width="412" height="142" rx="24" fill="#FFFFFF" stroke="#E4E8E5" />
+        
+    <text x="246" y="605" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">AÇÃO</tspan>
+    </text>
+  
+        
+    <text x="246" y="633" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Tentar novamente</tspan>
+    </text>
+  
+        
+    <text x="246" y="667" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Reexecutar a leitura do painel com o mesmo</tspan><tspan x="246" dy="22">contexto.</tspan>
+    </text>
+  
+        <text x="246" y="705" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="705" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+    <text x="246" y="775" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/review/23-error-states · error · preview</tspan>
+    </text>
+  
+</svg>

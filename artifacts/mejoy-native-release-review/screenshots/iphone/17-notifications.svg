@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="236" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="334" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">NOTIFICAÇÕES</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Fila clínica com</tspan><tspan x="240" dy="42">explicação</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">O paciente entende por que o app chamou</tspan><tspan x="240" dy="24">sua atenção e para onde aquela</tspan><tspan x="240" dy="24">notificação leva.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="110" height="34" rx="17" fill="#FEEFD7" />
+      <text x="496" y="174" fill="#88541A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">4 sinais</text>
+    </g>
+  
+<rect x="216" y="372" width="428" height="414" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="402" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">FILA ATUAL</tspan>
+    </text>
+  
+
+    <text x="238" y="442" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">Notificações que fazem</tspan><tspan x="238" dy="32">sentido</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="484" width="412" height="142" rx="24" fill="#FFF0DE" stroke="#F8DFBE" />
+        
+    <text x="246" y="508" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">SLEEP · HIGH</tspan>
+    </text>
+  
+        
+    <text x="246" y="536" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Seu sono merece atenção hoje</tspan>
+    </text>
+  
+        
+    <text x="246" y="570" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Dormir pouco está puxando fome e foco para</tspan><tspan x="246" dy="22">baixo.</tspan>
+    </text>
+  
+        <text x="246" y="608" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="608" fill="#4E351E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+      <g>
+        <rect x="228" y="638" width="412" height="124" rx="24" fill="#FFFFFF" stroke="#E4E8E5" />
+        
+    <text x="246" y="662" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="246" dy="0">CLINICAL · MEDIUM</tspan>
+    </text>
+  
+        
+    <text x="246" y="690" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="24" font-weight="700" letter-spacing="0">
+      <tspan x="246" dy="0">Planeje o próximo refill</tspan>
+    </text>
+  
+        
+    <text x="246" y="724" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">Antecipar reposição evita quebra do plano.</tspan>
+    </text>
+  
+        <text x="246" y="744" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">Abrir</text>
+        <text x="622" y="744" fill="#0F6F4B" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+    
+
+    <text x="246" y="814" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/notifications-center · happy · 6m</tspan>
+    </text>
+  
+</svg>

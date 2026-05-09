@@ -6,16 +6,22 @@ import {
   entitlementSnapshotSchema,
   examDocumentSchema,
   examListResponseSchema,
+  goalProgressItemSchema,
+  healthScoreSnapshotSchema,
   journeyResponseSchema,
   mealAnalysisResponseSchema,
   mobileProfileSchema,
   notificationListResponseSchema,
   patientDashboardSchema,
+  preventionChecklistResponseSchema,
   refillRequestSchema,
+  referralGamificationStatusSchema,
   ritualListResponseSchema,
   ritualSessionSchema,
   shareBundleResponseSchema,
   sideEffectLogSchema,
+  specialistChannelRequestResponseSchema,
+  tierEntitlementSchema,
   wearablesSyncResponseSchema,
 } from '@mejoy/api-contracts/mobile';
 
@@ -91,6 +97,38 @@ export function getNotifications(session: SessionLike) {
     session,
     path: '/api/mobile/v1/notifications',
     schema: notificationListResponseSchema,
+  });
+}
+
+export function getHealthScore(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/health-score',
+    schema: healthScoreSnapshotSchema,
+  });
+}
+
+export function getPreventionChecklist(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/prevention/checklist',
+    schema: preventionChecklistResponseSchema,
+  });
+}
+
+export function getTierDetails(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/tiers',
+    schema: tierEntitlementSchema,
+  });
+}
+
+export function getReferralStatus(session: SessionLike) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/referral/status',
+    schema: referralGamificationStatusSchema,
   });
 }
 
@@ -213,6 +251,26 @@ export function createRefillRequest(session: SessionLike, body: Record<string, u
     session,
     path: '/api/mobile/v1/refill-requests',
     schema: refillRequestSchema,
+    method: 'POST',
+    body,
+  });
+}
+
+export function toggleGoalProgress(session: SessionLike, body: Record<string, unknown>) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/goals/toggle',
+    schema: goalProgressItemSchema,
+    method: 'POST',
+    body,
+  });
+}
+
+export function requestSpecialistChannel(session: SessionLike, body: Record<string, unknown>) {
+  return requestJson({
+    session,
+    path: '/api/mobile/v1/specialist-channel/request',
+    schema: specialistChannelRequestResponseSchema,
     method: 'POST',
     body,
   });

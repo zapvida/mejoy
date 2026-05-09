@@ -217,6 +217,14 @@ export default function JourneyRoute() {
               caption="Solicitar refill"
             />
           )}
+          <ActionTile
+            eyebrow="Score e metas"
+            title="Abrir central de metas"
+            description="Marque hábitos, checkups e tarefas de proteção para refletir impacto real no score."
+            href="/goals"
+            tone="brand"
+            caption="Abrir metas"
+          />
         </SectionCard>
       ) : null}
 

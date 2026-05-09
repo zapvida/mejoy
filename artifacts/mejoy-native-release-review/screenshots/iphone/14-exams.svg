@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="236" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="334" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">EXAMES</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Upload bonito e</tspan><tspan x="240" dy="42">objetivo</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">Documentos, OCR e timeline clínica</tspan><tspan x="240" dy="24">organizados em um fluxo muito simples.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="110" height="34" rx="17" fill="#DDF5E7" />
+      <text x="496" y="174" fill="#106F4A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">hub ativo</text>
+    </g>
+  
+<rect x="216" y="372" width="428" height="359" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="402" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">FILA</tspan>
+    </text>
+  
+
+    <text x="238" y="442" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">Tudo o que entrou no hub</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="484" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="506" r="5" fill="#157347" />
+        
+    <text x="262" y="508" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Hemograma.pdf</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="536" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Arquivo armazenado com sucesso para revisão</tspan><tspan x="262" dy="20">clínica.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="610" width="412" height="97" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="632" r="5" fill="#F0A04B" />
+        
+    <text x="262" y="634" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Perfil lipídico.jpg</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="662" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">OCR em fila para resumo assistivo.</tspan>
+    </text>
+  
+      </g>
+    
+
+    <text x="246" y="759" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/exam-upload · happy · 6m</tspan>
+    </text>
+  
+</svg>
