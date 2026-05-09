@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="320" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="418" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">MONITOR METABÓLICO</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Peso, cintura,</tspan><tspan x="240" dy="42">sono e adesão em</tspan><tspan x="240" dy="42">gráficos úteis</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">A tela cruza métricas sem parecer</tspan><tspan x="240" dy="24">painel técnico demais e prepara</tspan><tspan x="240" dy="24">integração futura com devices.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="148.5" height="34" rx="17" fill="#DDF5E7" />
+      <text x="496" y="174" fill="#106F4A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">healthkit-ready</text>
+    </g>
+  
+
+    <g>
+      <rect x="232" y="328" width="140" height="110" rx="22" fill="#1A4E3D" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="248" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="248" dy="0">PESO</tspan>
+    </text>
+  
+      
+    <text x="248" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="248" dy="0">78,4 kg</tspan>
+    </text>
+  
+      
+    <text x="248" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="248" dy="0">último registro</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="380" y="328" width="140" height="110" rx="22" fill="#4E351E" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="396" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="396" dy="0">CINTURA</tspan>
+    </text>
+  
+      
+    <text x="396" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="396" dy="0">93 cm</tspan>
+    </text>
+  
+      
+    <text x="396" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="396" dy="0">tendência estável</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="528" y="328" width="140" height="110" rx="22" fill="#1A4E3D" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="544" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="544" dy="0">PASSOS</tspan>
+    </text>
+  
+      
+    <text x="544" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="544" dy="0">6,8k</tspan>
+    </text>
+  
+      
+    <text x="544" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="544" dy="0">média diária</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="676" y="328" width="140" height="110" rx="22" fill="#22312C" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="692" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="692" dy="0">ÁGUA</tspan>
+    </text>
+  
+      
+    <text x="692" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="692" dy="0">2,1 L</tspan>
+    </text>
+  
+      
+    <text x="692" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="692" dy="0">média recente</tspan>
+    </text>
+  
+    </g>
+  
+<rect x="216" y="456" width="428" height="388" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="486" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">INSIGHTS AUTOMÁTICOS</tspan>
+    </text>
+  
+
+    <text x="238" y="526" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">O que o app explica</tspan><tspan x="238" dy="32">sozinho</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="568" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="590" r="5" fill="#157347" />
+        
+    <text x="262" y="592" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Seu peso caiu 1,2 kg em 7 dias</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="620" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Com melhor adesão à água e ao registro</tspan><tspan x="262" dy="20">alimentar.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="694" width="412" height="126" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="716" r="5" fill="#F0A04B" />
+        
+    <text x="262" y="718" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Seu sono piorou nos dias com mais</tspan><tspan x="262" dy="22">fome</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="768" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Isso muda a prioridade da rotina do dia</tspan><tspan x="262" dy="20">seguinte.</tspan>
+    </text>
+  
+      </g>
+    
+
+    <text x="246" y="872" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/metabolic-monitor · happy · 6m</tspan>
+    </text>
+  
+</svg>

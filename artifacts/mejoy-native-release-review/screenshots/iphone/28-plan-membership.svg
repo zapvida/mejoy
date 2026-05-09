@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="320" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="418" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">PLANO E ASSINATURA</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Entenda o que seu</tspan><tspan x="240" dy="42">plano libera sem</tspan><tspan x="240" dy="42">texto quebrado</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">A assinatura explica o valor por tempo,</tspan><tspan x="240" dy="24">o que está ativo agora e o que entra ao</tspan><tspan x="240" dy="24">fazer upgrade.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="148.5" height="34" rx="17" fill="#DDF5E7" />
+      <text x="496" y="174" fill="#106F4A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">6 meses premium</text>
+    </g>
+  
+
+    <g>
+      <rect x="232" y="328" width="140" height="110" rx="22" fill="#1A4E3D" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="248" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="248" dy="0">FEATURES</tspan><tspan x="248" dy="15.399999999999999">ATIVAS</tspan>
+    </text>
+  
+      
+    <text x="248" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="248" dy="0">10</tspan>
+    </text>
+  
+      
+    <text x="248" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="248" dy="0">no plano atual</tspan>
+    </text>
+  
+    </g>
+  
+
+    <g>
+      <rect x="380" y="328" width="140" height="110" rx="22" fill="#1A4E3D" stroke="rgba(255,255,255,0.08)" />
+      
+    <text x="396" y="352" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="396" dy="0">CANAL PREMIUM</tspan>
+    </text>
+  
+      
+    <text x="396" y="382" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">
+      <tspan x="396" dy="0">ativo</tspan>
+    </text>
+  
+      
+    <text x="396" y="410" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="396" dy="0">sob governança</tspan>
+    </text>
+  
+    </g>
+  
+<rect x="216" y="456" width="428" height="502" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="486" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">ESTRUTURA</tspan>
+    </text>
+  
+
+    <text x="238" y="526" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">Como o cuidado cresce com</tspan><tspan x="238" dy="32">a duração</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="568" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="590" r="5" fill="#15875F" />
+        
+    <text x="262" y="592" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">1 mês</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="620" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Hoje, GLP-1 e Meal AI para entrar rápido na</tspan><tspan x="262" dy="20">rotina.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="694" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="716" r="5" fill="#157347" />
+        
+    <text x="262" y="718" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">3 meses</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="746" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Sono, rituais e concierge para proteger</tspan><tspan x="262" dy="20">consistência.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="820" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="842" r="5" fill="#157347" />
+        
+    <text x="262" y="844" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">6 meses</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="872" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">As 10 features e a linha premium coordenada pela</tspan><tspan x="262" dy="20">equipe.</tspan>
+    </text>
+  
+      </g>
+    
+
+    <text x="246" y="986" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/plan-membership · happy · 6m</tspan>
+    </text>
+  
+</svg>

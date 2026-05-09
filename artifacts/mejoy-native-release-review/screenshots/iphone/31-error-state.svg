@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="236" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="334" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">ERRO AMIGÁVEL</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Não consegui</tspan><tspan x="240" dy="42">abrir seu plano</tspan><tspan x="240" dy="42">agora</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">A falha precisa ser legível, calma e</tspan><tspan x="240" dy="24">recuperável, sem assustar nem abandonar</tspan><tspan x="240" dy="24">o usuário.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="115.30000000000001" height="34" rx="17" fill="#FEEFD7" />
+      <text x="496" y="174" fill="#88541A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">recuperável</text>
+    </g>
+  
+<rect x="216" y="372" width="428" height="198" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="402" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">MENSAGEM</tspan>
+    </text>
+  
+
+    <text x="238" y="442" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">O app explica sem parecer</tspan><tspan x="238" dy="32">quebrado</tspan>
+    </text>
+  
+
+    <text x="238" y="504" fill="#263631" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="15" font-weight="500" letter-spacing="0">
+      <tspan x="238" dy="0">Tente atualizar em instantes. Seus dados e sua</tspan><tspan x="238" dy="23">jornada continuam preservados.</tspan>
+    </text>
+  
+
+    <text x="246" y="598" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/plan · error · 3m</tspan>
+    </text>
+  
+</svg>

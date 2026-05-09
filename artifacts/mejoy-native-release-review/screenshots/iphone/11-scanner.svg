@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="1520" viewBox="0 0 860 1520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="860" height="2400" fill="#F5F1EA" />
+<circle cx="110" cy="120" r="140" fill="rgba(21,135,95,0.08)" />
+<circle cx="720" cy="1820" r="180" fill="rgba(240,160,75,0.10)" />
+<rect x="180" y="34" width="500" height="2250" rx="52" fill="#141A1B" />
+<rect x="198" y="52" width="464" height="2214" rx="38" fill="#F6F5F0" />
+<rect x="350" y="74" width="160" height="36" rx="18" fill="#0F1012" />
+<rect x="216" y="118" width="428" height="236" rx="28" fill="#13231E" />
+<circle cx="582" cy="166" r="64" fill="rgba(240,160,75,0.12)" />
+<circle cx="278" cy="334" r="56" fill="rgba(221,239,231,0.08)" />
+
+    <text x="240" y="152" fill="#CFE8DC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="240" dy="0">SCANNER METABÓLICO</tspan>
+    </text>
+  
+
+    <text x="240" y="198" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="0">
+      <tspan x="240" dy="0">Leia o rótulo e</tspan><tspan x="240" dy="42">entenda em 5</tspan><tspan x="240" dy="42">segundos</tspan>
+    </text>
+  
+
+    <text x="240" y="278" fill="#D7E7DF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="0">
+      <tspan x="240" dy="0">O paciente escaneia o produto e recebe</tspan><tspan x="240" dy="24">uma explicação clara, sem terrorismo e</tspan><tspan x="240" dy="24">sem linguagem técnica desnecessária.</tspan>
+    </text>
+  
+
+    <g>
+      <rect x="482" y="152" width="131.9" height="34" rx="17" fill="#DDF5E7" />
+      <text x="496" y="174" fill="#106F4A" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="13" font-weight="700">câmera pronta</text>
+    </g>
+  
+<rect x="216" y="372" width="428" height="480" rx="26" fill="#FFFFFF" stroke="#E4E8E5" />
+
+    <text x="238" y="402" fill="#15875F" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">
+      <tspan x="238" dy="0">O QUE O SCANNER MOSTRA</tspan>
+    </text>
+  
+
+    <text x="238" y="442" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">
+      <tspan x="238" dy="0">Compra melhor com menos</tspan><tspan x="238" dy="32">fricção</tspan>
+    </text>
+  
+
+      <g>
+        <rect x="228" y="484" width="412" height="114" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="506" r="5" fill="#157347" />
+        
+    <text x="262" y="508" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Nota metabólica</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="536" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">Uma leitura curta do quanto esse produto ajuda</tspan><tspan x="262" dy="20">ou atrapalha seu objetivo.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="610" width="412" height="109" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="632" r="5" fill="#F0A04B" />
+        
+    <text x="262" y="634" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Açúcar oculto, sódio e</tspan><tspan x="262" dy="22">ultraprocessado</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="684" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">O app explica o problema em linguagem humana.</tspan>
+    </text>
+  
+      </g>
+    
+
+      <g>
+        <rect x="228" y="731" width="412" height="97" rx="20" fill="#F7F6F2" />
+        <circle cx="246" cy="753" r="5" fill="#15875F" />
+        
+    <text x="262" y="755" fill="#0C1A16" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">
+      <tspan x="262" dy="0">Alternativa melhor</tspan>
+    </text>
+  
+        
+        
+    <text x="262" y="783" fill="#6F847D" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="14" font-weight="500" letter-spacing="0">
+      <tspan x="262" dy="0">O usuário não fica só no “não pode”.</tspan>
+    </text>
+  
+      </g>
+    
+
+    <text x="246" y="880" fill="#537067" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" font-size="12" font-weight="500" letter-spacing="0">
+      <tspan x="246" dy="0">/product-scanner · happy · 1m</tspan>
+    </text>
+  
+</svg>

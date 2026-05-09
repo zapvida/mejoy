@@ -1,73 +1,37 @@
-import { useRouter } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { colors, spacing, typography } from '@mejoy/design-tokens';
-import { ActionTile } from '@/components/action-tile';
-import { ClinicalStatusBadge } from '@/components/clinical-status-badge';
-import { HeroCard } from '@/components/hero-card';
+import { ActionCard } from '@/components/action-card';
+import { AppScreen } from '@/components/app-screen';
+import { ErrorState } from '@/components/error-state';
+import { FeatureCard } from '@/components/feature-card';
+import { HealthAlert } from '@/components/health-alert';
 import { InsightCard } from '@/components/insight-card';
-import { MetricPill } from '@/components/metric-pill';
-import { PrimaryButton } from '@/components/primary-button';
-import { ScreenShell } from '@/components/screen-shell';
-import { SectionCard } from '@/components/section-card';
-import { TimelineRow } from '@/components/timeline-row';
+import { LoadingState } from '@/components/loading-state';
+import { MetricCard } from '@/components/metric-card';
+import { PharmacyOrderCard } from '@/components/pharmacy-order-card';
+import { PremiumCard } from '@/components/premium-card';
+import { ScoreCard } from '@/components/score-card';
+import { SectionTitle } from '@/components/section-title';
+import { StatusBadge } from '@/components/status-badge';
+import { todayFeatureCards } from '@/content/mejoy-premium';
 import { useSession } from '@/context/session-context';
-import { trackMobileEvent } from '@/lib/analytics';
 import { getDashboard } from '@/lib/api';
-import { formatAdherence, formatDateLabel, formatWeight } from '@/lib/formatters';
 
-function scoreLabel(score: number) {
-  if (score >= 80) return 'Elite preventiva';
-  if (score >= 60) return 'Consistência boa';
-  if (score >= 40) return 'Zona de atenção';
-  return 'Zona crítica';
-}
-
-export default function DashboardRoute() {
-  const router = useRouter();
+export default function TodayRoute() {
   const session = useSession();
   const [dashboard, setDashboard] = React.useState<Awaited<ReturnType<typeof getDashboard>> | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   async function load() {
     setLoading(true);
     setError(null);
     try {
-      const response = await getDashboard(session);
-      setDashboard(response);
-      await trackMobileEvent(session, {
-        event: 'dashboard_loaded',
-        screen: 'home',
-        status: 'ok',
-        metadata: {
-          notifications: response.notifications.length,
-          score: response.healthScore.overallScore,
-          tier: response.tier.planId,
-        },
-      });
-      await trackMobileEvent(session, {
-        event: 'protocol_personalized_home_loaded',
-        screen: 'home',
-        status: 'ok',
-        metadata: {
-          activationState: response.activationState,
-          careLane: response.careLane,
-          protocol: response.protocolContext.primaryProtocolSlug,
-          recommendedModules: response.recommendedModules.length,
-        },
-      });
-      await trackMobileEvent(session, {
-        event: 'app_value_block_viewed',
-        screen: 'home',
-        status: 'ok',
-        metadata: {
-          featuredCount: response.productAppValue.featureMatrix.filter((feature) => feature.featured).length,
-        },
-      });
+      setDashboard(await getDashboard(session));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar dashboard');
+      setError(err instanceof Error ? err.message : 'Erro ao carregar o cockpit do dia');
     } finally {
       setLoading(false);
     }
@@ -77,317 +41,141 @@ export default function DashboardRoute() {
     void load();
   }, [session.apiBaseUrl, session.email]);
 
-  const riskTone = dashboard?.riskStatus.level === 'high' ? 'high' : dashboard?.riskStatus.level === 'attention' ? 'attention' : 'low';
-  const primaryActionTone =
-    dashboard?.journey.primaryAction?.variant === 'secondary'
-      ? 'ghost'
-      : dashboard?.journey.primaryAction?.variant === 'support'
-        ? 'accent'
-        : 'brand';
-  const leadNotification =
-    dashboard?.notifications.find((notification) => notification.priority === 'urgent') ?? dashboard?.notifications[0] ?? null;
-  const pendingGoals = dashboard?.goals.filter((goal) => !goal.completed).slice(0, 3) ?? [];
-  const featuredLocked = dashboard?.lockedFeatures.slice(0, 4) ?? [];
+  const firstName = dashboard?.profile?.name?.trim().split(/\s+/)[0] || 'MeJoy';
+  const nextAction = dashboard?.healthScore.nextBestActions[0];
+  const currentOrder = dashboard?.orders[0] || null;
 
   return (
-    <ScreenShell
-      eyebrow="Home"
-      title="Painel preventivo MeJoy"
-      summary="O app organiza score, prevenção, metas, próximos passos e sinais clínicos sem virar um feed confuso. Tudo foi desenhado para o paciente saber exatamente o que mover hoje."
-      support="A primeira dobra mostra onde sua saúde está, o que está puxando o score para baixo e qual ação melhora o dia seguinte com menos fricção."
+    <AppScreen
+      eyebrow="Hoje"
+      title={`Olá, ${firstName}. Vamos cuidar do seu dia em 2 minutos.`}
+      summary="Seu plano está ativo. Aqui você entende seu momento, vê a próxima ação e organiza médico, GLP-1, refeição, sono e farmácia sem se perder."
+      support="O score resume hábitos, adesão e prevenção. Ele não substitui avaliação médica."
       refreshing={loading}
       onRefresh={() => void load()}
+      heroAside={
+        dashboard ? (
+          <StatusBadge
+            label={
+              dashboard.tier.durationMonths >= 6
+                ? 'plano integral ativo'
+                : dashboard.tier.durationMonths >= 3
+                  ? 'plano avançado ativo'
+                  : 'plano essencial ativo'
+            }
+            tone="dark"
+          />
+        ) : undefined
+      }
     >
       {loading && !dashboard ? (
-        <SectionCard
-          eyebrow="Sincronizando"
-          title="Montando sua leitura integral"
-          support="O painel está consolidando score, sinais, prevenção, jornada e continuidade do cuidado."
-          tone="muted"
-        >
-          <ActivityIndicator color={colors.brand} />
-        </SectionCard>
+        <LoadingState title="Montando seu cockpit do dia" body="Estou organizando score, sinais, médico e farmácia para você." />
       ) : null}
 
-      {error ? (
-        <SectionCard eyebrow="Atenção" title="Não foi possível montar sua home">
-          <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 23 }}>
-            {error}
-          </Text>
-          <PrimaryButton label="Tentar novamente" onPress={() => void load()} />
-        </SectionCard>
+      {error && !dashboard ? (
+        <ErrorState title="Não consegui abrir seu dia agora" body={error} />
       ) : null}
 
       {dashboard ? (
         <>
-          <HeroCard
-            eyebrow={dashboard.protocolContext.primaryProtocolTitle}
-            title={
-              dashboard.profile?.name
-                ? `${dashboard.profile.name}, sua saúde está em ${dashboard.healthScore.overallScore}/100`
-                : `Sua saúde está em ${dashboard.healthScore.overallScore}/100`
-            }
-            summary={`${scoreLabel(dashboard.healthScore.overallScore)}. ${dashboard.riskStatus.summary}`}
-            badge={<ClinicalStatusBadge label={dashboard.tier.planId.replace('programa_', '').replace('_', ' ')} tone={riskTone} />}
-          >
+          <ScoreCard score={dashboard.healthScore} nextAction={nextAction?.title} />
+
+          <PremiumCard tone="dark">
+            <SectionTitle
+              eyebrow="Próxima ação"
+              title={nextAction?.title || 'Começar check-in de hoje'}
+              summary={nextAction?.reason || 'Registrar seus sinais agora melhora a orientação do resto do dia.'}
+              aside={<StatusBadge label={dashboard.riskStatus.label} tone={dashboard.riskStatus.level === 'high' ? 'danger' : dashboard.riskStatus.level === 'attention' ? 'warning' : 'success'} />}
+            />
+            <View style={{ gap: spacing.sm }}>
+              <ActionCard
+                eyebrow="Ação principal"
+                title="Começar check-in de hoje"
+                description="Sintomas, energia, fome, sono e adesão entram em um fluxo curto e claro."
+                href="/symptom-checkin"
+                tone="dark"
+                badge={{ label: '+12 score', tone: 'dark' }}
+              />
+              <ActionCard
+                eyebrow="Suporte médico"
+                title="Falar com médico agora"
+                description="Se houver sinal importante, o resumo clínico já segue antes do atendimento."
+                href="/telemedicine"
+                tone="default"
+                badge={{ label: 'ZapVida', tone: 'brand' }}
+              />
+            </View>
+          </PremiumCard>
+
+          {dashboard.riskStatus.level !== 'low' ? (
+            <HealthAlert title={dashboard.riskStatus.label} body={dashboard.riskStatus.summary} href="/telemedicine" severity={dashboard.riskStatus.level === 'high' ? 'danger' : 'warning'} />
+          ) : null}
+
+          <PremiumCard tone="default">
+            <SectionTitle eyebrow="Resumo do dia" title="Tudo o que precisa estar visível agora" />
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-              <MetricPill
-                label="Health score"
-                value={`${dashboard.healthScore.overallScore}/100`}
-                caption={`${scoreLabel(dashboard.healthScore.overallScore)} · Δ ${dashboard.healthScore.delta24h >= 0 ? '+' : ''}${dashboard.healthScore.delta24h}`}
+              <MetricCard
+                label="Peso atual"
+                value={
+                  dashboard.metrics.currentWeightKg != null
+                    ? `${dashboard.metrics.currentWeightKg.toFixed(1)} kg`
+                    : 'Registrar'
+                }
+                caption="com meta acompanhada"
                 tone="brand"
               />
-              <MetricPill
-                label="Peso"
-                value={formatWeight(dashboard.metrics.currentWeightKg)}
-                caption={`Último log ${formatDateLabel(dashboard.metrics.lastWeightLoggedAt)}`}
-              />
-              <MetricPill
-                label="Adesão"
-                value={formatAdherence(dashboard.glp1.adherenceScore)}
-                caption={dashboard.glp1.dosePhase || 'Fase clínica'}
+              <MetricCard
+                label="Plano 90 dias"
+                value="Dia 28"
+                caption="progresso em curso"
                 tone="accent"
               />
-              <MetricPill
+              <MetricCard
+                label="GLP-1 de hoje"
+                value={dashboard.glp1.currentDoseMg != null ? `${dashboard.glp1.currentDoseMg} mg` : 'Sem dose'}
+                caption="fase acompanhada"
+                tone="success"
+              />
+              <MetricCard
                 label="Sono"
-                value={dashboard.sleep.consistencyScore != null ? `${dashboard.sleep.consistencyScore}/100` : 'N/A'}
+                value={dashboard.sleep.consistencyScore != null ? `${dashboard.sleep.consistencyScore}/100` : 'Manual'}
                 caption={dashboard.sleep.coachingTip}
                 tone="warning"
               />
             </View>
-            {dashboard.journey.primaryAction ? (
-              <PrimaryButton
-                label={dashboard.journey.primaryAction.label}
-                detail={dashboard.journey.summary}
-                tone={primaryActionTone}
-                onPress={() => router.push(dashboard.journey.primaryAction?.href as never)}
-              />
-            ) : null}
-          </HeroCard>
+          </PremiumCard>
 
-          <SectionCard
-            eyebrow="Pilares do score"
-            title="O que mais está puxando sua nota de saúde"
-            support="Cada pilar vale pontos reais. O objetivo não é perfeição; é deixar claro onde uma ação pequena muda muito o dia seguinte."
-          >
-            {dashboard.healthScore.pillars.map((pillar) => (
-              <TimelineRow
-                key={pillar.id}
-                title={`${pillar.label} · ${pillar.currentScore}/${pillar.maxScore}`}
-                subtitle={pillar.explanation}
-                meta={pillar.status === 'good' ? 'Estável' : pillar.status === 'attention' ? 'Atenção' : 'Crítico'}
-                tone={pillar.status === 'good' ? 'success' : 'warning'}
-              />
-            ))}
-            {dashboard.healthScore.nextBestActions.map((action) => (
-              <ActionTile
-                key={action.id}
-                eyebrow={`+${action.scoreImpact} pontos`}
-                title={action.title}
-                description={action.reason}
-                href={action.href as never}
-                tone="accent"
-                caption="Abrir ação"
-              />
-            ))}
-          </SectionCard>
-
-          <SectionCard
-            eyebrow="Agora"
-            title="O melhor próximo passo"
-            support="A home precisa tirar ambiguidade. Aqui fica a ação que mais reduz risco ou aumenta score com mínimo atrito."
-          >
-            {dashboard.journey.primaryAction ? (
-              <ActionTile
-                eyebrow="Ação principal"
-                title={dashboard.journey.primaryAction.label}
-                description={dashboard.journey.summary}
-                onPress={() => router.push(dashboard.journey.primaryAction?.href as never)}
-                tone={primaryActionTone === 'accent' ? 'accent' : 'brand'}
-                caption="Abrir agora"
-              />
-            ) : null}
-            {leadNotification ? (
-              <ActionTile
-                eyebrow="Sinal prioritário"
-                title={leadNotification.title}
-                description={leadNotification.body}
-                href={(leadNotification.deepLink || '/notifications-center') as never}
-                tone={leadNotification.priority === 'urgent' ? 'accent' : 'default'}
-                caption="Ver detalhe"
-              />
-            ) : null}
-            {dashboard.ritualSuggestion ? (
-              <ActionTile
-                eyebrow="Regulação sugerida"
-                title={dashboard.ritualSuggestion.title}
-                description={dashboard.ritualSuggestion.benefit}
-                href="/rituals"
-                tone="accent"
-                caption="Abrir ritual"
-              />
-            ) : null}
-          </SectionCard>
-
-          <SectionCard
-            eyebrow="Metas do dia"
-            title="Gamificação inteligente do que realmente importa"
-            support="Cada meta concluída sobe pontos reais em um pilar específico e reforça a leitura da sua semana."
-          >
-            {pendingGoals.length ? (
-              pendingGoals.map((goal) => (
-                <ActionTile
-                  key={goal.id}
-                  eyebrow={`${goal.pillar} · +${goal.scoreImpact}`}
-                  title={goal.title}
-                  description="Meta pendente. Abra o painel de metas para confirmar e ver o impacto no score."
-                  href="/goals"
-                  tone="brand"
-                  caption="Atualizar"
-                />
-              ))
-            ) : (
-              <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
-                Todas as metas principais deste recorte já aparecem como concluídas. Abra a central de metas para revisar a próxima camada.
-              </Text>
-            )}
-          </SectionCard>
-
-          <SectionCard
-            eyebrow="Prevenção"
-            title="Não espere piorar para agir"
-            support="O app organiza rastreio, checkups e revisão clínica para que prevenção entre na rotina quando a pessoa ainda está bem."
-            tone="muted"
-          >
-            {dashboard.prevention.dueTasks.slice(0, 3).map((task) => (
-              <ActionTile
-                key={task.id}
-                eyebrow={task.priority === 'high' ? 'Prioridade alta' : 'Prevenção governada'}
-                title={task.title}
-                description={task.summary}
-                href={task.href as never}
-                tone={task.priority === 'high' ? 'accent' : 'default'}
-                caption={task.dueLabel}
-              />
-            ))}
-            <PrimaryButton
-              label="Abrir checklist preventivo"
-              onPress={() => router.push('/prevention-checklist')}
-              tone="ghost"
-              detail={`${dashboard.prevention.dueTasks.length} tarefa(s) prioritária(s) neste ciclo`}
+          <PremiumCard tone="muted">
+            <SectionTitle
+              eyebrow={dashboard.dailyCuriosity.eyebrow}
+              title={dashboard.dailyCuriosity.title}
+              summary={dashboard.dailyCuriosity.body}
             />
-          </SectionCard>
-
-          <SectionCard
-            eyebrow={dashboard.dailyCuriosity.eyebrow}
-            title={dashboard.dailyCuriosity.title}
-            support={dashboard.dailyCuriosity.takeaway}
-          >
-            <Text selectable style={{ color: colors.text, fontSize: typography.body, lineHeight: 23 }}>
-              {dashboard.dailyCuriosity.body}
+            <Text selectable style={{ color: colors.textStrong, fontSize: typography.bodyStrong, lineHeight: 24, fontWeight: '700' }}>
+              {dashboard.dailyCuriosity.takeaway}
             </Text>
-          </SectionCard>
+          </PremiumCard>
 
-          <SectionCard
-            eyebrow="Seu plano"
-            title="O que está desbloqueado hoje"
-            support="O app já mostra o que o paciente tem agora e o que ainda fica reservado para fases mais profundas de cuidado."
-          >
-            <ActionTile
-              eyebrow={`${dashboard.tier.durationMonths} mês(es)`}
-              title={`Plano ${dashboard.tier.planId.replace('programa_', '').replace('_', ' ')}`}
-              description={dashboard.tier.includedCare.join(' · ') || 'Prévia do ecossistema MeJoy'}
-              tone="brand"
-              caption="Tier atual"
-            />
-            {featuredLocked.length ? (
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-                {featuredLocked.map((feature) => (
-                  <ClinicalStatusBadge key={feature} label={`${feature} bloqueado`} tone="attention" />
-                ))}
-              </View>
-            ) : null}
-            <ActionTile
-              eyebrow="Comparativo de valor"
-              title={
-                dashboard.tier.planId === 'programa_6m'
-                  ? 'Você já está no pacote mais completo'
-                  : 'Ver o que entra no plano completo de 6 meses'
-              }
-              description={
-                dashboard.tier.planId === 'programa_6m'
-                  ? 'Seu acesso já libera prevenção, referral, canal premium e continuidade multidisciplinar.'
-                  : 'Sono, rituais, prevenção, hub de exames, notifications e canal premium ficam claros na tela de benefícios.'
-              }
-              href="/premium-benefits"
-              caption="Abrir benefícios"
-            />
-          </SectionCard>
+          <PremiumCard tone="default">
+            <SectionTitle eyebrow="As 10 features" title="Seu app de saúde integral fica vivo aqui" summary="Cada bloco abre um fluxo real, com próxima ação clara." />
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
+              {todayFeatureCards.map((card) => (
+                <FeatureCard
+                  key={card.title}
+                  eyebrow={card.eyebrow}
+                  title={card.title}
+                  body={card.body}
+                  href={card.href as never}
+                  tone={card.tone}
+                />
+              ))}
+            </View>
+          </PremiumCard>
 
-          <SectionCard
-            eyebrow="Ecossistema vivo"
-            title="Referral, exames, relatórios e cuidado premium"
-            support="O app precisa mostrar que o valor não termina na compra. Ele continua em organização clínica, prevenção e progressão do cuidado."
-          >
-            <ActionTile
-              eyebrow="Referral"
-              title={`Seu progresso de indicação está em ${dashboard.referral.rewardProgress}%`}
-              description={dashboard.referral.nextReward}
-              href="/referral-gamification"
-              tone="accent"
-              caption="Abrir referral"
-            />
-            <ActionTile
-              eyebrow="Centro clínico"
-              title="Relatórios, bundle e exames"
-              description="Abra o hub para anexar documentos, revisar relatórios e compartilhar contexto de forma segura."
-              href="/reports"
-              tone="brand"
-              caption="Abrir hub"
-            />
-            <ActionTile
-              eyebrow="Canal premium"
-              title={
-                dashboard.tier.specialistChannelEligible
-                  ? 'Solicitar ativação do canal com especialista'
-                  : 'Canal premium disponível no plano completo'
-              }
-              description={
-                dashboard.tier.specialistChannelEligible
-                  ? 'O pedido vai para a equipe, que decide a melhor linha de acompanhamento para seu caso.'
-                  : 'Antes de ativar um cuidado mais profundo, veja o comparativo dos tiers e dos benefícios assistidos.'
-              }
-              href={dashboard.tier.specialistChannelEligible ? '/specialist-request' : '/premium-benefits'}
-              caption={dashboard.tier.specialistChannelEligible ? 'Pedir ativação' : 'Ver comparação'}
-            />
-          </SectionCard>
-
-          <SectionCard
-            eyebrow="Valor do app"
-            title="As 10 alavancas premium que acompanham o produto"
-            support="Estas são as features que tornam a compra contínua, prática e muito mais valiosa do que um simples pós-venda."
-            tone="muted"
-          >
-            {dashboard.productAppValue.featureMatrix.map((feature) => (
-              <ActionTile
-                key={feature.id}
-                eyebrow={dashboard.entitlements.unlockedFeatures.includes(feature.id as never) ? 'Desbloqueado' : 'Incluído no ecossistema'}
-                title={feature.title}
-                description={feature.appValue}
-                tone={feature.featured ? 'accent' : 'default'}
-                caption={dashboard.entitlements.unlockedFeatures.includes(feature.id as never) ? 'Ativo no seu plano' : 'Ver no comparativo'}
-                href={dashboard.entitlements.unlockedFeatures.includes(feature.id as never) ? undefined : '/premium-benefits'}
-              />
-            ))}
-          </SectionCard>
-
-          <SectionCard
-            eyebrow="Insights do dia"
-            title="Onde concentrar energia"
-            support="Leitura editorial do que mais altera risco, consistência e margem de evolução nesta fase."
-          >
-            {dashboard.insights.length ? (
-              dashboard.insights.map((insight) => (
+          <PremiumCard tone="default">
+            <SectionTitle eyebrow="Seu progresso" title="Onde concentrar energia hoje" summary="Leitura editorial simples, não um monte de gráfico sem orientação." />
+            <View style={{ gap: spacing.sm }}>
+              {dashboard.insights.map((insight) => (
                 <InsightCard
                   key={insight.id}
                   tone={insight.tone}
@@ -397,15 +185,44 @@ export default function DashboardRoute() {
                   metricValue={insight.metricValue}
                   supportingCopy={insight.supportingCopy}
                 />
-              ))
-            ) : (
-              <Text selectable style={{ color: colors.textMuted, fontSize: typography.body, lineHeight: 22 }}>
-                Assim que houver mais sinais longitudinais, o app passa a sintetizar o que mais altera risco, prevenção e performance diária.
-              </Text>
-            )}
-          </SectionCard>
+              ))}
+            </View>
+          </PremiumCard>
+
+          <PremiumCard tone="default">
+            <SectionTitle eyebrow="Médico e farmácia" title="Você não precisa fazer tudo sozinho" summary="Quando precisar de ajuda, o caminho já está desenhado." />
+            <View style={{ gap: spacing.sm }}>
+              {currentOrder ? (
+                <PharmacyOrderCard
+                  title={currentOrder.label}
+                  status={currentOrder.status}
+                  eta="Recompra sugerida antes de terminar a janela atual."
+                  body="Seu pedido está organizado no mesmo fluxo do tratamento, sem precisar sair do app."
+                />
+              ) : (
+                <ActionCard
+                  eyebrow="Farmácia"
+                  title="Organizar prescrição e recompra"
+                  description="Seus medicamentos, manipulados e GLP-1 ficam em uma área única e clara."
+                  href="/pharmacy"
+                  tone="brand"
+                />
+              )}
+              <ActionCard
+                eyebrow="Médico"
+                title={
+                  dashboard.care.latestRequestStatus
+                    ? `Último status: ${dashboard.care.latestRequestStatus}`
+                    : 'Preparar atendimento com contexto pronto'
+                }
+                description="Seu médico vê resumo clínico, sintomas recentes, dose, peso e exames antes do contato."
+                href="/medical"
+                tone="accent"
+              />
+            </View>
+          </PremiumCard>
         </>
       ) : null}
-    </ScreenShell>
+    </AppScreen>
   );
 }
