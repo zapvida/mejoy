@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CheckCircle2,
   Copy,
@@ -17,11 +17,11 @@ import { RefinedButton } from "@/components/ui/RefinedButton";
 import { RefinedCard } from "@/components/ui/RefinedCard";
 import {
   emagrecimentoLegalNote,
-  emagrecimentoPlans,
   planIdToApiKey,
   planIdMapping,
   type EmagrecimentoPlan,
 } from "@/config/zapfarm/emagrecimento-plans";
+import { buildEmagrecimentoCheckoutPlanCatalog } from "@/lib/emagrecimento/checkout-plan-catalog";
 import { estimateWeightLossRangeKg } from "@/lib/emagrecimento/medicationCards";
 import {
   TREATMENT_TRACKS,
@@ -184,19 +184,42 @@ export function EmagrecimentoCheckoutExperience({
   const experienceRef = useRef<HTMLElement | null>(null);
   const paymentStateRef = useRef<HTMLDivElement | null>(null);
 
-  const availablePlans = planCatalog?.length ? planCatalog : emagrecimentoPlans;
+  const selectedPrincipio = useMemo(() => {
+    const normalizedDefault = (defaultPrincipio || "").trim().toLowerCase();
+
+    if (selectedTrilha === "tirzepatida") return "mounjaro";
+    if (selectedTrilha === "contrave") return "contrave";
+    if (selectedTrilha === "semaglutida") {
+      return normalizedDefault.includes("rybelsus") ? "rybelsus" : "wegovy";
+    }
+
+    if (normalizedDefault.includes("mounjaro")) return "mounjaro";
+    if (normalizedDefault.includes("contrave")) return "contrave";
+    if (normalizedDefault.includes("rybelsus")) return "rybelsus";
+    if (normalizedDefault.includes("wegovy")) return "wegovy";
+    return "rybelsus";
+  }, [defaultPrincipio, selectedTrilha]);
+  const dynamicCatalog = useMemo(
+    () =>
+      buildEmagrecimentoCheckoutPlanCatalog(
+        selectedTrilha,
+        selectedPrincipio,
+      ).planCatalog,
+    [selectedPrincipio, selectedTrilha],
+  );
+  const availablePlans = dynamicCatalog.length
+    ? dynamicCatalog
+    : planCatalog?.length
+      ? planCatalog
+      : buildEmagrecimentoCheckoutPlanCatalog().planCatalog;
   const selectedPlanKey =
     planIdMapping[selectedPlan as keyof typeof planIdMapping] || selectedPlan;
-  const plan =
-    availablePlans.find((option) => option.id === selectedPlanKey) ||
-    availablePlans[1] ||
-    emagrecimentoPlans[1];
+  const plan = availablePlans.find((option) => option.id === selectedPlanKey) || availablePlans[1];
   const planApiKey = planIdToApiKey[plan.id] || "completo";
   const pixAmount = Math.round(plan.totalAmount * 0.9 * 100) / 100;
   const maxCardInstallments = Math.max(1, plan.installments || 1);
-  const selectedTrack =
-    TREATMENT_TRACKS_BY_ID[selectedTrilha] || TREATMENT_TRACKS[3];
-  const principio = selectedTrack.principle || "";
+  const selectedTrack = TREATMENT_TRACKS_BY_ID[selectedTrilha] || TREATMENT_TRACKS[3];
+  const principio = selectedPrincipio || selectedTrack.principle || "";
   const selectedTrackEstimate = estimateWeightLossRangeKg(
     prefillProfile?.weightKg ?? undefined,
     selectedTrack.id === "tirzepatida"

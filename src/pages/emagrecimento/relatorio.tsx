@@ -196,7 +196,7 @@ function buildLifestyleHighlights(answers: Record<string, any>) {
 export default function RelatorioEmagrecimentoPage({
   vm,
   reportId,
-  planCatalog,
+  planCatalog: _planCatalog,
   checkoutIsTestMode = false,
   error,
 }: RelatorioEmagrecimentoProps) {
@@ -242,9 +242,17 @@ export default function RelatorioEmagrecimentoPage({
     useState<EmagrecimentoTrilha>(defaultTrilha);
   const [selectedPlanId, setSelectedPlanId] = useState<string>(defaultPlanId);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const dynamicPlanCatalog = useMemo(
+    () =>
+      buildEmagrecimentoCheckoutPlanCatalog(
+        selectedTrilha,
+        preferenciaPrincipioAtivo,
+      ).planCatalog,
+    [preferenciaPrincipioAtivo, selectedTrilha],
+  );
   const selectedPlan =
-    getEmagrecimentoPlanFromCatalog(planCatalog, selectedPlanId) ||
-    planCatalog[1] ||
+    getEmagrecimentoPlanFromCatalog(dynamicPlanCatalog, selectedPlanId) ||
+    dynamicPlanCatalog[1] ||
     null;
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
   const outcomeHighlights = useMemo(
@@ -457,7 +465,7 @@ export default function RelatorioEmagrecimentoPage({
                 selectedTrilha={selectedTrilha}
                 onSelectPlan={setSelectedPlanId}
                 onOpenInlineCheckout={openInlineCheckout}
-                planCatalog={planCatalog}
+                planCatalog={dynamicPlanCatalog}
               />
             </section>
 
@@ -595,7 +603,7 @@ export default function RelatorioEmagrecimentoPage({
                     weightKg: vm.basics.weightKg,
                   }}
                   onRequestEditSelection={editSelection}
-                  planCatalog={planCatalog}
+                  planCatalog={dynamicPlanCatalog}
                   isTestMode={checkoutIsTestMode}
                 />
               )}

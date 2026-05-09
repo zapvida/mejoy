@@ -4,13 +4,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { RefinedCard } from '@/components/ui/RefinedCard';
-import { emagrecimentoPlans } from '@/config/zapfarm/emagrecimento-plans';
+import { buildEmagrecimentoCheckoutPlanCatalog } from '@/lib/emagrecimento/checkout-plan-catalog';
 import { CreditCard, Stethoscope, ArrowRight } from 'lucide-react';
 
 const ASSINATURA_6M_PUBLIC = 2942;
 
 export function PlansPreviewSection() {
-  const plans = emagrecimentoPlans.map((plan) => ({
+  const plans = buildEmagrecimentoCheckoutPlanCatalog(
+    'alternativas_clinicas',
+    'rybelsus',
+  ).planCatalog.map((plan) => ({
     name: plan.title,
     description: plan.subtitle,
     badge: plan.badge,
