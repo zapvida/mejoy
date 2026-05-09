@@ -8,6 +8,7 @@ import { prisma } from '@/lib/prisma';
 import { calculateShippingAsync } from '@/lib/store-v2/shipping';
 import { storeLogger } from '@/lib/store-v2/logger';
 import { sendEvolutionMessageStoreV2 } from '@/lib/evolution/client';
+import { syncTecmedPatientProfile } from '@/lib/tecmed-patient-profile-sync';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mejoy.com.br';
 
@@ -187,6 +188,25 @@ ${BASE_URL}/admin/store-v2/orders`;
   }
 
   storeLogger.checkout('RX submitted', { orderId: order.id, cartId });
+
+  void syncTecmedPatientProfile({
+    sourceSystem: 'mejoy',
+    externalUserId: order.id,
+    correlationId: order.id,
+    fullName: nome,
+    email,
+    phone: telefone,
+    cpf: cpfCnpjCleaned || null,
+    address: {
+      zipCode: cepClean || null,
+      street: endereco || null,
+      number: numero || null,
+      complement: complemento || null,
+      neighborhood: bairro || null,
+      city: cidade || null,
+      state: estado || null,
+    },
+  });
 
   return res.status(200).json({
     status: 'success',

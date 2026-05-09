@@ -11,6 +11,7 @@ import { prisma } from '@/lib/prisma';
 import { calculateShippingAsync } from '@/lib/store-v2/shipping';
 import { storeLogger } from '@/lib/store-v2/logger';
 import { assertPriceAudit } from '@/lib/pricing/audit';
+import { syncTecmedPatientProfile } from '@/lib/tecmed-patient-profile-sync';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -390,6 +391,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       orderId: order.id,
       asaasPaymentId: payment.id,
       totalCents: snapshot.totalCents,
+    });
+
+    void syncTecmedPatientProfile({
+      sourceSystem: 'mejoy',
+      externalUserId: order.id,
+      correlationId: order.id,
+      fullName: nome,
+      email,
+      phone: telefone,
+      cpf: cpfCnpjCleaned || null,
+      address: {
+        zipCode: cepClean || null,
+        street: endereco || null,
+        number: numero || null,
+        complement: complemento || null,
+        neighborhood: bairro || null,
+        city: cidade || null,
+        state: estado || null,
+      },
     });
 
     return res.status(200).json({
