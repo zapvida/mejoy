@@ -61,14 +61,15 @@ export async function getProfileByEmail(email: string) {
     .from('profiles')
     .select('*')
     .eq('email', email.toLowerCase())
-    .maybeSingle();
+    .order('updated_at', { ascending: false })
+    .limit(1);
 
   if (error) {
     console.error('[getProfileByEmail] Error:', error);
     return null;
   }
 
-  return data;
+  return Array.isArray(data) ? data[0] ?? null : null;
 }
 
 /**

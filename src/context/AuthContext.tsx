@@ -48,15 +48,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    // Verificar sessão atual
+    let cancelled = false;
+
+    // Verificar sessão atual sem depender de round-trip de rede no bootstrap.
     const checkSession = async () => {
       try {
-        const sessionUser = await authService.getUser();
-        setUser(sessionUser);
+        const session = await authService.getSession();
+        if (!cancelled) {
+          setUser((session?.user as User | null) ?? null);
+        }
       } catch (error) {
-        console.error('Erro ao verificar sessão:', error);
+        const message = error instanceof Error ? error.message : String(error);
+        if (!cancelled) {
+          setUser(null);
+        }
+        if (!/failed to fetch|networkerror|load failed|abort/i.test(message)) {
+          console.error('Erro ao verificar sessão:', error);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
@@ -64,11 +76,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Escutar mudanças de autenticação
     const unsubscribePromise = authService.onAuthStateChange((user) => {
-      setUser(user);
-      setLoading(false);
+      if (!cancelled) {
+        setUser(user);
+        setLoading(false);
+      }
     });
 
     return () => {
+      cancelled = true;
       unsubscribePromise.then(unsubscribe => unsubscribe?.unsubscribe?.());
     };
   }, []);
