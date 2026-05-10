@@ -6,6 +6,7 @@ import { ResultsTimelineSection } from '@/components/zapfarm/emagrecimento/Resul
 import { ResultsSection } from '@/components/zapfarm/emagrecimento/ResultsSection';
 import { BeyondScaleSection } from '@/components/zapfarm/emagrecimento/BeyondScaleSection';
 import { FinalCtaSection } from '@/components/zapfarm/emagrecimento/FinalCtaSection';
+import { EMAGRECIMENTO_PAGE_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export default function ResultadosPage() {
   return (
@@ -14,7 +15,7 @@ export default function ResultadosPage() {
         <title>Resultados reais de emagrecimento | Depoimentos e estatísticas | MeJoy</title>
         <meta
           name="description"
-          content="Pessoas reais, resultados reais – com segurança. Centenas de pessoas já transformaram sua saúde com o programa de emagrecimento. Depoimentos verificados e estatísticas baseadas em dados."
+          content="Pessoas reais, evolução real e mais clareza sobre o que esperar da jornada. Depoimentos com identidade preservada, marcos clínicos e acompanhamento responsável."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon-32x32.png" />
@@ -60,12 +61,7 @@ export default function ResultadosPage() {
                 </a>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {[
-                  '/images/emagrecimento/medvi/reviews-01.webp',
-                  '/images/emagrecimento/medvi/reviews-03.avif',
-                  '/images/emagrecimento/medvi/reviews-04.avif',
-                  '/images/emagrecimento/medvi/reviews-07.webp',
-                ].map((src) => (
+                {EMAGRECIMENTO_PAGE_ASSETS.resultadosHeroGrid.map((src) => (
                   <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/20 bg-white/5">
                     <Image src={src} alt="Resultados e acompanhamento de pacientes" fill className="object-cover" sizes="24vw" />
                   </div>

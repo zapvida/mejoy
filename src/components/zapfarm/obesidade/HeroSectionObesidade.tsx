@@ -8,11 +8,11 @@ import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 import { MEDVI_GLP } from '@/lib/medvi-parity-tokens';
 
 const proofBullets = [
-  'Triagem em poucos minutos para entender seu perfil antes de decidir.',
+  'Triagem rápida para entender histórico, rotina e objetivo antes de qualquer decisão.',
   'Avaliação médica com CRM quando houver indicação clínica.',
-  'Plano com próximos passos claros, sem promessa automática de prescrição.',
-  'Acompanhamento pelo app e WhatsApp oficial para manter consistência.',
-  'Valores e etapas apresentados com transparência durante a jornada.',
+  'Próximos passos claros, sem promessa automática de prescrição.',
+  'App e WhatsApp oficial para sustentar constância e acompanhamento.',
+  'Etapas, critérios e investimento apresentados com transparência.',
 ] as const;
 
 const heroPhotos = EMAGRECIMENTO_LP.hero;
@@ -61,7 +61,7 @@ export function HeroSectionObesidade({ variant = 'emagrecimento' }: { variant?: 
               className="mx-auto mt-4 max-w-[36rem] text-[1.625rem] font-bold leading-[1.18] tracking-[-0.02em] sm:mt-5 sm:text-[2.05rem] sm:leading-[1.14] md:text-[2.35rem] md:leading-[1.12]"
               style={{ color: MEDVI_GLP.charcoal }}
             >
-              Emagreça com uma estratégia mais inteligente do que tentar de novo sozinho.
+              Emagrecimento com mais critério, menos improviso e uma próxima ação clara.
               <span style={{ color: MEDVI_GLP.sage }}> Comece entendendo seu caso.</span>
             </h1>
 

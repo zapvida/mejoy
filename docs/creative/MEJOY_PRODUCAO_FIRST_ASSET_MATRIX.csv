@@ -1,0 +1,31 @@
+slot_id,route,section,master_asset,crop,copy_side,cta,compliance_note,replaces_current_asset
+MJY-EMO-001,/,home_hero_row_emagrecimento,/mejoyimagens/mejoy1.jpg,4:3|4:5|1:1,right,Comecar minha avaliacao,Sem prometer resultado; foco em entrada qualificada.,n/a
+MJY-EMO-002,/,home_hero_row_sono,/mejoyimagens/mejoy4.jpg,4:3|4:5|1:1,right,Explorar cuidados,Nao sexualizar nem usar look fitness agressivo.,n/a
+MJY-EMO-003,/,home_hero_row_articulacoes,/imagensmedvimejoyhome/mejoy1-22.avif,4:3|4:5|1:1,right,Ver jornada,"Contexto de mobilidade e rotina, nao promessa de cura.",n/a
+MJY-EMO-004,/,home_hero_row_cabelo,/imagensmedvimejoyhome/mejoy1-25.avif,4:3|4:5|1:1,right,Conhecer fluxo,"Imagem deve sustentar cuidado continuo, nao vaidade vazia.",n/a
+MJY-EMO-005,/,home_weight_loss_feature_main,/mejoyimagens/mejoy5.jpg,1:1|4:5|16:9,left,Entender o programa,"Autoridade silenciosa; rosto real, luz suave.",n/a
+MJY-EMO-006,/,home_weight_loss_feature_thumb_a,/mejoyimagens/mejoy14.jpg,1:1|4:5,left,Ver detalhes,Nao usar como promessa de produto especifico.,n/a
+MJY-EMO-007,/,home_weight_loss_feature_thumb_b,/imagensmedvimejoyhome/mejoy1-8.avif,1:1|9:16,left,Ver como funciona,"Apoiar ideia de app, painel e continuidade.",n/a
+MJY-EMO-008,/,home_how_step_1,/imagensmedvimejoyhome/mejoy1-7.avif,4:5|16:9|1:1,left,Comecar triagem,Transmitir rotina real e entrada organizada.,n/a
+MJY-EMO-009,/,home_how_step_2,/mejoyimagens/mejoy15.jpg,4:5|16:9|1:1,left,Ver proximo passo,"Expressao de alivio e clareza, sem exagero.",n/a
+MJY-EMO-010,/,home_how_step_3,/imagensmedvimejoyhome/mejoy1-8.avif,4:5|16:9|1:1,left,Continuar jornada,Suporte e habitos sem parecer comida perfeita de publicidade.,n/a
+MJY-EMO-011,/,home_testimonial_avatar_a,/imagensmedvimejoyhome/mejoy1-1.avif,1:1|4:5,center,Ler experiencia,Depoimento anonimo; sem dados auditivos ou nomes completos.,n/a
+MJY-EMO-012,/,home_testimonial_avatar_b,/mejoyimagens/mejoy12.jpg,1:1|4:5,center,Ler experiencia,Evitar cara de stock estrangeiro.,n/a
+MJY-EMO-013,/emagrecimento,lp_hero_portrait_1,/mejoyimagens/mejoy4.jpg,3:4|4:5|9:16,below,Ver se sou elegivel,"Primeiro frame congelado: so trocar criativo, nao container.",/images/emagrecimento/lp-pdf/hero-1.jpg
+MJY-EMO-014,/emagrecimento,lp_hero_portrait_2,/mejoyimagens/mejoy11.jpg,3:4|4:5|9:16,below,Ver se sou elegivel,"Manter proporcao, gap e raio atuais.",/images/emagrecimento/lp-pdf/hero-2.jpg
+MJY-EMO-015,/emagrecimento,lp_hero_portrait_3,/mejoyimagens/mejoy12.jpg,3:4|4:5|9:16,below,Ver se sou elegivel,"Retrato editorial brasileiro, tom premium clinico.",/images/emagrecimento/lp-pdf/hero-3.jpg
+MJY-EMO-016,/emagrecimento,lp_how_triagem,/mejoyimagens/mejoy14.jpg,4:3|4:5|1:1,left,Comecar avaliacao,Explicar triagem e clareza; nao parecer captura generica.,/images/emagrecimento/lp-pdf/how-triagem.jpg
+MJY-EMO-017,/emagrecimento,lp_how_consulta,/mejoyimagens/mejoy15.jpg,4:3|16:9|1:1,left,Entender avaliacao,Sem promessa de consulta milagrosa; medico como criterio.,/images/emagrecimento/lp-pdf/how-consulta.jpg
+MJY-EMO-018,/emagrecimento,lp_how_acompanhamento,/imagensmedvimejoyhome/mejoy1-13.avif,4:3|4:5|1:1,left,Ver continuidade,"Acompanhamento de rotina, nao so transformacao corporal.",/images/emagrecimento/lp-pdf/how-acompanhamento.jpg
+MJY-EMO-019,/emagrecimento,lp_tailored_metabolism,/mejoyimagens/mejoy5.jpg,1:1|4:5|16:9,right,Entender o plano,"Rotina real, luz natural, sem teatralidade.",/images/emagrecimento/lp-pdf/tailored-metabolism.jpg
+MJY-EMO-020,/emagrecimento,lp_app_context,/imagensmedvimejoyhome/mejoy1-8.avif,4:5|9:16|1:1,right,Ver o app,Prometer so features presentes no workspace atual.,/images/emagrecimento/lp-pdf/app-mock-context.jpg
+MJY-EMO-021,/emagrecimento,lp_story_portrait,/mejoyimagens/mejoy6.jpg,4:5|1:1|9:16,right,Comecar minha avaliacao,"Usar com copy de alivio, constancia e clareza.",/images/emagrecimento/lp-pdf/story-1.jpg
+MJY-EMO-022,/emagrecimento,lp_story_wide,/imagensmedvimejoyhome/m29.avif,16:9|4:5|1:1,right,Continuar leitura,Bom para prova social silenciosa e apoio ao relatorio.,/images/emagrecimento/lp-pdf/story-wide-1.jpg
+MJY-EMO-023,/triagem/emagrecimento,triage_hero_primary,/mejoyimagens/mejoy13.jpg,4:5|9:16|1:1,right,Continuar triagem,Nao alterar shell ou progresso; so o criativo.,/images/emagrecimento/medvi/hero-main.webp
+MJY-EMO-024,/triagem/emagrecimento,triage_phone_proof,/mejoyimagens/mejoy14.jpg,4:5|9:16|1:1,right,Receber resultado,Reforcar contexto de tratamento sem prometer prescricao.,/images/emagrecimento/medvi/reviews-01.webp
+MJY-EMO-025,/triagem/emagrecimento,triage_social_avatar_cluster,/mejoyimagens/mejoy6.jpg,1:1|4:5,center,Avancar com seguranca,Depoimento ou prova social sempre anonimos e auditaveis.,/images/emagrecimento/medvi/avatar-belinda.webp
+MJY-EMO-026,/emagrecimento/relatorio,report_decision_primary,/mejoyimagens/mejoy10.jpg,4:5|1:1|16:9,left,Fechar meu programa agora,"Decisao preliminar, nunca garantia clinica.",/images/emagrecimento/medvi/hero-main.webp
+MJY-EMO-027,/emagrecimento/relatorio,report_decision_support,/mejoyimagens/mejoy15.jpg,4:5|1:1|9:16,left,Falar no WhatsApp oficial,"Suporte oficial e continuidade, sem tom de plantao agressivo.",/images/emagrecimento/medvi/hero-secondary.webp
+MJY-EMO-028,/emagrecimento/relatorio,report_social_proof_wide,/imagensmedvimejoyhome/m29.avif,16:9|4:5|1:1,center,Continuar com meu plano,Reservado para reel ou prova social sem quebrar checkout inline.,/images/emagrecimento/medvi/reviews-07.webp
+MJY-EMO-029,/emagrecimento/checkout,checkout_consult_frame,/mejoyimagens/mejoy18.jpg,4:5|16:9|1:1,right,Pagar com seguranca,Consulta valida a conduta; pagamento nao substitui avaliacao.,/images/emagrecimento/medvi/journey-consulta.avif
+MJY-EMO-030,/emagrecimento/checkout,checkout_support_app_continuity,/imagensmedvimejoyhome/mejoy1-8.avif,4:5|9:16|1:1,right,Acompanhar proximos passos,Liberacao de acesso condicionada a confirmacao real do pagamento.,/images/emagrecimento/medvi/support-whatsapp.avif

@@ -14,6 +14,7 @@ import {
   getMedicationTrackCard,
   medicationTrackCards,
 } from '@/lib/emagrecimento/medicationCards';
+import { EMAGRECIMENTO_REPORT_ASSETS } from '@/lib/emagrecimento-lp-assets';
 import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
 import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
@@ -224,7 +225,7 @@ export function ReportDecisionFold({
                 <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
                   <div className="relative aspect-[0.96] overflow-hidden rounded-[22px]">
                     <Image
-                      src="/images/emagrecimento/medvi/hero-main.webp"
+                      src={EMAGRECIMENTO_REPORT_ASSETS.decisionHeroPrimary}
                       alt="Programa MeJoy"
                       fill
                       className="object-cover"
@@ -237,7 +238,7 @@ export function ReportDecisionFold({
                   <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
                     <div className="relative aspect-[0.82] overflow-hidden rounded-[22px]">
                       <Image
-                        src="/mejoyimagens/mejoy19.png"
+                        src={EMAGRECIMENTO_REPORT_ASSETS.decisionHeroSupport}
                         alt="Paciente MeJoy"
                         fill
                         className="object-cover"
@@ -248,7 +249,7 @@ export function ReportDecisionFold({
                   <div className="overflow-hidden rounded-[28px] bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
                     <div className="relative aspect-[1.12] overflow-hidden rounded-[22px]">
                       <Image
-                        src="/images/emagrecimento/medvi/hero-secondary.webp"
+                        src={EMAGRECIMENTO_REPORT_ASSETS.decisionHeroSecondary}
                         alt="Suporte do programa"
                         fill
                         className="object-cover"

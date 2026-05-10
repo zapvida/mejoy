@@ -34,6 +34,7 @@ import {
   getRelatedProtocols,
   getSupportedProtocolBySlug,
 } from "@/lib/emagrecimento/protocolCatalog";
+import { EMAGRECIMENTO_DASHBOARD_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { getScientificFactsForProfile } from "@/lib/emagrecimento/scientificFacts";
 
 type DashboardPeriod = "today" | "7d" | "30d";
@@ -827,7 +828,7 @@ function buildCareHighlights(params: {
       meta: params.latestReport
         ? `Último relatório: ${params.latestReport.triageSlug}`
         : "Sem relatório ativo no momento",
-      imageSrc: "/images/emagrecimento/medvi/metabolism-results.avif",
+      imageSrc: EMAGRECIMENTO_DASHBOARD_ASSETS.metabolicResults,
     },
     {
       id: "continuity-loop",
@@ -837,7 +838,7 @@ function buildCareHighlights(params: {
       meta: params.latestOrder
         ? `Pedido mais recente: ${params.latestOrder.status}`
         : "Sem pedido vinculado",
-      imageSrc: "/images/emagrecimento/medvi/journey-acompanhamento.avif",
+      imageSrc: EMAGRECIMENTO_DASHBOARD_ASSETS.journeyAcompanhamento,
     },
     {
       id: "habit-accelerator",
@@ -848,7 +849,7 @@ function buildCareHighlights(params: {
         "Sono, consistência alimentar e movimento regular costumam ser os três pilares que mais protegem o resultado ao longo de meses.",
       tone: "neutral",
       meta: "Conteúdo factual para sustentar adesão",
-      imageSrc: "/images/emagrecimento/medvi/metabolism-habits.avif",
+      imageSrc: EMAGRECIMENTO_DASHBOARD_ASSETS.metabolicHabits,
     },
   ];
 }

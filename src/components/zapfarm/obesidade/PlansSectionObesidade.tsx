@@ -29,11 +29,11 @@ export function PlansSectionObesidade() {
           <div className="mb-10 text-center sm:mb-12">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicações</p>
             <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-              Compare opções com contexto, não por impulso.
+              Compare caminhos com contexto, não com impulso.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              O nome do medicamento não basta. O que importa é entender perfil, tolerância, riscos, resposta esperada e
-              indicação médica.
+              O nome da medicação é só uma parte. O que decide o melhor caminho é perfil, tolerância, objetivo, risco
+              e indicação médica.
             </p>
           </div>
 

@@ -28,6 +28,7 @@ import {
   formatBirthDateMask,
   parseBirthDateDisplayToIso,
 } from "@/lib/emagrecimento/intake-date";
+import { EMAGRECIMENTO_TRIAGE_ASSETS } from "@/lib/emagrecimento-lp-assets";
 
 import {
   EMAGRECIMENTO_INTAKE_PAGES,
@@ -155,40 +156,9 @@ const TRIAGE_EDITORIAL_FACTS = [
   { value: "100%", label: "fechamento na mesma jornada" },
 ];
 
-const TRIAGE_HERO_FRAMES = [
-  {
-    src: "/images/emagrecimento/medvi/hero-main.webp",
-    alt: "Paciente sorrindo",
-    className: "row-span-2 aspect-[0.82]",
-  },
-  {
-    src: "/images/emagrecimento/medvi/hero-secondary.webp",
-    alt: "Paciente em acompanhamento",
-    className: "aspect-[1.02]",
-  },
-  {
-    src: "/images/emagrecimento/medvi/reviews-01.webp",
-    alt: "Resultado visual da referencia MedVi",
-    className: "aspect-[0.94]",
-  },
-  {
-    src: "/mejoyimagens/mejoy19.png",
-    alt: "Paciente real com medicacao",
-    className: "aspect-[0.94]",
-  },
-  {
-    src: "/images/emagrecimento/medvi/reviews-07.webp",
-    alt: "Paciente feliz com resultado",
-    className: "aspect-[1.18]",
-  },
-];
+const TRIAGE_HERO_FRAMES = EMAGRECIMENTO_TRIAGE_ASSETS.heroFrames;
 
-const TRIAGE_SOCIAL_AVATARS = [
-  "/images/emagrecimento/medvi/avatar-belinda.webp",
-  "/images/emagrecimento/medvi/avatar-chris.webp",
-  "/images/emagrecimento/medvi/avatar-melissa.webp",
-  "/images/emagrecimento/medvi/avatar-sandra.webp",
-];
+const TRIAGE_SOCIAL_AVATARS = EMAGRECIMENTO_TRIAGE_ASSETS.socialAvatars;
 
 function deriveImcRangeFromAnswers(
   answers: Record<string, any>,

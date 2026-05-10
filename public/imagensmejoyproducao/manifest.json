@@ -1,0 +1,612 @@
+{
+  "generated_at": "2026-05-09",
+  "slots": {
+    "MJY-EMO-001": {
+      "slot_id": "MJY-EMO-001",
+      "route": "/",
+      "section": "home_hero_row_emagrecimento",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-001/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-001/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-001/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-001/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Comecar minha avaliacao",
+      "compliance_note": "Sem prometer resultado; foco em entrada qualificada."
+    },
+    "MJY-EMO-002": {
+      "slot_id": "MJY-EMO-002",
+      "route": "/",
+      "section": "home_hero_row_sono",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-002/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-002/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-002/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-002/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Explorar cuidados",
+      "compliance_note": "Nao sexualizar nem usar look fitness agressivo."
+    },
+    "MJY-EMO-003": {
+      "slot_id": "MJY-EMO-003",
+      "route": "/",
+      "section": "home_hero_row_articulacoes",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-003/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-003/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-003/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-003/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Ver jornada",
+      "compliance_note": "Contexto de mobilidade e rotina, nao promessa de cura."
+    },
+    "MJY-EMO-004": {
+      "slot_id": "MJY-EMO-004",
+      "route": "/",
+      "section": "home_hero_row_cabelo",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-004/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-004/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-004/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-004/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Conhecer fluxo",
+      "compliance_note": "Imagem deve sustentar cuidado continuo, nao vaidade vazia."
+    },
+    "MJY-EMO-005": {
+      "slot_id": "MJY-EMO-005",
+      "route": "/",
+      "section": "home_weight_loss_feature_main",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-005/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-005/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-005/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-005/16x9.webp"
+      },
+      "copy_side": "left",
+      "cta": "Entender o programa",
+      "compliance_note": "Autoridade silenciosa; rosto real, luz suave."
+    },
+    "MJY-EMO-006": {
+      "slot_id": "MJY-EMO-006",
+      "route": "/",
+      "section": "home_weight_loss_feature_thumb_a",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-006/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-006/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-006/4x5.webp"
+      },
+      "copy_side": "left",
+      "cta": "Ver detalhes",
+      "compliance_note": "Nao usar como promessa de produto especifico."
+    },
+    "MJY-EMO-007": {
+      "slot_id": "MJY-EMO-007",
+      "route": "/",
+      "section": "home_weight_loss_feature_thumb_b",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-007/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-007/1x1.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-007/9x16.webp"
+      },
+      "copy_side": "left",
+      "cta": "Ver como funciona",
+      "compliance_note": "Apoiar ideia de app, painel e continuidade."
+    },
+    "MJY-EMO-008": {
+      "slot_id": "MJY-EMO-008",
+      "route": "/",
+      "section": "home_how_step_1",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-008/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-008/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-008/16x9.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-008/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Comecar triagem",
+      "compliance_note": "Transmitir rotina real e entrada organizada."
+    },
+    "MJY-EMO-009": {
+      "slot_id": "MJY-EMO-009",
+      "route": "/",
+      "section": "home_how_step_2",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-009/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-009/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-009/16x9.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-009/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Ver proximo passo",
+      "compliance_note": "Expressao de alivio e clareza, sem exagero."
+    },
+    "MJY-EMO-010": {
+      "slot_id": "MJY-EMO-010",
+      "route": "/",
+      "section": "home_how_step_3",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-010/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-010/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-010/16x9.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-010/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Continuar jornada",
+      "compliance_note": "Suporte e habitos sem parecer comida perfeita de publicidade."
+    },
+    "MJY-EMO-011": {
+      "slot_id": "MJY-EMO-011",
+      "route": "/",
+      "section": "home_testimonial_avatar_a",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-011/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-011/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-011/4x5.webp"
+      },
+      "copy_side": "center",
+      "cta": "Ler experiencia",
+      "compliance_note": "Depoimento anonimo; sem dados auditivos ou nomes completos."
+    },
+    "MJY-EMO-012": {
+      "slot_id": "MJY-EMO-012",
+      "route": "/",
+      "section": "home_testimonial_avatar_b",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-012/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-012/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-012/4x5.webp"
+      },
+      "copy_side": "center",
+      "cta": "Ler experiencia",
+      "compliance_note": "Evitar cara de stock estrangeiro."
+    },
+    "MJY-EMO-013": {
+      "slot_id": "MJY-EMO-013",
+      "route": "/emagrecimento",
+      "section": "lp_hero_portrait_1",
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-013/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/slots/MJY-EMO-013/3x4.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-013/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-013/9x16.webp"
+      },
+      "copy_side": "below",
+      "cta": "Ver se sou elegivel",
+      "compliance_note": "Primeiro frame congelado: so trocar criativo, nao container."
+    },
+    "MJY-EMO-014": {
+      "slot_id": "MJY-EMO-014",
+      "route": "/emagrecimento",
+      "section": "lp_hero_portrait_2",
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-014/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/slots/MJY-EMO-014/3x4.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-014/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-014/9x16.webp"
+      },
+      "copy_side": "below",
+      "cta": "Ver se sou elegivel",
+      "compliance_note": "Manter proporcao, gap e raio atuais."
+    },
+    "MJY-EMO-015": {
+      "slot_id": "MJY-EMO-015",
+      "route": "/emagrecimento",
+      "section": "lp_hero_portrait_3",
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-015/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/slots/MJY-EMO-015/3x4.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-015/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-015/9x16.webp"
+      },
+      "copy_side": "below",
+      "cta": "Ver se sou elegivel",
+      "compliance_note": "Retrato editorial brasileiro, tom premium clinico."
+    },
+    "MJY-EMO-016": {
+      "slot_id": "MJY-EMO-016",
+      "route": "/emagrecimento",
+      "section": "lp_how_triagem",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-016/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-016/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-016/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-016/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Comecar avaliacao",
+      "compliance_note": "Explicar triagem e clareza; nao parecer captura generica."
+    },
+    "MJY-EMO-017": {
+      "slot_id": "MJY-EMO-017",
+      "route": "/emagrecimento",
+      "section": "lp_how_consulta",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-017/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-017/4x3.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-017/16x9.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-017/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Entender avaliacao",
+      "compliance_note": "Sem promessa de consulta milagrosa; medico como criterio."
+    },
+    "MJY-EMO-018": {
+      "slot_id": "MJY-EMO-018",
+      "route": "/emagrecimento",
+      "section": "lp_how_acompanhamento",
+      "runtime_ratio": "4:3",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-018/master.webp",
+      "crops": {
+        "4:3": "/imagensmejoyproducao/slots/MJY-EMO-018/4x3.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-018/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-018/1x1.webp"
+      },
+      "copy_side": "left",
+      "cta": "Ver continuidade",
+      "compliance_note": "Acompanhamento de rotina, nao so transformacao corporal."
+    },
+    "MJY-EMO-019": {
+      "slot_id": "MJY-EMO-019",
+      "route": "/emagrecimento",
+      "section": "lp_tailored_metabolism",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-019/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-019/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-019/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-019/16x9.webp"
+      },
+      "copy_side": "right",
+      "cta": "Entender o plano",
+      "compliance_note": "Rotina real, luz natural, sem teatralidade."
+    },
+    "MJY-EMO-020": {
+      "slot_id": "MJY-EMO-020",
+      "route": "/emagrecimento",
+      "section": "lp_app_context",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-020/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-020/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-020/9x16.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-020/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Ver o app",
+      "compliance_note": "Prometer so features presentes no workspace atual."
+    },
+    "MJY-EMO-021": {
+      "slot_id": "MJY-EMO-021",
+      "route": "/emagrecimento",
+      "section": "lp_story_portrait",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-021/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-021/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-021/1x1.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-021/9x16.webp"
+      },
+      "copy_side": "right",
+      "cta": "Comecar minha avaliacao",
+      "compliance_note": "Usar com copy de alivio, constancia e clareza."
+    },
+    "MJY-EMO-022": {
+      "slot_id": "MJY-EMO-022",
+      "route": "/emagrecimento",
+      "section": "lp_story_wide",
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-022/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-022/16x9.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-022/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-022/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Continuar leitura",
+      "compliance_note": "Bom para prova social silenciosa e apoio ao relatorio."
+    },
+    "MJY-EMO-023": {
+      "slot_id": "MJY-EMO-023",
+      "route": "/triagem/emagrecimento",
+      "section": "triage_hero_primary",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-023/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-023/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-023/9x16.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-023/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Continuar triagem",
+      "compliance_note": "Nao alterar shell ou progresso; so o criativo."
+    },
+    "MJY-EMO-024": {
+      "slot_id": "MJY-EMO-024",
+      "route": "/triagem/emagrecimento",
+      "section": "triage_phone_proof",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-024/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-024/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-024/9x16.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-024/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Receber resultado",
+      "compliance_note": "Reforcar contexto de tratamento sem prometer prescricao."
+    },
+    "MJY-EMO-025": {
+      "slot_id": "MJY-EMO-025",
+      "route": "/triagem/emagrecimento",
+      "section": "triage_social_avatar_cluster",
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-025/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-025/1x1.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-025/4x5.webp"
+      },
+      "copy_side": "center",
+      "cta": "Avancar com seguranca",
+      "compliance_note": "Depoimento ou prova social sempre anonimos e auditaveis."
+    },
+    "MJY-EMO-026": {
+      "slot_id": "MJY-EMO-026",
+      "route": "/emagrecimento/relatorio",
+      "section": "report_decision_primary",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-026/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-026/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-026/1x1.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-026/16x9.webp"
+      },
+      "copy_side": "left",
+      "cta": "Fechar meu programa agora",
+      "compliance_note": "Decisao preliminar, nunca garantia clinica."
+    },
+    "MJY-EMO-027": {
+      "slot_id": "MJY-EMO-027",
+      "route": "/emagrecimento/relatorio",
+      "section": "report_decision_support",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-027/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-027/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-027/1x1.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-027/9x16.webp"
+      },
+      "copy_side": "left",
+      "cta": "Falar no WhatsApp oficial",
+      "compliance_note": "Suporte oficial e continuidade, sem tom de plantao agressivo."
+    },
+    "MJY-EMO-028": {
+      "slot_id": "MJY-EMO-028",
+      "route": "/emagrecimento/relatorio",
+      "section": "report_social_proof_wide",
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-028/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-028/16x9.webp",
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-028/4x5.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-028/1x1.webp"
+      },
+      "copy_side": "center",
+      "cta": "Continuar com meu plano",
+      "compliance_note": "Reservado para reel ou prova social sem quebrar checkout inline."
+    },
+    "MJY-EMO-029": {
+      "slot_id": "MJY-EMO-029",
+      "route": "/emagrecimento/checkout",
+      "section": "checkout_consult_frame",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-029/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-029/4x5.webp",
+        "16:9": "/imagensmejoyproducao/slots/MJY-EMO-029/16x9.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-029/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Pagar com seguranca",
+      "compliance_note": "Consulta valida a conduta; pagamento nao substitui avaliacao."
+    },
+    "MJY-EMO-030": {
+      "slot_id": "MJY-EMO-030",
+      "route": "/emagrecimento/checkout",
+      "section": "checkout_support_app_continuity",
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/slots/MJY-EMO-030/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/slots/MJY-EMO-030/4x5.webp",
+        "9:16": "/imagensmejoyproducao/slots/MJY-EMO-030/9x16.webp",
+        "1:1": "/imagensmejoyproducao/slots/MJY-EMO-030/1x1.webp"
+      },
+      "copy_side": "right",
+      "cta": "Acompanhar proximos passos",
+      "compliance_note": "Liberacao de acesso condicionada a confirmacao real do pagamento."
+    }
+  },
+  "extras": {
+    "home-editorial-01": {
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-editorial-01/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/extras/home-editorial-01/3x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-editorial-01/4x5.webp"
+      }
+    },
+    "home-editorial-02": {
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-editorial-02/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/extras/home-editorial-02/3x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-editorial-02/4x5.webp"
+      }
+    },
+    "home-editorial-03": {
+      "runtime_ratio": "3:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-editorial-03/master.webp",
+      "crops": {
+        "3:4": "/imagensmejoyproducao/extras/home-editorial-03/3x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-editorial-03/4x5.webp"
+      }
+    },
+    "home-secondary-saude": {
+      "runtime_ratio": "16:10",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-secondary-saude/master.webp",
+      "crops": {
+        "16:10": "/imagensmejoyproducao/extras/home-secondary-saude/16x10.webp",
+        "16:9": "/imagensmejoyproducao/extras/home-secondary-saude/16x9.webp"
+      }
+    },
+    "home-secondary-detox": {
+      "runtime_ratio": "16:10",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-secondary-detox/master.webp",
+      "crops": {
+        "16:10": "/imagensmejoyproducao/extras/home-secondary-detox/16x10.webp",
+        "16:9": "/imagensmejoyproducao/extras/home-secondary-detox/16x9.webp"
+      }
+    },
+    "home-why-criterio": {
+      "runtime_ratio": "5:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-why-criterio/master.webp",
+      "crops": {
+        "5:4": "/imagensmejoyproducao/extras/home-why-criterio/5x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-why-criterio/4x5.webp"
+      }
+    },
+    "home-why-lgpd": {
+      "runtime_ratio": "5:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-why-lgpd/master.webp",
+      "crops": {
+        "5:4": "/imagensmejoyproducao/extras/home-why-lgpd/5x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-why-lgpd/4x5.webp"
+      }
+    },
+    "home-why-linguagem": {
+      "runtime_ratio": "5:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-why-linguagem/master.webp",
+      "crops": {
+        "5:4": "/imagensmejoyproducao/extras/home-why-linguagem/5x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-why-linguagem/4x5.webp"
+      }
+    },
+    "home-why-canal": {
+      "runtime_ratio": "5:4",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-why-canal/master.webp",
+      "crops": {
+        "5:4": "/imagensmejoyproducao/extras/home-why-canal/5x4.webp",
+        "4:5": "/imagensmejoyproducao/extras/home-why-canal/4x5.webp"
+      }
+    },
+    "home-testimonial-avatar-c": {
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/extras/home-testimonial-avatar-c/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/extras/home-testimonial-avatar-c/1x1.webp"
+      }
+    },
+    "social-avatar-d": {
+      "runtime_ratio": "1:1",
+      "runtime_asset": "/imagensmejoyproducao/extras/social-avatar-d/master.webp",
+      "crops": {
+        "1:1": "/imagensmejoyproducao/extras/social-avatar-d/1x1.webp"
+      }
+    },
+    "lp-story-portrait-b": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/lp-story-portrait-b/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/lp-story-portrait-b/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/lp-story-portrait-b/1x1.webp",
+        "9:16": "/imagensmejoyproducao/extras/lp-story-portrait-b/9x16.webp"
+      }
+    },
+    "lp-story-wide-b": {
+      "runtime_ratio": "16:10",
+      "runtime_asset": "/imagensmejoyproducao/extras/lp-story-wide-b/master.webp",
+      "crops": {
+        "16:10": "/imagensmejoyproducao/extras/lp-story-wide-b/16x10.webp",
+        "16:9": "/imagensmejoyproducao/extras/lp-story-wide-b/16x9.webp",
+        "1:1": "/imagensmejoyproducao/extras/lp-story-wide-b/1x1.webp"
+      }
+    },
+    "specialist-lead": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/specialist-lead/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/specialist-lead/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/specialist-lead/1x1.webp"
+      }
+    },
+    "results-hero-support": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/results-hero-support/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/results-hero-support/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/results-hero-support/1x1.webp"
+      }
+    },
+    "track-tirzepatida": {
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/extras/track-tirzepatida/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/extras/track-tirzepatida/16x9.webp",
+        "4:5": "/imagensmejoyproducao/extras/track-tirzepatida/4x5.webp"
+      }
+    },
+    "track-semaglutida": {
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/extras/track-semaglutida/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/extras/track-semaglutida/16x9.webp",
+        "4:5": "/imagensmejoyproducao/extras/track-semaglutida/4x5.webp"
+      }
+    },
+    "track-contrave": {
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/extras/track-contrave/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/extras/track-contrave/16x9.webp",
+        "4:5": "/imagensmejoyproducao/extras/track-contrave/4x5.webp"
+      }
+    },
+    "track-alternativas": {
+      "runtime_ratio": "16:9",
+      "runtime_asset": "/imagensmejoyproducao/extras/track-alternativas/master.webp",
+      "crops": {
+        "16:9": "/imagensmejoyproducao/extras/track-alternativas/16x9.webp",
+        "4:5": "/imagensmejoyproducao/extras/track-alternativas/4x5.webp"
+      }
+    },
+    "protocol-metabolic-results": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/protocol-metabolic-results/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/protocol-metabolic-results/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/protocol-metabolic-results/1x1.webp"
+      }
+    }
+  }
+}

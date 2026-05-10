@@ -11,21 +11,21 @@ const steps = [
   {
     icon: ClipboardDocumentListIcon,
     title: 'Triagem inteligente',
-    text: 'Você informa histórico, rotina, apetite, tentativas anteriores e objetivo. A plataforma organiza o que importa.',
+    text: 'Você responde sobre histórico, rotina, apetite, tentativas anteriores e objetivo. A plataforma organiza o que realmente muda a decisão.',
     image: EMAGRECIMENTO_LP.howTriagem,
     imageAlt: 'Pessoa preenchendo triagem de elegibilidade',
   },
   {
     icon: ChatBubbleLeftRightIcon,
     title: 'Avaliação e conduta',
-    text: 'Quando indicado, médico com CRM analisa seu caso, define a conduta e explica limites, riscos e próximos passos.',
+    text: 'Quando houver indicação, médico com CRM avalia seu caso, confirma limites, riscos, elegibilidade e próximos passos.',
     image: EMAGRECIMENTO_LP.howConsulta,
     imageAlt: 'Consulta médica online para avaliação de emagrecimento',
   },
   {
     icon: UserGroupIcon,
     title: 'Acompanhamento contínuo',
-    text: 'Você segue com app e WhatsApp oficial para check-ins, dúvidas e ajustes de rotina com mais consistência.',
+    text: 'Depois da decisão inicial, app e WhatsApp oficial ajudam a sustentar check-ins, dúvidas e ajustes de rotina com mais constância.',
     image: EMAGRECIMENTO_LP.howAcompanhamento,
     imageAlt: 'Acompanhamento contínuo de rotina e resultados',
   },
@@ -56,10 +56,10 @@ export function HowItWorksSectionObesidade() {
               id="how-it-works-heading"
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4"
             >
-              Como sua jornada sai do improviso
+              Como a MeJoy transforma dúvida em decisão clara
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Primeiro entendemos seu contexto. Depois, você decide com orientação, critério e próximos passos claros.
+              Você entende seu contexto, enxerga o que faz sentido agora e avança sem se perder no meio do caminho.
             </p>
           </div>
 

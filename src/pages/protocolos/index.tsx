@@ -14,6 +14,7 @@ import {
   getRelatedProtocols,
   SUPPORTED_PROTOCOLS,
 } from "@/lib/emagrecimento/protocolCatalog";
+import { EMAGRECIMENTO_PROTOCOL_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { buildProductAppValue } from "@/lib/mejoy-app/value";
 import { getSearchSuggestions } from "@/lib/search/intelligent-search";
 
@@ -276,7 +277,7 @@ export default function ProtocolosIndex() {
                 <div className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
                   <div className="relative aspect-[0.86] overflow-hidden rounded-[22px]">
                     <Image
-                      src="/images/emagrecimento/medvi/hero-main.webp"
+                      src={EMAGRECIMENTO_PROTOCOL_ASSETS.emagrecimentoHero}
                       alt="Jornada MeJoy"
                       fill
                       className="object-cover"
@@ -288,7 +289,7 @@ export default function ProtocolosIndex() {
                 <div className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
                   <div className="relative aspect-[1.05] overflow-hidden rounded-[22px]">
                     <Image
-                      src="/images/emagrecimento/medvi/journey-acompanhamento.avif"
+                      src={EMAGRECIMENTO_PROTOCOL_ASSETS.journeyAcompanhamento}
                       alt="Cuidado contínuo MeJoy"
                       fill
                       className="object-cover"

@@ -38,19 +38,19 @@ export function TailoredSectionObesidade() {
             {/* Right - Content */}
             <div className="flex-1 space-y-6 sm:space-y-8">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Um plano feito para caber na sua rotina, não só no papel
+                Um plano que cabe na sua vida, não só na sua intenção
               </h2>
 
               <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-                Emagrecimento sustentável depende de decisão clínica, adesão e acompanhamento. A MeJoy organiza essas
-                três partes em uma jornada simples.
+                Resultado sustentável nasce de contexto, adesão e ajustes bem feitos. A MeJoy organiza essas três
+                partes em uma jornada clara.
               </p>
 
               <ul className="space-y-3 text-base sm:text-lg text-slate-700">
                 {[
-                  'Estratégia alinhada ao seu histórico, rotina e momento de vida',
-                  'Metas claras para transformar intenção em consistência',
-                  'Ajustes orientados por acompanhamento, não por achismo',
+                  'Estratégia compatível com sua rotina real e seu momento de vida',
+                  'Metas que viram próximo passo, não só motivação',
+                  'Ajustes guiados por acompanhamento e critério clínico',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">

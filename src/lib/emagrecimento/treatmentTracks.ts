@@ -1,4 +1,5 @@
 import type { EmagrecimentoTrilha } from '@/lib/emagrecimento/checkoutUrls';
+import { EMAGRECIMENTO_TRACK_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export interface TreatmentTrackContent {
   id: EmagrecimentoTrilha;
@@ -42,7 +43,7 @@ export const TREATMENT_TRACKS: TreatmentTrackContent[] = [
     estimate: 'Para alguém com 100 kg, isso pode se aproximar de 15 a 21 kg.',
     safety: 'Pede avaliação médica, subida gradual de dose e checagem séria de tolerância.',
     bestFor: 'Quando a meta é mais ambiciosa ou o caso pede mais potência, se houver indicação.',
-    image: '/images/emagrecimento/medvi/treatment-injetavel.webp',
+    image: EMAGRECIMENTO_TRACK_ASSETS.tirzepatida,
     principle: 'tirzepatida',
   },
   {
@@ -58,7 +59,7 @@ export const TREATMENT_TRACKS: TreatmentTrackContent[] = [
     estimate: 'Para alguém com 100 kg, isso costuma equivaler a 10 a 15 kg.',
     safety: 'Também pede avaliação médica, titulação gradual e checagem de contraindicações.',
     bestFor: 'Quando o médico busca equilíbrio entre eficácia, tolerância e previsibilidade.',
-    image: '/images/emagrecimento/medvi/treatment-escolha.avif',
+    image: EMAGRECIMENTO_TRACK_ASSETS.semaglutida,
     principle: 'semaglutida',
   },
   {
@@ -74,7 +75,7 @@ export const TREATMENT_TRACKS: TreatmentTrackContent[] = [
     estimate: 'Para alguém com 100 kg, isso pode representar algo perto de 4 a 8 kg.',
     safety: 'Pede triagem cuidadosa de pressão, frequência cardíaca e interações medicamentosas.',
     bestFor: 'Quando a via oral faz mais sentido e fome ou impulso pesam na rotina.',
-    image: '/images/emagrecimento/medvi/treatment-comprimidos.avif',
+    image: EMAGRECIMENTO_TRACK_ASSETS.contrave,
     principle: 'contrave',
   },
   {
@@ -90,7 +91,7 @@ export const TREATMENT_TRACKS: TreatmentTrackContent[] = [
     estimate: 'Para alguém com 100 kg, algo perto de 5 a 10 kg já pode mudar bastante a leitura do caso.',
     safety: 'Aqui o foco é reduzir risco e decidir com calma se medicação entra agora, depois ou talvez nem precise entrar.',
     bestFor: 'Quando segurança, contraindicações, exames ou adesão precisam vir antes da potência.',
-    image: '/images/emagrecimento/medvi/metabolism-habits.avif',
+    image: EMAGRECIMENTO_TRACK_ASSETS.alternativas_clinicas,
   },
 ];
 

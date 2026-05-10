@@ -3,6 +3,9 @@
  * Caminhos relativos a `public/`.
  */
 
+const SLOT = (slotId: string) => `/imagensmejoyproducao/slots/${slotId}/master.webp`;
+const EXTRA = (name: string) => `/imagensmejoyproducao/extras/${name}/master.webp`;
+
 export type HomeHubTreatmentRow = {
   slug: string;
   title: string;
@@ -17,49 +20,49 @@ export const HOME_HUB_TREATMENT_ROWS: HomeHubTreatmentRow[] = [
     slug: 'emagrecimento',
     title: 'Emagrecimento & metabolismo',
     href: '/triagem/emagrecimento',
-    image: '/imagensmedvimejoyhome/me32.avif',
+    image: SLOT('MJY-EMO-001'),
     pad: 'bg-white',
   },
   {
     slug: 'sono',
     title: 'Sono & recuperação',
     href: '/triagem/sono',
-    image: '/imagensmedvimejoyhome/mejoy1-21.avif',
+    image: SLOT('MJY-EMO-002'),
     pad: 'bg-sky-50',
   },
   {
     slug: 'articulacoes',
     title: 'Articulações & mobilidade',
     href: '/triagem/articulacoes',
-    image: '/imagensmedvimejoyhome/mejoy1-19.avif',
+    image: SLOT('MJY-EMO-003'),
     pad: 'bg-amber-50',
   },
   {
     slug: 'cabelo',
     title: 'Cabelo & couro cabeludo',
     href: '/triagem/cabelo',
-    image: '/imagensmedvimejoyhome/mejoy1-16.avif',
+    image: SLOT('MJY-EMO-004'),
     pad: 'bg-violet-50',
   },
 ];
 
 export const HOME_HUB_GLP = {
-  mainImage: '/imagensmedvimejoyhome/me33.avif',
-  thumbA: '/imagensmedvimejoyhome/mejoy1-4.avif',
-  thumbB: '/imagensmedvimejoyhome/mejoy1-8.avif',
+  mainImage: SLOT('MJY-EMO-005'),
+  thumbA: SLOT('MJY-EMO-006'),
+  thumbB: SLOT('MJY-EMO-007'),
 } as const;
 
 export const HOME_HUB_EDITORIAL_TRIPTYCH = [
   {
-    src: '/imagensmedvimejoyhome/mejoy1-1.avif',
+    src: EXTRA('home-editorial-01'),
     alt: 'Paciente sorrindo, retrato',
   },
   {
-    src: '/imagensmedvimejoyhome/mejoy1-2.avif',
+    src: EXTRA('home-editorial-02'),
     alt: 'Paciente confiante em atividade',
   },
   {
-    src: '/imagensmedvimejoyhome/mejoy1-3.avif',
+    src: EXTRA('home-editorial-03'),
     alt: 'Paciente feliz, retrato',
   },
 ] as const;
@@ -69,13 +72,13 @@ export const HOME_HUB_SECONDARY_TREATMENTS = [
     slug: 'saude',
     title: 'Saúde & bem-estar',
     href: '/triagem/saude',
-    image: '/mejoyimagens/mejoy3.jpg',
+    image: EXTRA('home-secondary-saude'),
   },
   {
     slug: 'detox',
     title: 'Detox & fígado',
     href: '/triagem/detox',
-    image: '/mejoyimagens/mejoy5.jpg',
+    image: EXTRA('home-secondary-detox'),
   },
 ] as const;
 
@@ -84,19 +87,19 @@ export const HOME_HUB_HOW_STEPS = [
     step: '01',
     title: 'Triagem rápida',
     description: 'Poucos minutos para organizar histórico e objetivo.',
-    image: '/imagensmedvimejoyhome/mejoy1-10.avif',
+    image: SLOT('MJY-EMO-008'),
   },
   {
     step: '02',
     title: 'Próximo passo claro',
     description: 'Você vê elegibilidade e caminhos antes de decidir.',
-    image: '/imagensmedvimejoyhome/mejoy1-11.avif',
+    image: SLOT('MJY-EMO-009'),
   },
   {
     step: '03',
     title: 'Suporte oficial',
     description: 'Acompanhamento pelo canal oficial quando houver indicação.',
-    image: '/imagensmedvimejoyhome/mejoy1-12.avif',
+    image: SLOT('MJY-EMO-010'),
   },
 ] as const;
 
@@ -104,42 +107,42 @@ export const HOME_HUB_WHY_TILES = [
   {
     title: 'Critério clínico',
     description: 'Conduta com profissional habilitado quando indicado.',
-    image: '/imagensmedvimejoyhome/mejoy1-17.avif',
+    image: EXTRA('home-why-criterio'),
   },
   {
     title: 'Privacidade (LGPD)',
     description: 'Dados tratados com sigilo e boas práticas.',
-    image: '/imagensmedvimejoyhome/mejoy1-15.avif',
+    image: EXTRA('home-why-lgpd'),
   },
   {
     title: 'Linguagem clara',
     description: 'Menos ruído, mais entendimento do seu caso.',
-    image: '/imagensmedvimejoyhome/mejoy1-14.avif',
+    image: EXTRA('home-why-linguagem'),
   },
   {
     title: 'Canal oficial',
     description: 'Orientações e lembretes centralizados.',
-    image: '/imagensmedvimejoyhome/mejoy1-22.avif',
+    image: EXTRA('home-why-canal'),
   },
 ] as const;
 
 export const HOME_HUB_TESTIMONIALS = [
   {
-    name: 'Carolina M.',
+    name: 'Paciente MeJoy',
     location: 'São Paulo, SP',
-    avatar: '/imagensmedvimejoyhome/mejoy1-5.avif',
-    quote: 'Entendi um caminho possível em minutos — direto, sem promessa vazia.',
+    avatar: SLOT('MJY-EMO-011'),
+    quote: 'Entendi meu caso com clareza e consegui avançar sem aquela sensação de estar tentando no escuro.',
   },
   {
-    name: 'Rafaela T.',
+    name: 'Paciente MeJoy',
     location: 'Belo Horizonte, MG',
-    avatar: '/imagensmedvimejoyhome/mejoy1-6.avif',
-    quote: 'Relatório organizado e suporte que me tirou da dúvida.',
+    avatar: SLOT('MJY-EMO-012'),
+    quote: 'O que mais me ajudou foi saber exatamente qual era o próximo passo e por que ele fazia sentido.',
   },
   {
-    name: 'Patrícia S.',
+    name: 'Paciente MeJoy',
     location: 'Curitiba, PR',
-    avatar: '/imagensmedvimejoyhome/mejoy1-7.avif',
-    quote: 'Transparência no que fazer a seguir. Senti segurança para avançar.',
+    avatar: EXTRA('home-testimonial-avatar-c'),
+    quote: 'Sem promessa exagerada. Só um processo mais organizado, mais seguro e muito mais fácil de seguir.',
   },
 ] as const;

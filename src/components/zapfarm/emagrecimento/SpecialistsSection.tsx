@@ -1,30 +1,9 @@
 import Image from 'next/image';
 import { RefinedCard } from '@/components/ui/RefinedCard';
+import { EMAGRECIMENTO_SPECIALIST_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export function SpecialistsSection() {
-  const specialists = [
-    {
-      name: 'Dr. João Silva',
-      credential: 'CRM 123456',
-      specialty: 'Endocrinologista',
-      focus: 'Foco em segurança cardiovascular e resultados sustentáveis',
-      photo: '/images/emagrecimento/medvi/avatar-chris.webp',
-    },
-    {
-      name: 'Dra. Maria Santos',
-      credential: 'CRM 789012',
-      specialty: 'Endocrinologista',
-      focus: 'Experiência em atendimento de pacientes com obesidade grave',
-      photo: '/images/emagrecimento/medvi/avatar-belinda.webp',
-    },
-    {
-      name: 'Nutricionista Ana Costa',
-      credential: 'CRN 345678',
-      specialty: 'Nutricionista',
-      focus: 'Abordagem comportamental e mudança de hábitos',
-      photo: '/images/emagrecimento/medvi/avatar-melissa.webp',
-    },
-  ];
+  const specialists = EMAGRECIMENTO_SPECIALIST_ASSETS.specialistCards;
 
   const supportAreas = [
     'Rotina Alimentar',
@@ -73,17 +52,16 @@ export function SpecialistsSection() {
                   <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-white/30">
                     <Image
                       src={specialist.photo}
-                      alt={specialist.name}
+                      alt={specialist.title}
                       fill
                       className="object-cover"
                       sizes="96px"
                     />
                   </div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white mb-1">
-                    {specialist.name}
+                    {specialist.title}
                   </h3>
-                  <p className="text-sm text-white/70 mb-2">{specialist.credential}</p>
-                  <p className="text-sm font-semibold text-white/80">{specialist.specialty}</p>
+                  <p className="text-sm text-white/70 mb-2">{specialist.subtitle}</p>
                 </div>
                 <p className="text-sm text-white/80 text-center leading-relaxed">
                   {specialist.focus}
@@ -118,7 +96,7 @@ export function SpecialistsSection() {
 
           <div className="mt-8 text-center space-y-4">
             <p className="text-sm sm:text-base text-white/80">
-              Nossos especialistas são avaliados com <strong className="text-white">4.98/5 estrelas</strong>
+              O time foi desenhado para responder com clareza, seguranca e continuidade ao longo da jornada.
             </p>
             <div>
               <a

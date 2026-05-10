@@ -49,7 +49,7 @@ export function HomeHero() {
                 className="mx-auto mb-0 text-[14px] font-medium leading-snug sm:mb-1 sm:text-[15px]"
                 style={{ color: MEDVI_HOME.heroTextMuted }}
               >
-                Milhares de pacientes já confiaram na MeJoy
+                Cuidado digital com critério clínico
               </p>
               <h1
                 data-testid="home-hub-hero-title"
@@ -57,15 +57,15 @@ export function HomeHero() {
               >
                 <span className="block md:inline">Saúde online,</span>
                 <span className="mt-1 block md:mt-0 md:inline">
-                  <span style={{ color: MEDVI_HOME.mintAccent }}>repensada</span> para a vida real.
+                  <span style={{ color: MEDVI_HOME.mintAccent }}>feita para ser entendida</span> e continuar com você.
                 </span>
               </h1>
               <p
                 className="mx-auto mt-[1.15rem] max-w-[19.5rem] text-[16px] font-normal leading-[1.54] sm:mt-5 sm:max-w-xl sm:text-[17px] sm:leading-[1.55] md:max-w-xl md:text-[16px]"
                 style={{ color: MEDVI_HOME.heroTextMuted }}
               >
-                Atendimento médico à distância — simples, direto e com profissionais habilitados. Sem sala de espera. Sem
-                passos desnecessários. Só cuidado que funciona.
+                Triagem rápida, próximos passos claros e cuidado humano quando indicado. Menos ruído, menos improviso
+                e mais confiança para começar.
               </p>
             </div>
           </div>
