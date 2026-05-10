@@ -36,11 +36,11 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Por que a MeJoy aumenta sua chance de seguir
+              Por que a MeJoy ajuda você a continuar
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              O programa reduz a parte mais difícil: começar sem direção. Você ganha contexto clínico, plano organizado
-              e suporte para manter constância.
+              O maior problema não é só começar. É conseguir seguir com direção, segurança e menos atrito ao longo da
+              rotina.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
               {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (

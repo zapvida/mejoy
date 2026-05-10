@@ -40,11 +40,11 @@ export function AppFeaturesSectionObesidade() {
                 id="app-portal-heading"
                 className="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl md:text-5xl"
               >
-                Acompanhamento para não deixar o plano morrer na rotina
+                Continuidade para o plano não morrer depois do início
               </h2>
               <p className="max-w-xl text-lg text-gray-600 sm:text-xl">
-                Depois da decisão inicial, o que sustenta resultado é constância. Por isso a jornada continua com
-                check-ins, lembretes e suporte oficial.
+                Depois da triagem e da decisão inicial, o que sustenta resultado é clareza operacional. Por isso a
+                jornada continua com check-ins, painel e canal oficial.
               </p>
 
               <div className="grid grid-cols-3 gap-3 sm:max-w-xl">
@@ -137,7 +137,7 @@ export function AppFeaturesSectionObesidade() {
                           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
                             Próximo passo
                           </p>
-                          <p className="mt-1 text-sm font-semibold text-slate-900">Resumo da triagem + próximo passo</p>
+                          <p className="mt-1 text-sm font-semibold text-slate-900">Resumo do caso + próximo melhor passo</p>
                         </div>
                       </div>
 
@@ -146,7 +146,7 @@ export function AppFeaturesSectionObesidade() {
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200">Canal oficial</p>
                           <p className="mt-2 text-sm font-semibold">WhatsApp MeJoy</p>
                           <p className="mt-2 text-sm leading-6 text-white/78">
-                            Relatório inicial, próximos passos e lembretes no mesmo canal oficial.
+                            Relatório inicial, próximos passos e continuidade no mesmo canal oficial.
                           </p>
                         </div>
 

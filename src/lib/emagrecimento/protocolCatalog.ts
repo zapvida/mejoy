@@ -1,3 +1,5 @@
+import { EMAGRECIMENTO_PROTOCOL_ASSETS } from "@/lib/emagrecimento-lp-assets";
+
 export type SupportedProtocolSlug =
   | "emagrecimento"
   | "calvicie"
@@ -39,7 +41,7 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
       "Triagem, relatório, tratamento e acompanhamento focados em saciedade, risco cardiometabólico e adesão contínua.",
     badge: "Mais procurado",
     category: "Metabólico",
-    imageSrc: "/images/emagrecimento/medvi/hero-main.webp",
+    imageSrc: EMAGRECIMENTO_PROTOCOL_ASSETS.emagrecimentoHero,
     imageAlt: "Paciente em jornada de emagrecimento",
     supported: true,
     science: {
@@ -81,7 +83,7 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
       "Fluxo para higiene do sono, triagem de risco e plano prático para restaurar rotina e recuperação.",
     badge: "Alta recorrência",
     category: "Recuperação",
-    imageSrc: "/images/emagrecimento/medvi/journey-acompanhamento.avif",
+    imageSrc: EMAGRECIMENTO_PROTOCOL_ASSETS.journeyAcompanhamento,
     imageAlt: "Paciente em descanso e recuperação",
     supported: true,
     science: {
@@ -124,7 +126,7 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
       "Protocolo pensado para desconforto recorrente, hábitos, fibras e sinais que mudam a conduta.",
     badge: "Rotina digestiva",
     category: "Digestivo",
-    imageSrc: "/images/emagrecimento/medvi/metabolism-habits.avif",
+    imageSrc: EMAGRECIMENTO_PROTOCOL_ASSETS.metabolicHabits,
     imageAlt: "Imagem editorial sobre hábitos e microbiota",
     supported: true,
     science: {
@@ -145,7 +147,7 @@ export const SUPPORTED_PROTOCOLS: ProtocolExperienceMeta[] = [
       "Leitura inicial para quem precisa organizar peso, glicemia, lipídios e exames no mesmo contexto.",
     badge: "Metabolismo integral",
     category: "Hepatometabólico",
-    imageSrc: "/images/emagrecimento/medvi/metabolism-results.avif",
+    imageSrc: EMAGRECIMENTO_PROTOCOL_ASSETS.metabolicResults,
     imageAlt: "Imagem editorial sobre saúde metabólica",
     supported: true,
     science: {

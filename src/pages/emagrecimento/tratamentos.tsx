@@ -7,6 +7,7 @@ import { ScienceBehindSection } from '@/components/zapfarm/emagrecimento/Science
 import { AnvisaComplianceSection } from '@/components/zapfarm/emagrecimento/AnvisaComplianceSection';
 import { FaqSection } from '@/components/zapfarm/emagrecimento/FaqSection';
 import { FinalCtaSection } from '@/components/zapfarm/emagrecimento/FinalCtaSection';
+import { EMAGRECIMENTO_PAGE_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export default function TratamentosPage() {
   return (
@@ -61,11 +62,7 @@ export default function TratamentosPage() {
                 </a>
               </div>
               <div className="grid grid-cols-3 gap-3">
-                {[
-                  '/images/emagrecimento/medvi/treatment-injetavel.webp',
-                  '/images/emagrecimento/medvi/treatment-comprimidos.avif',
-                  '/images/emagrecimento/medvi/treatment-escolha.avif',
-                ].map((src) => (
+                {EMAGRECIMENTO_PAGE_ASSETS.tratamentosHeroGrid.map((src) => (
                   <div key={src} className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/15">
                     <Image src={src} alt="Opções de tratamento avaliadas clinicamente" fill className="object-cover" sizes="20vw" />
                   </div>

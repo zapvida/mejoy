@@ -30,6 +30,7 @@ import {
 } from "@/lib/emagrecimento/checkout-plan-catalog";
 import { trackFunnelEvent } from "@/lib/funnel/events-client";
 import { buildEmagrecimentoReportWhatsappUrl } from "@/lib/emagrecimento/whatsappCta";
+import { EMAGRECIMENTO_REPORT_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { getSupabaseServerConfig } from "@/lib/supabase/runtime-config";
 
 interface RelatorioEmagrecimentoProps {
@@ -440,7 +441,7 @@ export default function RelatorioEmagrecimentoPage({
                   <div className="relative aspect-[1.72] overflow-hidden rounded-[28px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
                     <div className="relative h-full w-full overflow-hidden rounded-[20px]">
                       <Image
-                        src="/images/emagrecimento/medvi/reviews-07.webp"
+                        src={EMAGRECIMENTO_REPORT_ASSETS.socialProofWide}
                         alt="Espaço reservado para reel de prova social"
                         fill
                         className="object-cover"
@@ -549,23 +550,7 @@ export default function RelatorioEmagrecimentoPage({
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-3">
-                      {[
-                        {
-                          src: "/mejoyimagens/mejoy19.png",
-                          alt: "Paciente MeJoy",
-                          title: "Relatório + checkout integrados",
-                        },
-                        {
-                          src: "/images/emagrecimento/medvi/journey-consulta.avif",
-                          alt: "Consulta médica online",
-                          title: "Consulta valida a conduta",
-                        },
-                        {
-                          src: "/images/emagrecimento/medvi/support-whatsapp.avif",
-                          alt: "Suporte oficial no WhatsApp",
-                          title: "Suporte oficial pós-pagamento",
-                        },
-                      ].map((item) => (
+                      {EMAGRECIMENTO_REPORT_ASSETS.inlineCheckoutCards.map((item) => (
                         <div
                           key={item.src}
                           className="overflow-hidden rounded-[28px] border border-zinc-200 bg-[#f8faf8] shadow-[0_16px_40px_rgba(15,23,42,0.05)]"

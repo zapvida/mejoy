@@ -79,7 +79,7 @@ export function FaqSectionObesidade() {
               id="faq-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Antes de começar, tire as dúvidas certas
+              Antes de avançar, tire as dúvidas certas
             </h2>
             <p className="mt-4 text-base text-slate-600 sm:text-lg">
               Respostas objetivas sobre elegibilidade, medicação, receita, privacidade, preço e próximos passos.

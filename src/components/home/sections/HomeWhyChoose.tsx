@@ -21,7 +21,7 @@ export function HomeWhyChoose() {
               id="home-why-choose-heading"
               className="mt-2 text-[1.5rem] font-bold tracking-[-0.04em] text-slate-950 sm:text-3xl md:text-4xl"
             >
-              Clareza antes de tudo
+              Clareza, critério e continuidade
             </h2>
           </div>
 

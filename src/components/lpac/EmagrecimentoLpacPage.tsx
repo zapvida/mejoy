@@ -23,7 +23,7 @@ export function EmagrecimentoLpacPage({
 }: {
   canonicalPath?: string;
 }) {
-  const ogImage = `${SITE.baseUrl}/images/emagrecimento/lp-pdf/hero-1.jpg`;
+  const ogImage = `${SITE.baseUrl}/imagensmedvimejoyhome/me31.jpg`;
 
   return (
     <>

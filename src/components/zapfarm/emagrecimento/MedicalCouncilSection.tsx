@@ -1,24 +1,8 @@
 import Image from 'next/image';
+import { EMAGRECIMENTO_SPECIALIST_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export function MedicalCouncilSection() {
-  const leaders = [
-    {
-      name: 'Dr. João Silva',
-      role: 'Diretor Médico',
-      credential: 'CRM 123456',
-      specialty: 'Endocrinologista',
-      quote: 'Nosso compromisso é oferecer tratamento seguro, baseado em evidências científicas e sempre dentro das normas do CFM e ANVISA.',
-      photo: '/images/emagrecimento/medvi/avatar-chris.webp',
-    },
-    {
-      name: 'Nutricionista Ana Costa',
-      role: 'Coordenadora de Nutrição',
-      credential: 'CRN 345678',
-      specialty: 'Nutricionista',
-      quote: 'Acreditamos que o sucesso do tratamento vem da combinação de medicação quando indicada, mudança de hábitos e suporte contínuo.',
-      photo: '/images/emagrecimento/medvi/avatar-melissa.webp',
-    },
-  ];
+  const leaders = EMAGRECIMENTO_SPECIALIST_ASSETS.councilCards;
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-emerald-900 to-emerald-800 text-white">
@@ -42,18 +26,16 @@ export function MedicalCouncilSection() {
                 <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-white/30">
                   <Image
                     src={leader.photo}
-                    alt={leader.name}
+                    alt={leader.title}
                     fill
                     className="object-cover"
                     sizes="96px"
                   />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">
-                  {leader.name}
+                  {leader.title}
                 </h3>
-                <p className="text-sm text-emerald-200 mb-2">{leader.credential}</p>
-                <p className="text-base font-semibold text-emerald-100 mb-1">{leader.specialty}</p>
-                <p className="text-sm text-emerald-200 italic">{leader.role}</p>
+                <p className="text-base font-semibold text-emerald-100 mb-1">{leader.subtitle}</p>
               </div>
               <div className="border-t border-white/20 pt-6">
                 <p className="text-sm sm:text-base text-emerald-100 leading-relaxed italic text-center">
@@ -66,7 +48,7 @@ export function MedicalCouncilSection() {
 
         <div className="mt-10 bg-white/10 backdrop-blur-sm rounded-xl p-6 sm:p-8 border-2 border-white/20 max-w-4xl mx-auto">
           <p className="text-sm sm:text-base text-emerald-100 leading-relaxed text-center">
-            <strong className="text-white">Nossa missão:</strong> Oferecer tratamento de emagrecimento seguro, eficaz e baseado em evidências científicas, sempre respeitando as normas do Conselho Federal de Medicina (CFM) e da Agência Nacional de Vigilância Sanitária (ANVISA).
+            <strong className="text-white">Nossa missão:</strong> Organizar triagem, relatorio, avaliacao humana, continuidade e suporte oficial em um fluxo mais claro, seguro e responsavel para o paciente brasileiro.
           </p>
         </div>
       </div>

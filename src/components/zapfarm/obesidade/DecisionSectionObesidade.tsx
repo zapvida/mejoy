@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { ShieldCheckIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { track } from '@/lib/analytics';
 import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
 import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
@@ -35,18 +36,18 @@ export function DecisionSectionObesidade() {
                 id="decision-heading"
                 className="mt-4 text-3xl font-bold leading-tight tracking-[-0.04em] text-slate-950 sm:text-4xl"
               >
-                Em poucos minutos, você sabe se faz sentido avançar
+                Antes de avançar, você enxerga o que faz sentido para o seu caso
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-                A triagem mostra o caminho provável, organiza suas informações e evita que você comece uma jornada sem
-                direção.
+                A triagem organiza seu contexto, mostra o caminho mais coerente e evita que você entre numa jornada
+                importante no improviso.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm sm:text-base">
                 {[
-                  'Leva cerca de 5 minutos para concluir a triagem',
-                  'A conduta é definida em avaliação individual',
-                  'Você entende etapas e valores antes de decidir',
+                  'Triagem curta, feita para a vida real',
+                  'Conduta definida em avaliação individual',
+                  'Etapas e investimento claros antes do fechamento',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-slate-700">
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">
@@ -73,31 +74,22 @@ export function DecisionSectionObesidade() {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-emerald-100 bg-[#fbfefc] p-4">
-                <div className="relative mb-3 h-10 w-10 overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-emerald-100">
-                  <Image
-                    src="/images/emagrecimento/medvi/guarantee.svg"
-                    alt="Compromisso de qualidade no atendimento"
-                    fill
-                    className="object-contain p-1"
-                    sizes="40px"
-                  />
+                <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-emerald-100">
+                  <ShieldCheckIcon className="h-5 w-5 text-emerald-700" aria-hidden />
                 </div>
                 <h3 className="text-base font-bold text-slate-950">Transparência total</h3>
                 <p className="mt-1 text-sm text-slate-600">Você sabe o processo e os critérios antes de avançar.</p>
               </div>
 
               <div className="rounded-2xl border border-emerald-100 bg-[#fbfefc] p-4">
-                <div className="relative mb-3 h-10 w-24 overflow-hidden">
-                  <Image
-                    src={EMAGRECIMENTO_LP.ratingBadge}
-                    alt="Prova social de avaliação"
-                    fill
-                    className="object-contain object-left"
-                    sizes="96px"
-                  />
+                <div className="mb-3 inline-flex h-10 items-center gap-2 rounded-full bg-white px-3 shadow-sm ring-1 ring-emerald-100">
+                  <SparklesIcon className="h-4 w-4 text-amber-500" aria-hidden />
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-700">
+                    Fluxo unico MeJoy
+                  </span>
                 </div>
-                <h3 className="text-base font-bold text-slate-950">Confiança construída</h3>
-                <p className="mt-1 text-sm text-slate-600">Acompanhamento focado em constância, não em ansiedade.</p>
+                <h3 className="text-base font-bold text-slate-950">Confiança construída no processo</h3>
+                <p className="mt-1 text-sm text-slate-600">Triagem, relatório, pagamento e suporte seguem na mesma narrativa.</p>
               </div>
 
               <div className="overflow-hidden rounded-[28px] border border-emerald-100 bg-white sm:col-span-2">

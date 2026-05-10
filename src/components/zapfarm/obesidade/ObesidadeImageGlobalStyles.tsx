@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Ajustes globais leves de renderização para imagens da landing de emagrecimento.
+ * Ajustes globais leves de renderização para imagens MeJoy da landing de emagrecimento.
  */
 export function ObesidadeImageGlobalStyles() {
   return (
@@ -32,8 +32,8 @@ export function ObesidadeImageGlobalStyles() {
       .emagrecimento-lp span {
         font-family: var(--font-medvi), var(--font-emagrecimento-body), system-ui, sans-serif;
       }
-      img[src*='images/emagrecimento/medvi/'],
-      img[src*='images/emagrecimento/lp-pdf/'] {
+      img[src*='imagensmedvimejoyhome/'],
+      img[src*='mejoyimagens/'] {
         object-fit: cover !important;
         transition: opacity 0.3s ease;
       }

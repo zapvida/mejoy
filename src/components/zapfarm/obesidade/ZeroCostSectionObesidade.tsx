@@ -86,11 +86,11 @@ export function ZeroCostSectionObesidade() {
               id="inclusions-heading"
               className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3 sm:mb-4"
             >
-              O que entra no programa antes de você avançar
+              O que você encontra antes de tomar qualquer decisão
             </h2>
             <p className="text-base sm:text-lg text-gray-700 text-center leading-relaxed mb-8 sm:mb-10 max-w-3xl mx-auto">
-              A MeJoy transforma suas respostas em uma jornada prática: triagem, avaliação quando indicada, plano e
-              suporte. O que depender de decisão médica é tratado com transparência na consulta.
+              A MeJoy organiza triagem, leitura inicial, avaliação quando indicada e continuidade oficial. O que
+              depender de decisão médica aparece com transparência, sem empurrão e sem promessa automática.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-10">

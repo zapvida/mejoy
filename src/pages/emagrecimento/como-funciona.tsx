@@ -6,6 +6,7 @@ import { TreatmentTimelineSection } from '@/components/zapfarm/emagrecimento/Tre
 import { ImpactStatsSection } from '@/components/zapfarm/emagrecimento/ImpactStatsSection';
 import { AnvisaComplianceSection } from '@/components/zapfarm/emagrecimento/AnvisaComplianceSection';
 import { FinalCtaSection } from '@/components/zapfarm/emagrecimento/FinalCtaSection';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 export default function ComoFuncionaPage() {
   return (
@@ -62,7 +63,7 @@ export default function ComoFuncionaPage() {
               <div className="relative mx-auto w-full max-w-xl">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-white/15 shadow-2xl">
                   <Image
-                    src="/images/emagrecimento/medvi/journey-consulta.avif"
+                    src={EMAGRECIMENTO_LP.howConsulta}
                     alt="Consulta e plano de emagrecimento com acompanhamento"
                     fill
                     className="object-cover"

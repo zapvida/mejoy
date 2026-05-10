@@ -22,7 +22,7 @@ export function HomeTestimonials() {
               id="home-testimonials-heading"
               className="mt-2 text-[1.5rem] font-bold tracking-[-0.04em] text-slate-950 sm:text-3xl md:text-4xl"
             >
-              Histórias reais
+              Histórias reais, com identidade preservada
             </h2>
           </div>
 
@@ -41,12 +41,8 @@ export function HomeTestimonials() {
                     <p className="text-xs text-slate-500">{location}</p>
                   </div>
                 </div>
-                <div className="mt-3 flex items-center gap-1 text-emerald-700" aria-label="Avaliação 5 de 5">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <span key={idx} aria-hidden>
-                      ★
-                    </span>
-                  ))}
+                <div className="mt-3 inline-flex w-fit rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+                  Relato preservado
                 </div>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate-700">&ldquo;{quote}&rdquo;</p>
               </div>

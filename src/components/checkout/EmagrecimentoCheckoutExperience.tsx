@@ -33,6 +33,7 @@ import {
   trilhaFromPreferencia,
   type EmagrecimentoTrilha,
 } from "@/lib/emagrecimento/checkoutUrls";
+import { EMAGRECIMENTO_CHECKOUT_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { validateBrazilPhoneInput } from "@/lib/phone/normalize";
 
 type PaymentMethod = "PIX" | "CREDIT_CARD";
@@ -242,26 +243,7 @@ export function EmagrecimentoCheckoutExperience({
         { key: 3 as Step, title: "Confirmacao" },
       ];
   const selectionLocked = selectionVariant === "locked";
-  const journeyFrames = [
-    {
-      src: "/mejoyimagens/mejoy19.png",
-      alt: "Paciente MeJoy com medicacao",
-      title: "Fechamento ja conectado ao seu caso",
-      body: "A triagem e o relatorio ja deixam o checkout pronto, sem reiniciar a jornada.",
-    },
-    {
-      src: "/images/emagrecimento/medvi/journey-consulta.avif",
-      alt: "Consulta medica",
-      title: "Consulta confirma a conduta",
-      body: "A avaliacao medica confirma ou ajusta trilha, dose e continuidade clinica com seguranca.",
-    },
-    {
-      src: "/images/emagrecimento/medvi/support-whatsapp.avif",
-      alt: "Suporte por WhatsApp",
-      title: "Suporte oficial MeJoy",
-      body: "O acompanhamento segue com canal oficial e dashboard assim que o pagamento confirmar.",
-    },
-  ];
+  const journeyFrames = EMAGRECIMENTO_CHECKOUT_ASSETS.journeyFrames;
   const checkoutHighlights = [
     "Checkout na mesma pagina do relatorio",
     "PIX ou cartao com confirmacao acompanhada",

@@ -10,6 +10,7 @@ import type {
   DashboardSeverity,
   OrderTimelineEvent,
 } from "@/lib/dashboard/types";
+import { EMAGRECIMENTO_DASHBOARD_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { useMeDashboard } from "@/hooks/useMeDashboard";
 
 function formatDate(value: string | null | undefined) {
@@ -254,7 +255,7 @@ export default function DashboardPage() {
                       <div className="grid h-full gap-0 sm:grid-cols-[0.92fr_1.08fr]">
                         <div className="relative min-h-[220px]">
                           <Image
-                            src="/images/emagrecimento/medvi/journey-consulta.avif"
+                            src={EMAGRECIMENTO_DASHBOARD_ASSETS.welcomeVideo}
                             alt="Espaço reservado para vídeo clínico de boas-vindas"
                             fill
                             className="object-cover"

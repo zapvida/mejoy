@@ -5,6 +5,7 @@ import { SpecialistsSection } from '@/components/zapfarm/emagrecimento/Specialis
 import { MedicalCouncilSection } from '@/components/zapfarm/emagrecimento/MedicalCouncilSection';
 import { DailySupportSection } from '@/components/zapfarm/emagrecimento/DailySupportSection';
 import { FinalCtaSection } from '@/components/zapfarm/emagrecimento/FinalCtaSection';
+import { EMAGRECIMENTO_SPECIALIST_ASSETS } from '@/lib/emagrecimento-lp-assets';
 
 export default function EspecialistasPage() {
   return (
@@ -13,7 +14,7 @@ export default function EspecialistasPage() {
         <title>Time de especialistas em emagrecimento | Endocrinologistas e nutricionistas | MeJoy</title>
         <meta
           name="description"
-          content="Time completo de especialistas em emagrecimento: endocrinologistas credenciados, nutricionistas, farmacêuticos e enfermeiros. Suporte diário via WhatsApp. ⭐ 4,9/5 em avaliações."
+          content="Entenda quem acompanha a jornada MeJoy: medicos parceiros, coordenacao do cuidado e suporte continuo para decidir com mais clareza e seguranca."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon-32x32.png" />
@@ -61,12 +62,7 @@ export default function EspecialistasPage() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {[
-                  '/images/emagrecimento/medvi/avatar-belinda.webp',
-                  '/images/emagrecimento/medvi/avatar-chris.webp',
-                  '/images/emagrecimento/medvi/avatar-melissa.webp',
-                  '/images/emagrecimento/medvi/avatar-sandra.webp',
-                ].map((src) => (
+                {EMAGRECIMENTO_SPECIALIST_ASSETS.heroGrid.map((src) => (
                   <div key={src} className="relative aspect-square overflow-hidden rounded-2xl border border-white/20 bg-white/5">
                     <Image src={src} alt="Especialista do time de acompanhamento" fill className="object-cover" sizes="20vw" />
                   </div>
@@ -90,13 +86,13 @@ export default function EspecialistasPage() {
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto">
               <div className="bg-white rounded-xl sm:rounded-2xl p-8 sm:p-10 border-2 border-emerald-200 shadow-lg">
-                <div className="text-4xl sm:text-5xl mb-4">★★★★★</div>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">4,9/5</p>
+                <div className="text-4xl sm:text-5xl mb-4">Equipe integrada</div>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Cuidado com contexto</p>
                 <p className="text-base sm:text-lg text-gray-700 mb-4">
-                  é a média de satisfação dos nossos atendimentos em emagrecimento
+                  O paciente entende quem decide, quem acompanha e como os proximos passos continuam depois da triagem.
                 </p>
                 <p className="text-xs sm:text-sm text-gray-500 italic">
-                  *Dados de avaliações internas, atualizados periodicamente.
+                  Medicos parceiros com registro ativo e jornada acompanhada por canal oficial.
                 </p>
               </div>
             </div>

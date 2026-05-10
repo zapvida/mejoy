@@ -8,13 +8,13 @@ export function TestimonialsSectionObesidade() {
     {
       quote:
         'Eu precisava de um plano realista, não de promessa. Quando entendi o próximo passo com clareza, ficou mais fácil manter consistência sem começar e abandonar.',
-      author: 'Paciente A., 37 anos',
+      author: 'Paciente MeJoy, 37 anos',
       role: 'Acompanhamento com metas claras',
     },
     {
       quote:
         'A diferença foi sair da tentativa aleatória e entrar em uma rotina acompanhada. O suporte ajudou a transformar direção em constância.',
-      author: 'Paciente B., 42 anos',
+      author: 'Paciente MeJoy, 42 anos',
       role: 'Suporte para aderência e próximos passos',
     },
   ];
@@ -36,19 +36,15 @@ export function TestimonialsSectionObesidade() {
               id="testimonials-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
             >
-              Resultado sem contexto vira promessa vazia.
+              Histórias reais, sem espetáculo.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Relatos de pacientes acompanhados no programa. Identidade preservada por privacidade.
+              Relatos com identidade preservada, foco em clareza, continuidade e rotina real.
             </p>
             <div className="mx-auto mt-5 w-fit rounded-full border border-amber-100 bg-amber-50 px-4 py-2 shadow-sm">
-              <Image
-                src={EMAGRECIMENTO_LP.ratingBadge}
-                alt="Faixa de prova social com avaliações"
-                width={180}
-                height={41}
-                className="h-auto max-h-[18px] w-auto max-w-[160px] object-contain sm:max-h-[22px] sm:max-w-[200px]"
-              />
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-800 sm:text-sm">
+                Jornada individual com acompanhamento continuo
+              </span>
             </div>
           </div>
 
@@ -90,8 +86,8 @@ export function TestimonialsSectionObesidade() {
           </div>
 
           <p className="mx-auto mt-10 max-w-xl text-center text-xs text-slate-500 sm:text-sm">
-            Resultados individuais variam. Cada caso é acompanhado por equipe médica; depoimentos não garantem o mesmo
-            desempenho para todos.
+            Resultados individuais variam. Os relatos não substituem avaliação médica nem garantem a mesma resposta para
+            todos.
           </p>
         </div>
       </div>

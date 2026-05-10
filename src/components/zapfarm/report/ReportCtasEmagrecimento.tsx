@@ -15,6 +15,7 @@ import {
   estimateWeightLossRangeKg,
   getMedicationTrackCard,
 } from '@/lib/emagrecimento/medicationCards';
+import { EMAGRECIMENTO_REPORT_ASSETS } from '@/lib/emagrecimento-lp-assets';
 import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
 import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
@@ -32,23 +33,7 @@ interface Props {
   planCatalog?: EmagrecimentoPlan[];
 }
 
-const FRAME_TWO_IMAGES = [
-  {
-    src: '/mejoyimagens/mejoy19.png',
-    alt: 'Paciente MeJoy',
-    title: 'Fechamento guiado',
-  },
-  {
-    src: '/images/emagrecimento/medvi/treatment-comprimidos.avif',
-    alt: 'Trilha oral',
-    title: 'Opcao em comprimido',
-  },
-  {
-    src: '/images/emagrecimento/medvi/treatment-escolha.avif',
-    alt: 'Escolha orientada',
-    title: 'Escolha guiada',
-  },
-];
+const FRAME_TWO_IMAGES = EMAGRECIMENTO_REPORT_ASSETS.planFrames;
 
 export function ReportCtasEmagrecimento({
   reportId,

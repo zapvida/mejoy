@@ -12,6 +12,7 @@ import { TrustBarSectionObesidade } from '@/components/zapfarm/obesidade/TrustBa
 import { HowItWorksSectionObesidade } from '@/components/zapfarm/obesidade/HowItWorksSectionObesidade';
 import { AppFeaturesSectionObesidade } from '@/components/zapfarm/obesidade/AppFeaturesSectionObesidade';
 import { DecisionSectionObesidade } from '@/components/zapfarm/obesidade/DecisionSectionObesidade';
+import { EMAGRECIMENTO_LP } from '@/lib/emagrecimento-lp-assets';
 
 const homeLinks = [
   { label: 'Jornada', href: '#jornada' },
@@ -35,7 +36,7 @@ const verticalCards = [
     description: 'Triagem online, leitura inicial do perfil e próximos passos com avaliação médica.',
     href: '/emagrecimento',
     cta: 'Começar agora',
-    image: '/images/emagrecimento/medvi/hero-main.webp',
+    image: EMAGRECIMENTO_LP.storyPortraitA,
     tone: 'light',
   },
   {
@@ -44,7 +45,7 @@ const verticalCards = [
     description: 'Rotinas de cuidado, prevenção e acompanhamento para sustentar consistência.',
     href: '/triagem/longevidade',
     cta: 'Em breve',
-    image: '/images/emagrecimento/medvi/journey-consulta.avif',
+    image: EMAGRECIMENTO_LP.howConsulta,
     tone: 'dark',
   },
   {
@@ -53,7 +54,7 @@ const verticalCards = [
     description: 'Leitura funcional da rotina intestinal, sinais de inflamação e hábitos do dia a dia.',
     href: '/triagem/microbioma',
     cta: 'Explorar triagem',
-    image: '/images/emagrecimento/medvi/support-whatsapp.avif',
+    image: EMAGRECIMENTO_LP.appContext,
     tone: 'dark',
   },
 ];

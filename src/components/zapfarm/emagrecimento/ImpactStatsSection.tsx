@@ -1,28 +1,28 @@
 export function ImpactStatsSection() {
   const stats = [
     {
-      number: '15–20%',
-      title: 'Perda de peso corporal',
-      description: 'Média de perda de peso em pacientes elegíveis que seguem o tratamento adequadamente',
-      note: 'Resultados individuais variam. Tratamento sob prescrição médica.',
+      number: '5–10%',
+      title: 'Marco clínico inicial',
+      description: 'Perder 5% a 10% do peso corporal já costuma melhorar a leitura metabólica em muitos perfis acompanhados.',
+      note: 'Resultados individuais variam. A conduta final depende de avaliação clínica.',
     },
     {
-      number: '97%',
-      title: 'Aumento de confiança',
-      description: 'Dos pacientes relatam melhora significativa na autoestima e confiança após o tratamento',
-      note: 'Baseado em avaliações internas de pacientes.',
+      number: '10–15%',
+      title: 'Faixa observada em trilhas mais potentes',
+      description: 'Em perfis elegíveis e bem acompanhados, algumas estratégias podem alcançar faixas mais robustas de resposta ao longo do tempo.',
+      note: 'Faixas médias de estudo, nunca promessa individual.',
     },
     {
-      number: '97%',
-      title: 'Melhora na saúde geral',
-      description: 'Dos pacientes relatam melhora em pelo menos um indicador de saúde (pressão, glicemia, sono, etc.)',
-      note: 'Baseado em avaliações internas de pacientes.',
+      number: '3 frentes',
+      title: 'O que sustenta resultado',
+      description: 'Triagem organizada, decisão médica e acompanhamento contínuo costumam fazer mais diferença do que medicação isolada.',
+      note: 'Rotina, adesão e contexto clínico pesam tanto quanto a escolha terapêutica.',
     },
     {
-      number: '53%',
-      title: 'Maior eficácia',
-      description: 'Tratamento com acompanhamento médico contínuo tem eficácia significativamente maior que medicação isolada',
-      note: 'Baseado em estudos clínicos sobre tratamento da obesidade.',
+      number: '1 fluxo',
+      title: 'Menos atrito para decidir',
+      description: 'Landing, triagem, relatório, pagamento e suporte seguem na mesma narrativa para reduzir abandono e ruído.',
+      note: 'Experiência desenhada para clareza, não para pressão comercial.',
     },
   ];
 
@@ -34,7 +34,7 @@ export function ImpactStatsSection() {
             Impacto em números
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-2">
-            Na prática do consultório, vemos resultados reais. Estes números são baseados em dados de pacientes que seguiram o tratamento com acompanhamento médico.
+            A jornada fica mais clara quando traduzimos expectativa clínica, acompanhamento e próximos passos em linguagem simples.
           </p>
         </div>
 
@@ -66,11 +66,10 @@ export function ImpactStatsSection() {
 
         <div className="mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200 max-w-2xl mx-auto">
           <p className="text-xs sm:text-sm text-gray-600 text-center italic">
-            <strong>Disclaimer:</strong> Estes números são baseados em dados internos e estudos clínicos. Resultados individuais variam e não são garantidos.
+            <strong>Disclaimer:</strong> Estes números resumem marcos clínicos e faixas de estudo. Resultados individuais variam e nunca são garantidos.
           </p>
         </div>
       </div>
     </section>
   );
 }
-

@@ -51,15 +51,19 @@ export function HomeWeightLossFeature() {
 
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-800 sm:text-xs">
-              Cuidado GLP-1 com orientação médica
+              Programa MeJoy de emagrecimento
             </p>
             <h2
               id="home-glp-heading"
               className="mt-3 text-[1.65rem] font-bold leading-[1.1] tracking-[-0.035em] text-slate-950 sm:text-4xl md:text-[2.35rem]"
             >
-              Emagrecimento mais simples,{' '}
-              <span style={{ color: MEDVI_HOME.headlineHighlightGreen }}>com cuidado personalizado</span>
+              Emagrecimento com mais{' '}
+              <span style={{ color: MEDVI_HOME.headlineHighlightGreen }}>clareza, cuidado e continuidade</span>
             </h2>
+            <p className="mt-4 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-[16px]">
+              Você começa entendendo seu perfil, vê o que faz sentido para o seu caso e só então decide como avançar.
+              Quando houver indicação, a avaliação médica entra com contexto e critério.
+            </p>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
               <div
                 className="relative aspect-[4/5] w-full overflow-hidden"
@@ -91,7 +95,7 @@ export function HomeWeightLossFeature() {
               onClick={handleCta}
               className="mt-6 inline-flex text-sm font-semibold text-emerald-800 underline decoration-emerald-300 underline-offset-4 transition hover:text-emerald-900"
             >
-              Ver programa de emagrecimento
+              Entender o programa completo
             </a>
           </div>
         </div>

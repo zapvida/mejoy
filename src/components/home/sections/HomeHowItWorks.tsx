@@ -22,7 +22,7 @@ export function HomeHowItWorks() {
               id="home-how-it-works-heading"
               className="mt-2 text-[1.5rem] font-bold tracking-[-0.04em] text-slate-950 sm:text-3xl md:text-4xl"
             >
-              Três passos rápidos
+              Três passos para sair do improviso
             </h2>
           </div>
 
