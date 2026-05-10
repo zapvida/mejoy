@@ -32,7 +32,14 @@ export function HomeWhyChoose() {
                 className="flex h-full flex-col overflow-hidden rounded-[22px] border border-emerald-100 bg-[#fcfffd] shadow-[0_14px_36px_rgba(15,23,42,0.05)]"
               >
                 <div className="relative aspect-[5/4] w-full shrink-0">
-                  <Image src={image} alt="" fill className="object-cover" sizes="(max-width:1024px) 50vw, 25vw" />
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    unoptimized
+                    className="object-cover"
+                    sizes="(max-width:1024px) 50vw, 25vw"
+                  />
                 </div>
                 <div className="flex flex-1 flex-col p-4">
                   <h3 className="text-base font-bold text-slate-950">{title}</h3>

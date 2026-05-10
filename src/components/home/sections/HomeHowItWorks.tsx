@@ -33,7 +33,14 @@ export function HomeHowItWorks() {
                 className="flex h-full flex-col overflow-hidden rounded-[24px] border border-emerald-100 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]"
               >
                 <div className="relative aspect-[4/3] w-full">
-                  <Image src={image} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 33vw" />
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    unoptimized
+                    className="object-cover"
+                    sizes="(max-width:768px) 100vw, 33vw"
+                  />
                 </div>
                 <div className="flex flex-1 flex-col p-4 sm:p-5">
                   <span className="text-[11px] font-bold tracking-[0.2em] text-emerald-700">{step}</span>

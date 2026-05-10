@@ -79,7 +79,14 @@ export function TestimonialsSectionObesidade() {
                   key={image.src}
                   className={`relative overflow-hidden rounded-[28px] border border-emerald-100 shadow-[0_18px_40px_rgba(15,23,42,0.05)] ${image.className}`}
                 >
-                  <Image src={image.src} alt={image.alt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" />
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    unoptimized
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 50vw, 30vw"
+                  />
                 </div>
               ))}
             </div>

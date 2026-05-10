@@ -54,6 +54,7 @@ export function PlansSectionObesidade() {
                     src={track.image}
                     alt={track.title}
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     quality={85}

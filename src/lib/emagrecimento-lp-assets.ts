@@ -33,12 +33,12 @@ export const EMAGRECIMENTO_TRIAGE_ASSETS = {
       className: 'row-span-2 aspect-[0.82]',
     },
     {
-      src: SLOT('MJY-EMO-021'),
+      src: EXTRA('triage-frame-secondary-a'),
       alt: 'Paciente MeJoy em retrato confiante',
       className: 'aspect-[1.02]',
     },
     {
-      src: SLOT('MJY-EMO-013'),
+      src: EXTRA('triage-frame-secondary-b'),
       alt: 'Paciente MeJoy em rotina de bem-estar',
       className: 'aspect-[0.94]',
     },
@@ -48,7 +48,7 @@ export const EMAGRECIMENTO_TRIAGE_ASSETS = {
       className: 'aspect-[0.94]',
     },
     {
-      src: SLOT('MJY-EMO-028'),
+      src: EXTRA('triage-frame-secondary-c'),
       alt: 'Paciente satisfeita com evolução consistente',
       className: 'aspect-[1.18]',
     },
@@ -70,17 +70,17 @@ export const EMAGRECIMENTO_TRACK_ASSETS = {
 
 export const EMAGRECIMENTO_REPORT_ASSETS = {
   decisionHeroPrimary: SLOT('MJY-EMO-026'),
-  decisionHeroSecondary: SLOT('MJY-EMO-029'),
-  decisionHeroSupport: SLOT('MJY-EMO-027'),
+  decisionHeroSecondary: EXTRA('report-card-consulta'),
+  decisionHeroSupport: EXTRA('report-card-guided'),
   socialProofWide: SLOT('MJY-EMO-028'),
   inlineCheckoutCards: [
     {
-      src: SLOT('MJY-EMO-027'),
+      src: EXTRA('report-card-guided'),
       alt: 'Paciente MeJoy com continuidade no mesmo fluxo',
       title: 'Relatorio + checkout conectados',
     },
     {
-      src: SLOT('MJY-EMO-029'),
+      src: EXTRA('report-card-consulta'),
       alt: 'Consulta medica organizada',
       title: 'Consulta valida a conduta',
     },
@@ -92,7 +92,7 @@ export const EMAGRECIMENTO_REPORT_ASSETS = {
   ],
   planFrames: [
     {
-      src: SLOT('MJY-EMO-027'),
+      src: EXTRA('report-card-guided'),
       alt: 'Fechamento guiado com apoio humano',
       title: 'Fechamento guiado',
     },
@@ -112,13 +112,13 @@ export const EMAGRECIMENTO_REPORT_ASSETS = {
 export const EMAGRECIMENTO_CHECKOUT_ASSETS = {
   journeyFrames: [
     {
-      src: SLOT('MJY-EMO-027'),
+      src: EXTRA('report-card-guided'),
       alt: 'Paciente com contexto do tratamento',
       title: 'Fechamento ja conectado ao seu caso',
       body: 'A triagem e o relatorio deixam o checkout pronto para continuar sem reiniciar a jornada.',
     },
     {
-      src: SLOT('MJY-EMO-029'),
+      src: EXTRA('report-card-consulta'),
       alt: 'Consulta medica online com contexto',
       title: 'Consulta confirma a conduta',
       body: 'A avaliacao medica confirma ou ajusta trilha, dose e continuidade clinica com seguranca.',
@@ -135,9 +135,9 @@ export const EMAGRECIMENTO_CHECKOUT_ASSETS = {
 export const EMAGRECIMENTO_SPECIALIST_ASSETS = {
   heroGrid: [
     EXTRA('specialist-lead'),
-    SLOT('MJY-EMO-029'),
-    SLOT('MJY-EMO-019'),
-    SLOT('MJY-EMO-001'),
+    EXTRA('report-card-consulta'),
+    EXTRA('specialist-journey'),
+    EXTRA('results-portrait-d'),
   ],
   specialistCards: [
     {
@@ -150,13 +150,13 @@ export const EMAGRECIMENTO_SPECIALIST_ASSETS = {
       title: 'Coordenacao do cuidado',
       subtitle: 'Ritmo, elegibilidade e proximos passos',
       focus: 'Conecta relatorio, consulta, pagamento e jornada posterior sem deixar o paciente solto.',
-      photo: SLOT('MJY-EMO-029'),
+      photo: EXTRA('specialist-journey'),
     },
     {
       title: 'Suporte de rotina e aderencia',
       subtitle: 'Habitos, sinais e continuidade',
       focus: 'Ajuda o paciente a transformar orientacao em constancia ao longo do programa.',
-      photo: SLOT('MJY-EMO-019'),
+      photo: EXTRA('specialist-support'),
     },
   ],
   councilCards: [
@@ -170,7 +170,7 @@ export const EMAGRECIMENTO_SPECIALIST_ASSETS = {
       title: 'Aderencia, nutricao e continuidade',
       subtitle: 'Plano pratico para vida real',
       quote: 'O objetivo e reduzir atrito: menos improviso, mais clareza sobre o que fazer hoje e como sustentar a rotina.',
-      photo: SLOT('MJY-EMO-029'),
+      photo: EXTRA('specialist-support'),
     },
   ],
 } as const;
@@ -180,7 +180,7 @@ export const EMAGRECIMENTO_PAGE_ASSETS = {
     SLOT('MJY-EMO-021'),
     SLOT('MJY-EMO-013'),
     EXTRA('lp-story-portrait-b'),
-    EXTRA('results-hero-support'),
+    EXTRA('results-portrait-d'),
   ],
   tratamentosHeroGrid: [
     EMAGRECIMENTO_TRACK_ASSETS.tirzepatida,
@@ -197,7 +197,7 @@ export const EMAGRECIMENTO_PROTOCOL_ASSETS = {
 } as const;
 
 export const EMAGRECIMENTO_DASHBOARD_ASSETS = {
-  welcomeVideo: SLOT('MJY-EMO-029'),
+  welcomeVideo: EXTRA('results-portrait-d'),
   metabolicResults: EMAGRECIMENTO_PROTOCOL_ASSETS.metabolicResults,
   journeyAcompanhamento: EMAGRECIMENTO_PROTOCOL_ASSETS.journeyAcompanhamento,
   metabolicHabits: EMAGRECIMENTO_PROTOCOL_ASSETS.metabolicHabits,

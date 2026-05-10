@@ -28,6 +28,7 @@ export function TailoredSectionObesidade() {
                   src={EMAGRECIMENTO_LP.tailoredMetabolism}
                   alt="Acompanhamento de hábitos e evolução metabólica"
                   fill
+                  unoptimized
                   className="object-cover object-center"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   quality={86}

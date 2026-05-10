@@ -77,6 +77,7 @@ export function HowItWorksSectionObesidade() {
                       src={step.image}
                       alt={step.imageAlt}
                       fill
+                      unoptimized
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />

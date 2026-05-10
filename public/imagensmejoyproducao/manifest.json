@@ -552,6 +552,46 @@
         "1:1": "/imagensmejoyproducao/extras/lp-story-wide-b/1x1.webp"
       }
     },
+    "triage-frame-secondary-a": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/triage-frame-secondary-a/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/triage-frame-secondary-a/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/triage-frame-secondary-a/1x1.webp"
+      }
+    },
+    "triage-frame-secondary-b": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/triage-frame-secondary-b/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/triage-frame-secondary-b/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/triage-frame-secondary-b/1x1.webp"
+      }
+    },
+    "triage-frame-secondary-c": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/triage-frame-secondary-c/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/triage-frame-secondary-c/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/triage-frame-secondary-c/1x1.webp"
+      }
+    },
+    "report-card-guided": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/report-card-guided/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/report-card-guided/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/report-card-guided/1x1.webp"
+      }
+    },
+    "report-card-consulta": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/report-card-consulta/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/report-card-consulta/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/report-card-consulta/1x1.webp"
+      }
+    },
     "specialist-lead": {
       "runtime_ratio": "4:5",
       "runtime_asset": "/imagensmejoyproducao/extras/specialist-lead/master.webp",
@@ -560,12 +600,36 @@
         "1:1": "/imagensmejoyproducao/extras/specialist-lead/1x1.webp"
       }
     },
+    "specialist-journey": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/specialist-journey/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/specialist-journey/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/specialist-journey/1x1.webp"
+      }
+    },
+    "specialist-support": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/specialist-support/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/specialist-support/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/specialist-support/1x1.webp"
+      }
+    },
     "results-hero-support": {
       "runtime_ratio": "4:5",
       "runtime_asset": "/imagensmejoyproducao/extras/results-hero-support/master.webp",
       "crops": {
         "4:5": "/imagensmejoyproducao/extras/results-hero-support/4x5.webp",
         "1:1": "/imagensmejoyproducao/extras/results-hero-support/1x1.webp"
+      }
+    },
+    "results-portrait-d": {
+      "runtime_ratio": "4:5",
+      "runtime_asset": "/imagensmejoyproducao/extras/results-portrait-d/master.webp",
+      "crops": {
+        "4:5": "/imagensmejoyproducao/extras/results-portrait-d/4x5.webp",
+        "1:1": "/imagensmejoyproducao/extras/results-portrait-d/1x1.webp"
       }
     },
     "track-tirzepatida": {
