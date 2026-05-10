@@ -115,19 +115,19 @@ export const EMAGRECIMENTO_CHECKOUT_ASSETS = {
       src: EXTRA('report-card-guided'),
       alt: 'Paciente com contexto do tratamento',
       title: 'Fechamento ja conectado ao seu caso',
-      body: 'A triagem e o relatorio deixam o checkout pronto para continuar sem reiniciar a jornada.',
+      body: 'A triagem e o relatorio deixam plano, dados e contexto prontos para continuar sem reiniciar a jornada.',
     },
     {
       src: EXTRA('report-card-consulta'),
       alt: 'Consulta medica online com contexto',
       title: 'Consulta confirma a conduta',
-      body: 'A avaliacao medica confirma ou ajusta trilha, dose e continuidade clinica com seguranca.',
+      body: 'A avaliacao medica confirma ou ajusta trilha, dose, check-up e continuidade clinica com seguranca.',
     },
     {
       src: SLOT('MJY-EMO-030'),
       alt: 'Canal oficial da MeJoy no celular',
       title: 'Suporte oficial MeJoy',
-      body: 'O acompanhamento segue com canal oficial e painel liberado apos a confirmacao do pagamento.',
+      body: 'Apos a confirmacao, o app e o canal oficial assumem rotina, documentos, proximos passos e suporte.',
     },
   ],
 } as const;

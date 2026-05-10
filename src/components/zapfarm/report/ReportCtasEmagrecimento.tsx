@@ -6,6 +6,7 @@ import { RefinedCard } from '@/components/ui/RefinedCard';
 import { RefinedButton } from '@/components/ui/RefinedButton';
 import {
   buildZapVidaPlantaoUrl,
+  buildEmagrecimentoPlanValuePoints,
   emagrecimentoLegalNote,
   planIdMapping,
   type EmagrecimentoPlan,
@@ -15,7 +16,10 @@ import {
   estimateWeightLossRangeKg,
   getMedicationTrackCard,
 } from '@/lib/emagrecimento/medicationCards';
-import { EMAGRECIMENTO_REPORT_ASSETS } from '@/lib/emagrecimento-lp-assets';
+import {
+  EMAGRECIMENTO_LP,
+  EMAGRECIMENTO_REPORT_ASSETS,
+} from '@/lib/emagrecimento-lp-assets';
 import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
 import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
 import { trackFunnelEvent } from '@/lib/funnel/events-client';
@@ -73,10 +77,14 @@ export function ReportCtasEmagrecimento({
     vm?.basics.weightKg,
     selectedTrackCard.efficacyRangePercent
   );
+  const selectedPlan =
+    availablePlans.find((plan) => plan.id === selectedPlanId) || availablePlans[1];
   const productAppValue = buildProductAppValue({
     productSlug: 'emagrecimento',
     productName: 'Programa MeJoy de emagrecimento',
+    planSlug: selectedPlan.id,
   });
+  const planValuePoints = buildEmagrecimentoPlanValuePoints(selectedPlan);
   const preferenciaTexto =
     preferenciaPrincipioAtivo === 'tirzepatida'
       ? 'Tirzepatida'
@@ -181,11 +189,72 @@ export function ReportCtasEmagrecimento({
       </div>
 
       <div className="mt-8">
+        <div className="overflow-hidden rounded-[32px] border border-[#d7e3da] bg-[#f6f7f1] shadow-[0_24px_70px_rgba(15,23,42,0.06)]">
+          <div className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
+            <div className="relative min-h-[320px] overflow-hidden bg-white">
+              <Image
+                src={EMAGRECIMENTO_LP.appContext}
+                alt="App MeJoy em contexto de continuidade do tratamento"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 36vw"
+              />
+              <div className="absolute inset-x-4 bottom-4 rounded-[24px] bg-white/92 p-4 shadow-[0_16px_40px_rgba(15,23,42,0.12)] backdrop-blur">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  App nativo + jornada continua
+                </p>
+                <p className="mt-2 text-base font-bold text-slate-950">
+                  Voce nao leva so a conduta: leva app, consultas e acompanhamento.
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  O plano escolhido conecta consulta, rotina e proximos passos no mesmo ecossistema.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-5 sm:p-6 md:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                Valor percebido antes do checkout
+              </p>
+              <h3 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950">
+                Fechando agora, voce ja libera o que sustenta resultado no mundo real
+              </h3>
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                {selectedPlan.title} foi desenhado para combinar avaliacao clinica, app MeJoy e continuidade inteligente sem te soltar depois da compra.
+              </p>
+
+              <div className="mt-5 grid gap-3 md:grid-cols-3">
+                {planValuePoints.map((point) => (
+                  <article
+                    key={point.id}
+                    className="rounded-[24px] border border-zinc-200 bg-white p-4 shadow-[0_16px_35px_rgba(15,23,42,0.04)]"
+                  >
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                      {point.eyebrow}
+                    </p>
+                    <h4 className="mt-2 text-lg font-bold text-slate-950">{point.title}</h4>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{point.body}</p>
+                  </article>
+                ))}
+              </div>
+
+              {selectedPlan.supportTier === 'concierge' && (
+                <div className="mt-5 rounded-[24px] border border-emerald-100 bg-[#f6fbf7] px-4 py-4 text-sm leading-relaxed text-slate-700">
+                  No plano semestral, a equipe ativa uma linha prioritaria do programa no WhatsApp oficial para duvidas do dia a dia e escalonamento quando o caso pedir revisao clinica.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8">
         <AppValueSection
           value={productAppValue}
           surface="report"
           compact
-          title="Ao fechar aqui, voce tambem libera o App MeJoy Premium"
+          limit={6}
+          title="Ao fechar aqui, voce tambem libera o App MeJoy por dentro do seu plano"
         />
       </div>
 

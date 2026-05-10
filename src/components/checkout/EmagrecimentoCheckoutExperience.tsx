@@ -15,7 +15,9 @@ import {
 import RefinedInput from "@/components/ui/RefinedInput";
 import { RefinedButton } from "@/components/ui/RefinedButton";
 import { RefinedCard } from "@/components/ui/RefinedCard";
+import { AppValueSection } from "@/components/mejoy-app/AppValueSection";
 import {
+  buildEmagrecimentoPlanValuePoints,
   emagrecimentoLegalNote,
   planIdToApiKey,
   planIdMapping,
@@ -28,12 +30,16 @@ import {
   TREATMENT_TRACKS_BY_ID,
 } from "@/lib/emagrecimento/treatmentTracks";
 import { trackFunnelEvent } from "@/lib/funnel/events-client";
+import { buildProductAppValue } from "@/lib/mejoy-app/value";
 import { cn } from "@/lib/utils";
 import {
   trilhaFromPreferencia,
   type EmagrecimentoTrilha,
 } from "@/lib/emagrecimento/checkoutUrls";
-import { EMAGRECIMENTO_CHECKOUT_ASSETS } from "@/lib/emagrecimento-lp-assets";
+import {
+  EMAGRECIMENTO_CHECKOUT_ASSETS,
+  EMAGRECIMENTO_LP,
+} from "@/lib/emagrecimento-lp-assets";
 import { validateBrazilPhoneInput } from "@/lib/phone/normalize";
 
 type PaymentMethod = "PIX" | "CREDIT_CARD";
@@ -244,10 +250,16 @@ export function EmagrecimentoCheckoutExperience({
       ];
   const selectionLocked = selectionVariant === "locked";
   const journeyFrames = EMAGRECIMENTO_CHECKOUT_ASSETS.journeyFrames;
+  const checkoutAppValue = buildProductAppValue({
+    productSlug: "emagrecimento",
+    productName: plan.title,
+    planSlug: plan.id,
+  });
+  const planValuePoints = buildEmagrecimentoPlanValuePoints(plan);
   const checkoutHighlights = [
-    "Checkout na mesma pagina do relatorio",
-    "PIX ou cartao com confirmacao acompanhada",
-    "Dashboard liberado so apos pagamento confirmado",
+    "Relatorio, plano e pagamento na mesma jornada",
+    "App MeJoy, consultas e continuidade entram no mesmo fechamento",
+    "Dashboard e handoff liberados so apos pagamento confirmado",
   ];
   const paymentMethodLabel =
     paymentMethod === "PIX" ? "PIX com desconto imediato" : "Cartao validado na mesma jornada";
@@ -790,6 +802,78 @@ export function EmagrecimentoCheckoutExperience({
                 {item}
               </div>
             ))}
+          </div>
+
+          <div className="mt-5 overflow-hidden rounded-[28px] border border-[#d7e3da] bg-[#f6f7f1]">
+            <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+              <div className="relative min-h-[280px] overflow-hidden bg-white">
+                <Image
+                  src={EMAGRECIMENTO_LP.appContext}
+                  alt="App MeJoy nativo com acompanhamento continuo"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 32vw"
+                />
+                <div className="absolute inset-x-4 bottom-4 rounded-[22px] bg-white/92 p-4 shadow-[0_16px_35px_rgba(15,23,42,0.14)] backdrop-blur">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                    App nativo incluso no plano
+                  </p>
+                  <p className="mt-2 text-base font-bold text-slate-950">
+                    Consulta, acompanhamento e rotina continuam no MeJoy.
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    O pagamento fecha o programa e abre o ecossistema que acompanha o tratamento de verdade.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-5 sm:p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  O que este fechamento libera
+                </p>
+                <h3 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">
+                  {plan.title} tambem entrega app, consultas e continuidade inteligente
+                </h3>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                  {checkoutAppValue.summary}
+                </p>
+
+                <div className="mt-5 grid gap-3 md:grid-cols-3">
+                  {planValuePoints.map((point) => (
+                    <article
+                      key={point.id}
+                      className="rounded-[24px] border border-zinc-200 bg-white p-4 shadow-[0_16px_35px_rgba(15,23,42,0.04)]"
+                    >
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                        {point.eyebrow}
+                      </p>
+                      <h4 className="mt-2 text-lg font-bold text-slate-950">
+                        {point.title}
+                      </h4>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                        {point.body}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+
+                {plan.supportTier === "concierge" && (
+                  <div className="mt-5 rounded-[24px] border border-emerald-100 bg-[#f6fbf7] px-4 py-4 text-sm leading-relaxed text-slate-700">
+                    No plano de 6 meses, a equipe ativa uma linha prioritaria do programa no WhatsApp oficial para orientar duvidas do dia a dia e acelerar o escalonamento quando for preciso revisao clinica.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <AppValueSection
+              value={checkoutAppValue}
+              surface="checkout"
+              compact
+              limit={4}
+              title="No App MeJoy, seu plano continua vivo depois do pagamento"
+            />
           </div>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">

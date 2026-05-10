@@ -12,6 +12,13 @@ export type EmagrecimentoSupportTier = 'guided' | 'extended' | 'concierge';
 export type EmagrecimentoRefundPolicy = 'convert_or_refund_pre_shipment';
 export type EmagrecimentoCoverageMode = 'coverage_available' | 'coverage_pending';
 
+export interface EmagrecimentoPlanValuePoint {
+  id: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+}
+
 export interface EmagrecimentoPlan {
   id: EmagrecimentoPlanId;
   planKey: EmagrecimentoPlanKey;
@@ -183,10 +190,81 @@ function buildBulletsForTier(
   return [
     'Tudo do plano de 3 meses',
     'App MeJoy Full com toda a jornada liberada',
-    'Linha dedicada do programa com roster medico nomeado e triagem 24/7',
+    'Linha prioritaria do programa no WhatsApp oficial com equipe nomeada',
     'Escalonamento imediato para o ZapVida em nova dor ou urgencia',
     'Follow-up prioritario e manutencao da jornada de 6 meses',
     clinicalGuardrail,
+  ];
+}
+
+export function buildEmagrecimentoPlanValuePoints(
+  plan: EmagrecimentoPlan,
+): EmagrecimentoPlanValuePoint[] {
+  if (plan.benefitTier === 'essential') {
+    return [
+      {
+        id: 'consulta-checkup',
+        eyebrow: 'Clinico inicial',
+        title: 'Consulta, pedido inicial e retorno',
+        body: 'Consulta com endocrinologista ou nutrologo, leitura do caso e retorno clinico apos o check-up quando indicado.',
+      },
+      {
+        id: 'aderencia',
+        eyebrow: 'Aderencia',
+        title: 'Psicologa + continuidade pratica',
+        body: 'A jornada comeca com suporte de aderencia para reduzir abandono e transformar orientacao em rotina real.',
+      },
+      {
+        id: 'app-essential',
+        eyebrow: 'App MeJoy',
+        title: 'Timeline, status e proxima acao',
+        body: 'O app entra desde o inicio com agenda, status de prescricao ou entrega e plano inicial organizado para o seu caso.',
+      },
+    ];
+  }
+
+  if (plan.benefitTier === 'plus') {
+    return [
+      {
+        id: 'plano-3m',
+        eyebrow: 'Tempo suficiente',
+        title: 'Ajustar conduta com mais inteligencia',
+        body: 'Os 3 meses criam espaco para acompanhar resposta, revisar exames, ajustar a conduta e consolidar a aderencia.',
+      },
+      {
+        id: 'multidisciplinar',
+        eyebrow: 'Equipe ampliada',
+        title: 'Nutricionista, retorno e suporte continuo',
+        body: 'Voce soma nutricionista, retorno adicional com especialista e um acompanhamento mais consistente ao longo da jornada.',
+      },
+      {
+        id: 'app-plus',
+        eyebrow: 'App MeJoy Plus',
+        title: 'Tarefas, evolucao e documentos no mesmo lugar',
+        body: 'Lembretes, progresso, materiais e documentos passam a viver em um fluxo unico, simples de acompanhar.',
+      },
+    ];
+  }
+
+  return [
+    {
+      id: 'full-journey',
+      eyebrow: 'Semestral premium',
+      title: 'Jornada completa com manutencao real',
+      body: 'O plano de 6 meses aprofunda acompanhamento, follow-up prioritario e manutencao da jornada com mais previsibilidade.',
+    },
+    {
+      id: 'whatsapp-priority',
+      eyebrow: 'Canal do programa',
+      title: 'Linha prioritaria no WhatsApp oficial',
+      body: 'A equipe ativa um canal priorizado do programa para duvidas do dia a dia e escalonamento clinico quando necessario.',
+    },
+    {
+      id: 'app-full',
+      eyebrow: 'App MeJoy Full',
+      title: 'Plano de vida individual e continuidade inteligente',
+      body: 'O app amplia a leitura do seu caso com prevencao, exames, relatorios, rotina e acompanhamento continuo ao longo do semestre.',
+    },
   ];
 }
 

@@ -257,11 +257,11 @@ export default function RelatorioEmagrecimentoPage({
     null;
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
   const outcomeHighlights = useMemo(
-    () => buildOutcomeHighlights(vm, comorbidades),
+    () => (vm ? buildOutcomeHighlights(vm, comorbidades) : []),
     [vm, comorbidades],
   );
   const cardiometabolicHighlights = useMemo(
-    () => buildCardiometabolicHighlights(vm, answers, comorbidades),
+    () => (vm ? buildCardiometabolicHighlights(vm, answers, comorbidades) : []),
     [vm, answers, comorbidades],
   );
   const lifestyleHighlights = useMemo(

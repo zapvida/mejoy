@@ -10,11 +10,13 @@ export function AppValueSection({
   surface,
   title = 'Ganhe acesso ao App MeJoy Premium',
   compact = false,
+  limit,
 }: {
   value: ProductAppValue;
   surface: 'pdp' | 'checkout' | 'protocols' | 'report';
   title?: string;
   compact?: boolean;
+  limit?: number;
 }) {
   useEffect(() => {
     track('app_value_block_viewed', {
@@ -24,7 +26,8 @@ export function AppValueSection({
     });
   }, [surface, value.appTier, value.featureMatrix.length]);
 
-  const features = compact ? value.featureMatrix.slice(0, 4) : value.featureMatrix;
+  const featureLimit = limit ?? (compact ? 4 : value.featureMatrix.length);
+  const features = value.featureMatrix.slice(0, featureLimit);
 
   return (
     <section className="rounded-[32px] border border-[#d7e3da] bg-white p-5 shadow-[0_30px_90px_rgba(15,23,42,0.08)] sm:p-6 md:p-8">
@@ -42,13 +45,13 @@ export function AppValueSection({
         </div>
         <div className="rounded-[26px] border border-emerald-100 bg-[#f6fbf7] px-5 py-4 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-            Tier liberado
+            Ecossistema liberado
           </p>
           <p className="mt-2 text-lg font-semibold text-slate-950">
-            {value.appIncluded ? 'Premium full access' : 'Sem app incluso'}
+            {value.appIncluded ? `${value.featureMatrix.length} frentes entre app e continuidade` : 'Sem app incluso'}
           </p>
           <p className="mt-1 text-sm text-slate-600">
-            Todo comprador entra no ecossistema nativo com dashboard, cuidado contínuo e handoff assistido.
+            Todo comprador entra no ecossistema nativo; os planos maiores aprofundam suporte, prevencao e leitura longitudinal.
           </p>
         </div>
       </div>

@@ -412,16 +412,48 @@ export function buildProductAppValue(params: {
   objective?: string | null;
   protocolSlug?: string | null;
   productName?: string | null;
+  planSlug?: string | null;
 }): ProductAppValue {
   const protocolContext = buildProtocolContext(params);
   const label = params.productName?.trim() || PROTOCOL_TITLES[protocolContext.primaryProtocolSlug];
+  const planId =
+    params.planSlug
+      ? resolvePlanId({
+          activationState: 'buyer',
+          planSlug: params.planSlug,
+          productName: params.productName,
+        })
+      : null;
+
+  const prioritizedFeatureIds =
+    planId === 'programa_1m'
+      ? ['dashboard', 'glp1', 'meal-ai', 'consult', 'reports', 'sleep']
+      : planId === 'programa_3m'
+        ? ['dashboard', 'glp1', 'consult', 'meal-ai', 'sleep', 'rituals']
+        : ['dashboard', 'glp1', 'consult', 'exams', 'reports', 'prevention'];
+
+  const prioritizedFeatureMatrix = [
+    ...prioritizedFeatureIds
+      .map((id) => APP_FEATURE_LIBRARY.find((feature) => feature.id === id))
+      .filter(Boolean),
+    ...APP_FEATURE_LIBRARY.filter((feature) => !prioritizedFeatureIds.includes(feature.id)),
+  ] as ProductAppFeatureMatrixItem[];
+
+  const summary =
+    planId === 'programa_1m'
+      ? `${label} entra com base organizada no App MeJoy: timeline, proxima acao, continuidade inicial e contexto claro para consulta e retorno.`
+      : planId === 'programa_3m'
+        ? `${label} libera um acompanhamento mais profundo no App MeJoy, com rotina guiada, documentos, lembretes e mais espaco para ajuste clinico.`
+        : planId === 'programa_6m'
+          ? `${label} libera a camada mais completa do App MeJoy, com prevencao, exames, relatorios, canal priorizado e continuidade longitudinal.`
+          : `${label} entrega produto, protocolo e continuidade nativa no mesmo ecossistema, com score diário, prevenção, concierge e leitura prática da rotina.`;
 
   return {
     appIncluded: true,
     appTier: 'premium_full_access',
     headline: 'Ganhe acesso ao App MeJoy Premium em cada compra.',
-    summary: `${label} entrega produto, protocolo e continuidade nativa no mesmo ecossistema, com score diário, prevenção, concierge e leitura prática da rotina.`,
-    featureMatrix: APP_FEATURE_LIBRARY,
+    summary,
+    featureMatrix: prioritizedFeatureMatrix,
   };
 }
 
