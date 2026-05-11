@@ -65,7 +65,7 @@ export function CookieBanner() {
     const previousOverscrollBehavior = document.documentElement.style.overscrollBehaviorY;
 
     const isMobile = window.innerWidth < 640;
-    const offset = isMobile ? (showSettings ? '16rem' : '5.75rem') : null;
+    const offset = isMobile ? (showSettings ? '12.5rem' : '3.75rem') : null;
 
     if (offset) {
       document.body.style.paddingBottom = offset;
@@ -156,14 +156,13 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   const compactMessage = isSensitiveFlow
-    ? 'Cookies essenciais mantêm sua avaliação estável.'
-    : 'Cookies essenciais mantêm sua jornada estável.';
+    ? 'Cookies essenciais: menos ruido, mais seguranca na avaliacao.'
+    : 'Cookies essenciais: menos ruido, mais seguranca na jornada.';
 
   const subtleButtonClass =
     'inline-flex h-8 items-center justify-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 text-[11px] font-medium text-zinc-700 transition-colors hover:border-emerald-200 hover:text-emerald-800 disabled:opacity-50';
   const acceptButtonClass =
     'inline-flex h-8 items-center justify-center rounded-full bg-emerald-600 px-3.5 text-[11px] font-semibold text-white shadow-[0_12px_30px_rgba(5,150,105,0.16)] transition-colors hover:bg-emerald-700 disabled:opacity-50';
-
   const settingsView = (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
@@ -242,9 +241,85 @@ export function CookieBanner() {
     </div>
   );
 
+  const compactMobileView = (
+    <div className="space-y-1.5 sm:hidden">
+      <div className="flex items-center gap-2">
+        <div className="shrink-0 rounded-full bg-emerald-50 p-1.5 text-emerald-700">
+          <Cookie className="h-3.5 w-3.5" />
+        </div>
+        <p className="min-w-0 flex-1 pr-1 text-[9.5px] font-medium leading-tight text-zinc-700">{compactMessage}</p>
+        <button
+          type="button"
+          onClick={handleAcceptAll}
+          disabled={isLoading}
+          className="inline-flex h-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 px-3.5 text-[10px] font-semibold text-white shadow-[0_10px_24px_rgba(5,150,105,0.14)] transition-colors hover:bg-emerald-700 disabled:opacity-50"
+        >
+          Aceitar
+        </button>
+      </div>
+
+      <div className="flex items-center justify-between gap-2 pl-8">
+        <div className="flex items-center gap-2.5">
+          <button type="button" onClick={handleRejectAll} disabled={isLoading} className="text-[10px] font-medium text-zinc-500 transition-colors hover:text-emerald-700 disabled:opacity-50">
+            Minimos
+          </button>
+          <button type="button" onClick={() => setShowSettings(true)} className="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-500 transition-colors hover:text-emerald-700">
+            <Settings className="h-3 w-3" />
+            Ajustar
+          </button>
+        </div>
+        <a
+          href="/politicas-lgpd#cookies"
+          className="text-[10px] font-medium text-zinc-500 underline underline-offset-2 transition-colors hover:text-emerald-700"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Politica
+        </a>
+      </div>
+    </div>
+  );
+
+  const desktopBannerView = (
+    <div className="hidden flex-col gap-2.5 sm:flex">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 shrink-0 rounded-full bg-emerald-50 p-2 text-emerald-700">
+          <Cookie className="h-4 w-4" />
+        </div>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="text-[13px] font-semibold tracking-[-0.01em] text-zinc-950">Privacidade clara</p>
+            <a
+              href="/politicas-lgpd#cookies"
+              className="text-[10px] font-medium text-zinc-500 underline underline-offset-2 transition-colors hover:text-emerald-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Politica
+            </a>
+          </div>
+          <p className="mt-0.5 text-[10.5px] leading-relaxed text-zinc-600">{compactMessage}</p>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={handleAcceptAll} disabled={isLoading} className={acceptButtonClass}>
+          Aceitar
+        </button>
+        <button type="button" onClick={handleRejectAll} disabled={isLoading} className={subtleButtonClass}>
+          So essenciais
+        </button>
+        <button type="button" onClick={() => setShowSettings(true)} className={subtleButtonClass}>
+          <Settings className="h-3.5 w-3.5" />
+          Ajustar
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-[9999] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-4 sm:w-[min(380px,calc(100vw-2rem))] sm:px-0 sm:pb-[max(1rem,env(safe-area-inset-bottom))]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[9999] px-3 pb-[max(0.45rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-4 sm:w-[min(380px,calc(100vw-2rem))] sm:px-0 sm:pb-[max(1rem,env(safe-area-inset-bottom))]"
       data-testid="cookie-banner"
     >
       <div
@@ -255,44 +330,14 @@ export function CookieBanner() {
         }`}
         data-testid={isCompactLanding ? 'cookie-banner-compact' : 'cookie-banner-default'}
       >
-        <div className="px-4 py-3">
+        <div className="px-3.5 py-2.5 sm:px-4 sm:py-3">
           {showSettings ? (
             settingsView
           ) : (
-            <div className="flex flex-col gap-3 sm:gap-2.5">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 shrink-0 rounded-full bg-emerald-50 p-2 text-emerald-700">
-                  <Cookie className="h-4 w-4" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-[13px] font-semibold tracking-[-0.01em] text-zinc-950">Privacidade clara</p>
-                    <a
-                      href="/politicas-lgpd#cookies"
-                      className="text-[10px] font-medium text-zinc-500 underline underline-offset-2 transition-colors hover:text-emerald-700"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Política
-                    </a>
-                  </div>
-                  <p className="mt-0.5 text-[10.5px] leading-relaxed text-zinc-600">{compactMessage}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button type="button" onClick={handleAcceptAll} disabled={isLoading} className={acceptButtonClass}>
-                  Aceitar
-                </button>
-                <button type="button" onClick={handleRejectAll} disabled={isLoading} className={subtleButtonClass}>
-                  Só essenciais
-                </button>
-                <button type="button" onClick={() => setShowSettings(true)} className={subtleButtonClass}>
-                  <Settings className="h-3.5 w-3.5" />
-                  Ajustar
-                </button>
-              </div>
-            </div>
+            <>
+              {compactMobileView}
+              {desktopBannerView}
+            </>
           )}
         </div>
       </div>

@@ -62,6 +62,7 @@
     "qa:emagrecimento": "tsx scripts/qa/emagrecimento-smoke.ts",
     "qa:emagrecimento:prod": "PRODUCTION_URL=https://www.mejoy.com.br tsx scripts/qa/emagrecimento-smoke.ts",
     "qa:emagrecimento:zapfarm": "PRODUCTION_URL=https://www.zapfarm.com.br tsx scripts/qa/emagrecimento-smoke.ts",
+    "qa:mejoy:launch-video": "PRODUCTION_URL=https://www.mejoy.com.br tsx scripts/qa/capture-mejoy-launch-video.ts",
     "test:handoff": "jest --runInBand --runTestsByPath __tests__/handoff/envelope.test.ts __tests__/api/handoff-create.test.ts __tests__/api/handoff-status.test.ts",
     "test:mobile-foundation": "jest --runInBand --runTestsByPath __tests__/lib/mobile-domain.test.ts __tests__/api/mobile-v1.test.ts",
     "validate:emagrecimento": "bash scripts/validate-emagrecimento-production.sh",
