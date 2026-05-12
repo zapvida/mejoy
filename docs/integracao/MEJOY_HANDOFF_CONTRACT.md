@@ -1,5 +1,8 @@
 # MeJoy Handoff Contract
 
+Compatibility note: the canonical source of truth for the rollout freeze is
+`/Users/teobeckert/desenvolvimento/TecMed/TECMED_CANONICAL_CONTRACT_V1.md`.
+
 ## Escopo
 - Origem: `POST /api/handoff/create`
 - Destino clínico: ZapVida
