@@ -1,5 +1,14 @@
 # MeJoy Handoff Contract
 
+Canonical contract reference:
+`/Users/teobeckert/desenvolvimento/TecMed/TECMED_CANONICAL_CONTRACT_V1.md`.
+
+This document remains valid as MeJoy implementation guidance and compatibility
+reference, but it must not redefine the ecosystem primary path independently.
+For the core-safe rollout freeze, the signed `MeJoy -> ZapVida` handoff remains
+the official primary path. Any `program-intake` path in ZapVida is treated as a
+compatibility or internal intake surface, never as a second parallel primary.
+
 ## Escopo
 - Origem: `POST /api/handoff/create`
 - Destino clínico: ZapVida
