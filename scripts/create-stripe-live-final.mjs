@@ -4,7 +4,7 @@
  * 
  * Uso: 
  *   node scripts/create-stripe-live-final.mjs sk_live_...
- *   STRIPE_SECRET_KEY=sk_live_... node scripts/create-stripe-live-final.mjs
+ *   STRIPE_SECRET_KEY=your_secret_from_provider node scripts/create-stripe-live-final.mjs
  */
 
 import Stripe from 'stripe';
@@ -28,7 +28,7 @@ if (!secretKey) {
   console.error('  node scripts/create-stripe-live-final.mjs sk_live_...');
   console.error('');
   console.error('Ou:');
-  console.error('  STRIPE_SECRET_KEY=sk_live_... node scripts/create-stripe-live-final.mjs');
+  console.error('  STRIPE_SECRET_KEY=your_secret_from_provider node scripts/create-stripe-live-final.mjs');
   process.exit(1);
 }
 

@@ -123,7 +123,7 @@
 # Verificar se estão configuradas:
 NEXT_PUBLIC_SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
-OPENAI_API_KEY=
+your_secret_from_provider
 NEXT_PUBLIC_BASE_URL=
 STRIPE_SECRET_KEY= (opcional)
 ```

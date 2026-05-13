@@ -17,7 +17,7 @@ A chave `OPENAI_API_KEY` foi exposta em terminal/conversa. Execute **imediatamen
 
 ## 3. Atualizar ambientes
 
-- **Local:** `.env.local` → `OPENAI_API_KEY=sk-proj-NOVA_CHAVE`
+- **Local:** `.env.local` → `OPENAI_API_KEY=your_secret_from_provider`
 - **Vercel:** Project → Settings → Environment Variables → `OPENAI_API_KEY` → Edit → colar nova chave → Save
 - **Produção:** Garantir que Production, Preview e Development tenham a nova chave
 

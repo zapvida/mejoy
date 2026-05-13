@@ -27,13 +27,13 @@ Você precisa fazer **4 coisas principais**:
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://SEU_PROJETO.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-DATABASE_URL=postgresql://postgres:SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 #### 1.2 Asaas (2 variáveis)
 ```
-ASAAS_API_KEY=aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ASAAS_API_KEY=your_secret_from_provider
 ASAAS_ENVIRONMENT=production
 ```
 
@@ -97,7 +97,7 @@ ASAAS_PRICE_IMUNIDADE_PREMIUM=27800
 
 #### 1.4 OpenAI (1 variável)
 ```
-OPENAI_API_KEY=sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+OPENAI_API_KEY=your_secret_from_provider
 ```
 
 #### 1.5 Configuração Básica (3 variáveis)
@@ -110,7 +110,7 @@ NODE_ENV=production
 #### 1.6 NextAuth (2 variáveis)
 ```
 NEXTAUTH_URL=https://www.zapfarm.com.br
-NEXTAUTH_SECRET=Os5XKCrU+1KHLar/j7TSVZM/zpzDuRaov3m/93c7MzI=
+NEXTAUTH_SECRET=your_secret_from_provider
 ```
 
 #### 1.7 Webhook (1 variável)

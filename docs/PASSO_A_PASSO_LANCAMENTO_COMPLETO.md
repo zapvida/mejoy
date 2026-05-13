@@ -68,7 +68,7 @@ No Vercel: **Settings → Environment Variables**. Garanta que existem em **Prod
 |----------|-------|------------|
 | `STORE_V2` | `1` | Você já tem |
 | `NEXT_PUBLIC_STORE_V2` | `1` | Você já tem |
-| `DATABASE_URL` | `postgresql://...` | Supabase → Settings → Database |
+| `DATABASE_URL` | `postgresql://your_user:your_password@your_host:5432/your_database` | Supabase → Settings → Database |
 | `ASAAS_API_KEY` | `$...` | Asaas → Minha Conta → Integrações |
 | `ASAAS_WEBHOOK_TOKEN` | string forte (ex: 64 chars) | **Criar e guardar** — mesmo valor do webhook |
 | `ADMIN_SECRET_KEY` | string forte (ex: 64 chars) | **Criar e guardar** — para proteger /admin |

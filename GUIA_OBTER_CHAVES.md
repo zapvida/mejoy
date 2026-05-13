@@ -34,7 +34,7 @@ Os5XKCrU+1KHLar/j7TSVZM/zpzDuRaov3m/93c7MzI=
 
 ### **Passo 4: Copiar a Chave**
 1. Clique no ícone de **"Copiar"** ou selecione e copie a chave completa
-2. A chave será algo como: `aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX`
+2. A chave será algo como: `your_asaas_api_key`
 
 ### **Passo 5: Adicionar no Vercel**
 1. Vercel Dashboard → Seu Projeto → Settings → Environment Variables

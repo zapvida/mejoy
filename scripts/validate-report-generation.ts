@@ -75,4 +75,3 @@ if (hasErrors) {
   console.log('  ✅ A geração de relatórios deve funcionar em produção.');
   process.exit(0);
 }
-

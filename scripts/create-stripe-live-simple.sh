@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
   echo "  ./scripts/create-stripe-live-simple.sh sk_live_..."
   echo ""
   echo "Ou exporte a variável:"
-  echo "  export STRIPE_SECRET_KEY=sk_live_..."
+  echo "  export STRIPE_SECRET_KEY=your_secret_from_provider"
   echo "  ./scripts/create-stripe-live-simple.sh"
   exit 1
 fi

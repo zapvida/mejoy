@@ -28,7 +28,7 @@ SUPABASE_SERVICE_ROLE_KEY
 → Como obter: Supabase Dashboard → Settings → API → Service Role (clique no olho 👁️)
 
 DATABASE_URL
-[OBTER] postgresql://postgres:SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+[OBTER] postgresql://your_user:your_password@your_host:5432/your_database
 → Como obter: Supabase Dashboard → Settings → Database → Connection string → URI
 
 ============================================
@@ -36,7 +36,7 @@ DATABASE_URL
 ============================================
 
 ASAAS_API_KEY
-[OBTER] aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+[OBTER] your_asaas_api_key
 → Como obter: Asaas Dashboard → Configurações → Integrações → API → Copiar chave de produção
 
 ASAAS_ENVIRONMENT
@@ -153,7 +153,7 @@ ASAAS_PRICE_IMUNIDADE_PREMIUM
 ============================================
 
 OPENAI_API_KEY
-[OBTER] sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+[OBTER] your_openai_api_key
 → Como obter: https://platform.openai.com/api-keys → Criar nova chave
 
 AI_REPORT_ENABLED
@@ -303,7 +303,7 @@ STRIPE_SECRET_KEY
 → Como obter: Stripe Dashboard → Developers → API keys → Secret key
 
 STRIPE_WEBHOOK_SECRET_ZAPFARM
-[OBTER] [OPCIONAL] whsec_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+[OBTER] [OPCIONAL] your_stripe_webhook_secret
 → Como obter: Stripe Dashboard → Developers → Webhooks → Signing secret
 
 ============================================

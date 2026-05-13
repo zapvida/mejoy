@@ -25,14 +25,14 @@ SUPABASE_SERVICE_ROLE_KEY
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
 
 DATABASE_URL
-postgresql://postgres:SUA_SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 
 ============================================
 2. ASAAS - PAGAMENTOS (2 variáveis)
 ============================================
 
 ASAAS_API_KEY
-aact_prod_SUA_CHAVE_ASAAS_AQUI
+your_asaas_api_key
 
 ASAAS_ENVIRONMENT
 production
@@ -147,7 +147,7 @@ ASAAS_PRICE_IMUNIDADE_PREMIUM
 ============================================
 
 OPENAI_API_KEY
-sk-proj-SUA_CHAVE_OPENAI_AQUI
+your_openai_api_key
 
 ============================================
 5. CONFIGURAÇÃO BÁSICA (3 variáveis)
@@ -199,11 +199,11 @@ COMO OBTER OS VALORES:
 SUPABASE:
 - NEXT_PUBLIC_SUPABASE_URL: Dashboard → Settings → API → Project URL
 - NEXT_PUBLIC_SUPABASE_ANON_KEY: Dashboard → Settings → API → anon public
-- SUPABASE_SERVICE_ROLE_KEY: Dashboard → Settings → API → Service Role (clique no olho)
+- SUPABASE_SERVICE_ROLE_KEY: your_secret_from_provider → Settings → API → Service Role (clique no olho)
 - DATABASE_URL: Dashboard → Settings → Database → Connection string → URI
 
 ASAAS:
-- ASAAS_API_KEY: Dashboard → Configurações → Integrações → API → Copiar chave de produção
+- ASAAS_API_KEY: your_secret_from_provider → Configurações → Integrações → API → Copiar chave de produção
 
 OPENAI:
 - OPENAI_API_KEY: https://platform.openai.com/api-keys → Criar nova chave

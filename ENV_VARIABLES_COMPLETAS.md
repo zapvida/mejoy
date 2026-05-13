@@ -21,8 +21,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<REDACTED_SUPABASE_ANON_JWT>
 # ============================================
 # DATABASE - CONFIGURAÇÃO
 # ============================================
-DATABASE_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
-DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 # ============================================
 # BRANDING - CONFIGURAÇÃO
@@ -74,14 +74,14 @@ Environment: ✅ Production ✅ Preview ✅ Development
 #### 5. DATABASE_URL
 ```
 Name: DATABASE_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 
 #### 6. DIRECT_URL
 ```
 Name: DIRECT_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 

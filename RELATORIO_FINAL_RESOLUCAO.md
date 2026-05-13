@@ -43,12 +43,12 @@
 
 **Confirme que existe:**
 ```
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Se não existir ou estiver errada:**
 1. Adicione/edite a variável `DIRECT_URL`
-2. Valor: `postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres`
+2. Valor: `postgresql://your_user:your_password@your_host:5432/your_database`
 3. Ambiente: **Production** (não Preview)
 4. Redeploy
 

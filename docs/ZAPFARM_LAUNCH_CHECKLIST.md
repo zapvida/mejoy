@@ -33,7 +33,7 @@ O código do ZapFarm está **100% pronto para lançamento**. Faltam apenas confi
 
 #### **1.1 Stripe Keys (Obrigatório)**
 ```env
-STRIPE_SECRET_KEY=sk_live_xxx
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PUBLISHABLE_KEY=pk_live_xxx
 STRIPE_WEBHOOK_SECRET_ZAPFARM=whsec_xxx
 ```
@@ -121,7 +121,7 @@ STRIPE_PRICE_IMUNIDADE_PREMIUM=price_xxx
 
 #### **1.3 Database (Obrigatório)**
 ```env
-DATABASE_URL=postgresql://user:password@host:port/database?schema=public
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Como configurar:**

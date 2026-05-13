@@ -104,7 +104,7 @@ Vá em Vercel Dashboard → Settings → Environment Variables e preencha:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc... (chave completa)
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider (chave completa)
 ```
 
 ### 4. Redeploy

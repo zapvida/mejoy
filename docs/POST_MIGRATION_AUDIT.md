@@ -57,7 +57,7 @@ res.status(200).json({
 res.status(200).json({
   SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   DATABASE_URL: process.env.DATABASE_URL ? 'DEFINIDA' : 'NÃO DEFINIDA',
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ? 'DEFINIDA' : 'NÃO DEFINIDA'
+  NEXTAUTH_SECRET: your_secret_from_provider ? 'DEFINIDA' : 'NÃO DEFINIDA'
 });
 ```
 

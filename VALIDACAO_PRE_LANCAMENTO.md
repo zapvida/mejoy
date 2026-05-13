@@ -121,7 +121,7 @@ STRIPE_PRICE_IMUNIDADE_PREMIUM=price_xxx
 
 #### **2. Variáveis de Ambiente Essenciais**
 ```env
-STRIPE_SECRET_KEY=sk_live_xxx
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PUBLISHABLE_KEY=pk_live_xxx
 ```
 

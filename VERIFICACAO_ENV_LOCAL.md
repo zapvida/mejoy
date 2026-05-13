@@ -11,7 +11,7 @@
 Abra o arquivo `.env.local` e confirme que `DIRECT_URL` está assim:
 
 ```bash
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **⚠️ IMPORTANTE:**
@@ -27,12 +27,12 @@ DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixy
 
 **DATABASE_URL (pooler - leitura):**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmI0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **DIRECT_URL (direto - escrita):**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Diferenças:**

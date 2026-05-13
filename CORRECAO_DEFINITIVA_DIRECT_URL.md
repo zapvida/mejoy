@@ -22,7 +22,7 @@
 Confirme que `DIRECT_URL` está configurada corretamente:
 
 ```
-DIRECT_URL=postgresql://postgres:[PASSWORD]@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Importante:**

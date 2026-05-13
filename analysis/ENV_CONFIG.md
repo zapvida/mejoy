@@ -15,8 +15,8 @@ NEXT_PUBLIC_APP_NAME=Alloe Health
 
 ### Database (Supabase)
 ```bash
-DATABASE_URL=postgresql://postgres:[password]@[host]/postgres
-DIRECT_URL=postgresql://postgres:[password]@[host]/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 NEXT_PUBLIC_SUPABASE_URL=https://tgygvaoqftekimgszgbb.supabase.co
 SUPABASE_ANON_KEY=[sua-chave-anonima]
 SUPABASE_SERVICE_ROLE_KEY=[sua-chave-service-role]
@@ -24,7 +24,7 @@ SUPABASE_SERVICE_ROLE_KEY=[sua-chave-service-role]
 
 ### Stripe (LIVE)
 ```bash
-STRIPE_SECRET_KEY=sk_live_[sua-chave-secreta]
+STRIPE_SECRET_KEY=your_secret_from_provider[sua-chave-secreta]
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_[sua-chave-publica]
 STRIPE_WEBHOOK_SECRET=whsec_[seu-webhook-secret]
 STRIPE_ENABLED=1
@@ -53,7 +53,7 @@ ADMIN_IP_ALLOWLIST=[opcional]
 
 ### AI
 ```bash
-OPENAI_API_KEY=sk-proj-[sua-chave-openai]
+OPENAI_API_KEY=your_secret_from_provider[sua-chave-openai]
 MOCK_AI=0
 ```
 
@@ -72,8 +72,8 @@ vercel env add NEXT_PUBLIC_SITE_URL production "https://www.alloehealth.com.br"
 vercel env add NEXT_PUBLIC_APP_NAME production "Alloe Health"
 
 # Database
-vercel env add DATABASE_URL production "postgresql://postgres:[password]@[host]/postgres"
-vercel env add DIRECT_URL production "postgresql://postgres:[password]@[host]/postgres"
+vercel env add DATABASE_URL production "postgresql://your_user:your_password@your_host:5432/your_database"
+vercel env add DIRECT_URL production "postgresql://your_user:your_password@your_host:5432/your_database"
 vercel env add NEXT_PUBLIC_SUPABASE_URL production "https://tgygvaoqftekimgszgbb.supabase.co"
 vercel env add SUPABASE_ANON_KEY production "[sua-chave-anonima]"
 vercel env add SUPABASE_SERVICE_ROLE_KEY production "[sua-chave-service-role]"

@@ -51,10 +51,10 @@
 
 ```
 ❌ INCORRETO (atual no Vercel):
-postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 
 ✅ CORRETO (deveria ser):
-postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **O que está errado:**
@@ -71,12 +71,12 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldg
 
 **Nas imagens aparece:**
 ```
-postgresql://postgres:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Verificar se está:**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Se estiver com `postgres:` em vez de `postgres.qltixyfxxrbdnaldgtzr:`, corrigir também.**
@@ -115,7 +115,7 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pool
 2. **Edite** (clique em 3 pontos → Edit)
 3. **Valor correto** (COPIE E COLE):
    ```
-   postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+   postgresql://your_user:your_password@your_host:5432/your_database
    ```
 4. **Salvar**
 5. **Redeploy** (Deployments → Último deploy → Redeploy)
@@ -124,7 +124,7 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pool
 
 **Confirme que está:**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Se estiver com `postgres:` em vez de `postgres.qltixyfxxrbdnaldgtzr:`, corrigir também.**
@@ -180,14 +180,14 @@ Após redeploy (2-3 minutos):
 
 ### Local (.env.local) ✅
 ```
-DATABASE_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ### Produção (Vercel) ❌
 ```
-DATABASE_URL=postgresql://postgres:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
-DIRECT_URL=postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Diferença crítica:**

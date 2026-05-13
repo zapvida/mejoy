@@ -11,7 +11,7 @@
 
 **Local (.env.local):**
 ```bash
-RESEND_API_KEY=re_sua_chave_aqui
+RESEND_API_KEY=your_secret_from_provider
 EMAIL_FROM=ZapFarm <noreply@zapfarm.com.br>
 EMAIL_REPLY_TO=contato@zapfarm.com.br
 NEXT_PUBLIC_SITE_URL=https://www.zapfarm.com.br

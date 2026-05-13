@@ -63,7 +63,7 @@
 ### 3. Configurar DATABASE_URL
 ```bash
 # No Vercel Dashboard → Environment Variables
-DATABASE_URL=postgresql://postgres:[password]@[host]/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ## 📈 MÉTRICAS ESPERADAS

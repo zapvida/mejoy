@@ -42,7 +42,7 @@ curl -X POST https://www.mejoy.com.br/api/admin/catalog/import \
 ```
 STORE_V2=1
 NEXT_PUBLIC_STORE_V2=1
-DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ASAAS_API_KEY=...
 ASAAS_WEBHOOK_TOKEN=<token-seguro>  # Obrigatório em produção
 ADMIN_SECRET_KEY=<token-seguro-64-chars>

@@ -27,8 +27,8 @@
 | **SUPABASE_URL** | `https://qltixyfxxrbdnaldgtzr.supabase.co` | Project ID |
 | **NEXT_PUBLIC_SUPABASE_URL** | `https://qltixyfxxrbdnaldgtzr.supabase.co` | Project ID |
 | **NEXT_PUBLIC_SUPABASE_ANON_KEY** | `eyJhbGc...` | Fornecido |
-| **DATABASE_URL** | `postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres` | ✅ Configurado |
-| **DIRECT_URL** | `postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres` | ✅ Configurado |
+| **DATABASE_URL** | `postgresql://your_user:your_password@your_host:5432/your_database` | ✅ Configurado |
+| **DIRECT_URL** | `postgresql://your_user:your_password@your_host:5432/your_database` | ✅ Configurado |
 | **BRANDING_BUCKET** | `branding-logos` | Padrão |
 | **NEXT_PUBLIC_FREE_TRIAGE_SLUG** | `gastro` | Padrão |
 

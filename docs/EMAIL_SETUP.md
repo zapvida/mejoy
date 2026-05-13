@@ -56,7 +56,7 @@ Adicione as seguintes variáveis no seu `.env.local` ou `.env.production`:
 
 ```bash
 # Resend API Key (obrigatório)
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxx
+RESEND_API_KEY=your_secret_from_provider
 
 # Email remetente (opcional, padrão: ZapFarm <noreply@zapfarm.com.br>)
 EMAIL_FROM=ZapFarm <noreply@zapfarm.com.br>

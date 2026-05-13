@@ -24,7 +24,7 @@
 #### 1. Variáveis de Ambiente (.env.local)
 ```bash
 # Stripe - Criar produtos no Stripe Dashboard e adicionar os price IDs
-STRIPE_SECRET_KEY=sk_live_xxx
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PRICE_ZAPFARM_MENSAL=price_xxx
 STRIPE_PRICE_ZAPFARM_TRIMESTRAL=price_yyy
 STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_zzz

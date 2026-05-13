@@ -69,7 +69,7 @@ datasource db {
 ### Passo 1: Configurar .env.local
 ```bash
 # Adicionar se não existir
-DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ### Passo 2: Gerar Prisma Client

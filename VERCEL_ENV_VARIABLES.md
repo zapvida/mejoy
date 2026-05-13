@@ -65,7 +65,7 @@ Environment: ✅ Production ✅ Preview ✅ Development
 
 ```
 Name: DATABASE_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 
@@ -75,7 +75,7 @@ Environment: ✅ Production ✅ Preview ✅ Development
 
 ```
 Name: DIRECT_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 

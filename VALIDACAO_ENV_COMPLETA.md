@@ -30,8 +30,8 @@ SUPABASE_SERVICE_ROLE_KEY=<OBTER_DO_DASHBOARD>
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<REDACTED_SUPABASE_ANON_JWT>
 
 # DATABASE
-DATABASE_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
-DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 # BRANDING
 BRANDING_BUCKET=branding-logos

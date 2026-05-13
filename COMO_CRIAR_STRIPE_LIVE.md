@@ -33,7 +33,7 @@ cd /Users/teobeckert/desenvolvimento/aistotele
 ./scripts/create-stripe-live-simple.sh sk_live_SUA_CHAVE_AQUI
 
 # Opção B: Usar variável de ambiente
-export STRIPE_SECRET_KEY=sk_live_SUA_CHAVE_AQUI
+export STRIPE_SECRET_KEY=your_secret_from_provider
 ./scripts/create-stripe-live-simple.sh
 ```
 
@@ -50,7 +50,7 @@ cd /Users/teobeckert/desenvolvimento/aistotele
 node scripts/create-stripe-live.mjs --key sk_live_SUA_CHAVE_AQUI
 
 # Ou usar variável de ambiente
-STRIPE_SECRET_KEY=sk_live_SUA_CHAVE_AQUI node scripts/create-stripe-live.mjs
+STRIPE_SECRET_KEY=your_secret_from_provider node scripts/create-stripe-live.mjs
 ```
 
 ---

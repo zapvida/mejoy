@@ -25,7 +25,7 @@ cd /Users/teobeckert/desenvolvimento/aistotele
 node scripts/create-stripe-live-final.mjs sk_live_SUA_CHAVE_AQUI
 
 # Opção 2: Variável de ambiente
-STRIPE_SECRET_KEY=sk_live_SUA_CHAVE_AQUI node scripts/create-stripe-live-final.mjs
+STRIPE_SECRET_KEY=your_secret_from_provider node scripts/create-stripe-live-final.mjs
 ```
 
 ---

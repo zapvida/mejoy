@@ -10,8 +10,8 @@
 **Erro:** `FATAL: Tenant or user not found`
 
 **Causa Raiz:** `DIRECT_URL` no `.env.local` estava com usuário incorreto:
-- ❌ **ERRADO:** `postgresql://postgres:...@...`
-- ✅ **CORRETO:** `postgresql://postgres.qltixyfxxrbdnaldgtzr:...@...`
+- ❌ **ERRADO:** `postgresql://your_user:your_password@your_host:5432/your_database`
+- ✅ **CORRETO:** `postgresql://your_user:your_password@your_host:5432/your_database`
 
 O Supabase requer o prefixo do projeto no nome de usuário (`postgres.qltixyfxxrbdnaldgtzr`).
 
@@ -23,12 +23,12 @@ O Supabase requer o prefixo do projeto no nome de usuário (`postgres.qltixyfxxr
 
 **Antes:**
 ```
-DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Depois:**
 ```
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ---

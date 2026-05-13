@@ -49,7 +49,7 @@ globs:
 # Cole no Vercel: Project → Settings → Environment Variables
 EVOLUTION_API_URL=https://sua-instancia.evolution-api.com
 EVOLUTION_INSTANCE=alloehealth
-EVOLUTION_API_KEY=sua_api_key
+EVOLUTION_API_KEY=your_secret_from_provider
 EVOLUTION_MAGIC_LINK_ENABLED=false
 ADMIN_SECRET_KEY=gerar_token_seguro_64_chars
 NEXT_PUBLIC_ADMIN_SECRET_KEY=mesmo_valor_do_ADMIN_SECRET_KEY

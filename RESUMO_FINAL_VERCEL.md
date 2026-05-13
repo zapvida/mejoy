@@ -44,14 +44,14 @@ Environment: ✅ Production ✅ Preview ✅ Development
 ### 5️⃣ DATABASE_URL
 ```
 Name: DATABASE_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 
 ### 6️⃣ DIRECT_URL
 ```
 Name: DIRECT_URL
-Value: postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 
@@ -91,7 +91,7 @@ SUPABASE_URL=https://qltixyfxxrbdnaldgtzr.supabase.co
 NEXT_PUBLIC_SUPABASE_URL=https://qltixyfxxrbdnaldgtzr.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=<REDACTED_SUPABASE_SERVICE_ROLE_JWT>
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<REDACTED_SUPABASE_ANON_JWT>
-DIRECT_URL=postgresql://postgres:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 BRANDING_BUCKET=branding-logos
 NEXT_PUBLIC_FREE_TRIAGE_SLUG=gastro
 ```

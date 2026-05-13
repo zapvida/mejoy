@@ -46,10 +46,10 @@ CLEANUP_CRON_TOKEN=5cfad740627ac1deb7cc39806de6199bd3bfe1a2521466b2cd1004b51fec9
 SUPABASE_SERVICE_ROLE_KEY=eyJ...  # Do dashboard do Supabase
 
 # Outras ENVs (se já não tiverem)
-DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 NEXT_PUBLIC_SUPABASE_URL=https://...
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_SECRET_KEY=your_secret_from_provider
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 NEXT_PUBLIC_ROOT_B2B_DOMAINS=aistotele.com,www.aistotele.com
 ```
 

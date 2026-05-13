@@ -4,7 +4,7 @@
 
 Adicione ou corrija a linha DIRECT_URL no seu arquivo .env.local:
 
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 ## IMPORTANTE:
 - Usuário: postgres.qltixyfxxrbdnaldgtzr (com prefixo)

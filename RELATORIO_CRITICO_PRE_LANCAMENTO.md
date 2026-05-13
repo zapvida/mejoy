@@ -62,8 +62,8 @@ Failed to collect page data for /relatorio/demo
 **Ação Requerida:**
 ```bash
 # Adicionar ao .env.local:
-DATABASE_URL="postgresql://..."
-DIRECT_URL="postgresql://..."
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
+DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 ```
 
 **Nota:** Este erro é esperado em ambiente local sem configuração completa. O build funcionará em produção (Vercel) com as variáveis configuradas.
@@ -378,8 +378,8 @@ pnpm zx scripts/smoke.mjs
 ### 1. **Configurar Ambiente Local** (5 min)
 ```bash
 # Adicionar ao .env.local
-DATABASE_URL="postgresql://..."
-DIRECT_URL="postgresql://..."
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
+DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 ```
 
 ### 2. **Executar Build** (2 min)

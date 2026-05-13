@@ -70,17 +70,17 @@
 
 ```bash
 # Banco
-DATABASE_URL=postgresql://...
-DIRECT_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=https://...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...  # ⚠️ CRÍTICO
 
 # Stripe
-STRIPE_SECRET_KEY=sk_live_...
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PUBLIC_KEY=pk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 
 # B2B
 NEXT_PUBLIC_ROOT_B2B_DOMAINS=aistotele.com,www.aistotele.com

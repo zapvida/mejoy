@@ -10,8 +10,8 @@
 **Erro:** `FATAL: Tenant or user not found`
 
 **Causa:** `DIRECT_URL` no `.env.local` tinha usuário incorreto:
-- ❌ **ERRADO:** `postgresql://postgres:...@...`
-- ✅ **CORRETO:** `postgresql://postgres.qltixyfxxrbdnaldgtzr:...@...`
+- ❌ **ERRADO:** `postgresql://your_user:your_password@your_host:5432/your_database`
+- ✅ **CORRETO:** `postgresql://your_user:your_password@your_host:5432/your_database`
 
 **Correção aplicada:** ✅ Arquivo `.env.local` atualizado automaticamente.
 

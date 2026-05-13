@@ -149,7 +149,7 @@ Se ainda houver problemas após aplicar a migração:
 1. **Verifique as variáveis de ambiente** no `.env.local`:
    ```bash
    NEXT_PUBLIC_SUPABASE_URL=sua_url_aqui
-   SUPABASE_SERVICE_ROLE_KEY=sua_chave_aqui
+   SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
    ```
 
 2. **Reinicie o servidor de desenvolvimento**:

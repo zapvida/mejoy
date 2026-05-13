@@ -21,7 +21,7 @@ prisma/migrations/20241104_add_branding_draft_and_tenant/migration.sql
 
 ```bash
 # Configure DATABASE_URL no .env.local
-DATABASE_URL="postgresql://user:password@host:port/database?pgbouncer=true&connection_limit=1"
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 
 # Execute a migração
 npx prisma migrate deploy

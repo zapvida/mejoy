@@ -51,7 +51,7 @@ Failed to collect page data for /relatorio/[id]-new
 
 **Formato esperado:**
 ```
-postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Onde obter:**
@@ -63,8 +63,8 @@ postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.co
 Verifique se estas também estão configuradas (mínimas para build):
 
 ```
-DATABASE_URL=postgresql://...
-DIRECT_URL=postgresql://... (mesmo formato, pode usar connection pooler também)
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database (mesmo formato, pode usar connection pooler também)
 NEXT_PUBLIC_SUPABASE_URL=https://[project-ref].supabase.co
 SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...

@@ -37,7 +37,7 @@ Para rodar o fluxo completo de emagrecimento (LPAC até checkout), você precisa
 
 **Configuração:**
 ```bash
-OPENAI_API_KEY=sk-proj-sua-chave-aqui
+OPENAI_API_KEY=your_secret_from_provider
 AI_REPORT_ENABLED=1
 ```
 
@@ -55,7 +55,7 @@ AI_REPORT_ENABLED=1
 
 **Configuração:**
 ```bash
-STRIPE_SECRET_KEY=sk_test_sua-chave-aqui
+STRIPE_SECRET_KEY=your_secret_from_provider
 ```
 
 **⚠️ IMPORTANTE:** Use `sk_test_...` para desenvolvimento e `sk_live_...` apenas em produção.
@@ -101,7 +101,7 @@ STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_1GHI789...
 **Configuração:**
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 ```
 
 **Fallback:** Em desenvolvimento (`NODE_ENV=development`), o sistema funciona sem Supabase usando sessões mock em memória. Em produção, Supabase é necessário.
@@ -123,14 +123,14 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 # ============================================
 # IA - GERAÇÃO DE RELATÓRIOS (OBRIGATÓRIA)
 # ============================================
-OPENAI_API_KEY=sk-proj-sua-chave-openai-aqui
+OPENAI_API_KEY=your_secret_from_provider
 AI_REPORT_ENABLED=1
 MOCK_AI=0
 
 # ============================================
 # STRIPE - CHECKOUT (OBRIGATÓRIAS)
 # ============================================
-STRIPE_SECRET_KEY=sk_test_sua-chave-stripe-aqui
+STRIPE_SECRET_KEY=your_secret_from_provider
 
 # Preços ZapFarm (OBRIGATÓRIOS)
 STRIPE_PRICE_ZAPFARM_MENSAL=price_1ABC123...
@@ -141,7 +141,7 @@ STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_1GHI789...
 # SUPABASE - TRIAGENS (OPCIONAL EM DEV)
 # ============================================
 NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 
 # ============================================
 # FEATURE FLAGS

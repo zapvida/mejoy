@@ -34,7 +34,7 @@
 
 ```bash
 # Stripe LIVE Keys
-STRIPE_SECRET_KEY=sk_live_51ABC123...
+STRIPE_SECRET_KEY=your_secret_from_provider
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_51ABC123...
 
 # Stripe LIVE Price IDs
@@ -44,14 +44,14 @@ STRIPE_PRICE_BASIC_Y=price_1ABC123_basic_yearly_290
 STRIPE_PRICE_PLUS_Y=price_1ABC123_plus_yearly_490
 
 # Webhook LIVE Secret
-STRIPE_WEBHOOK_SECRET=whsec_ABC123...
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 
 # Base URL
 NEXT_PUBLIC_BASE_URL=https://www.alloehealth.com.br
 
 # Database
-DATABASE_URL=postgresql://...
-DIRECT_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ## 🌐 Webhook Endpoint (LIVE)

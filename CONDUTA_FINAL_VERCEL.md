@@ -12,7 +12,7 @@
 
 **Nas imagens do Vercel você mostrou:**
 ```
-postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **O que está errado:**
@@ -30,7 +30,7 @@ postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/
 
 ### 2. Valor Correto (COPIE TUDO):
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Diferenças:**
@@ -43,7 +43,7 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldg
 
 **Confirme que está:**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Se estiver com `postgres:` em vez de `postgres.qltixyfxxrbdnaldgtzr:`, corrigir também.**

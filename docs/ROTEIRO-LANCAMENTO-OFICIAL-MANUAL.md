@@ -8,7 +8,7 @@
 
 1. **Chave OpenAI** — Para pipeline de copy. Adicione em `.env.local`:
    ```
-   OPENAI_API_KEY=sk-proj-...
+   OPENAI_API_KEY=your_secret_from_provider
    ```
 
 2. **Node/pnpm** — Projeto já configurado.
@@ -42,7 +42,7 @@ pnpm run lint && pnpm run typecheck && pnpm run build && pnpm run freeze:akkerma
 ### 2.1 Dry-run (preview, não aplica)
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:ai-dry-run
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:ai-dry-run
 ```
 
 Ou se já está em `.env.local`:
@@ -60,31 +60,31 @@ Use `--skip=N` e `--limit=N` para processar em lotes sem reprocessar.
 **Lote 1 — primeiros 20 SKUs:**
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:enrich-ai-batch -- --limit=20
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:enrich-ai-batch -- --limit=20
 ```
 
 **Lote 2 — próximos 30 (skip 20):**
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:enrich-ai-batch -- --skip=20 --limit=30
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:enrich-ai-batch -- --skip=20 --limit=30
 ```
 
 **Lote 3 — próximos 50 (skip 50):**
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:enrich-ai-batch -- --skip=50 --limit=50
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:enrich-ai-batch -- --skip=50 --limit=50
 ```
 
 **Lote 4 — restante (skip 100):**
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:enrich-ai-batch -- --skip=100
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:enrich-ai-batch -- --skip=100
 ```
 
 **Catálogo completo (todos exceto Akkermat e HIGH_RISK):**
 
 ```bash
-OPENAI_API_KEY=sk-proj-... pnpm run copy:enrich-ai-batch
+OPENAI_API_KEY=your_secret_from_provider pnpm run copy:enrich-ai-batch
 ```
 
 **Nota:** O Akkermat (MEJOY-0048) é protegido e nunca será alterado pelo pipeline.

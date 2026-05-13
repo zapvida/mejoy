@@ -103,22 +103,22 @@
 # ==============================================================================
 # BANCO DE DADOS (✅ Já configurado)
 # ==============================================================================
-DATABASE_URL="postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres?pgbouncer=true&connection_limit=1"
-DIRECT_URL="postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres"
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
+DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 
 # ==============================================================================
 # SUPABASE (✅ Já configurado)
 # ==============================================================================
 NEXT_PUBLIC_SUPABASE_URL="https://qltixyfxxxbdnaldgtzr.supabase.co"
 NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV..."
-SUPABASE_SERVICE_ROLE_KEY="eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV..."
+SUPABASE_SERVICE_ROLE_KEY="your_secret_from_provider"
 
 # ==============================================================================
 # STRIPE (⚠️ Preencher as que faltam)
 # ==============================================================================
 STRIPE_ENABLED="1"  # ⚠️ MUDAR: Era "0", agora "1"
-STRIPE_SECRET_KEY="REDACTED_STRIPE_LIVE_PREFIX..."  # ✅ Já configurado
-STRIPE_WEBHOOK_SECRET="whsec_..."  # ❌ FALTANDO - Obter no Stripe Dashboard
+STRIPE_SECRET_KEY="your_secret_from_provider"  # ✅ Já configurado
+STRIPE_WEBHOOK_SECRET="your_secret_from_provider"  # ❌ FALTANDO - Obter no Stripe Dashboard
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_..."  # ❌ FALTANDO - Obter no Stripe Dashboard
 STRIPE_LOOKUP_PREFIX="aistotele_"  # ✅ Já configurado
 
@@ -134,7 +134,7 @@ STRIPE_PRICE_ADDON_YEARLY="price_..."  # Criar: Assentos Extras - Anual (R$ 99,0
 # NEXTAUTH (✅ Já configurado)
 # ==============================================================================
 NEXTAUTH_URL="https://aistotele.com"
-NEXTAUTH_SECRET="REDACTED_NEXTAUTH_SECRET_PREFIX..."
+NEXTAUTH_SECRET="your_secret_from_provider"
 
 # ==============================================================================
 # CONFIGURAÇÕES B2B2C
@@ -160,7 +160,7 @@ CLEANUP_CRON_TOKEN="5cfad740627ac1deb7cc39806de6199bd3bfe1a2521466b2cd1004b51fec
 # ==============================================================================
 # OPENAI (✅ Já configurado)
 # ==============================================================================
-OPENAI_API_KEY="sk-proj-zeuahyDRd5ZIk3vohsPfAQNTq..."
+OPENAI_API_KEY="your_secret_from_provider"
 
 # ==============================================================================
 # NODE ENV

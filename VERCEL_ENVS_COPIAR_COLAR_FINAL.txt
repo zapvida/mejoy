@@ -6,7 +6,7 @@ FLUXO EMAGRECIMENTO - COPIE E COLE
 OBRIGATÓRIAS (5):
 
 1. OPENAI_API_KEY
-   Valor: sk-proj-SUA_CHAVE_OPENAI_AQUI
+   Valor: your_openai_api_key
 
 2. STRIPE_SECRET_KEY
    Valor: sk_live_SUA_CHAVE_STRIPE_AQUI

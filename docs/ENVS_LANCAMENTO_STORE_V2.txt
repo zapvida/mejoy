@@ -7,7 +7,7 @@
 # --- OBRIGATÓRIAS (você já tem a maioria) ---
 STORE_V2=1
 NEXT_PUBLIC_STORE_V2=1
-DATABASE_URL=postgresql://...   # Supabase → Settings → Database (pooler 6543)
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database   # Supabase → Settings → Database (pooler 6543)
 ASAAS_API_KEY=...               # Asaas → Integrações
 ASAAS_WEBHOOK_TOKEN=...         # OPCIONAL: se definido, Asaas deve enviar no header x-asaas-webhook-token
 ADMIN_SECRET_KEY=...            # CRIAR: string forte 64 chars — protege /admin

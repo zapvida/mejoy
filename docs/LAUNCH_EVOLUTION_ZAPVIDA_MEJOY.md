@@ -141,7 +141,7 @@ NEXT_PUBLIC_PARTNER_ZAPFARM_URL=https://zapfarm.com.br/
 EVOLUTION_MAGIC_LINK_ENABLED=true
 EVOLUTION_API_URL=https://evo.zapvida.com
 EVOLUTION_INSTANCE=zapvida
-EVOLUTION_API_KEY=preencher_no_vercel
+EVOLUTION_API_KEY=your_secret_from_provider
 ```
 
 Se a API ainda nao estiver em HTTPS reverso:
@@ -164,7 +164,7 @@ NEXT_PUBLIC_BASE_URL=https://www.mejoy.com.br
 NEXT_PUBLIC_SITE_URL=https://www.mejoy.com.br
 NEXT_PUBLIC_SUPABASE_URL=preencher_no_vercel
 NEXT_PUBLIC_SUPABASE_ANON_KEY=preencher_no_vercel
-SUPABASE_SERVICE_ROLE_KEY=preencher_no_vercel
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 ```
 
 ### Asaas para notificacoes pos-pagamento

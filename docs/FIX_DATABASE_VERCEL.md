@@ -9,7 +9,7 @@ O erro ocorre quando `DATABASE_URL` usa a **conexão direta** (porta 5432) em ve
 3. Copie a URL do **Transaction pooler** (porta **6543**), não a direta (5432)
 4. Formato esperado:
    ```
-   postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+   postgresql://your_user:your_password@your_host:5432/your_database
    ```
 5. **Vercel** → Project **zapfarm** → **Settings** → **Environment Variables**
 6. Edite `DATABASE_URL` e cole a URL do pooler (porta 6543)

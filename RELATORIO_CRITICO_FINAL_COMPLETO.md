@@ -197,7 +197,7 @@ node scripts/smoke.mjs
 
 ```env
 # ✅ DATABASE_URL - JÁ CONFIGURADO
-DATABASE_URL="postgresql://..."
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 
 # ❌ SUPABASE_URL - ADICIONAR
 SUPABASE_URL="https://[project-ref].supabase.co"
@@ -212,7 +212,7 @@ SUPABASE_SERVICE_ROLE_KEY="eyJ..."
 BRANDING_BUCKET="branding-logos"
 
 # ⚠️ DIRECT_URL - OPCIONAL
-DIRECT_URL="postgresql://..."
+DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 ```
 
 ---

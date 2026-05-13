@@ -14,12 +14,12 @@
 
 1. **DATABASE_URL** (pooler - já deve estar):
    ```
-   postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmI0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require
+   postgresql://your_user:your_password@your_host:5432/your_database
    ```
 
 2. **DIRECT_URL** (direto - CRÍTICO):
    ```
-   postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+   postgresql://your_user:your_password@your_host:5432/your_database
    ```
 
 **Diferenças importantes:**

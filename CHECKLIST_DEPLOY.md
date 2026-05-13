@@ -4,7 +4,7 @@
 
 ### DATABASE_URL (✅ Formato Correto)
 ```env
-DATABASE_URL=postgresql://postgres:SUA_SENHA_AQUI@db.xbfhvepljmcaztpjbryn.supabase.co:5432/postgres
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 **✅ Formato está CORRETO!** Apenas substitua `SUA_SENHA_AQUI` pela sua senha real do Supabase.
 
@@ -15,7 +15,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://xbfhvepljmcaztpjbryn.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJ... (encontre em Settings > API > service_role key)
 
 # Stripe (para checkout funcionar)
-STRIPE_SECRET_KEY=sk_live_...
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PRICE_ZAPFARM_MENSAL=price_...
 STRIPE_PRICE_ZAPFARM_TRIMESTRAL=price_...
 STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_...

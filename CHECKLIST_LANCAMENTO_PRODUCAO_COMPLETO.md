@@ -73,7 +73,7 @@ Environment: ✅ Production ✅ Preview ✅ Development
 #### ✅ DATABASE_URL
 ```
 Name: DATABASE_URL
-Value: postgresql://postgres:SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
+Value: postgresql://your_user:your_password@your_host:5432/your_database
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 **Como obter:**
@@ -88,7 +88,7 @@ Environment: ✅ Production ✅ Preview ✅ Development
 #### ✅ ASAAS_API_KEY
 ```
 Name: ASAAS_API_KEY
-Value: aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Value: your_asaas_api_key
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 **Como obter:**
@@ -195,7 +195,7 @@ ASAAS_PRICE_IMUNIDADE_PREMIUM=27800
 #### ✅ OPENAI_API_KEY
 ```
 Name: OPENAI_API_KEY
-Value: sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Value: your_openai_api_key
 Environment: ✅ Production ✅ Preview ✅ Development
 ```
 **Como obter:**

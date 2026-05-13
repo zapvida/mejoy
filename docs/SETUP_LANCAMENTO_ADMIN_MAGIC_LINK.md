@@ -26,7 +26,7 @@ Adicione no seu `.env` ou no painel da Vercel:
 # Evolution API (Magic Link via WhatsApp)
 EVOLUTION_API_URL=https://sua-instancia.evolution-api.com
 EVOLUTION_INSTANCE=mejoy-prod
-EVOLUTION_API_KEY=sua_api_key_aqui
+EVOLUTION_API_KEY=your_secret_from_provider
 EVOLUTION_MAGIC_LINK_ENABLED=true
 
 # Já existentes (verificar)

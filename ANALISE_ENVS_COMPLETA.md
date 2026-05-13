@@ -8,7 +8,7 @@
 ## ✅ ENVs CORRETAS (Já Configuradas)
 
 ### 1. Banco de Dados ✅
-- ✅ `DATABASE_URL` - Configurado (postgresql://postgres.qltixyfxxr...)
+- ✅ `DATABASE_URL` - Configurado (postgresql://your_user:your_password@your_host:5432/your_database)
 - ✅ `DIRECT_URL` - Configurado (Production)
 - ✅ `SUPABASE_SERVICE_ROLE_KEY` - Configurado
 
@@ -110,22 +110,22 @@ Aqui está o template completo com TODAS as variáveis necessárias:
 # ==============================================================================
 # BANCO DE DADOS
 # ==============================================================================
-DATABASE_URL="postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres?pgbouncer=true&connection_limit=1"
-DIRECT_URL="postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres"  # Se usar PGBouncer, use DIRECT_URL separado
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
+DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"  # Se usar PGBouncer, use DIRECT_URL separado
 
 # ==============================================================================
 # SUPABASE
 # ==============================================================================
 NEXT_PUBLIC_SUPABASE_URL="https://qltixyfxxxbdnaldgtzr.supabase.co"  # ✅ Já configurado
 NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV..."  # ✅ Já configurado
-SUPABASE_SERVICE_ROLE_KEY="eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV..."  # ✅ Já configurado
+SUPABASE_SERVICE_ROLE_KEY="your_secret_from_provider"  # ✅ Já configurado
 
 # ==============================================================================
 # STRIPE (CRÍTICO - Preencher TODOS)
 # ==============================================================================
 STRIPE_ENABLED="1"  # ⚠️ MUDAR: Era "0", agora "1"
-STRIPE_SECRET_KEY="REDACTED_STRIPE_LIVE_PREFIX..."  # ✅ Já configurado
-STRIPE_WEBHOOK_SECRET="whsec_..."  # ❌ FALTANDO - Obter no Stripe Dashboard
+STRIPE_SECRET_KEY="your_secret_from_provider"  # ✅ Já configurado
+STRIPE_WEBHOOK_SECRET="your_secret_from_provider"  # ❌ FALTANDO - Obter no Stripe Dashboard
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_..."  # ❌ FALTANDO - Obter no Stripe Dashboard
 STRIPE_LOOKUP_PREFIX="aistotele_"  # ✅ Já configurado
 
@@ -141,7 +141,7 @@ STRIPE_PRICE_ADDON_YEARLY="price_..."  # ❌ FALTANDO - Criar produto no Stripe
 # NEXTAUTH
 # ==============================================================================
 NEXTAUTH_URL="https://aistotele.com"  # ✅ Já configurado
-NEXTAUTH_SECRET="REDACTED_NEXTAUTH_SECRET_PREFIX..."  # ✅ Já configurado
+NEXTAUTH_SECRET="your_secret_from_provider"  # ✅ Já configurado
 
 # ==============================================================================
 # CONFIGURAÇÕES B2B2C
@@ -167,7 +167,7 @@ CLEANUP_CRON_TOKEN="5cfad740627ac1deb7cc39806de6199bd3bfe1a2521466b2cd1004b51fec
 # ==============================================================================
 # OPENAI
 # ==============================================================================
-OPENAI_API_KEY="sk-proj-zeuahyDRd5ZIk3vohsPfAQNTq..."  # ✅ Já configurado
+OPENAI_API_KEY="your_secret_from_provider"  # ✅ Já configurado
 
 # ==============================================================================
 # GHL CRM (Opcional - Se usar integração)

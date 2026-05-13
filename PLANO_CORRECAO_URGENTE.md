@@ -26,8 +26,8 @@
 2. Projeto: `aistotele`
 3. Settings → Environment Variables
 4. Verificar que existem:
-   - ✅ `DATABASE_URL` (postgresql://...)
-   - ✅ `DIRECT_URL` (postgresql://...)
+   - ✅ `DATABASE_URL` (postgresql://your_user:your_password@your_host:5432/your_database)
+   - ✅ `DIRECT_URL` (postgresql://your_user:your_password@your_host:5432/your_database)
 
 #### Passo 2: Verificar Migração no Supabase
 1. Acessar: https://supabase.com/dashboard

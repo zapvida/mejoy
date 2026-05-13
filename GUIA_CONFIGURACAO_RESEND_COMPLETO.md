@@ -148,7 +148,7 @@ test();
 
 Execute:
 ```bash
-RESEND_API_KEY=re_P3HGAEGN_GdGZznTsjAQAtPkdBL447... node test-resend.js
+RESEND_API_KEY=your_secret_from_provider node test-resend.js
 ```
 
 ---

@@ -47,13 +47,13 @@ npx prisma migrate dev -n drop_cpf_enable_session_login
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 
 # Postgres para Prisma
-DATABASE_URL="postgresql://user:password@host:port/db?pgbouncer=true&connection_limit=1"
+DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 
 # OpenAI
-OPENAI_API_KEY=your_openai_key
+OPENAI_API_KEY=your_secret_from_provider
 
 # App
 NEXT_PUBLIC_APP_NAME="Alloe Health"
@@ -72,19 +72,19 @@ SENTRY_DSN=your_sentry_dsn
 # Stripe (preços para desbloqueio)
 STRIPE_PRICE_ALL_ACCESS=price_your_49_price_id
 STRIPE_PRICE_GIFT=price_your_89_price_id
-STRIPE_SECRET_KEY=sk_live_...
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PUBLIC_KEY=pk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 
 # Firebase (para migração - opcional)
 FIREBASE_ADMIN_JSON='{"type":"service_account",...}'
 
 # Asaas (mantido do projeto original)
-ASAAS_API_KEY=aact_prod_...
+ASAAS_API_KEY=your_secret_from_provider
 WEBHOOK_ASAAS_URL=https://your-domain.com/api/asaasWebhook
 
 # NextAuth (mantido do projeto original)
-NEXTAUTH_SECRET=your_secret
+NEXTAUTH_SECRET=your_secret_from_provider
 NEXTAUTH_URL=http://localhost:3000
 ```
 

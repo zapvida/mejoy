@@ -185,7 +185,7 @@ Certifique-se de que estão configuradas:
 
 ```env
 # Asaas
-ASAAS_API_KEY=aact_prod_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ASAAS_API_KEY=your_secret_from_provider
 ASAAS_ENVIRONMENT=production
 
 # Base URL

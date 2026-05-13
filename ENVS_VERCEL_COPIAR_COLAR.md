@@ -12,7 +12,7 @@ Cole cada par **Name** / **Value** na Vercel → Environment Variables → Add N
 ### 1. DATABASE_URL (OBRIGATÓRIO — pooler para serverless)
 
 ```
-postgresql://postgres.xbfhvepljmcaztpjbryn:RXw8X5B7LOaNHEkE@aws-0-us-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Environment:** Production, Preview, Development
@@ -50,7 +50,7 @@ O `postbuild` não roda mais `prisma migrate deploy` (causava timeout de 45 min)
 3. Cole o valor abaixo (pooler, porta 6543):
 
 ```
-postgresql://postgres.xbfhvepljmcaztpjbryn:RXw8X5B7LOaNHEkE@aws-0-us-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 4. Garanta `STORE_V2=1` e `NEXT_PUBLIC_STORE_V2=1` em **Production**  

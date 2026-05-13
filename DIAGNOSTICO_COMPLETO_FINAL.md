@@ -28,7 +28,7 @@
 
 **Problema identificado nas imagens:**
 ```
-postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **O que está errado:**
@@ -37,19 +37,19 @@ postgresql://postgres:fcEv8StswRmT0XiZ@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/
 
 **Correção necessária:**
 ```
-DIRECT_URL=postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+DIRECT_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ### 2. **DATABASE_URL no Vercel - USUÁRIO PODE ESTAR INCORRETO** 🟡
 
 **Nas imagens aparece:**
 ```
-postgresql://postgres:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Verificar se está:**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ### 3. **Tabela BrandingDraft - RLS DESABILITADO** 🟡 (Segurança)
@@ -83,7 +83,7 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pool
 1. **Editar** a variável `DIRECT_URL`
 2. **Valor correto** (copiar e colar):
    ```
-   postgresql://postgres.qltixyfxxrbdnaldgtzr:DdVu8MWxAGTXUT3P@db.qltixyfxxrbdnaldgtzr.supabase.co:5432/postgres?sslmode=require
+   postgresql://your_user:your_password@your_host:5432/your_database
    ```
 3. **Salvar**
 4. **Redeploy** (Vercel Dashboard → Deployments → Último deploy → Redeploy)
@@ -92,7 +92,7 @@ postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pool
 
 **Confirme que está:**
 ```
-postgresql://postgres.qltixyfxxrbdnaldgtzr:fcEv8StswRmT0XiZ@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&pool_timeout=30&connect_timeout=15&sslmode=require
+postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 **Se estiver com `postgres:` em vez de `postgres.qltixyfxxrbdnaldgtzr:`, corrigir também.**

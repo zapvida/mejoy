@@ -22,22 +22,22 @@ FF_UNIVERSAL_AUTOSAVE=true
 # These are only available on the server
 
 # OpenAI
-OPENAI_API_KEY=sk-your-openai-api-key
+OPENAI_API_KEY=your_secret_from_provider
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/alloehealth
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 # Supabase (server-side only)
-SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 
 # Stripe (server-side only)
-STRIPE_SECRET_KEY=sk_test_your-stripe-secret-key
-STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
+STRIPE_SECRET_KEY=your_secret_from_provider
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 STRIPE_PRICE_ALL_ACCESS=price_your-price-id
 STRIPE_PRICE_GIFT=price_your-gift-price-id
 
 # NextAuth (server-side only)
-NEXTAUTH_SECRET=your-nextauth-secret-key
+NEXTAUTH_SECRET=your_secret_from_provider
 NEXTAUTH_URL=https://alloehealth.com
 
 # Admin (server-side only)
@@ -47,7 +47,7 @@ ADMIN_SECRET_KEY=your-admin-secret-key
 NEXT_PUBLIC_META_API_TOKEN=your-meta-token
 GSH_TOKEN=your-gsh-token
 GSH_LOCATION_ID=your-location-id
-ASAAS_API_KEY=your-asaas-key
+ASAAS_API_KEY=your_secret_from_provider
 WEBHOOK_ASAAS_URL=https://your-domain.com/api/webhooks/asaas
 
 # Environment

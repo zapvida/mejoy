@@ -6,7 +6,7 @@
  * Uso: 
  *   node scripts/create-stripe-live.mjs
  *   node scripts/create-stripe-live.mjs --key sk_live_...
- *   STRIPE_SECRET_KEY=sk_live_... node scripts/create-stripe-live.mjs
+ *   STRIPE_SECRET_KEY=your_secret_from_provider node scripts/create-stripe-live.mjs
  */
 
 import Stripe from 'stripe';
@@ -20,7 +20,7 @@ if (!secretKey) {
   console.error('');
   console.error('Opções:');
   console.error('  1. Configurar STRIPE_SECRET_KEY no ambiente:');
-  console.error('     export STRIPE_SECRET_KEY=sk_live_...');
+  console.error('     export STRIPE_SECRET_KEY=your_secret_from_provider');
   console.error('     node scripts/create-stripe-live.mjs');
   console.error('');
   console.error('  2. Passar como argumento:');

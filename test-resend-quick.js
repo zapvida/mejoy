@@ -1,7 +1,7 @@
 // Teste rápido do Resend
 const { Resend } = require('resend');
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_P3HGAEGN_GdGZznTsjAQAtPkdBL447...';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 
 const resend = new Resend(RESEND_API_KEY);
 

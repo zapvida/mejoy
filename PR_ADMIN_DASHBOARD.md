@@ -206,10 +206,10 @@ PDF_V2=0
 ADMIN_AUTOREFRESH_SEC=30
 
 # Database
-DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 
 # NextAuth
-NEXTAUTH_SECRET=your-secret
+NEXTAUTH_SECRET=your_secret_from_provider
 NEXTAUTH_URL=http://localhost:3000
 ```
 

@@ -56,7 +56,7 @@ STRIPE_PRICE_ADDON_MONTHLY=price_1SPwV42Nl0Zqe3RCfQ9NmJbp
 STRIPE_PRICE_ADDON_YEARLY=price_1SPwV42Nl0Zqe3RC5HlUGurP
 
 # Stripe Webhook e Publishable (obter no Stripe Dashboard)
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_WEBHOOK_SECRET=your_secret_from_provider
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
 ```
 

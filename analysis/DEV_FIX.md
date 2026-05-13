@@ -27,18 +27,18 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_APP_NAME=Alloe Health
 
 # ==== Database (opcional para desenvolvimento) ====
-# DATABASE_URL="postgresql://postgres:postgres@localhost:5432/aistotele?schema=public"
-# DIRECT_URL="postgresql://postgres:postgres@localhost:5432/aistotele?schema=public"
+# DATABASE_URL="postgresql://your_user:your_password@your_host:5432/your_database"
+# DIRECT_URL="postgresql://your_user:your_password@your_host:5432/your_database"
 
 # ==== Supabase (opcional para desenvolvimento) ====
 # NEXT_PUBLIC_SUPABASE_URL="https://tgygvaoqftekimgszgbb.supabase.co"
 # SUPABASE_ANON_KEY="sua-chave-aqui"
-# SUPABASE_SERVICE_ROLE_KEY="sua-service-key-aqui"
+# SUPABASE_SERVICE_ROLE_KEY="your_secret_from_provider"
 
 # ==== Stripe (opcional para desenvolvimento) ====
-# STRIPE_SECRET_KEY="sk_test_sua-chave-aqui"
+# STRIPE_SECRET_KEY="your_secret_from_provider"
 # NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_sua-chave-aqui"
-# STRIPE_WEBHOOK_SECRET="whsec_sua-chave-aqui"
+# STRIPE_WEBHOOK_SECRET="your_secret_from_provider"
 
 # ==== Feature Flags ====
 PDF_V2="0"
@@ -46,13 +46,13 @@ TTS_ENABLED="0"
 
 # ==== NextAuth ====
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="dev-secret-unsafe"
+NEXTAUTH_SECRET="your_secret_from_provider"
 
 # ==== Admin ====
 ADMIN_SECRET_KEY="dev-admin-secret"
 
 # ==== AI ====
-OPENAI_API_KEY="sk-proj-sua-chave-aqui"
+OPENAI_API_KEY="your_secret_from_provider"
 MOCK_AI="1"
 
 # ==== Analytics ====

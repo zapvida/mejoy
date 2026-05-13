@@ -20,7 +20,7 @@
 - 🔄 **Stripe Secret Key** (sk_live_...)
 - 🔄 **Stripe Public Key** (pk_live_...)
 - 🔄 **Stripe Webhook Secret** (whsec_...)
-- 🔄 **Database URL** (postgresql://...)
+- 🔄 **Database URL** (postgresql://your_user:your_password@your_host:5432/your_database)
 
 ## 🚨 **AÇÃO IMEDIATA NECESSÁRIA**
 

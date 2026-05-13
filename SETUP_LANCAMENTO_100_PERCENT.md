@@ -51,7 +51,7 @@ Em **Vercel → Seu projeto → Settings → Environment Variables**:
 |----------|-------|----------|
 | `STORE_V2` | `1` | Production, Preview |
 | `NEXT_PUBLIC_STORE_V2` | `1` | Production, Preview |
-| `DATABASE_URL` | `postgresql://...` | Production, Preview |
+| `DATABASE_URL` | `postgresql://your_user:your_password@your_host:5432/your_database` | Production, Preview |
 | `ASAAS_API_KEY` | sua chave | Production, Preview |
 | `ASAAS_ENVIRONMENT` | `production` | Production |
 | `ADMIN_SECRET_KEY` | token seguro (ex: 64 chars) | Production, Preview |

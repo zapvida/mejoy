@@ -18,8 +18,8 @@
 
 ### OBRIGATÓRIAS (5)
 ```bash
-OPENAI_API_KEY=sk-proj-...
-STRIPE_SECRET_KEY=sk_test_...
+OPENAI_API_KEY=your_secret_from_provider
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PRICE_ZAPFARM_MENSAL=price_...
 STRIPE_PRICE_ZAPFARM_TRIMESTRAL=price_...
 STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_...
@@ -29,7 +29,7 @@ STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_...
 ```bash
 AI_REPORT_ENABLED=1  # Padrão: 1 (ativado)
 NEXT_PUBLIC_SUPABASE_URL=https://...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 ```
 
 **Nota:** Supabase é opcional em desenvolvimento. O sistema funciona sem ele usando sessões mock.
@@ -46,18 +46,18 @@ cp env.local. .env.local
 ### 2. Editar `.env.local` e adicionar:
 ```bash
 # IA (OBRIGATÓRIA)
-OPENAI_API_KEY=sk-proj-sua-chave-aqui
+OPENAI_API_KEY=your_secret_from_provider
 AI_REPORT_ENABLED=1
 
 # Stripe (OBRIGATÓRIAS)
-STRIPE_SECRET_KEY=sk_test_sua-chave-aqui
+STRIPE_SECRET_KEY=your_secret_from_provider
 STRIPE_PRICE_ZAPFARM_MENSAL=price_1ABC123...
 STRIPE_PRICE_ZAPFARM_TRIMESTRAL=price_1DEF456...
 STRIPE_PRICE_ZAPFARM_SEMESTRAL=price_1GHI789...
 
 # Supabase (OPCIONAL em dev)
 NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 ```
 
 ### 3. Validar configuração

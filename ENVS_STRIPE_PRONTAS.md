@@ -91,7 +91,7 @@ Se você tiver a Secret Key completa (não restricted), pode usar:
 
 ```bash
 # Configurar secret key
-export STRIPE_SECRET_KEY="sk_live_..."
+export STRIPE_SECRET_KEY="your_secret_from_provider"
 
 # Criar preços
 stripe prices create \

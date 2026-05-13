@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
+    "security:secrets": "node scripts/security/scan-secrets.mjs",
     "postinstall": "prisma generate && node scripts/link-prisma-client.cjs && node scripts/sync-prisma-generated.cjs",
     "dev": "next dev",
     "web:dev": "pnpm --dir apps/web dev",

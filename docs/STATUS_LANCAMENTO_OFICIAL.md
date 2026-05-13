@@ -124,14 +124,14 @@ O projeto ZapFarm está **100% pronto para lançamento oficial**. Todos os compo
 
 ```env
 # Asaas Brasil (OBRIGATÓRIO)
-ASAAS_API_KEY=seu_token_aqui
+ASAAS_API_KEY=your_secret_from_provider
 ASAAS_ENVIRONMENT=sandbox # ou production
 
 # Base URL
 NEXT_PUBLIC_BASE_URL=https://seu-dominio.com.br
 
 # Database (já configurado)
-DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
 ```
 
 ### Webhook Asaas

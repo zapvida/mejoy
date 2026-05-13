@@ -203,10 +203,10 @@ CREATE INDEX IF NOT EXISTS reports_status_idx ON public.reports(status);
 | `NEXT_PUBLIC_SUPABASE_URL` | [OBTER] | `https://xxx.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | [OBTER] | `eyJhbGciOiJIUzI1NiIs...` |
 | `SUPABASE_SERVICE_ROLE_KEY` | [OBTER] | `eyJhbGciOiJIUzI1NiIs...` |
-| `DATABASE_URL` | [OBTER] | `postgresql://postgres:SENHA@db.xxx.supabase.co:5432/postgres` |
+| `DATABASE_URL` | [OBTER] | `postgresql://your_user:your_password@your_host:5432/your_database` |
 | `ASAAS_API_KEY` | [OBTER] | `aact_prod_xxxx` |
 | `ASAAS_ENVIRONMENT` | `production` | `production` |
-| `OPENAI_API_KEY` | [OBTER] | `sk-proj-xxxx` |
+| `OPENAI_API_KEY` | [OBTER] | `your_openai_api_key` |
 | `AI_REPORT_ENABLED` | `1` | `1` |
 | `RESEND_API_KEY` | [OBTER] | `re_xxxx` |
 | `EMAIL_FROM` | `MeJoy <noreply@mejoy.com.br>` | ou `onboarding@resend.dev` (sem domínio) |

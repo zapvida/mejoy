@@ -11,10 +11,10 @@
 # ============================================
 
 # OpenAI - Geração de Relatórios pela IA
-OPENAI_API_KEY=sk-proj-SUA_CHAVE_OPENAI_AQUI
+OPENAI_API_KEY=your_secret_from_provider
 
 # Stripe - Processamento de Pagamentos
-STRIPE_SECRET_KEY=sk_live_SUA_CHAVE_STRIPE_AQUI
+STRIPE_SECRET_KEY=your_secret_from_provider
 
 # Stripe Prices - ZapFarm Emagrecimento
 STRIPE_PRICE_ZAPFARM_MENSAL=price_SUA_PRICE_ID_MENSAL
@@ -30,7 +30,7 @@ AI_REPORT_ENABLED=1
 
 # Supabase - Persistência de Sessões e Relatórios
 NEXT_PUBLIC_SUPABASE_URL=https://SEU_PROJETO.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_CHAVE_AQUI
+SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 
 # ============================================
 # CONFIGURAÇÃO BÁSICA
