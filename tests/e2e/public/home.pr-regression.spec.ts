@@ -7,7 +7,9 @@ test.describe('MeJoy public acquisition @pr-regression', () => {
     await dismissCookieBanner(page);
 
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/vida real/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      /Saúde online|feita para ser entendida/i,
+    );
 
     const primaryCta = page
       .locator('[data-testid="home-primary-cta"], [data-testid="home-primary-cta-desktop"]')
@@ -18,6 +20,8 @@ test.describe('MeJoy public acquisition @pr-regression', () => {
 
     await primaryCta.click();
     await expect(page).toHaveURL(/\/triagem\/emagrecimento$/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/perfil clínico/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      /programa continua|Triagem clínica MeJoy/i,
+    );
   });
 });

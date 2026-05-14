@@ -43,6 +43,7 @@ const supplementalEnvFiles = [
 	".env.production.check",
 	".env.handoff.check",
 ];
+const runtimeEnvKeys = new Set(["NODE_ENV", "OPENAI_API_KEY"]);
 
 function parseDotenv(content) {
 	const values = {};
@@ -87,6 +88,9 @@ function readEnvFile(relativePath) {
 }
 
 function setIfMissing(key, value, appliedKeys) {
+	if (runtimeEnvKeys.has(key)) {
+		return;
+	}
 	if (!value?.trim()) {
 		return;
 	}

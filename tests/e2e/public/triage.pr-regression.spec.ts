@@ -20,10 +20,11 @@ test.describe('MeJoy triage shell @pr-regression', () => {
     await page.locator('[data-step-key="peso"] input').fill('82');
     await page.locator('[data-step-key="peso_meta"] input').fill('70');
     await page.getByRole('button', { name: 'Masculino' }).click();
-    await page.locator('[data-step-key="data_nascimento"] input[type="date"]').fill('1990-01-01');
+    await page.locator('[data-step-key="data_nascimento"] input').fill('01/01/1990');
 
     await page.getByRole('button', { name: 'Próximo' }).click();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    await expect(page.getByRole('heading', { level: 2, name: /histórico de saúde/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2 }).first()).toContainText(
       'Agora precisamos do seu histórico de saúde.',
     );
   });
