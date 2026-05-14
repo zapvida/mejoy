@@ -26,6 +26,8 @@ driveevidencias/
 smoke-test-report-*.json
 playwright-report/
 test-results/
+.playwright/
+blob-report/
 tmp/
 tmp/pdfs/
 apps/mobile/.expo/

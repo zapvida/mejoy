@@ -1,13 +1,17 @@
 import { defineConfig, devices } from '@playwright/test';
+import {
+  bootstrapPlaywrightEnv,
+  resolveBrowserUse,
+} from './scripts/playwright/env.mjs';
 
 type PlaywrightLane = 'pr-regression' | 'prod-smoke' | 'sandbox-e2e' | 'legacy';
 
 const lane = (process.env.PLAYWRIGHT_LANE ?? 'pr-regression') as PlaywrightLane;
-const explicitBaseURL =
-  process.env.PLAYWRIGHT_BASE_URL ||
-  (lane === 'sandbox-e2e' ? process.env.SANDBOX_URL : process.env.PRODUCTION_URL);
-const baseURL = explicitBaseURL || 'http://localhost:3100';
-const isExternalBaseURL = !/https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?/i.test(baseURL);
+const tecmedMode =
+  process.env.PLAYWRIGHT_TECMED_MODE ||
+  (lane === 'prod-smoke' ? 'prod-safe' : lane === 'sandbox-e2e' ? 'staging-full' : 'local-smoke');
+const runtime = bootstrapPlaywrightEnv({ mode: tecmedMode });
+const reportRoot = process.env.PLAYWRIGHT_ARTIFACTS_DIR || `playwright-report/${runtime.runId}`;
 
 function resolveLaneGrep(currentLane: PlaywrightLane) {
   if (currentLane === 'legacy') {
@@ -29,17 +33,25 @@ export default defineConfig({
   expect: {
     timeout: 10_000,
   },
-  outputDir: 'test-results',
+  outputDir: `test-results/${runtime.runId}`,
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'playwright-report/html' }],
-    ['json', { outputFile: 'playwright-report/report.json' }],
+    ['html', { open: 'never', outputFolder: `${reportRoot}/html` }],
+    ['json', { outputFile: `${reportRoot}/report.json` }],
+    ['junit', { outputFile: `${reportRoot}/junit.xml` }],
   ],
   use: {
-    baseURL,
+    baseURL: runtime.baseUrl,
+    ...resolveBrowserUse(),
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    viewport: { width: 1280, height: 800 },
+    extraHTTPHeaders: {
+      'x-e2e-run-id': runtime.runId,
+      'x-playwright-mode': runtime.mode,
+      'x-tecmed-project': runtime.repoName,
+    },
   },
   projects: [
     {
@@ -55,13 +67,13 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
   ],
-  webServer: isExternalBaseURL
-    ? undefined
-    : {
+  webServer: runtime.isLocal
+    ? {
         command:
           'PORT=3100 STORE_V2=1 NEXT_PUBLIC_STORE_V2=1 HOME_VARIANT=medvi_journey ALLOW_MOCK_TRIAGE_SESSION=1 pnpm dev',
-        url: baseURL,
+        url: runtime.baseUrl,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
-      },
+      }
+    : undefined,
 });
