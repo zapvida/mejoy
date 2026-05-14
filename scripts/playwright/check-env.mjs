@@ -2,10 +2,9 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import {
-	bootstrapPlaywrightEnv,
-	resolvePlaywrightExecutable,
-} from "./env.mjs";
+import envModule from "./env.cjs";
+
+const { bootstrapPlaywrightEnv, resolvePlaywrightExecutable } = envModule;
 
 function walkFiles(dir, acc = []) {
 	if (!fs.existsSync(dir)) {

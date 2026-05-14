@@ -1,15 +1,32 @@
-import fs from "node:fs";
-import os from "node:os";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export const repoRoot = path.resolve(__dirname, "../..");
-export const repoName = "mejoy";
-export const defaultLocalBaseUrl = "http://localhost:3100";
-export const defaultProductionBaseUrl = "https://www.mejoy.com.br";
+const repoRoot = path.resolve(__dirname, "../..");
+const repoDirectory = path.basename(repoRoot);
+const defaultsByRepo = {
+	aimnese: {
+		repoName: "aimnese",
+		defaultLocalBaseUrl: "http://localhost:3000",
+		defaultProductionBaseUrl: "https://aimnese.com",
+		prodHosts: ["aimnese.com", "www.aimnese.com"],
+	},
+	mejoy: {
+		repoName: "mejoy",
+		defaultLocalBaseUrl: "http://localhost:3100",
+		defaultProductionBaseUrl: "https://www.mejoy.com.br",
+		prodHosts: ["mejoy.com.br", "www.mejoy.com.br"],
+	},
+	zapfarm: {
+		repoName: "zapfarm",
+		defaultLocalBaseUrl: "http://localhost:3000",
+		defaultProductionBaseUrl: "https://zapfarm.com.br",
+		prodHosts: ["zapfarm.com.br", "www.zapfarm.com.br"],
+	},
+};
+const repoDefaults = defaultsByRepo[repoDirectory] || defaultsByRepo.mejoy;
+const { repoName, defaultLocalBaseUrl, defaultProductionBaseUrl, prodHosts } =
+	repoDefaults;
 
 const baseEnvFiles = [
 	".env.local",
@@ -89,19 +106,16 @@ function isLocalUrl(url) {
 	}
 }
 
-export function isProdLikeUrl(url) {
+function isProdLikeUrl(url) {
 	try {
 		const parsed = new URL(normalizeUrl(url) ?? "");
-		return (
-			parsed.hostname === "mejoy.com.br" ||
-			parsed.hostname === "www.mejoy.com.br"
-		);
+		return prodHosts.includes(parsed.hostname);
 	} catch {
 		return false;
 	}
 }
 
-export function resolveBaseUrl(mode = process.env.PLAYWRIGHT_TECMED_MODE) {
+function resolveBaseUrl(mode = process.env.PLAYWRIGHT_TECMED_MODE) {
 	return (
 		normalizeUrl(process.env.PLAYWRIGHT_BASE_URL) ||
 		normalizeUrl(process.env.BASE_URL) ||
@@ -116,17 +130,17 @@ export function resolveBaseUrl(mode = process.env.PLAYWRIGHT_TECMED_MODE) {
 	);
 }
 
-export function createRunId() {
+function createRunId() {
 	const stamp = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14);
 	return `${repoName}-pw-${stamp}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export function resolvePlaywrightExecutable() {
+function resolvePlaywrightExecutable() {
 	const suffix = process.platform === "win32" ? "playwright.cmd" : "playwright";
 	return path.join(repoRoot, "node_modules", ".bin", suffix);
 }
 
-export function resolveChromiumExecutablePath() {
+function resolveChromiumExecutablePath() {
 	if (
 		process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?.trim() &&
 		fs.existsSync(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH)
@@ -146,7 +160,7 @@ export function resolveChromiumExecutablePath() {
 	].find((candidate) => fs.existsSync(candidate));
 }
 
-export function resolveBrowserUse() {
+function resolveBrowserUse() {
 	const args = [
 		"--no-sandbox",
 		"--disable-setuid-sandbox",
@@ -169,7 +183,7 @@ export function resolveBrowserUse() {
 		: { launchOptions: { args } };
 }
 
-export function bootstrapPlaywrightEnv(options = {}) {
+function bootstrapPlaywrightEnv(options = {}) {
 	const loadedFiles = [];
 	const inspectedFiles = [];
 	const appliedKeys = [];
@@ -232,3 +246,17 @@ export function bootstrapPlaywrightEnv(options = {}) {
 		playwrightExecutable: resolvePlaywrightExecutable(),
 	};
 }
+
+module.exports = {
+	repoRoot,
+	repoName,
+	defaultLocalBaseUrl,
+	defaultProductionBaseUrl,
+	isProdLikeUrl,
+	resolveBaseUrl,
+	createRunId,
+	resolvePlaywrightExecutable,
+	resolveChromiumExecutablePath,
+	resolveBrowserUse,
+	bootstrapPlaywrightEnv,
+};

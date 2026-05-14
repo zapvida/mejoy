@@ -1,8 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
-import {
+
+const {
   bootstrapPlaywrightEnv,
   resolveBrowserUse,
-} from './scripts/playwright/env.mjs';
+} = require('./scripts/playwright/env.cjs');
 
 type PlaywrightLane = 'pr-regression' | 'prod-smoke' | 'sandbox-e2e' | 'legacy';
 
