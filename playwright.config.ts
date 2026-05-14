@@ -13,6 +13,14 @@ const tecmedMode =
   (lane === 'prod-smoke' ? 'prod-safe' : lane === 'sandbox-e2e' ? 'staging-full' : 'local-smoke');
 const runtime = bootstrapPlaywrightEnv({ mode: tecmedMode });
 const reportRoot = process.env.PLAYWRIGHT_ARTIFACTS_DIR || `playwright-report/${runtime.runId}`;
+const extraHTTPHeaders =
+  process.env.PLAYWRIGHT_INJECT_E2E_HEADERS === 'true'
+    ? {
+        'x-e2e-run-id': runtime.runId,
+        'x-playwright-mode': runtime.mode,
+        'x-tecmed-project': runtime.repoName,
+      }
+    : undefined;
 
 function resolveLaneGrep(currentLane: PlaywrightLane) {
   if (currentLane === 'legacy') {
@@ -48,11 +56,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     viewport: { width: 1280, height: 800 },
-    extraHTTPHeaders: {
-      'x-e2e-run-id': runtime.runId,
-      'x-playwright-mode': runtime.mode,
-      'x-tecmed-project': runtime.repoName,
-    },
+    ...(extraHTTPHeaders ? { extraHTTPHeaders } : {}),
   },
   projects: [
     {

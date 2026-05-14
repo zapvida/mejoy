@@ -18,6 +18,8 @@ function formatPrice(cents: number): string {
 type OrderData = {
   id: string;
   status: string;
+  asaasPaymentId?: string | null;
+  paymentMethod?: string | null;
   customerName: string;
   totalCents: number;
   shippingCents: number;
@@ -61,6 +63,7 @@ function formatAddress(addr: OrderData['shippingAddress']): string {
 export default function CheckoutSuccessPage() {
   const router = useRouter();
   const orderId = (router.query.orderId as string) || '';
+  const access = (router.query.access as string) || '';
   const [order, setOrder] = useState<OrderData | null>(null);
   const [pixData, setPixData] = useState<PixData | null>(null);
   const [loading, setLoading] = useState(!!orderId);
@@ -80,7 +83,8 @@ export default function CheckoutSuccessPage() {
       // sessionStorage may be unavailable
     }
 
-    fetch(`/api/store-v2/orders/${orderId}`)
+    const query = access ? `?access=${encodeURIComponent(access)}` : '';
+    fetch(`/api/store-v2/orders/${orderId}${query}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.error) {
@@ -88,7 +92,7 @@ export default function CheckoutSuccessPage() {
           return;
         }
         setOrder(data);
-        if (data.totalCents) {
+        if (data.totalCents && data.status === 'PAID') {
           const items = (data.items ?? []).map((i: { name?: string; quantity?: number; priceCents?: number }) => ({
             item_name: i.name,
             quantity: i.quantity,
@@ -97,14 +101,23 @@ export default function CheckoutSuccessPage() {
           track('purchase', {
             value: data.totalCents / 100,
             currency: 'BRL',
+            transaction_id: data.asaasPaymentId || data.id,
             order_id: data.id,
             items: items.length ? items : undefined,
+          });
+        } else if (data.totalCents && data.status === 'PENDING_PAYMENT') {
+          track('payment_pending', {
+            value: data.totalCents / 100,
+            currency: 'BRL',
+            transaction_id: data.asaasPaymentId || data.id,
+            order_id: data.id,
+            payment_method: data.paymentMethod || 'PIX',
           });
         }
       })
       .catch(() => setError('Erro ao carregar pedido'))
       .finally(() => setLoading(false));
-  }, [orderId]);
+  }, [orderId, access]);
 
   if (!orderId) {
     return <LegacySuccess />;
@@ -298,7 +311,7 @@ export default function CheckoutSuccessPage() {
 
 function LegacySuccess() {
   useEffect(() => {
-    track('purchase', { value: 49, currency: 'BRL', plan: 'basic' });
+    track('payment_success_page_viewed', { source: 'legacy_without_order' });
     navigator.sendBeacon('/api/analytics/event',
       new Blob([JSON.stringify({ event: 'LP_VISITED', payload: {} })], { type: 'application/json' })
     );
@@ -307,17 +320,17 @@ function LegacySuccess() {
   return (
     <>
       <Head>
-        <title>Pagamento Confirmado | MeJoy</title>
+        <title>Pagamento em acompanhamento | MeJoy</title>
         <meta
           name="description"
-          content="Seu pagamento foi realizado com sucesso. Agora você pode acessar sua plataforma de saúde personalizada com IA."
+          content="Acompanhe a confirmação do seu pagamento e os próximos passos do MeJoy."
         />
       </Head>
       <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 text-center">
         <CheckCircle2 className="w-16 h-16 text-brand mb-4" />
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Pagamento Confirmado!</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Pagamento em acompanhamento</h1>
         <p className="text-muted-foreground text-lg max-w-md mb-6">
-          Sua ativação foi processada com sucesso. Você receberá um e-mail e uma mensagem no WhatsApp com os próximos passos.
+          Vamos confirmar o pagamento pelo servidor. Você receberá um e-mail e uma mensagem no WhatsApp com os próximos passos.
         </p>
         <Link href="/">
           <Button className="px-6 py-3 text-white bg-brand hover:bg-brand rounded-lg text-base">

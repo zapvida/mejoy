@@ -76,11 +76,9 @@ const child = spawn(resolvePlaywrightExecutable(), passthrough, {
 		...process.env,
 		PLAYWRIGHT_CANONICAL_ROOT: env.repoRoot,
 		PLAYWRIGHT_TECMED_MODE: mode,
-		PLAYWRIGHT_ARTIFACTS_DIR: path.join(
-			env.repoRoot,
-			"playwright-report",
-			env.runId,
-		),
+		PLAYWRIGHT_ARTIFACTS_DIR:
+			process.env.PLAYWRIGHT_ARTIFACTS_DIR ||
+			path.join(env.repoRoot, "playwright-report", env.runId),
 	},
 });
 

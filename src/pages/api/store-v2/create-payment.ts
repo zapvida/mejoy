@@ -12,6 +12,15 @@ import { calculateShippingAsync } from '@/lib/store-v2/shipping';
 import { storeLogger } from '@/lib/store-v2/logger';
 import { assertPriceAudit } from '@/lib/pricing/audit';
 import { syncTecmedPatientProfile } from '@/lib/tecmed-patient-profile-sync';
+import { readTrackingContextFromReq } from '@/lib/analytics/utm';
+import { createOrderAccessToken } from '@/lib/store-v2/order-access';
+
+function metadataValue(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  return trimmed.slice(0, 250);
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -34,6 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     estado,
     paymentMethod,
   } = req.body;
+  const trackingContext = readTrackingContextFromReq(req);
 
   if (!nome || !email || !telefone) {
     return res.status(400).json({
@@ -302,6 +312,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       customer_phone: telefone,
       totalCents: String(snapshot.totalCents),
       shippingCents: String(snapshot.shippingCents),
+      ...(metadataValue(trackingContext.correlationId) && { correlation_id: metadataValue(trackingContext.correlationId)! }),
+      ...(metadataValue(trackingContext.sessionPseudoId) && { session_pseudo_id: metadataValue(trackingContext.sessionPseudoId)! }),
+      ...(metadataValue(trackingContext.sourceUrl) && { source_url: metadataValue(trackingContext.sourceUrl)! }),
+      ...(metadataValue(trackingContext.source) && { utm_source: metadataValue(trackingContext.source)! }),
+      ...(metadataValue(trackingContext.medium) && { utm_medium: metadataValue(trackingContext.medium)! }),
+      ...(metadataValue(trackingContext.campaign) && { utm_campaign: metadataValue(trackingContext.campaign)! }),
+      ...(metadataValue(trackingContext.content) && { utm_content: metadataValue(trackingContext.content)! }),
+      ...(metadataValue(trackingContext.term) && { utm_term: metadataValue(trackingContext.term)! }),
+      ...(metadataValue(trackingContext.gclid) && { gclid: metadataValue(trackingContext.gclid)! }),
+      ...(metadataValue(trackingContext.fbclid) && { fbclid: metadataValue(trackingContext.fbclid)! }),
+      ...(metadataValue(trackingContext.ttclid) && { ttclid: metadataValue(trackingContext.ttclid)! }),
+      ...(metadataValue(trackingContext.msclkid) && { msclkid: metadataValue(trackingContext.msclkid)! }),
+      ...(metadataValue(trackingContext.ref) && { ref: metadataValue(trackingContext.ref)! }),
+      ...(metadataValue(trackingContext.handoff) && { handoff: metadataValue(trackingContext.handoff)! }),
+      ...(metadataValue(trackingContext.handoffId) && { handoff_id: metadataValue(trackingContext.handoffId)! }),
     },
   };
 
@@ -396,7 +421,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     void syncTecmedPatientProfile({
       sourceSystem: 'mejoy',
       externalUserId: order.id,
-      correlationId: order.id,
+      correlationId: trackingContext.correlationId || order.id,
       fullName: nome,
       email,
       phone: telefone,
@@ -412,9 +437,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
+    const accessToken = createOrderAccessToken({
+      orderId: order.id,
+      customerEmail: email,
+    });
+
     return res.status(200).json({
       status: 'success',
       orderId: order.id,
+      accessToken,
       paymentId: payment.id,
       payment: {
         id: payment.id,

@@ -1,4 +1,4 @@
-import { Red_Hat_Text } from 'next/font/google';
+import type { CSSProperties } from 'react';
 
 import Seo from '@/components/Seo';
 import { HeaderZapfarm } from '@/components/zapfarm/emagrecimento/HeaderZapfarm';
@@ -21,11 +21,9 @@ import { HomeWeightLossFeature } from './sections/HomeWeightLossFeature';
 const DESCRIPTION =
   'Comece seu cuidado em saúde com triagem online, próximos passos claros, avaliação médica quando indicada e suporte oficial pelo WhatsApp da MeJoy.';
 
-const redHat = Red_Hat_Text({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-medvi',
-});
+const medviFontStyle = {
+  '--font-medvi': '"Red Hat Text", Inter, ui-sans-serif, system-ui, sans-serif',
+} as CSSProperties;
 
 /**
  * Home institucional MeJoy — hub multi-tratamento.
@@ -52,7 +50,7 @@ export function MedviHomeHub({ canonicalPath = '/' }: { canonicalPath?: string }
         ]}
       />
 
-      <div className={`${redHat.variable} emagrecimento-lp`}>
+      <div className="emagrecimento-lp" style={medviFontStyle}>
         <ObesidadeImageGlobalStyles />
         <LandingAnalyticsProvider page="home">
           <LandingPageViewTracker />

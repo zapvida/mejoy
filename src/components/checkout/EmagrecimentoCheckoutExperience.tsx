@@ -245,7 +245,7 @@ export function EmagrecimentoCheckoutExperience({
   const selectionLocked = selectionVariant === "locked";
   const journeyFrames = EMAGRECIMENTO_CHECKOUT_ASSETS.journeyFrames;
   const checkoutHighlights = [
-    "Checkout na mesma pagina do relatorio",
+    "Pagamento na mesma pagina do relatorio",
     "PIX ou cartao com confirmacao acompanhada",
     "Dashboard liberado so apos pagamento confirmado",
   ];
@@ -402,7 +402,7 @@ export function EmagrecimentoCheckoutExperience({
       setPaymentNotice(
         data.pixTransaction
           ? null
-          : "O QR Code PIX ainda esta sendo liberado pelo Asaas. Continue nesta pagina ou use o link de contingencia.",
+          : "O QR Code PIX ainda esta sendo gerado. Continue nesta pagina ou use o link de pagamento seguro.",
       );
     } catch (pixError) {
       console.error("[emagrecimento-checkout] pix hydration failed", pixError);
@@ -762,22 +762,22 @@ export function EmagrecimentoCheckoutExperience({
           <div className="flex flex-col gap-4 border-b border-zinc-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                Checkout MeJoy
+                Pagamento MeJoy
               </p>
               <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
                 {selectionLocked
-                  ? "Conclua o fechamento sem perder o contexto do relatorio"
+                  ? "Conclua o pagamento sem perder o contexto do relatorio"
                   : "Finalize sem sair desta pagina"}
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
                 {selectionLocked
-                  ? "A trilha e o plano vieram do relatorio, o pagamento acontece aqui mesmo e o dashboard so e liberado quando o Asaas confirmar de verdade."
-                  : "Seus dados da triagem entram no fluxo, o pagamento acontece aqui e o dashboard so e liberado depois da confirmacao real do Asaas."}
+                  ? "A trilha e o plano vieram do relatorio, o pagamento acontece aqui mesmo e o dashboard so e liberado quando a confirmacao chegar."
+                  : "Seus dados da triagem entram no fluxo, o pagamento acontece aqui e o dashboard so e liberado depois da confirmacao real do pagamento."}
               </p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
               <ShieldCheck className="h-4 w-4" />
-              Pagamento seguro, inline e validado
+              Pagamento seguro e validado
             </div>
           </div>
 
@@ -1430,7 +1430,7 @@ export function EmagrecimentoCheckoutExperience({
                         Acesso ao app
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                        O dashboard so abre depois da confirmacao real do Asaas. Antes disso, voce continua protegido nesta pagina.
+                        O dashboard so abre depois da confirmacao real do pagamento. Antes disso, voce continua protegido nesta pagina.
                       </p>
                     </div>
                     <div className="mt-4">
@@ -1501,7 +1501,7 @@ export function EmagrecimentoCheckoutExperience({
                         : "Estamos validando o cartao"}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                      Assim que o Asaas confirmar, voce segue automaticamente
+                      Assim que o pagamento for confirmado, voce segue automaticamente
                       para o dashboard MeJoy.
                     </p>
                   </div>
@@ -1557,7 +1557,7 @@ export function EmagrecimentoCheckoutExperience({
                         </p>
                         <div className="mt-3 rounded-2xl bg-zinc-50 p-3 text-xs leading-relaxed text-slate-700">
                           {pixQrCodeText ||
-                            "O codigo aparecerá aqui assim que o Asaas responder."}
+                            "O codigo aparecera aqui assim que o pagamento for gerado."}
                         </div>
                         <div className="mt-3 flex flex-col gap-3 sm:flex-row">
                           <RefinedButton
@@ -1582,7 +1582,7 @@ export function EmagrecimentoCheckoutExperience({
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                Abrir contingencia Asaas
+                                Abrir link de pagamento seguro
                               </a>
                             </RefinedButton>
                           )}
@@ -1647,7 +1647,7 @@ export function EmagrecimentoCheckoutExperience({
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 O pagamento confirma o fechamento. A consulta valida a conduta e
-                o dashboard abre so quando o Asaas sinaliza pago.
+                o dashboard abre so quando o pagamento aparece como confirmado.
               </p>
             </div>
 

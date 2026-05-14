@@ -168,10 +168,10 @@ export async function submitCreditCardCheckout(page: Page, card: {
   cvv: string;
 }) {
   await page.getByRole('button', { name: /Cartão de Crédito/i }).click();
-  await page.getByLabel('Nome no cartão').fill(card.holderName);
-  await page.getByLabel('Número do cartão').fill(card.number);
-  await page.getByLabel('Validade').fill(card.expiry);
-  await page.getByLabel('CVV').fill(card.cvv);
+  await page.getByPlaceholder('Nome como está no cartão').fill(card.holderName);
+  await page.getByPlaceholder('Digite o número do cartão').fill(card.number);
+  await page.getByPlaceholder('MM/AA').fill(card.expiry);
+  await page.getByPlaceholder('123').fill(card.cvv);
 
   const responsePromise = page.waitForResponse(
     (response) =>

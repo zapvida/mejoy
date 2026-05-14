@@ -65,6 +65,8 @@ export type TrackEvent =
   | 'pdf_generated'
   | 'start_checkout'
   | 'purchase'
+  | 'payment_pending'
+  | 'payment_success_page_viewed'
   | 'hero_primary_cta_click'
   | 'hero_secondary_cta_click'
   | 'pricing_checkout_click'

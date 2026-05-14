@@ -1812,9 +1812,9 @@ export function EmagrecimentoOnePageIntake({
                 O programa continua lindo, simples e sem sair da mesma jornada.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Esta triagem mantém os mesmos 3 steps de produção, mas com a
-                leitura visual, o ritmo e a confiança de uma jornada editorial
-                de alta conversão inspirada na MedVi.
+                Esta triagem organiza seu contexto clínico em poucos passos,
+                com linguagem clara, privacidade e leitura fácil para orientar
+                o próximo passo com segurança.
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -1957,7 +1957,7 @@ export function EmagrecimentoOnePageIntake({
                   {[
                     "Sem sair da jornada nem abrir telas paralelas.",
                     "Campos essenciais primeiro, contexto clínico depois.",
-                    "Fechamento pronto para o relatório e o checkout na sequência.",
+                    "Próximo passo conectado ao relatório e ao pagamento seguro.",
                   ].map((item) => (
                     <div
                       key={item}
@@ -1969,8 +1969,8 @@ export function EmagrecimentoOnePageIntake({
                 </div>
 
                 <div className="mt-6 rounded-[24px] border border-dashed border-[#d7e3da] bg-white px-4 py-4 text-sm text-slate-600">
-                  Slot reservado para vídeo curto de médico logo abaixo do hero
-                  da etapa 1, sem alterar os 3 steps de produção.
+                  Conteúdo médico educativo pode entrar aqui para explicar o
+                  programa, os limites da triagem e os próximos passos.
                 </div>
               </div>
             </div>

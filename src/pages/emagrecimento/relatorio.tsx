@@ -257,11 +257,11 @@ export default function RelatorioEmagrecimentoPage({
     null;
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
   const outcomeHighlights = useMemo(
-    () => buildOutcomeHighlights(vm, comorbidades),
+    () => (vm ? buildOutcomeHighlights(vm, comorbidades) : []),
     [vm, comorbidades],
   );
   const cardiometabolicHighlights = useMemo(
-    () => buildCardiometabolicHighlights(vm, answers, comorbidades),
+    () => (vm ? buildCardiometabolicHighlights(vm, answers, comorbidades) : []),
     [vm, answers, comorbidades],
   );
   const lifestyleHighlights = useMemo(
@@ -450,8 +450,8 @@ export default function RelatorioEmagrecimentoPage({
                     </div>
                   </div>
                   <div className="rounded-[24px] border border-dashed border-[#d7e3da] bg-white px-4 py-4 text-sm text-slate-600">
-                    Inserir aqui o reel de prova social entre a dobra de decisão
-                    e os planos, mantendo o checkout no mesmo fluxo visual.
+                    Conteúdo educativo e revisado entra aqui para reforçar
+                    segurança, acompanhamento e próximos passos do programa.
                   </div>
                 </div>
               </div>
@@ -476,10 +476,10 @@ export default function RelatorioEmagrecimentoPage({
                   <div className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                        Fechamento nesta página
+                        Pagamento nesta página
                       </p>
                       <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-                        O checkout continua no mesmo lugar do seu relatório
+                        O pagamento continua no mesmo lugar do seu relatório
                       </h2>
                       <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
                         Seus dados da triagem entram preenchidos, o PIX ou
@@ -524,9 +524,9 @@ export default function RelatorioEmagrecimentoPage({
                         </p>
                         <div className="mt-4 grid gap-3 sm:grid-cols-3">
                           {[
-                            "Checkout abre aqui, sem tirar o cliente do relatório.",
-                            "O PIX continua na mesma dobra com contingência pronta.",
-                            "Dashboard abre só após confirmação real do Asaas.",
+                            "Pagamento abre aqui, sem tirar você do relatório.",
+                            "O PIX continua no mesmo fluxo com orientação clara.",
+                            "Dashboard abre só após confirmação real do pagamento.",
                           ].map((item) => (
                             <div
                               key={item}
