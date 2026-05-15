@@ -40,7 +40,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_secret_from_provider
 
 ### 1. Criar arquivo `.env.local`
 ```bash
-cp env.local. .env.local
+cp env.local.example .env.local
 ```
 
 ### 2. Editar `.env.local` e adicionar:
@@ -191,4 +191,3 @@ source .env.local
 ---
 
 **Última atualização:** Janeiro 2025
-
