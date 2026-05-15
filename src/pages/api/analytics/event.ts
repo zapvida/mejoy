@@ -115,11 +115,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     return res.status(200).json({ ok:true, contactId });
   } catch (e:any) {
-    logger.error({ event, payload, error: e?.message }, 'analytics_event_error');
+    logger.error(
+      {
+        event,
+        hasPayload: Boolean(payload),
+        payloadFieldCount: payload ? Object.keys(payload).length : 0,
+        error: e?.message,
+      },
+      'analytics_event_error'
+    );
     return res.status(200).json({
       ok: true,
       degraded: true,
-      error: e?.message,
+      error: 'analytics_event_degraded',
     });
   }
 }

@@ -44,7 +44,7 @@ NEXTAUTH_URL=https://alloehealth.com
 ADMIN_SECRET_KEY=your-admin-secret-key
 
 # External APIs (server-side only)
-NEXT_PUBLIC_META_API_TOKEN=your-meta-token
+META_CONVERSIONS_API_ACCESS_TOKEN=your-meta-token
 GSH_TOKEN=your-gsh-token
 GSH_LOCATION_ID=your-location-id
 ASAAS_API_KEY=your_secret_from_provider

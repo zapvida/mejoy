@@ -28,7 +28,8 @@ const serverEnvSchema = z.object({
   ADMIN_SECRET_KEY: z.string().optional(),
 
   // External APIs (server-side only)
-  NEXT_PUBLIC_META_API_TOKEN: z.string().optional(),
+  META_CONVERSIONS_API_ACCESS_TOKEN: z.string().optional(),
+  META_API_TOKEN: z.string().optional(),
   GSH_TOKEN: z.string().optional(),
   GSH_LOCATION_ID: z.string().optional(),
   ASAAS_API_KEY: z.string().optional(),

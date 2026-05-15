@@ -3,7 +3,8 @@ import crypto from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-const ACCESS_TOKEN = process.env.NEXT_PUBLIC_META_API_TOKEN;
+const ACCESS_TOKEN =
+  process.env.META_CONVERSIONS_API_ACCESS_TOKEN || process.env.META_API_TOKEN;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (!PIXEL_ID || !ACCESS_TOKEN) {
-    return res.status(500).json({ error: '❌ PIXEL_ID ou ACCESS_TOKEN não definidos no .env' });
+    return res.status(500).json({ error: 'Meta CAPI não configurado no servidor' });
   }
 
   // Função de hash para dados sensíveis
@@ -28,6 +29,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const payload = {
     event_name: 'Lead',
     event_time: Math.floor(Date.now() / 1000),
+    event_id:
+      typeof req.body?.eventId === 'string' && req.body.eventId.trim()
+        ? req.body.eventId.trim()
+        : crypto.randomUUID(),
     action_source: 'website',
     event_source_url: 'https://zapfarm.com.br/triagem', // opcionalmente pode vir dinâmico
     user_data: {
@@ -50,13 +55,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await response.json();
 
     if (!response.ok) {
-      console.error('❌ Erro ao enviar evento para o Meta:', result);
-      return res.status(500).json({ error: 'Erro ao enviar evento para o Meta', details: result });
+      console.error('[META_LEAD_CAPI_ERROR]', {
+        status: response.status,
+        errorType: result?.error?.type,
+        errorCode: result?.error?.code,
+      });
+      return res.status(500).json({ error: 'Erro ao enviar evento para o Meta' });
     }
 
-    return res.status(200).json({ success: true, result });
+    return res.status(200).json({ success: true, eventId: payload.event_id });
   } catch (error: any) {
-    console.error('❌ Erro inesperado:', error);
+    console.error('[META_LEAD_UNEXPECTED_ERROR]', {
+      message: error instanceof Error ? error.message : 'unknown_error',
+    });
     return res.status(500).json({ error: 'Erro interno ao enviar evento para o Meta' });
   }
 }
