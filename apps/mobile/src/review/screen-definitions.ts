@@ -9,16 +9,16 @@ import {
   type StoryDefinition,
 } from '../content/mejoy-premium';
 
-export type ReviewBadgeTone = 'good' | 'attention' | 'high' | 'low';
+export type CatalogoBadgeTone = 'good' | 'attention' | 'high' | 'low';
 
-export type ReviewMetric = {
+export type CatalogoMetric = {
   label: string;
   value: string;
   caption: string;
   tone?: 'brand' | 'accent' | 'warning' | 'default';
 };
 
-export type ReviewSectionItem =
+export type CatalogoSectionItem =
   | {
       type: 'action';
       eyebrow: string;
@@ -40,34 +40,34 @@ export type ReviewSectionItem =
     }
   | {
       type: 'badges';
-      badges: Array<{ label: string; tone: ReviewBadgeTone }>;
+      badges: Array<{ label: string; tone: CatalogoBadgeTone }>;
     };
 
-export type ReviewSection = {
+export type CatalogoSection = {
   eyebrow: string;
   title: string;
   support?: string;
   tone?: 'default' | 'muted';
-  items: ReviewSectionItem[];
+  items: CatalogoSectionItem[];
 };
 
-export type ReviewScreenDefinition = {
+export type CatalogoScreenDefinition = {
   screenId: string;
   route: string;
-  tier: 'preview' | '1m' | '3m' | '6m';
+  tier: 'entrada' | '1m' | '3m' | '6m';
   state: 'happy' | 'empty' | 'permission-denied' | 'error' | 'locked';
   device: 'iphone';
-  build: 'review-local';
-  reviewStatus: 'ready_for_review';
+  build: 'catalogo-local';
+  catalogoStatus: 'ready';
   eyebrow: string;
   title: string;
   summary: string;
-  badge?: { label: string; tone: ReviewBadgeTone };
-  metrics?: ReviewMetric[];
-  sections: ReviewSection[];
+  badge?: { label: string; tone: CatalogoBadgeTone };
+  metrics?: CatalogoMetric[];
+  sections: CatalogoSection[];
 };
 
-function mapBadgeTone(tone?: StoryBadgeTone): ReviewBadgeTone {
+function mapBadgeTone(tone?: StoryBadgeTone): CatalogoBadgeTone {
   if (tone === 'success' || tone === 'brand') return 'good';
   if (tone === 'warning') return 'attention';
   if (tone === 'danger') return 'high';
@@ -80,15 +80,15 @@ function mapActionTone(tone?: 'default' | 'brand' | 'accent' | 'dark') {
   return 'default' as const;
 }
 
-function mapStory(screenId: string, route: string, tier: ReviewScreenDefinition['tier'], state: ReviewScreenDefinition['state'], story: StoryDefinition): ReviewScreenDefinition {
+function mapStory(screenId: string, route: string, tier: CatalogoScreenDefinition['tier'], state: CatalogoScreenDefinition['state'], story: StoryDefinition): CatalogoScreenDefinition {
   return {
     screenId,
     route,
     tier,
     state,
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: story.eyebrow,
     title: story.title,
     summary: story.summary,
@@ -144,15 +144,15 @@ function mapStory(screenId: string, route: string, tier: ReviewScreenDefinition[
   };
 }
 
-export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
+export const catalogoScreenDefinitions: CatalogoScreenDefinition[] = [
   {
     screenId: '00-splash-premium',
     route: '/onboarding',
-    tier: 'preview',
+    tier: 'entrada',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Splash',
     title: 'MeJoy, seu cuidado integral em uma interface só',
     summary: 'A entrada precisa parecer premium, médica e simples: sem ruído, sem template barato e com valor entendido em segundos.',
@@ -174,11 +174,11 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
   {
     screenId: '01-onboarding-premium',
     route: '/onboarding',
-    tier: 'preview',
+    tier: 'entrada',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Onboarding',
     title: 'Agora você entende seu plano, o que fazer hoje e quem cuida com você',
     summary: 'O onboarding deixa claro o valor do app sem virar apresentação longa demais.',
@@ -195,16 +195,16 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
       },
     ],
   },
-  mapStory('02-checkup-inicial', '/checkup', 'preview', 'happy', premiumStories.checkup),
-  mapStory('03-checkup-resultado', '/checkup-result', 'preview', 'happy', premiumStories['checkup-result']),
+  mapStory('02-checkup-inicial', '/checkup', 'entrada', 'happy', premiumStories.checkup),
+  mapStory('03-checkup-resultado', '/checkup-result', 'entrada', 'happy', premiumStories['checkup-result']),
   {
     screenId: '04-hoje-dashboard',
     route: '/',
     tier: '6m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Hoje',
     title: 'Seu dia está organizado com score, próxima ação e suporte médico',
     summary: 'A home virou cockpit: check-in, GLP-1, refeição, sintomas, sono, médico e farmácia convivem sem poluição.',
@@ -243,8 +243,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '3m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Plano',
     title: 'Seu programa de 90 dias ficou claro, visual e acionável',
     summary: 'A aba Plano mostra fase atual, metas semanais, evolução e educação curta sem transformar tudo em texto.',
@@ -273,8 +273,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '3m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Médico',
     title: 'Telemedicina, resumo clínico e histórico em um hub claro',
     summary: 'O paciente sabe como chamar ajuda, o que o médico já vai ver e o que fica salvo depois.',
@@ -299,8 +299,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '3m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Farmácia',
     title: 'Prescrição, pedido e recompra aparecem com menos ruído',
     summary: 'A aba Farmácia transmite organização e confiança, não catálogo quebrado.',
@@ -325,8 +325,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '6m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Perfil',
     title: 'Plano, integrações, segurança e suporte sem menu confuso',
     summary: 'A conta virou base organizada do paciente, com o que está ativo e para onde ir em seguida.',
@@ -351,8 +351,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '1m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Meal AI',
     title: 'Foto do prato, texto ou cardápio no mesmo fluxo',
     summary: 'A entrada da refeição ficou premium, simples e útil para o dia a dia real.',
@@ -374,8 +374,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '1m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Meal AI',
     title: 'Boa escolha para hoje, com uma troca simples ainda melhor',
     summary: 'A resposta mostra macros, impacto metabólico e uma sugestão prática sem linguagem fria.',
@@ -419,8 +419,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '1m',
     state: 'empty',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Estado vazio',
     title: 'Nenhum pedido ativo por enquanto',
     summary: 'Estados vazios não podem parecer erro nem abandono. Eles precisam orientar a próxima ação com calma.',
@@ -441,8 +441,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '3m',
     state: 'happy',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Loading',
     title: 'Montando sua área médica',
     summary: 'O loading também precisa parecer premium: contexto curto, expectativa clara e sem tela branca vazia.',
@@ -463,8 +463,8 @@ export const reviewScreenDefinitions: ReviewScreenDefinition[] = [
     tier: '3m',
     state: 'error',
     device: 'iphone',
-    build: 'review-local',
-    reviewStatus: 'ready_for_review',
+    build: 'catalogo-local',
+    catalogoStatus: 'ready',
     eyebrow: 'Erro amigável',
     title: 'Não consegui abrir seu plano agora',
     summary: 'A falha precisa ser legível, calma e recuperável, sem assustar nem abandonar o usuário.',

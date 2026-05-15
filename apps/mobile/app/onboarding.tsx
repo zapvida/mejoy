@@ -151,9 +151,22 @@ export default function OnboardingRoute() {
         {loadingEntitlements ? (
           <ActivityIndicator color={colors.brand} />
         ) : entitlementError ? (
-          <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 22 }}>
-            {entitlementError}
-          </Text>
+          <>
+            <ActionTile
+              eyebrow="Conta MeJoy"
+              title="Continue pela avaliacao ou entre com sua conta"
+              description="Nao encontrei uma sessao ativa neste aparelho. A experiencia continua pela avaliacao gratuita ou pelo email vinculado a compra."
+              tone="brand"
+              caption="Sem dados clinicos expostos"
+            />
+            <ActionTile
+              eyebrow="Avaliacao"
+              title="Comecar pelo fluxo oficial"
+              description="A avaliacao abre no ambiente MeJoy e retorna para o app quando a ativacao estiver concluida."
+              onPress={() => void openExternal(buildEmagrecimentoEntryUrl(session.apiBaseUrl), 'triage')}
+              caption="Abrir avaliacao"
+            />
+          </>
         ) : entitlements ? (
           <>
             <ActionTile
@@ -199,7 +212,7 @@ export default function OnboardingRoute() {
 
       <SectionCard
         eyebrow="Planos"
-        title="Como o app evolui por duração do cuidado"
+        title="Como o app organiza cada duração do cuidado"
         support="A narrativa comercial precisa ser simples: quanto maior a continuidade, maior a camada de prevenção, suporte e inteligência prática no app."
       >
         <ActionTile
@@ -238,9 +251,9 @@ export default function OnboardingRoute() {
           caption="Abrir avaliacao"
         />
         <ActionTile
-          eyebrow="Checkout hibrido"
+          eyebrow="Checkout"
           title="Programa tirzepatida · 3 meses"
-          description="Entrar direto no checkout compartilhado com retorno preparado para o app apos pagamento ou ativacao."
+          description="Entrar direto no checkout compartilhado com retorno ao app apos pagamento ou ativacao."
           onPress={() =>
             void openExternal(
               buildEmagrecimentoCheckoutUrl(session.apiBaseUrl, {

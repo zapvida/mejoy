@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Redirect, Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
 import { colors, spacing, typography } from '@mejoy/design-tokens';
@@ -9,22 +9,27 @@ import { MetricPill } from '@/components/metric-pill';
 import { ScreenShell } from '@/components/screen-shell';
 import { SectionCard } from '@/components/section-card';
 import { TimelineRow } from '@/components/timeline-row';
-import { reviewScreenDefinitions } from '@/review/screen-definitions';
+import { catalogoScreenDefinitions } from '@/review/screen-definitions';
 
-export default function ReviewScreenRoute() {
+export default function CatalogoScreenRoute() {
   const params = useLocalSearchParams<{ screenId?: string }>();
-  const screen = reviewScreenDefinitions.find((candidate) => candidate.screenId === params.screenId);
+
+  if (!__DEV__) {
+    return <Redirect href="/onboarding" />;
+  }
+
+  const screen = catalogoScreenDefinitions.find((candidate) => candidate.screenId === params.screenId);
 
   if (!screen) {
     return (
       <ScreenShell
-        eyebrow="Review"
+        eyebrow="Catalogo"
         title="Tela não encontrada"
-        summary="O screenId solicitado não existe no catálogo de review local."
+        summary="O screenId solicitado não existe no catálogo local."
       >
         <SectionCard eyebrow="Erro" title="screenId inválido">
           <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 22 }}>
-            Use um id presente em `reviewScreenDefinitions`.
+            Use um id presente em `catalogoScreenDefinitions`.
           </Text>
         </SectionCard>
       </ScreenShell>
@@ -33,12 +38,12 @@ export default function ReviewScreenRoute() {
 
   return (
     <>
-      <Stack.Screen options={{ title: `${screen.screenId} · review`, headerLargeTitle: false }} />
+      <Stack.Screen options={{ title: `${screen.screenId} · catalogo`, headerLargeTitle: false }} />
       <ScreenShell
         eyebrow={screen.eyebrow}
         title={screen.title}
         summary={screen.summary}
-        support={`route ${screen.route} · tier ${screen.tier} · state ${screen.state} · status ${screen.reviewStatus}`}
+        support={`route ${screen.route} · tier ${screen.tier} · state ${screen.state} · status ${screen.catalogoStatus}`}
       >
         <HeroCard
           eyebrow={screen.eyebrow}

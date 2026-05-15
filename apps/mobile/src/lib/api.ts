@@ -30,6 +30,29 @@ type SessionLike = {
   email: string;
 };
 
+function normalizeApiError(payload: unknown, status: number) {
+  const raw =
+    typeof payload === 'object' && payload !== null && 'error' in payload
+      ? String((payload as { error?: unknown }).error || '')
+      : '';
+
+  if (status === 401 || raw === 'AUTH_REQUIRED') {
+    return 'Entre com a conta MeJoy vinculada à sua compra para abrir esta área.';
+  }
+
+  if (status === 404) {
+    return 'Não encontrei este recurso na sua conta MeJoy. Atualize a tela ou volte para o início.';
+  }
+
+  if (status >= 500) {
+    return 'Não consegui carregar esta área agora. Atualize em alguns instantes ou fale com o suporte MeJoy.';
+  }
+
+  return raw && !/^HTTP\s+\d+$/i.test(raw)
+    ? raw
+    : 'Não consegui concluir esta ação agora. Revise os dados e tente novamente.';
+}
+
 async function requestJson<T>({
   session,
   path,
@@ -54,7 +77,7 @@ async function requestJson<T>({
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(payload?.error || `HTTP ${response.status}`);
+    throw new Error(normalizeApiError(payload, response.status));
   }
 
   return schema.parse(payload);
