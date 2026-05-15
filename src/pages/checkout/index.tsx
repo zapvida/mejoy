@@ -111,7 +111,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (cartId) {
       const sessionId = getOrCreateSessionId();
-      fetch('/api/store-v2/cart', { headers: { 'X-Session-Id': sessionId } })
+      fetch(`/api/store-v2/cart?cartId=${encodeURIComponent(cartId)}`, { headers: { 'X-Session-Id': sessionId } })
         .then((r) => r.json())
         .then(setCart);
     }

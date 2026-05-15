@@ -12,6 +12,8 @@ const DATASTORE_UNAVAILABLE_PATTERNS = [
   'code signature',
   'different team ids',
   'e_cannot_resolve_version',
+  'environment variable not found',
+  'database_url',
   'p1000',
   'p1001',
   'p1010',

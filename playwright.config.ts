@@ -75,7 +75,7 @@ export default defineConfig({
   webServer: runtime.isLocal
     ? {
         command:
-          'PORT=3100 STORE_V2=1 NEXT_PUBLIC_STORE_V2=1 HOME_VARIANT=medvi_journey ALLOW_MOCK_TRIAGE_SESSION=1 AI_REPORT_ENABLED=0 OPENAI_API_KEY= pnpm dev',
+          'PORT=3100 STORE_V2=1 NEXT_PUBLIC_STORE_V2=1 HOME_VARIANT=medvi_journey ALLOW_MOCK_TRIAGE_SESSION=1 AI_REPORT_ENABLED=0 OPENAI_API_KEY= DATABASE_URL= pnpm dev',
         url: runtime.baseUrl,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

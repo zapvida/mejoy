@@ -43,7 +43,7 @@ const supplementalEnvFiles = [
 	".env.production.check",
 	".env.handoff.check",
 ];
-const runtimeEnvKeys = new Set(["NODE_ENV", "OPENAI_API_KEY"]);
+const runtimeEnvKeys = new Set(["NODE_ENV", "OPENAI_API_KEY", "DATABASE_URL"]);
 
 function parseDotenv(content) {
 	const values = {};

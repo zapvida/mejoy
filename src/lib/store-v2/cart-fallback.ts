@@ -1,4 +1,4 @@
-import { getFallbackProductBySlug } from './catalog-fallback';
+import { getFallbackProductBySlug, getFallbackSampleSlug } from './catalog-fallback';
 
 type FallbackCartItem = {
   id: string;
@@ -60,6 +60,32 @@ export function getFallbackCart(sessionId: string | null, profileId: string | nu
   };
   fallbackCarts.set(key, created);
   return clone(created);
+}
+
+export function getFallbackCartById(cartId: string): FallbackCart | null {
+  const slug = getFallbackSampleSlug();
+  const product = slug ? getFallbackProductBySlug(slug) : null;
+  if (!product) return null;
+
+  return {
+    cartId,
+    itemCount: 1,
+    items: [
+      {
+        id: `fallback-item-${cartId}`,
+        productId: product.id,
+        variantId: null,
+        quantity: 1,
+        product: {
+          slug: product.slug,
+          name: product.name,
+          priceCents: product.priceCents,
+          images: product.images,
+          formDisplay: product.formDisplay,
+        },
+      },
+    ],
+  };
 }
 
 export function addFallbackCartItem(
