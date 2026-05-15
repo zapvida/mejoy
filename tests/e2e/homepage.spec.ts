@@ -23,7 +23,9 @@ test.describe('Homepage Medvi Journey @pr-regression', () => {
     await expect(page.getByTestId('home-medvi-journey')).toBeVisible();
     await expect(page.getByTestId('home-medvi-header')).toBeVisible();
     await expect(page.getByTestId('home-hub-hero')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/vida real/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      /Saúde online|feita para ser entendida/i,
+    );
     await expect(page.getByTestId('home-primary-cta')).toHaveAttribute('href', '/triagem/emagrecimento');
   });
 

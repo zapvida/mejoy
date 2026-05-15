@@ -14,14 +14,17 @@ import { upsertZapfarmOrderFromPayment } from '@/lib/zapfarm/order-sync';
 export const config = { api: { bodyParser: false } };
 
 /**
- * Valida token do webhook (OPCIONAL).
- * Se ASAAS_WEBHOOK_TOKEN não estiver configurado: aceita todas as requisições.
- * Se estiver configurado: exige token válido.
+ * Valida token do webhook.
+ * Em produção, ASAAS_WEBHOOK_TOKEN é obrigatório e falha fechado se ausente.
  */
-function validateWebhookToken(req: NextApiRequest): { ok: boolean; reason?: string } {
+function validateWebhookToken(req: NextApiRequest): { ok: boolean; reason?: string; status?: number } {
   const expected = process.env.ASAAS_WEBHOOK_TOKEN;
 
   if (!expected || expected.trim() === '') {
+    if (process.env.NODE_ENV === 'production') {
+      storeLogger.error('ASAAS_WEBHOOK_TOKEN missing in production', undefined, { env: 'production' });
+      return { ok: false, reason: 'Webhook não configurado', status: 500 };
+    }
     return { ok: true };
   }
 
@@ -31,7 +34,7 @@ function validateWebhookToken(req: NextApiRequest): { ok: boolean; reason?: stri
     (req.query.token as string);
   if (!token || token !== expected) {
     storeLogger.error('Webhook token invalid or missing', undefined, { env: process.env.NODE_ENV });
-    return { ok: false, reason: 'Token inválido' };
+    return { ok: false, reason: 'Token inválido', status: 401 };
   }
   return { ok: true };
 }
@@ -44,7 +47,7 @@ function validateWebhookToken(req: NextApiRequest): { ok: boolean; reason?: stri
  * 1. Ir em Configurações > Webhooks
  * 2. URL: https://www.mejoy.com.br/api/webhooks/asaas
  * 3. Selecionar eventos: PAYMENT_CONFIRMED, PAYMENT_RECEIVED, PAYMENT_OVERDUE
- * 4. Token opcional: se ASAAS_WEBHOOK_TOKEN estiver definido, o Asaas deve enviá-lo no header x-asaas-webhook-token
+   * 4. Token obrigatório em produção: ASAAS_WEBHOOK_TOKEN deve ser enviado no header x-asaas-webhook-token
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -53,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const tokenCheck = validateWebhookToken(req);
   if (!tokenCheck.ok) {
-    return res.status(401).json({ error: tokenCheck.reason || 'Token inválido' });
+    return res.status(tokenCheck.status || 401).json({ error: tokenCheck.reason || 'Token inválido' });
   }
 
   try {
@@ -146,7 +149,7 @@ async function processPayment(payment: AsaasPaymentResponse) {
         paymentId: payment.id,
         productSlug,
         planSlug,
-        customerEmail,
+        hasCustomerEmail: Boolean(customerEmail),
       });
       return;
     }

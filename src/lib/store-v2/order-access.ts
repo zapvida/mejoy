@@ -19,10 +19,14 @@ function base64urlDecode(value: string): string {
 }
 
 function getOrderAccessSecret(): string | null {
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.ORDER_ACCESS_TOKEN_SECRET || null;
+  }
+
   return (
     process.env.ORDER_ACCESS_TOKEN_SECRET ||
     process.env.ADMIN_SECRET_KEY ||
-    (process.env.NODE_ENV !== 'production' ? 'local-mejoy-order-access-secret' : null)
+    'local-mejoy-order-access-secret'
   );
 }
 

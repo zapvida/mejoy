@@ -24,11 +24,11 @@ export function EmagrecimentoMedviLanding({ page = 'emagrecimento' }: { page?: L
   return (
     <LandingAnalyticsProvider page={page}>
       <LandingPageViewTracker />
-      <div className="min-h-screen bg-white" data-testid="home-medvi-journey">
+      <div className="min-h-screen overflow-x-hidden bg-white" data-testid="home-medvi-journey">
         <HeaderZapfarm />
         <EmagrecimentoStickyCta />
         {/* AppLayout já envolve a página em <main>; evitar <main> aninhado (HTML inválido / glitches de scroll). */}
-        <div className="lpac-landing-body pb-24 md:pb-0">
+        <div className="lpac-landing-body overflow-x-hidden pb-24 md:pb-0">
           <HeroSectionObesidade variant="emagrecimento" />
           <TrustBarSectionObesidade />
           <ZeroCostSectionObesidade />

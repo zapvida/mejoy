@@ -174,6 +174,7 @@ test.describe.serial('MeJoy sandbox lifecycle @sandbox-e2e', () => {
     await page.getByRole('button', { name: /Confirmar Pedido/i }).click();
     await expect(page.locator('body')).toContainText(/Preencha todos os dados do cartão/i);
 
+    guardrails.allowConsole(/Failed to load resource: the server responded with a status of 500/i);
     guardrails.allowResponse(/\/api\/store-v2\/create-payment/i);
     const { response } = await submitCreditCardCheckout(page, sandboxCard);
     expect(response.status()).toBeGreaterThanOrEqual(400);

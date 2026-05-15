@@ -13,6 +13,14 @@ const tecmedMode =
   (lane === 'prod-smoke' ? 'prod-safe' : lane === 'sandbox-e2e' ? 'staging-full' : 'local-smoke');
 const runtime = bootstrapPlaywrightEnv({ mode: tecmedMode });
 const reportRoot = process.env.PLAYWRIGHT_ARTIFACTS_DIR || `playwright-report/${runtime.runId}`;
+const extraHTTPHeaders =
+  process.env.PLAYWRIGHT_INJECT_E2E_HEADERS === 'true'
+    ? {
+        'x-e2e-run-id': runtime.runId,
+        'x-playwright-mode': runtime.mode,
+        'x-tecmed-project': runtime.repoName,
+      }
+    : undefined;
 
 function resolveLaneGrep(currentLane: PlaywrightLane) {
   if (currentLane === 'legacy') {
@@ -48,11 +56,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     viewport: { width: 1280, height: 800 },
-    extraHTTPHeaders: {
-      'x-e2e-run-id': runtime.runId,
-      'x-playwright-mode': runtime.mode,
-      'x-tecmed-project': runtime.repoName,
-    },
+    ...(extraHTTPHeaders ? { extraHTTPHeaders } : {}),
   },
   projects: [
     {
@@ -71,7 +75,7 @@ export default defineConfig({
   webServer: runtime.isLocal
     ? {
         command:
-          'PORT=3100 STORE_V2=1 NEXT_PUBLIC_STORE_V2=1 HOME_VARIANT=medvi_journey ALLOW_MOCK_TRIAGE_SESSION=1 pnpm dev',
+          'PORT=3100 STORE_V2=1 NEXT_PUBLIC_STORE_V2=1 HOME_VARIANT=medvi_journey ALLOW_MOCK_TRIAGE_SESSION=1 AI_REPORT_ENABLED=0 OPENAI_API_KEY= DATABASE_URL= pnpm dev',
         url: runtime.baseUrl,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

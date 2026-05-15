@@ -55,7 +55,7 @@ export function HomeHero() {
                 data-testid="home-hub-hero-title"
                 className="mt-3 text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-4 sm:text-[2.125rem] sm:leading-[1.05] md:text-[2.5rem] md:leading-[1.08]"
               >
-                <span className="block md:inline">Saúde online,</span>
+                <span className="block md:inline">Saúde online, </span>
                 <span className="mt-1 block md:mt-0 md:inline">
                   <span style={{ color: MEDVI_HOME.mintAccent }}>feita para ser entendida</span> e continuar com você.
                 </span>

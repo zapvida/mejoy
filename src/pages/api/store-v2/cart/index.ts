@@ -8,7 +8,9 @@ import { prisma } from '@/lib/prisma';
 import { getProductBySlug } from '@/lib/store-v2/catalog';
 import { storeLogger } from '@/lib/store-v2/logger';
 import { getRuntimeErrorMessage, isDataStoreUnavailable } from '@/lib/prisma/runtime-errors';
-import { addFallbackCartItem, getFallbackCart } from '@/lib/store-v2/cart-fallback';
+import { addFallbackCartItem, getFallbackCart, getFallbackCartById } from '@/lib/store-v2/cart-fallback';
+
+const shouldUseFallbackCart = process.env.NODE_ENV !== 'production' || process.env.STORE_V2_PLAYWRIGHT_SMOKE === '1';
 
 async function getOrCreateCart(sessionId: string | null, profileId: string | null) {
   if (profileId) {
@@ -39,9 +41,32 @@ async function getOrCreateCart(sessionId: string | null, profileId: string | nul
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const sessionId = (req.headers['x-session-id'] as string) || req.cookies?.['store_v2_session'] || null;
   const profileId = (req as NextApiRequest & { profileId?: string | null }).profileId ?? null;
+  const requestedCartId = Array.isArray(req.query.cartId) ? req.query.cartId[0] : req.query.cartId;
 
   try {
     if (req.method === 'GET') {
+      if (shouldUseFallbackCart) {
+        const fallbackCart = getFallbackCart(sessionId, profileId);
+        if (fallbackCart.itemCount > 0) {
+          return res.status(200).json({
+            ...fallbackCart,
+            degraded: true,
+            code: 'CATALOG_FALLBACK',
+          });
+        }
+
+        if (requestedCartId?.startsWith('fallback-cart-')) {
+          const cartById = getFallbackCartById(requestedCartId);
+          if (cartById) {
+            return res.status(200).json({
+              ...cartById,
+              degraded: true,
+              code: 'CATALOG_FALLBACK',
+            });
+          }
+        }
+      }
+
       const cart = await getOrCreateCart(sessionId, profileId);
       if (cart.items.length === 0) {
         return res.status(200).json({
@@ -104,6 +129,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         include: { variants: true },
       });
       if (!product) {
+        if (shouldUseFallbackCart) {
+          const fallbackCart = addFallbackCartItem(sessionId, profileId, productSlug, quantity);
+          if (fallbackCart) {
+            return res.status(200).json({
+              ok: true,
+              cartId: fallbackCart.cartId,
+              degraded: true,
+              code: 'CATALOG_FALLBACK',
+              message: 'Carrinho funcionando em modo local de teste',
+            });
+          }
+        }
         return res.status(404).json({ error: 'Produto não encontrado' });
       }
 
@@ -141,6 +178,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (isDataStoreUnavailable(err)) {
       if (req.method === 'GET') {
         const fallbackCart = getFallbackCart(sessionId, profileId);
+        if (fallbackCart.itemCount === 0 && requestedCartId?.startsWith('fallback-cart-')) {
+          const cartById = getFallbackCartById(requestedCartId);
+          if (cartById) {
+            return res.status(200).json({
+              ...cartById,
+              degraded: true,
+              code: 'DATASTORE_UNAVAILABLE',
+              error: 'Carrinho temporariamente indisponivel',
+            });
+          }
+        }
+
         return res.status(200).json({
           ...fallbackCart,
           degraded: true,

@@ -284,6 +284,6 @@
     "typescript": "5.4.2"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=22 <23"
   }
 }

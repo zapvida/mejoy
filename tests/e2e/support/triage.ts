@@ -2,6 +2,7 @@ import type { APIRequestContext, Page } from '@playwright/test';
 
 import { isExternalBaseURL } from './env';
 import { expect } from './test';
+import { dismissCookieBanner } from './auth';
 
 export const DEFAULT_EMAGRECIMENTO_ANSWERS: Record<string, unknown> = {
   aceita_termos: 'aceito',
@@ -30,8 +31,9 @@ export const DEFAULT_EMAGRECIMENTO_ANSWERS: Record<string, unknown> = {
 
 export async function ensureEmagrecimentoTriageShell(page: Page) {
   await page.goto('/triagem/emagrecimento');
+  await dismissCookieBanner(page);
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Vamos começar pelo seu perfil clínico.',
+    /programa continua|Triagem clínica MeJoy/i,
   );
 }
 

@@ -111,7 +111,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (cartId) {
       const sessionId = getOrCreateSessionId();
-      fetch('/api/store-v2/cart', { headers: { 'X-Session-Id': sessionId } })
+      fetch(`/api/store-v2/cart?cartId=${encodeURIComponent(cartId)}`, { headers: { 'X-Session-Id': sessionId } })
         .then((r) => r.json())
         .then(setCart);
     }
@@ -302,6 +302,7 @@ export default function CheckoutPage() {
           // ignore
         }
         const orderId = data.orderId;
+        const accessQuery = data.accessToken ? `&access=${encodeURIComponent(data.accessToken)}` : '';
         if (paymentMethod === 'PIX' && data.payment?.pixTransaction) {
           try {
             sessionStorage.setItem(
@@ -315,11 +316,11 @@ export default function CheckoutPage() {
           } catch {
             // ignore
           }
-          router.push(`/checkout/sucesso?orderId=${orderId}`);
+          router.push(`/checkout/sucesso?orderId=${orderId}${accessQuery}`);
         } else if (data.payment?.invoiceUrl) {
           window.location.href = data.payment.invoiceUrl;
         } else {
-          router.push(`/checkout/sucesso?orderId=${orderId}`);
+          router.push(`/checkout/sucesso?orderId=${orderId}${accessQuery}`);
         }
       } else {
         setError(data.message || 'Erro ao processar pagamento');

@@ -48,7 +48,7 @@ const steps: StepDef[] = [
 
 describe('emagrecimento paged intake config helpers', () => {
   it('keeps the expected number of pages and sections', () => {
-    expect(EMAGRECIMENTO_INTAKE_PAGES).toHaveLength(8);
+    expect(EMAGRECIMENTO_INTAKE_PAGES).toHaveLength(3);
     expect(new Set(EMAGRECIMENTO_INTAKE_PAGES.map(page => page.section)).size).toBe(
       EMAGRECIMENTO_TOTAL_SECTIONS
     );
@@ -58,7 +58,7 @@ describe('emagrecimento paged intake config helpers', () => {
     expect(getFirstIncompleteEmagrecimentoPageIndex(EMAGRECIMENTO_INTAKE_PAGES, steps, {})).toBe(0);
   });
 
-  it('resumes from the first comorbidity slice when demographics and contraindications are complete', () => {
+  it('resumes from the clinical page when profile is complete and clinical answers are incomplete', () => {
     const answers = {
       aceita_termos: 'aceito',
       altura: 170,
@@ -71,7 +71,7 @@ describe('emagrecimento paged intake config helpers', () => {
 
     expect(
       getFirstIncompleteEmagrecimentoPageIndex(EMAGRECIMENTO_INTAKE_PAGES, steps, answers)
-    ).toBe(2);
+    ).toBe(1);
   });
 
   it('skips gestation when sex is male and lands on contact when the rest is complete', () => {
@@ -97,6 +97,6 @@ describe('emagrecimento paged intake config helpers', () => {
 
     expect(
       getFirstIncompleteEmagrecimentoPageIndex(EMAGRECIMENTO_INTAKE_PAGES, steps, answers)
-    ).toBe(7);
+    ).toBe(2);
   });
 });

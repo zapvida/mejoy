@@ -1,4 +1,4 @@
-import { Red_Hat_Text } from 'next/font/google';
+import type { CSSProperties } from 'react';
 
 import Seo from '@/components/Seo';
 import { EmagrecimentoMedviLanding } from '@/components/zapfarm/obesidade/EmagrecimentoMedviLanding';
@@ -8,11 +8,9 @@ import { SITE } from '@/lib/seo';
 const DESCRIPTION =
   'Emagrecimento online com triagem inteligente, avaliação médica quando indicada, plano personalizado e suporte oficial para decidir com mais clareza.';
 
-const redHat = Red_Hat_Text({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-medvi',
-});
+const medviFontStyle = {
+  '--font-medvi': '"Red Hat Text", Inter, ui-sans-serif, system-ui, sans-serif',
+} as CSSProperties;
 
 /**
  * LPAC dedicada `/emagrecimento` — set completo de seções (espelho de glp1.medvi.org).
@@ -41,7 +39,7 @@ export function EmagrecimentoLpacPage({
         ]}
       />
 
-      <div className={`${redHat.variable} emagrecimento-lp`}>
+      <div className="emagrecimento-lp" style={medviFontStyle}>
         <ObesidadeImageGlobalStyles />
         <EmagrecimentoMedviLanding page="emagrecimento" />
       </div>
