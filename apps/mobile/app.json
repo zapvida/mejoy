@@ -36,8 +36,6 @@
         "NSCameraUsageDescription": "A MeJoy usa a câmera para ler cardápios, refeições e exames do paciente.",
         "NSPhotoLibraryUsageDescription": "A MeJoy acessa sua galeria para anexar refeições, exames e documentos clínicos.",
         "NSPhotoLibraryAddUsageDescription": "A MeJoy salva comprovantes e conteúdos compartilháveis quando você solicitar.",
-        "NSHealthShareUsageDescription": "A MeJoy lê sono, passos e métricas compartilhadas para personalizar o coaching de saúde.",
-        "NSHealthUpdateUsageDescription": "A MeJoy grava apenas dados necessários quando você optar por sincronizar sua jornada.",
         "ITSAppUsesNonExemptEncryption": false
       }
     },

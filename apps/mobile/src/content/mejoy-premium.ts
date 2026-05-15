@@ -104,7 +104,7 @@ export const medicalQuickActions = [
     description: 'O médico recebe resumo automático com queixa, dose, sintomas e exames antes do contato.',
     href: '/telemedicine',
     tone: 'dark' as const,
-    badge: { label: 'preparado', tone: 'dark' as const },
+    badge: { label: 'ativo', tone: 'dark' as const },
   },
   {
     eyebrow: 'Fila',
@@ -149,8 +149,8 @@ export const pharmacyQuickActions = [
 export const profileQuickActions = [
   {
     eyebrow: 'Integrações',
-    title: 'Conectar HealthKit, Health Connect e wearable',
-    description: 'Quando não houver integração ativa, o fallback manual continua elegante.',
+    title: 'Registrar dados de saúde e rotina',
+    description: 'Peso, sono, passos e sinais entram por registro manual claro enquanto as permissões nativas ficam desligadas.',
     href: '/integrations',
     tone: 'default' as const,
   },
@@ -257,7 +257,7 @@ export const premiumStories: Record<string, StoryDefinition> = {
     eyebrow: 'Jornada GLP-1',
     title: 'Dose, fase, aplicação e segurança no mesmo lugar',
     summary: 'A jornada não tenta adivinhar dose. Ela organiza o cuidado e deixa o ajuste para validação médica.',
-    badge: { label: 'fase de evolução', tone: 'brand' },
+    badge: { label: 'em acompanhamento', tone: 'brand' },
     metrics: [
       { label: 'Dose', value: '7,5 mg', caption: 'prescrita', tone: 'brand' },
       { label: 'Próxima aplicação', value: '2 dias', caption: 'lembrete ativo', tone: 'accent' },
@@ -331,7 +331,7 @@ export const premiumStories: Record<string, StoryDefinition> = {
     eyebrow: 'Médico agora',
     title: 'Seu médico já vai receber o resumo antes do contato',
     summary: 'Telemedicina em um clique, com preparação elegante e menos repetição para o paciente.',
-    badge: { label: 'ZapVida preparado', tone: 'dark' },
+    badge: { label: 'ZapVida ativo', tone: 'dark' },
     primaryCta: { label: 'Entrar na fila', href: '/doctor-queue' },
     secondaryCta: { label: 'Agendar depois', href: '/consult-request' },
     sections: [
@@ -506,16 +506,16 @@ export const premiumStories: Record<string, StoryDefinition> = {
   },
   integrations: {
     eyebrow: 'Integrações',
-    title: 'Conecte seus dados ou use fallback manual sem perder clareza',
-    summary: 'HealthKit, Health Connect, balança e wearable entram quando disponíveis, com fallback elegante quando não estiverem conectados.',
-    badge: { label: 'parcialmente real', tone: 'warning' },
+    title: 'Registre seus dados de rotina sem depender de permissões nativas',
+    summary: 'Peso, sono, passos, refeições e sintomas ficam organizados por entrada manual e notificações clínicas do app.',
+    badge: { label: 'registro manual', tone: 'success' },
     sections: [
       {
         eyebrow: 'Status atual',
-        title: 'O que já existe e o que está preparado',
+        title: 'O que está disponível nesta versão',
         items: [
-          { type: 'badges', badges: [{ label: 'notificações reais', tone: 'success' }, { label: 'healthkit preparado', tone: 'brand' }, { label: 'wearable mockado', tone: 'warning' }] },
-          { type: 'text', body: 'Quando a integração não estiver ativa, o app continua usável com input manual bem guiado.' },
+          { type: 'badges', badges: [{ label: 'notificações reais', tone: 'success' }, { label: 'sono manual', tone: 'brand' }, { label: 'peso manual', tone: 'brand' }] },
+          { type: 'text', body: 'A MeJoy não solicita permissões nativas de saúde nesta versão. O paciente registra as métricas essenciais no app e mantém o acompanhamento utilizável sem integração externa.' },
         ],
       },
     ],

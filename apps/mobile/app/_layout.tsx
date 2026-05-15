@@ -100,7 +100,7 @@ function AppRuntimeBridge() {
         <Stack.Screen name="plan-membership" options={{ title: 'Plano e assinatura', headerLargeTitle: false }} />
         <Stack.Screen name="success-state" options={{ title: 'Sucesso', headerLargeTitle: false }} />
         <Stack.Screen name="meal-result" options={{ title: 'Resultado da refeição', headerLargeTitle: false }} />
-        <Stack.Screen name="review/[screenId]" options={{ title: 'Review de tela', headerLargeTitle: false }} />
+        <Stack.Screen name="review/[screenId]" options={{ title: 'Catálogo de tela', headerLargeTitle: false }} />
         <Stack.Screen name="goals" options={{ title: 'Metas do dia' }} />
         <Stack.Screen name="prevention-checklist" options={{ title: 'Checklist preventivo' }} />
         <Stack.Screen name="notifications-center" options={{ title: 'Notificações' }} />

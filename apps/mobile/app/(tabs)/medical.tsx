@@ -45,10 +45,10 @@ export default function MedicalRoute() {
       eyebrow="Médico"
       title="Atendimento rápido com contexto pronto"
       summary="A experiência médica precisa parecer premium: o paciente sabe o que fazer, o médico recebe resumo e o histórico fica organizado."
-      support="ZapVida está preparado nesta camada. Onde a integração ainda for mockada, isso ficará explicitamente documentado."
+      support="ZapVida entra como caminho assistencial do ecossistema, com orientação humana para ajuste de dose, sintomas importantes e dúvidas clínicas."
       refreshing={loading}
       onRefresh={() => void load()}
-      heroAside={<StatusBadge label="ZapVida preparado" tone="dark" />}
+      heroAside={<StatusBadge label="ZapVida ativo" tone="dark" />}
     >
       {loading && !dashboard ? <LoadingState title="Abrindo sua área médica" body="Estou organizando fila, resumo clínico e histórico recente." /> : null}
       {error && !dashboard ? <ErrorState title="Não consegui abrir sua área médica agora" body={error} /> : null}

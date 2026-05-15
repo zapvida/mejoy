@@ -12,6 +12,8 @@ import { ScreenShell } from '@/components/screen-shell';
 import { TextField } from '@/components/text-field';
 import { useSession } from '@/context/session-context';
 
+const canEditApiBaseUrl = process.env.EXPO_PUBLIC_ALLOW_API_BASE_EDIT === '1' || __DEV__;
+
 export default function SignInRoute() {
   const router = useRouter();
   const session = useSession();
@@ -21,9 +23,9 @@ export default function SignInRoute() {
   return (
     <ScreenShell
       eyebrow="Acesso"
-      title="MeJoy Native Premium"
-      summary="O shell nativo já conversa com o BFF mobile/v1 para dashboard, GLP-1, meal AI, notificações, consulta, exames, rituais e bundle clínico."
-      support="Use a base local do Next.js em desenvolvimento ou a produção oficial para validação clínica e operacional."
+      title="MeJoy Premium"
+      summary="Entre com a conta MeJoy para abrir dashboard, GLP-1, nutrição, notificações, consulta, exames, rituais e pacote clínico."
+      support="A versão de loja usa a API oficial da MeJoy. Configuração manual de ambiente fica restrita a desenvolvimento."
     >
       <HeroCard
         eyebrow="Paciente + aquisição"
@@ -34,7 +36,7 @@ export default function SignInRoute() {
       <NativeModalSheet
         eyebrow="Entrar"
         title="Abrir sessão MeJoy"
-        summary="No piloto atual, a autenticação usa o email da conta e a base da API do BFF. O fluxo nativo por token evolui em cima desse mesmo contrato."
+        summary="Informe o email cadastrado na sua compra ou no atendimento MeJoy."
       >
         <TextField
           label="Email"
@@ -43,13 +45,15 @@ export default function SignInRoute() {
           keyboardType="email-address"
           placeholder="paciente@mejoy.com.br"
         />
-        <TextField
-          label="Base da API"
-          value={apiBaseUrl}
-          onChangeText={setApiBaseUrl}
-          keyboardType="url"
-          placeholder="https://www.mejoy.com.br"
-        />
+        {canEditApiBaseUrl ? (
+          <TextField
+            label="Base da API"
+            value={apiBaseUrl}
+            onChangeText={setApiBaseUrl}
+            keyboardType="url"
+            placeholder="https://www.mejoy.com.br"
+          />
+        ) : null}
         <PrimaryButton
           label="Abrir app nativo"
           onPress={async () => {
@@ -63,8 +67,8 @@ export default function SignInRoute() {
 
       <ActionTile
         eyebrow="Ambientes"
-        title="Produção e validação"
-        description="Em local, use a URL do seu Next.js em execução. Em staging ou produção, use a base oficial e valide o mesmo contrato mobile."
+        title="Conta e privacidade"
+        description="Se ainda não tiver conta, comece pela avaliação gratuita. O app não mostra dados clínicos sem uma sessão MeJoy."
         tone="brand"
       />
       <View style={{ gap: spacing.xs }}>
@@ -72,7 +76,7 @@ export default function SignInRoute() {
           Capacidades já conectadas nesta base:
         </Text>
         <Text selectable style={{ color: colors.text, fontSize: typography.body, lineHeight: 22 }}>
-          Dashboard, perfil, peso, dose, sintomas, meal AI, wearables, rituais, consulta, exames, share bundle e refill.
+          Dashboard, perfil, peso, dose, sintomas, nutrição, rituais, consulta, exames, pacote clínico e refill.
         </Text>
       </View>
     </ScreenShell>

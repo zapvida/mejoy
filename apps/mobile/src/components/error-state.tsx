@@ -14,7 +14,7 @@ export function ErrorState({
 }) {
   return (
     <PremiumCard tone="default">
-      <SectionTitle eyebrow="Erro amigável" title={title} />
+      <SectionTitle eyebrow="Atenção" title={title} />
       <Text selectable style={{ color: colors.danger, fontSize: typography.body, lineHeight: 23 }}>
         {body}
       </Text>
