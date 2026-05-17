@@ -13,10 +13,19 @@ export type FunnelEventName =
   | "report_viewed"
   | "whatsapp_report_cta"
   | "trilha_selected"
+  | "plan_selected"
   | "report_plan_selected"
   | "report_inline_checkout_opened"
+  | "checkout_viewed"
+  | "begin_checkout"
   | "report_inline_checkout_started"
+  | "pix_generated"
+  | "pix_copied"
+  | "payment_link_opened"
   | "report_payment_pending"
+  | "checkout_error"
+  | "checkout_abandon"
+  | "payment_confirmed"
   | "cta_clinical_handoff"
   | "handoff_failed"
   | "handoff_created"
@@ -36,11 +45,20 @@ export const CANONICAL_LAUNCH_EVENT_NAMES: readonly FunnelEventName[] = [
   "triage_started",
   "triage_completed",
   "report_viewed",
+  "plan_selected",
+  "checkout_viewed",
+  "begin_checkout",
   "cta_clinical_handoff",
   "handoff_created",
   "handoff_opened",
   "handoff_failed",
+  "pix_generated",
+  "pix_copied",
+  "payment_link_opened",
+  "checkout_error",
+  "checkout_abandon",
   "clinical_payment_started",
+  "payment_confirmed",
   "clinical_payment_success",
   "consult_completed",
   "pharmacy_order_created",
@@ -75,7 +93,10 @@ function pushToGtag(event: FunnelEventName, payload: Record<string, any>) {
   }
 }
 
-function pushToCustomAnalytics(event: FunnelEventName, payload: Record<string, any>) {
+function pushToCustomAnalytics(
+  event: FunnelEventName,
+  payload: Record<string, any>,
+) {
   if (typeof window === "undefined") return;
   try {
     window.analytics?.track?.(event, payload);
@@ -99,7 +120,10 @@ function buildCanonicalPayload(payload: Record<string, any>) {
   });
 }
 
-export function trackFunnelEvent(event: FunnelEventName, payload: Record<string, any> = {}) {
+export function trackFunnelEvent(
+  event: FunnelEventName,
+  payload: Record<string, any> = {},
+) {
   if (typeof window === "undefined") return;
   const enrichedPayload = buildCanonicalPayload(payload);
 
@@ -110,7 +134,7 @@ export function trackFunnelEvent(event: FunnelEventName, payload: Record<string,
 
 export function trackMejoyConversionEvent(
   event: MejoyConversionEventName,
-  payload: Record<string, any> = {}
+  payload: Record<string, any> = {},
 ) {
   if (typeof window === "undefined") return;
   const enrichedPayload = buildCanonicalPayload({

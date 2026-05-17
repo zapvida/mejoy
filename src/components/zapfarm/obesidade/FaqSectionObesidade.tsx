@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { track } from '@/lib/analytics';
-import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
+import { useLandingPageKey } from "@/contexts/LandingAnalyticsContext";
 
 export function FaqSectionObesidade() {
   const page = useLandingPageKey();
 
   const handleCtaClick = () => {
-    track('cta_click', {
+    track("cta_click", {
       page,
-      position: 'faq',
-      section: 'faq_section',
+      position: "faq",
+      section: "faq_section",
     });
   };
 
   const handleToggle = (index: number, willOpen: boolean) => {
     if (willOpen) {
-      track('cta_click', {
+      track("cta_click", {
         page,
-        position: 'faq',
-        section: 'faq_expand',
+        position: "faq",
+        section: "faq_expand",
         faq_index: index,
       });
     }
@@ -31,34 +31,39 @@ export function FaqSectionObesidade() {
 
   const faqs = [
     {
-      question: 'Como sei se sou elegível ao programa?',
+      question: "Como sei se sou elegível ao programa?",
       answer:
-        'Você começa pela triagem online. Suas respostas ajudam a identificar perfil, histórico, objetivos e pontos de atenção. Quando indicado, o médico avalia se o programa faz sentido para o seu caso.',
+        "Você começa pela triagem online. Suas respostas ajudam a identificar perfil, histórico, objetivos e pontos de atenção. Quando indicado, o médico avalia se o programa faz sentido para o seu caso.",
     },
     {
-      question: 'O que acontece depois que eu inicio a triagem?',
+      question: "O que acontece depois que eu inicio a triagem?",
       answer:
-        'Você recebe uma leitura inicial com próximos passos. Se houver indicação, segue para avaliação médica. Depois da conduta definida, o acompanhamento continua pelo app e WhatsApp oficial.',
+        "Você recebe uma leitura inicial com próximos passos. Se houver indicação, segue para avaliação médica. Depois da conduta definida, o acompanhamento continua pelo app e WhatsApp oficial.",
     },
     {
-      question: 'Meus dados estão seguros?',
+      question: "Por que confirmar o programa antes da consulta?",
       answer:
-        'Sim. Dados de saúde são tratados com sigilo, boas práticas de segurança e base na LGPD. As políticas do site explicam como os dados são usados, armazenados e protegidos.',
+        "O pagamento confirma sua entrada no programa, libera a jornada operacional e organiza dashboard, suporte e próximos passos. A conduta médica final vem depois. Se a molécula esperada não for indicada, você pode seguir por protocolo alternativo ou solicitar reembolso antes do envio, conforme política aplicável.",
     },
     {
-      question: 'Preciso de receita? Como funciona a medicação?',
+      question: "Meus dados estão seguros?",
       answer:
-        'Sim, medicamentos sujeitos a prescrição exigem receita. Quando houver indicação médica, o profissional responsável prescreve e orienta o uso. Não existe liberação automática.',
+        "Sim. Dados de saúde são tratados com sigilo, boas práticas de segurança e base na LGPD. As políticas do site explicam como os dados são usados, armazenados e protegidos.",
     },
     {
-      question: 'O programa inclui medicamentos GLP-1 (ou similares)?',
+      question: "Preciso de receita? Como funciona a medicação?",
       answer:
-        'Pode incluir, mas somente quando fizer sentido para o seu perfil. Em alguns casos o médico pode considerar tirzepatida, semaglutida ou alternativa oral; em outros, o melhor caminho pode ser rotina, exames ou outra estratégia.',
+        "Sim, medicamentos sujeitos a prescrição exigem receita. Quando houver indicação médica, o profissional responsável prescreve e orienta o uso. Não existe liberação automática.",
     },
     {
-      question: 'Quanto custa e posso cancelar?',
+      question: "O programa inclui medicamentos GLP-1 (ou similares)?",
       answer:
-        'Os valores dependem do plano e da conduta indicada. Você vê as etapas e custos antes de avançar. Cancelamento e reembolso seguem os termos vigentes e a legislação aplicável.',
+        "Pode incluir, mas somente quando fizer sentido para o seu perfil. Em alguns casos o médico pode considerar tirzepatida, semaglutida ou alternativa oral; em outros, o melhor caminho pode ser rotina, exames ou outra estratégia.",
+    },
+    {
+      question: "Quanto custa e posso cancelar?",
+      answer:
+        "Os valores dependem do plano e da conduta indicada. Você vê as etapas e custos antes de avançar. Cancelamento e reembolso seguem os termos vigentes e a legislação aplicável.",
     },
   ];
 
@@ -74,7 +79,9 @@ export function FaqSectionObesidade() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Perguntas frequentes</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
+              Perguntas frequentes
+            </p>
             <h2
               id="faq-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl"
@@ -82,7 +89,8 @@ export function FaqSectionObesidade() {
               Antes de avançar, tire as dúvidas certas
             </h2>
             <p className="mt-4 text-base text-slate-600 sm:text-lg">
-              Respostas objetivas sobre elegibilidade, medicação, receita, privacidade, preço e próximos passos.
+              Respostas objetivas sobre elegibilidade, pagamento, medicação,
+              receita, privacidade, preço e próximos passos.
             </p>
           </div>
 
@@ -91,8 +99,8 @@ export function FaqSectionObesidade() {
               <div
                 key={index}
                 className={cn(
-                  'overflow-hidden rounded-[22px] border border-emerald-100',
-                  'bg-[#fcfffd] shadow-sm transition-shadow hover:shadow-md'
+                  "overflow-hidden rounded-[22px] border border-emerald-100",
+                  "bg-[#fcfffd] shadow-sm transition-shadow hover:shadow-md",
                 )}
               >
                 <button
@@ -109,20 +117,27 @@ export function FaqSectionObesidade() {
                   </span>
                   <svg
                     className={cn(
-                      'h-5 w-5 shrink-0 text-emerald-600 transition-transform sm:h-6 sm:w-6',
-                      openIndex === index ? 'rotate-180' : ''
+                      "h-5 w-5 shrink-0 text-emerald-600 transition-transform sm:h-6 sm:w-6",
+                      openIndex === index ? "rotate-180" : "",
                     )}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 {openIndex === index && (
                   <div className="border-t border-emerald-100 bg-emerald-50 px-4 py-4 sm:px-6 sm:py-5">
-                    <p className="text-sm leading-relaxed text-slate-700 sm:text-base">{faq.answer}</p>
+                    <p className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </div>

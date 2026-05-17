@@ -1,21 +1,28 @@
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { trackFunnelEvent } from '@/lib/funnel/events-client';
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { trackFunnelEvent } from "@/lib/funnel/events-client";
 
-type AccessState = 'loading' | 'confirmed' | 'pending' | 'error';
+type AccessState = "loading" | "confirmed" | "pending" | "error";
 
 export default function ObrigadoPage() {
   const router = useRouter();
   const paymentId = readStringQuery(router.query.paymentId);
   const queryReportId = readStringQuery(router.query.reportId);
   const appReturnUrl = readStringQuery(router.query.appReturnUrl);
-  const [reportId, setReportId] = useState<string | null>(queryReportId || null);
-  const [accessState, setAccessState] = useState<AccessState>(paymentId ? 'loading' : 'confirmed');
+  const [reportId, setReportId] = useState<string | null>(
+    queryReportId || null,
+  );
+  const [accessState, setAccessState] = useState<AccessState>(
+    paymentId ? "loading" : "confirmed",
+  );
   const [dashboardUrl, setDashboardUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedReportId = typeof window !== 'undefined' ? localStorage.getItem('zapfarm_report_id') : null;
+    const storedReportId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("zapfarm_report_id")
+        : null;
     if (!reportId && storedReportId) {
       setReportId(storedReportId);
     }
@@ -25,29 +32,35 @@ export default function ObrigadoPage() {
     if (!paymentId) return;
 
     let cancelled = false;
-    setAccessState('loading');
+    setAccessState("loading");
 
     fetch(`/api/asaas/payment-dashboard-link?paymentId=${paymentId}`)
       .then(async (response) => {
         const data = await response.json();
         if (!response.ok) {
           if (response.status === 409) {
-            setAccessState('pending');
+            setAccessState("pending");
             return;
           }
-          throw new Error(data.message || 'Nao foi possivel validar o pagamento.');
+          throw new Error(
+            data.message || "Nao foi possivel validar o pagamento.",
+          );
         }
 
         if (cancelled) return;
         setDashboardUrl(data.magicUrl || null);
-        setAccessState('confirmed');
-        trackFunnelEvent('dashboard_redirect_after_payment', {
+        setAccessState("confirmed");
+        trackFunnelEvent("dashboard_redirect_after_payment", {
           payment_id: paymentId,
-          source: 'obrigado_fallback',
+          source: "obrigado_fallback",
         });
 
         if (appReturnUrl) {
-          const nextAppUrl = buildAppContinuationUrl(appReturnUrl, paymentId, reportId);
+          const nextAppUrl = buildAppContinuationUrl(
+            appReturnUrl,
+            paymentId,
+            reportId,
+          );
           window.setTimeout(() => {
             window.location.href = nextAppUrl;
           }, 900);
@@ -61,9 +74,9 @@ export default function ObrigadoPage() {
         }
       })
       .catch((error) => {
-        console.error('[obrigado] payment verification failed', error);
+        console.error("[obrigado] payment verification failed", error);
         if (!cancelled) {
-          setAccessState('error');
+          setAccessState("error");
         }
       });
 
@@ -79,41 +92,83 @@ export default function ObrigadoPage() {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 py-8 text-white sm:py-10 md:py-12">
-        <div className="container mx-auto flex min-h-[80vh] max-w-2xl items-center px-4 sm:px-6">
+        <div className="container mx-auto flex min-h-[80vh] max-w-3xl items-center px-4 sm:px-6">
           <div className="w-full rounded-[32px] border border-white/15 bg-white/10 p-6 backdrop-blur-md sm:p-8 md:p-12">
-            <div className="text-5xl">✅</div>
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-emerald-300/40 bg-emerald-400/15 text-2xl font-bold text-emerald-100">
+              ✓
+            </div>
             <h1 className="mt-5 text-3xl font-bold tracking-[-0.04em] text-white sm:text-4xl">
-              {accessState === 'pending'
-                ? 'Pagamento aguardando confirmação'
-                : accessState === 'error'
-                  ? 'Pagamento recebido, acesso ainda em preparação'
-                  : 'Pagamento confirmado'}
+              {accessState === "pending"
+                ? "Pagamento aguardando confirmação"
+                : accessState === "error"
+                  ? "Pagamento recebido, acesso ainda em preparação"
+                  : "Pagamento confirmado. Sua jornada MeJoy começou."}
             </h1>
 
             <p className="mt-4 text-base leading-relaxed text-slate-100 sm:text-lg">
-              {accessState === 'loading' &&
-                'Estamos validando o pagamento com o Asaas e liberando o seu dashboard MeJoy.'}
-              {accessState === 'confirmed' &&
-                'Seu acesso está sendo liberado agora. Você será redirecionado para o dashboard em instantes.'}
-              {accessState === 'pending' &&
-                'O pagamento ainda não virou pago no gateway. Continue por aqui ou retorne ao PIX/cartão para concluir.'}
-              {accessState === 'error' &&
-                'Recebemos sua solicitação, mas o link seguro do dashboard não foi gerado automaticamente. Use os canais oficiais abaixo.'}
+              {accessState === "loading" &&
+                "Estamos validando o pagamento com o Asaas e preparando a liberação do seu dashboard MeJoy."}
+              {accessState === "confirmed" &&
+                "Seu acesso está sendo liberado agora. Você será redirecionado para o dashboard em instantes, com relatório, próximos passos e canais oficiais."}
+              {accessState === "pending" &&
+                "O pagamento ainda não apareceu como pago no gateway. Se for PIX, a confirmação costuma chegar em poucos instantes. Você pode voltar ao checkout para concluir ou acompanhar o status."}
+              {accessState === "error" &&
+                "Recebemos sua solicitação, mas o link seguro do dashboard não foi gerado automaticamente. Use os canais oficiais abaixo para continuar sem refazer a jornada."}
             </p>
 
-            <div className="mt-8 rounded-[24px] border border-white/10 bg-white/10 p-5">
-              <h2 className="text-xl font-bold text-white">Próximos passos</h2>
-              <ol className="mt-4 space-y-3 text-sm leading-relaxed text-slate-100">
-                <li>1. O dashboard só abre depois da confirmação real do pagamento.</li>
-                <li>2. O time oficial continua o atendimento por WhatsApp e e-mail.</li>
-                <li>3. A prescrição, quando houver indicação, segue apenas após avaliação médica.</li>
-              </ol>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                {
+                  title: "1. Confirmação do pagamento",
+                  body: "O dashboard só abre depois da confirmação real do PIX ou cartão. Isso protege a jornada e evita liberação indevida.",
+                },
+                {
+                  title: "2. Dashboard e relatório",
+                  body: "Depois da confirmação, você acessa relatório, documentos, status da jornada e próximos passos oficiais.",
+                },
+                {
+                  title: "3. Avaliação médica",
+                  body: "A conduta final, prescrição, dose e continuidade são definidas por médico habilitado, quando houver indicação.",
+                },
+                {
+                  title: "4. Suporte oficial",
+                  body: "WhatsApp e e-mail continuam como canais de apoio para dúvidas, agenda, documentos e orientação operacional.",
+                },
+              ].map((step) => (
+                <div
+                  key={step.title}
+                  className="rounded-[24px] border border-white/10 bg-white/10 p-5"
+                >
+                  <h2 className="text-base font-bold text-white">
+                    {step.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-100">
+                    {step.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 rounded-[24px] border border-emerald-300/20 bg-emerald-400/10 p-5">
+              <h2 className="text-lg font-bold text-white">
+                Garantia de conduta segura
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-emerald-50">
+                Se a avaliação médica concluir que a conduta esperada não é
+                indicada, nenhuma medicação segue sem sua concordância. Você
+                poderá migrar para um protocolo alternativo ou solicitar
+                reembolso antes do envio, conforme política aplicável.
+              </p>
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              {appReturnUrl && accessState === 'confirmed' && (
+              {appReturnUrl && accessState === "confirmed" && (
                 <a
-                  href={buildAppContinuationUrl(appReturnUrl, paymentId, reportId)}
+                  href={buildAppContinuationUrl(
+                    appReturnUrl,
+                    paymentId,
+                    reportId,
+                  )}
                   className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"
                 >
                   Abrir no app MeJoy
@@ -129,7 +184,7 @@ export default function ObrigadoPage() {
               )}
               {paymentId && (
                 <a
-                  href={`/emagrecimento/checkout?paymentId=${encodeURIComponent(paymentId)}${reportId ? `&reportId=${encodeURIComponent(reportId)}` : ''}${appReturnUrl ? `&appReturnUrl=${encodeURIComponent(appReturnUrl)}` : ''}`}
+                  href={`/emagrecimento/checkout?paymentId=${encodeURIComponent(paymentId)}${reportId ? `&reportId=${encodeURIComponent(reportId)}` : ""}${appReturnUrl ? `&appReturnUrl=${encodeURIComponent(appReturnUrl)}` : ""}`}
                   className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/15"
                 >
                   Voltar ao checkout
@@ -160,13 +215,17 @@ function readStringQuery(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-function buildAppContinuationUrl(appReturnUrl: string, paymentId?: string | null, reportId?: string | null) {
+function buildAppContinuationUrl(
+  appReturnUrl: string,
+  paymentId?: string | null,
+  reportId?: string | null,
+) {
   try {
     const nextUrl = new URL(appReturnUrl);
-    if (paymentId) nextUrl.searchParams.set('paymentId', paymentId);
-    nextUrl.searchParams.set('status', 'confirmed');
-    nextUrl.searchParams.set('source', 'checkout');
-    if (reportId) nextUrl.searchParams.set('reportId', reportId);
+    if (paymentId) nextUrl.searchParams.set("paymentId", paymentId);
+    nextUrl.searchParams.set("status", "confirmed");
+    nextUrl.searchParams.set("source", "checkout");
+    if (reportId) nextUrl.searchParams.set("reportId", reportId);
     return nextUrl.toString();
   } catch {
     return appReturnUrl;

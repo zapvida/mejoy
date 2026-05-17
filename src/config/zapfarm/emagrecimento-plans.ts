@@ -1,16 +1,18 @@
-import type { EmagrecimentoTrilha } from '@/lib/emagrecimento/checkoutUrls';
+import type { EmagrecimentoTrilha } from "@/lib/emagrecimento/checkoutUrls";
 
-export type EmagrecimentoPlanId = 'programa-1m' | 'programa-3m' | 'programa-6m';
-export type EmagrecimentoPlanKey = 'basico' | 'completo' | 'premium';
+export type EmagrecimentoPlanId = "programa-1m" | "programa-3m" | "programa-6m";
+export type EmagrecimentoPlanKey = "basico" | "completo" | "premium";
 export type EmagrecimentoMolecule =
-  | 'mounjaro'
-  | 'wegovy'
-  | 'rybelsus'
-  | 'contrave';
-export type EmagrecimentoBenefitTier = 'essential' | 'plus' | 'full';
-export type EmagrecimentoSupportTier = 'guided' | 'extended' | 'concierge';
-export type EmagrecimentoRefundPolicy = 'convert_or_refund_pre_shipment';
-export type EmagrecimentoCoverageMode = 'coverage_available' | 'coverage_pending';
+  | "mounjaro"
+  | "wegovy"
+  | "rybelsus"
+  | "contrave";
+export type EmagrecimentoBenefitTier = "essential" | "plus" | "full";
+export type EmagrecimentoSupportTier = "guided" | "extended" | "concierge";
+export type EmagrecimentoRefundPolicy = "convert_or_refund_pre_shipment";
+export type EmagrecimentoCoverageMode =
+  | "coverage_available"
+  | "coverage_pending";
 
 export interface EmagrecimentoPlan {
   id: EmagrecimentoPlanId;
@@ -58,54 +60,57 @@ type PlanTemplate = {
 
 const PLAN_TEMPLATES: PlanTemplate[] = [
   {
-    id: 'programa-1m',
-    planKey: 'basico',
-    badge: 'Comece com seguranca',
-    title: 'Programa 1 Mes',
-    subtitle: 'Entrada clinica objetiva para iniciar o tratamento com avaliacao medica e acompanhamento real.',
+    id: "programa-1m",
+    planKey: "basico",
+    badge: "Comece com seguranca",
+    title: "Inicio Clinico",
+    subtitle:
+      "Entrada objetiva para confirmar o programa, passar pela avaliacao medica e iniciar com seguranca.",
     durationMonths: 1,
-    duration: '1 mes',
+    duration: "1 mes",
     highlight: false,
     recommended: false,
-    ctaLabel: 'Comecar com seguranca',
-    benefitTier: 'essential',
-    supportTier: 'guided',
+    ctaLabel: "Comecar com seguranca",
+    benefitTier: "essential",
+    supportTier: "guided",
   },
   {
-    id: 'programa-3m',
-    planKey: 'completo',
-    badge: 'Mais escolhido',
-    title: 'Programa 3 Meses',
-    subtitle: 'Tempo suficiente para avaliar resposta, ajustar conduta e consolidar aderencia.',
+    id: "programa-3m",
+    planKey: "completo",
+    badge: "Mais escolhido",
+    title: "Jornada Recomendada",
+    subtitle:
+      "Melhor equilibrio para iniciar, avaliar resposta, ajustar conduta e sustentar aderencia nos primeiros meses.",
     durationMonths: 3,
-    duration: '3 meses',
+    duration: "3 meses",
     highlight: true,
     recommended: true,
-    ctaLabel: 'Escolher plano recomendado',
-    benefitTier: 'plus',
-    supportTier: 'extended',
+    ctaLabel: "Escolher plano recomendado",
+    benefitTier: "plus",
+    supportTier: "extended",
   },
   {
-    id: 'programa-6m',
-    planKey: 'premium',
-    badge: 'Mais completo',
-    title: 'Programa 6 Meses',
-    subtitle: 'Continuacao premium com mais profundidade, suporte nomeado e manutencao da jornada.',
+    id: "programa-6m",
+    planKey: "premium",
+    badge: "Mais completo",
+    title: "Acompanhamento Premium",
+    subtitle:
+      "Continuacao mais completa para quem quer profundidade, suporte ampliado e manutencao da jornada.",
     durationMonths: 6,
-    duration: '6 meses',
+    duration: "6 meses",
     highlight: false,
     recommended: false,
-    ctaLabel: 'Quero o mais completo',
-    benefitTier: 'full',
-    supportTier: 'concierge',
+    ctaLabel: "Quero o mais completo",
+    benefitTier: "full",
+    supportTier: "concierge",
   },
 ];
 
 const MOLECULE_LABELS: Record<EmagrecimentoMolecule, string> = {
-  mounjaro: 'Mounjaro',
-  wegovy: 'Wegovy',
-  rybelsus: 'Rybelsus',
-  contrave: 'Contrave',
+  mounjaro: "Mounjaro",
+  wegovy: "Wegovy",
+  rybelsus: "Rybelsus",
+  contrave: "Contrave",
 };
 
 const MOLECULE_PRICE_MATRIX: Record<
@@ -113,35 +118,35 @@ const MOLECULE_PRICE_MATRIX: Record<
   Record<EmagrecimentoPlanId, number>
 > = {
   mounjaro: {
-    'programa-1m': 2500,
-    'programa-3m': 7000,
-    'programa-6m': 14000,
+    "programa-1m": 2500,
+    "programa-3m": 7000,
+    "programa-6m": 14000,
   },
   wegovy: {
-    'programa-1m': 1500,
-    'programa-3m': 4000,
-    'programa-6m': 8000,
+    "programa-1m": 1500,
+    "programa-3m": 4000,
+    "programa-6m": 8000,
   },
   rybelsus: {
-    'programa-1m': 1200,
-    'programa-3m': 3300,
-    'programa-6m': 6500,
+    "programa-1m": 1200,
+    "programa-3m": 3300,
+    "programa-6m": 6500,
   },
   contrave: {
-    'programa-1m': 1200,
-    'programa-3m': 3300,
-    'programa-6m': 6500,
+    "programa-1m": 1200,
+    "programa-3m": 3300,
+    "programa-6m": 6500,
   },
 };
 
 function normalizePrincipio(raw: string | null | undefined): string {
-  return (raw || '').trim().toLowerCase();
+  return (raw || "").trim().toLowerCase();
 }
 
 function formatCurrency(value: number) {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   }).format(Math.round(value * 100) / 100);
 }
 
@@ -159,33 +164,33 @@ function buildBulletsForTier(
 ): string[] {
   const clinicalGuardrail = `Medicacao com ${moleculeLabel} apenas se houver indicacao medica.`;
 
-  if (template.benefitTier === 'essential') {
+  if (template.benefitTier === "essential") {
     return [
-      '1 consulta com endocrinologista ou nutrologo',
-      '1 retorno clinico apos o pedido de check-up',
-      '1 consulta com psicologa para aderencia',
-      'App MeJoy Essential com timeline, status de prescricao/entrega e agenda de retornos',
+      "1 consulta com endocrinologista ou nutrologo",
+      "1 retorno clinico apos o pedido de check-up",
+      "1 consulta com psicologa para aderencia",
+      "App MeJoy Essential com timeline, status de prescricao/entrega e agenda de retornos",
       clinicalGuardrail,
     ];
   }
 
-  if (template.benefitTier === 'plus') {
+  if (template.benefitTier === "plus") {
     return [
-      'Tudo do plano de 1 mes',
-      '1 consulta com nutricionista',
-      '1 retorno adicional com especialista',
-      'App MeJoy Plus com tarefas, lembretes, evolucao, documentos e trilha educacional',
-      'Ajustes clinicos ao longo de 3 meses conforme resposta e tolerancia',
+      "Tudo do plano de 1 mes",
+      "1 consulta com nutricionista",
+      "1 retorno adicional com especialista",
+      "App MeJoy Plus com tarefas, lembretes, evolucao, documentos e trilha educacional",
+      "Ajustes clinicos ao longo de 3 meses conforme resposta e tolerancia",
       clinicalGuardrail,
     ];
   }
 
   return [
-    'Tudo do plano de 3 meses',
-    'App MeJoy Full com toda a jornada liberada',
-    'Linha dedicada do programa com roster medico nomeado e triagem 24/7',
-    'Escalonamento imediato para o ZapVida em nova dor ou urgencia',
-    'Follow-up prioritario e manutencao da jornada de 6 meses',
+    "Tudo do plano de 3 meses",
+    "App MeJoy Full com toda a jornada liberada",
+    "Linha dedicada do programa com equipe assistencial identificada",
+    "Suporte assistencial integrado se surgir nova dor ou necessidade de orientacao",
+    "Follow-up prioritario e manutencao da jornada de 6 meses",
     clinicalGuardrail,
   ];
 }
@@ -198,44 +203,52 @@ export function resolveEmagrecimentoCommercialSelection(input?: {
   molecule: EmagrecimentoMolecule;
   moleculeLabel: string;
 } {
-  const track = input?.trilha || 'alternativas_clinicas';
+  const track = input?.trilha || "alternativas_clinicas";
   const principio = normalizePrincipio(input?.principio);
 
-  if (track === 'tirzepatida' || principio.includes('mounjaro') || principio.includes('tirzepatida')) {
+  if (
+    track === "tirzepatida" ||
+    principio.includes("mounjaro") ||
+    principio.includes("tirzepatida")
+  ) {
     return {
-      track: 'tirzepatida',
-      molecule: 'mounjaro',
+      track: "tirzepatida",
+      molecule: "mounjaro",
       moleculeLabel: MOLECULE_LABELS.mounjaro,
     };
   }
 
-  if (track === 'contrave' || principio.includes('contrave')) {
+  if (track === "contrave" || principio.includes("contrave")) {
     return {
-      track: 'contrave',
-      molecule: 'contrave',
+      track: "contrave",
+      molecule: "contrave",
       moleculeLabel: MOLECULE_LABELS.contrave,
     };
   }
 
-  if (principio.includes('rybelsus')) {
+  if (principio.includes("rybelsus")) {
     return {
-      track: 'semaglutida',
-      molecule: 'rybelsus',
+      track: "semaglutida",
+      molecule: "rybelsus",
       moleculeLabel: MOLECULE_LABELS.rybelsus,
     };
   }
 
-  if (track === 'semaglutida' || principio.includes('wegovy') || principio.includes('semaglutida')) {
+  if (
+    track === "semaglutida" ||
+    principio.includes("wegovy") ||
+    principio.includes("semaglutida")
+  ) {
     return {
-      track: 'semaglutida',
-      molecule: 'wegovy',
+      track: "semaglutida",
+      molecule: "wegovy",
       moleculeLabel: MOLECULE_LABELS.wegovy,
     };
   }
 
   return {
-    track: 'alternativas_clinicas',
-    molecule: 'rybelsus',
+    track: "alternativas_clinicas",
+    molecule: "rybelsus",
     moleculeLabel: MOLECULE_LABELS.rybelsus,
   };
 }
@@ -276,8 +289,8 @@ export function buildEmagrecimentoPlans(input?: {
       asaasEnvVar: `ASAAS_PRICE_EMAGRECIMENTO_${selection.molecule.toUpperCase()}_${template.planKey.toUpperCase()}`,
       benefitTier: template.benefitTier,
       supportTier: template.supportTier,
-      refundPolicy: 'convert_or_refund_pre_shipment',
-      coverageMode: 'coverage_available',
+      refundPolicy: "convert_or_refund_pre_shipment",
+      coverageMode: "coverage_available",
     };
   });
 }
@@ -285,36 +298,36 @@ export function buildEmagrecimentoPlans(input?: {
 export const emagrecimentoPlans: EmagrecimentoPlan[] =
   buildEmagrecimentoPlans();
 
-export const PLANTAO_ZAPVIDA_URL = 'https://zapvida.com/pay/plantao';
+export const PLANTAO_ZAPVIDA_URL = "https://zapvida.com/pay/plantao";
 
 export function buildZapVidaPlantaoUrl(utmContent: string): string {
   const url = new URL(PLANTAO_ZAPVIDA_URL);
-  url.searchParams.set('utm_source', 'mejoy');
-  url.searchParams.set('utm_medium', 'clinical_direct');
-  url.searchParams.set('utm_campaign', 'emagrecimento_clinico');
-  url.searchParams.set('utm_content', utmContent);
+  url.searchParams.set("utm_source", "mejoy");
+  url.searchParams.set("utm_medium", "clinical_direct");
+  url.searchParams.set("utm_campaign", "emagrecimento_clinico");
+  url.searchParams.set("utm_content", utmContent);
   return url.toString();
 }
 
 export const emagrecimentoLegalNote =
-  'A conduta final e sempre medica. Se a molecula esperada nao for indicada, voce pode converter para um protocolo clinico alternativo ou solicitar reembolso integral antes do envio da medicacao.';
+  "A conduta final e sempre medica. Se a molecula esperada nao for indicada, voce pode converter para um protocolo clinico alternativo ou solicitar reembolso integral antes do envio da medicacao.";
 
 export const planIdMapping = {
-  basico: 'programa-1m',
-  completo: 'programa-3m',
-  premium: 'programa-6m',
-  mensal: 'programa-1m',
-  trimestral: 'programa-3m',
-  semestral: 'programa-6m',
+  basico: "programa-1m",
+  completo: "programa-3m",
+  premium: "programa-6m",
+  mensal: "programa-1m",
+  trimestral: "programa-3m",
+  semestral: "programa-6m",
 } as const;
 
 export const planIdToApiKey: Record<string, EmagrecimentoPlanKey> = {
-  'programa-1m': 'basico',
-  'programa-3m': 'completo',
-  'programa-6m': 'premium',
-  'start-glp1': 'basico',
-  'programa-glp1-3m': 'completo',
-  'programa-glp1-6m-premium': 'premium',
+  "programa-1m": "basico",
+  "programa-3m": "completo",
+  "programa-6m": "premium",
+  "start-glp1": "basico",
+  "programa-glp1-3m": "completo",
+  "programa-glp1-6m-premium": "premium",
 };
 
 export function getPlanById(
@@ -328,12 +341,10 @@ export function getPlanById(
   return buildEmagrecimentoPlans(input).find((plan) => plan.id === mappedId);
 }
 
-export function getRecommendedPlan(
-  input?: {
-    trilha?: EmagrecimentoTrilha | null;
-    principio?: string | null;
-  },
-): EmagrecimentoPlan {
+export function getRecommendedPlan(input?: {
+  trilha?: EmagrecimentoTrilha | null;
+  principio?: string | null;
+}): EmagrecimentoPlan {
   return (
     buildEmagrecimentoPlans(input).find((plan) => plan.recommended) ||
     buildEmagrecimentoPlans(input)[1]
@@ -347,7 +358,9 @@ export function getEmagrecimentoPlanByApiKey(
     principio?: string | null;
   },
 ): EmagrecimentoPlan {
-  const match = buildEmagrecimentoPlans(input).find((plan) => plan.planKey === planKey);
+  const match = buildEmagrecimentoPlans(input).find(
+    (plan) => plan.planKey === planKey,
+  );
 
   if (!match) {
     throw new Error(`Plano de emagrecimento nao encontrado para ${planKey}`);

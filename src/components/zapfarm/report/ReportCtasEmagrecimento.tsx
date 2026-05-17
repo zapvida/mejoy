@@ -1,26 +1,25 @@
-import Image from 'next/image';
-import { AppValueSection } from '@/components/mejoy-app/AppValueSection';
-import { buildProductAppValue } from '@/lib/mejoy-app/value';
-import type { ReportViewModel } from '@/lib/report/derive';
-import { RefinedCard } from '@/components/ui/RefinedCard';
-import { RefinedButton } from '@/components/ui/RefinedButton';
+import Image from "next/image";
+import { AppValueSection } from "@/components/mejoy-app/AppValueSection";
+import { buildProductAppValue } from "@/lib/mejoy-app/value";
+import type { ReportViewModel } from "@/lib/report/derive";
+import { RefinedCard } from "@/components/ui/RefinedCard";
+import { RefinedButton } from "@/components/ui/RefinedButton";
 import {
-  buildZapVidaPlantaoUrl,
   emagrecimentoLegalNote,
   planIdMapping,
   type EmagrecimentoPlan,
-} from '@/config/zapfarm/emagrecimento-plans';
-import { buildEmagrecimentoCheckoutPlanCatalog } from '@/lib/emagrecimento/checkout-plan-catalog';
+} from "@/config/zapfarm/emagrecimento-plans";
+import { buildEmagrecimentoCheckoutPlanCatalog } from "@/lib/emagrecimento/checkout-plan-catalog";
 import {
   estimateWeightLossRangeKg,
   getMedicationTrackCard,
-} from '@/lib/emagrecimento/medicationCards';
-import { EMAGRECIMENTO_REPORT_ASSETS } from '@/lib/emagrecimento-lp-assets';
-import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
-import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
-import { trackFunnelEvent } from '@/lib/funnel/events-client';
-import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
-import type { EmagrecimentoTrilha } from '@/lib/emagrecimento/checkoutUrls';
+} from "@/lib/emagrecimento/medicationCards";
+import { EMAGRECIMENTO_REPORT_ASSETS } from "@/lib/emagrecimento-lp-assets";
+import { getRecommendedPlan } from "@/lib/emagrecimento/planRecommendation";
+import { TREATMENT_TRACKS_BY_ID } from "@/lib/emagrecimento/treatmentTracks";
+import { trackFunnelEvent } from "@/lib/funnel/events-client";
+import { buildEmagrecimentoReportWhatsappUrl } from "@/lib/emagrecimento/whatsappCta";
+import type { EmagrecimentoTrilha } from "@/lib/emagrecimento/checkoutUrls";
 
 interface Props {
   reportId: string;
@@ -45,49 +44,62 @@ export function ReportCtasEmagrecimento({
   onOpenInlineCheckout,
   planCatalog,
 }: Props) {
-  const availablePlans =
-    planCatalog?.length
-      ? planCatalog
-      : buildEmagrecimentoCheckoutPlanCatalog(
-          selectedTrilha,
-          preferenciaPrincipioAtivo,
-        ).planCatalog;
+  const availablePlans = planCatalog?.length
+    ? planCatalog
+    : buildEmagrecimentoCheckoutPlanCatalog(
+        selectedTrilha,
+        preferenciaPrincipioAtivo,
+      ).planCatalog;
   const triageContextId = vm?.triageId || reportId;
   const classification = vm
-    ? ((vm as any).classification as 'candidato_glp1' | 'nao_indicado' | 'contraindicado' | undefined)
+    ? ((vm as any).classification as
+        | "candidato_glp1"
+        | "nao_indicado"
+        | "contraindicado"
+        | undefined)
     : undefined;
   const answers = vm ? (vm as any).answers || {} : {};
   const impactoVida = answers.impacto_vida;
   const comorbidades = Array.isArray(answers.comorbidades)
-    ? answers.comorbidades.filter((item: string) => item !== 'nenhuma')
+    ? answers.comorbidades.filter((item: string) => item !== "nenhuma")
     : [];
   const recommendedPlanLegacy = classification
     ? getRecommendedPlan(classification, impactoVida, comorbidades)
-    : 'trimestral';
+    : "trimestral";
   const recommendedPlanId =
-    planIdMapping[recommendedPlanLegacy as keyof typeof planIdMapping] || 'programa-3m';
+    planIdMapping[recommendedPlanLegacy as keyof typeof planIdMapping] ||
+    "programa-3m";
 
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
   const selectedTrack = TREATMENT_TRACKS_BY_ID[selectedTrilha];
+  const isClinicalAlternative = selectedTrilha === "alternativas_clinicas";
   const estimatedRange = estimateWeightLossRangeKg(
     vm?.basics.weightKg,
-    selectedTrackCard.efficacyRangePercent
+    selectedTrackCard.efficacyRangePercent,
   );
   const productAppValue = buildProductAppValue({
-    productSlug: 'emagrecimento',
-    productName: 'Programa MeJoy de emagrecimento',
+    productSlug: "emagrecimento",
+    productName: "Programa MeJoy de emagrecimento",
   });
   const preferenciaTexto =
-    preferenciaPrincipioAtivo === 'tirzepatida'
-      ? 'Tirzepatida'
-      : preferenciaPrincipioAtivo === 'semaglutida'
-        ? 'Semaglutida'
-        : preferenciaPrincipioAtivo === 'contrave'
-          ? 'Contrave'
-          : 'Definicao clinica guiada';
+    preferenciaPrincipioAtivo === "tirzepatida"
+      ? "Tirzepatida"
+      : preferenciaPrincipioAtivo === "semaglutida"
+        ? "Semaglutida"
+        : preferenciaPrincipioAtivo === "contrave"
+          ? "Contrave"
+          : "Definicao clinica guiada";
 
   const handleSelectPlan = (planId: string) => {
-    trackFunnelEvent('report_plan_selected', {
+    trackFunnelEvent("plan_selected", {
+      report_id: reportId,
+      triage_id: triageContextId,
+      plan_id: planId,
+      track_id: selectedTrilha,
+      preferencia: preferenciaPrincipioAtivo,
+      surface: "report_plan_cards",
+    });
+    trackFunnelEvent("report_plan_selected", {
       report_id: reportId,
       triage_id: triageContextId,
       plano: planId,
@@ -105,19 +117,23 @@ export function ReportCtasEmagrecimento({
           Escolha do plano
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-          Escolha o plano e mantenha o checkout aqui embaixo
+          Escolha seu programa e confirme com seguranca
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-          A trilha clínica já está definida acima. Aqui você escolhe a duração do acompanhamento e segue para o checkout sem sair desta mesma página.
+          O plano de 3 meses e o melhor equilibrio para iniciar, acompanhar
+          resposta e ajustar a jornada. O checkout continua aqui, sem tirar voce
+          do seu Plano MeJoy.
         </p>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[0.96fr_1.04fr]">
         <div className="rounded-[28px] border border-emerald-100 bg-[#f6fbf7] p-5 sm:p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-            Trilha selecionada
+            Caminho inicial selecionado
           </p>
-          <h3 className="mt-2 text-2xl font-bold text-slate-950">{selectedTrackCard.title}</h3>
+          <h3 className="mt-2 text-2xl font-bold text-slate-950">
+            {selectedTrackCard.title}
+          </h3>
           <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
             {selectedTrackCard.plainLanguageFit}
           </p>
@@ -136,20 +152,31 @@ export function ReportCtasEmagrecimento({
 
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[22px] bg-white p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Eficacia media</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrackCard.efficacyText}</p>
-            </div>
-            <div className="rounded-[22px] bg-white p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Traduzindo em peso</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                Eficacia media
+              </p>
               <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                {estimatedRange
-                  ? `Faixa media observada: ${estimatedRange.label}.`
-                  : selectedTrack?.estimate || 'A faixa real depende do seu ponto de partida e da resposta individual.'}
+                {selectedTrackCard.efficacyText}
               </p>
             </div>
             <div className="rounded-[22px] bg-white p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Seguranca clinica</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">{selectedTrackCard.safetyText}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                Traduzindo em peso
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                {estimatedRange
+                  ? `Faixa media observada: ${estimatedRange.label}.`
+                  : selectedTrack?.estimate ||
+                    "A faixa real depende do seu ponto de partida e da resposta individual."}
+              </p>
+            </div>
+            <div className="rounded-[22px] bg-white p-4 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                Seguranca clinica
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                {selectedTrackCard.safetyText}
+              </p>
             </div>
           </div>
         </div>
@@ -173,7 +200,9 @@ export function ReportCtasEmagrecimento({
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Opcoes teraputicas
                 </p>
-                <p className="mt-2 text-base font-bold text-slate-900">{image.title}</p>
+                <p className="mt-2 text-base font-bold text-slate-900">
+                  {image.title}
+                </p>
               </div>
             </div>
           ))}
@@ -193,6 +222,9 @@ export function ReportCtasEmagrecimento({
         {availablePlans.map((plan) => {
           const recommended = plan.id === recommendedPlanId;
           const selected = plan.id === selectedPlanId;
+          const cardGuardrail = isClinicalAlternative
+            ? "Conduta medicamentosa: definida na consulta, se fizer sentido."
+            : `${plan.moleculeLabel} pode ser considerado somente se houver indicacao medica.`;
           return (
             <RefinedCard
               key={plan.id}
@@ -201,16 +233,16 @@ export function ReportCtasEmagrecimento({
               hover
               className={`border ${
                 selected
-                  ? 'border-emerald-500 bg-[#f6fbf7] shadow-[0_20px_55px_rgba(5,150,105,0.12)]'
+                  ? "border-emerald-500 bg-[#f6fbf7] shadow-[0_20px_55px_rgba(5,150,105,0.12)]"
                   : recommended
-                    ? 'border-emerald-300 bg-emerald-50/60'
-                    : 'border-zinc-200 bg-white'
+                    ? "border-emerald-300 bg-emerald-50/60"
+                    : "border-zinc-200 bg-white"
               }`}
             >
               <div className="flex flex-wrap gap-2">
                 {recommended && (
                   <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white">
-                    Recomendado
+                    Melhor equilibrio
                   </span>
                 )}
                 {selected && (
@@ -220,12 +252,23 @@ export function ReportCtasEmagrecimento({
                 )}
               </div>
 
-              <h3 className="mt-4 text-2xl font-bold text-slate-900">{plan.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{plan.subtitle}</p>
+              <h3 className="mt-4 text-2xl font-bold text-slate-900">
+                {plan.title}
+              </h3>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                {plan.duration}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                {plan.subtitle}
+              </p>
 
               <div className="mt-5">
-                <p className="text-3xl font-bold text-slate-900">{plan.priceMain}</p>
-                <p className="mt-1 text-xs text-slate-500">{plan.priceDetail}</p>
+                <p className="text-3xl font-bold text-slate-900">
+                  {plan.priceMain}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {plan.priceDetail}
+                </p>
               </div>
 
               <div className="mt-4 rounded-2xl border border-zinc-100 bg-white/90 p-4 text-sm text-slate-700">
@@ -233,21 +276,37 @@ export function ReportCtasEmagrecimento({
                   <strong>Duracao:</strong> {plan.duration}
                 </p>
                 <p className="mt-2">
-                  <strong>Trilha ativa:</strong> {selectedTrackCard.shortTitle}
+                  <strong>Caminho inicial:</strong>{" "}
+                  {selectedTrackCard.shortTitle}
                 </p>
                 <p className="mt-2">
-                  <strong>Conduta prevista:</strong> {plan.moleculeLabel} quando indicado
+                  <strong>Seguranca medica:</strong> {cardGuardrail}
                 </p>
                 <p className="mt-3 leading-relaxed text-slate-600">
                   {selected
-                    ? 'Este e o plano ativo para abrir o checkout inline agora.'
+                    ? "Este e o plano ativo para abrir o checkout inline agora."
                     : `Ao escolher este plano, o checkout abre na mesma pagina com ${plan.duration} de acompanhamento.`}
                 </p>
               </div>
 
+              <div className="mt-4 grid gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 text-sm text-slate-700">
+                <p className="font-bold text-slate-900">Incluido no programa</p>
+                <p>
+                  Avaliacao medica, acompanhamento, app MeJoy, suporte oficial e
+                  documentos da jornada.
+                </p>
+                <p className="font-bold text-slate-900">
+                  Sujeito a indicacao medica
+                </p>
+                <p>Medicacao, dose, exames, ajustes e continuidade clinica.</p>
+              </div>
+
               <ul className="mt-5 space-y-2">
                 {plan.bullets.slice(0, 4).map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm leading-relaxed text-slate-700">
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2 text-sm leading-relaxed text-slate-700"
+                  >
                     <span className="mt-0.5 text-emerald-600">✓</span>
                     <span>{feature}</span>
                   </li>
@@ -259,9 +318,11 @@ export function ReportCtasEmagrecimento({
                   onClick={() => handleSelectPlan(plan.id)}
                   fullWidth
                   className="rounded-full"
-                  variant={selected || recommended ? 'primary' : 'secondary'}
+                  variant={selected || recommended ? "primary" : "secondary"}
                 >
-                  Escolher e seguir nesta pagina
+                  {selected
+                    ? "Abrir checkout seguro"
+                    : "Escolher este programa"}
                 </RefinedButton>
               </div>
             </RefinedCard>
@@ -270,41 +331,25 @@ export function ReportCtasEmagrecimento({
       </div>
 
       <div className="mt-6 flex flex-col gap-4 rounded-[24px] border border-zinc-200 bg-zinc-50 px-4 py-4 text-sm leading-relaxed text-slate-600 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-2xl">
-          {emagrecimentoLegalNote}
-        </div>
+        <div className="max-w-2xl">{emagrecimentoLegalNote}</div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <a
             href={buildEmagrecimentoReportWhatsappUrl({
               reportId,
               firstName: vm?.basics.firstName,
-              triageSlug: 'emagrecimento',
+              triageSlug: "emagrecimento",
             })}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() =>
-              trackFunnelEvent('whatsapp_report_cta', {
+              trackFunnelEvent("whatsapp_report_cta", {
                 report_id: reportId,
-                surface: 'report_plan_help',
+                surface: "report_plan_help",
               })
             }
             className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-2.5 font-semibold text-emerald-800 transition hover:bg-emerald-50"
           >
             WhatsApp oficial
-          </a>
-          <a
-            href={buildZapVidaPlantaoUrl('report_footer_support')}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() =>
-              trackFunnelEvent('cta_clinical_handoff', {
-                report_id: reportId,
-                origin: 'report_footer_support',
-              })
-            }
-            className="text-center text-sm font-semibold text-slate-700 underline underline-offset-2"
-          >
-            Se preferir, seguir direto para avaliacao clinica
           </a>
         </div>
       </div>

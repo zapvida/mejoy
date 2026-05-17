@@ -1736,25 +1736,25 @@ export function EmagrecimentoOnePageIntake({
           <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="bg-[linear-gradient(180deg,#f6fbf7_0%,#eff5ec_100%)] p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#446048]">
-                MeJoy em processamento
+                Plano MeJoy em preparação
               </p>
               <p className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-slate-900">
-                Gerando seu relatório personalizado
+                Organizando sua leitura personalizada
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Sua triagem já foi recebida. Agora a MeJoy está organizando a
-                leitura inicial, a recomendação clínica e o fechamento na
-                sequência certa.
+                Sua triagem foi recebida. Agora a MeJoy cruza perfil,
+                elegibilidade preliminar, objetivo e próximos passos para
+                apresentar o plano inicial com clareza.
               </p>
             </div>
             <div className="p-8 text-center">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#2f6a49] border-t-transparent" />
               <p className="text-xl font-semibold tracking-[-0.03em] text-slate-900">
-                Isso costuma levar alguns segundos
+                Isso costuma levar poucos segundos
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-500">
-                Mantenha esta página aberta. Assim que o relatório ficar pronto,
-                a jornada segue automaticamente.
+                Mantenha esta página aberta. Assim que o Plano MeJoy ficar
+                pronto, a jornada segue automaticamente para o relatório.
               </p>
             </div>
           </div>
@@ -1809,12 +1809,12 @@ export function EmagrecimentoOnePageIntake({
                 Triagem clínica MeJoy
               </p>
               <h1 className="mt-4 max-w-3xl text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.06em] text-slate-900 sm:text-[3.4rem]">
-                O programa continua lindo, simples e sem sair da mesma jornada.
+                Sua avaliação começa por uma triagem simples, clínica e segura.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Esta triagem organiza seu contexto clínico em poucos passos,
-                com linguagem clara, privacidade e leitura fácil para orientar
-                o próximo passo com segurança.
+                Esta triagem organiza seu contexto clínico em poucos passos, com
+                linguagem clara, privacidade e leitura fácil para preparar seu
+                Plano MeJoy antes da avaliação médica.
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -1851,8 +1851,8 @@ export function EmagrecimentoOnePageIntake({
                     Confiança editorial
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
-                    A triagem já fica pronta para receber um vídeo curto de
-                    médico logo abaixo do hero, sem mexer na lógica da jornada.
+                    A jornada separa triagem, pagamento e decisão médica final,
+                    com dados protegidos e contato pelo canal oficial.
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -1874,10 +1874,10 @@ export function EmagrecimentoOnePageIntake({
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-semibold text-slate-900">
-                      UI premium com fricção mínima
+                      Jornada premium com fricção mínima
                     </p>
                     <p className="text-xs text-slate-500">
-                      triagem, relatório e checkout na mesma narrativa
+                      triagem, plano e checkout na mesma narrativa
                     </p>
                   </div>
                 </div>
@@ -1969,8 +1969,8 @@ export function EmagrecimentoOnePageIntake({
                 </div>
 
                 <div className="mt-6 rounded-[24px] border border-dashed border-[#d7e3da] bg-white px-4 py-4 text-sm text-slate-600">
-                  Conteúdo médico educativo pode entrar aqui para explicar o
-                  programa, os limites da triagem e os próximos passos.
+                  A triagem organiza informações preliminares. Prescrição, dose
+                  e continuidade sempre dependem da avaliação médica.
                 </div>
               </div>
             </div>

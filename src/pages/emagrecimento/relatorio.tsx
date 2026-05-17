@@ -409,23 +409,24 @@ export default function RelatorioEmagrecimentoPage({
               <div className="grid gap-0 lg:grid-cols-[1.02fr_0.98fr]">
                 <div className="p-5 sm:p-6 md:p-8">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                    Prova social e confiança
+                    Autoridade e confiança
                   </p>
                   <h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-                    O relatório pode ficar mais rico sem roubar o foco do
-                    fechamento
+                    Por que pacientes escolhem a MeJoy antes de iniciar
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Esta dobra já fica preparada para receber um reel de prova
-                    social ou um vídeo médico curto entre a leitura clínica
-                    principal e a seleção do plano.
+                    O pagamento confirma sua entrada no programa, mas a decisao
+                    sobre medicacao, dose, exames e continuidade continua sendo
+                    feita por medico habilitado. A jornada combina avaliacao,
+                    app, suporte oficial e politica clara antes de qualquer
+                    envio.
                   </p>
 
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
                     {[
-                      "Mais imagem, menos parede de texto",
-                      "Conteúdo factual, sem promessas absolutas",
-                      "Checkout continua aqui embaixo, sem sair da página",
+                      "Avaliacao medica antes de qualquer prescricao",
+                      "Dados protegidos e contato oficial pelo WhatsApp",
+                      "Reembolso antes do envio se a conduta esperada nao for indicada",
                     ].map((item) => (
                       <div
                         key={item}
@@ -450,8 +451,10 @@ export default function RelatorioEmagrecimentoPage({
                     </div>
                   </div>
                   <div className="rounded-[24px] border border-dashed border-[#d7e3da] bg-white px-4 py-4 text-sm text-slate-600">
-                    Conteúdo educativo e revisado entra aqui para reforçar
-                    segurança, acompanhamento e próximos passos do programa.
+                    Garantia de conduta segura: se a avaliacao medica concluir
+                    que a terapia esperada nao e indicada, nenhuma medicacao e
+                    enviada sem sua concordancia. Voce pode seguir por protocolo
+                    alternativo ou solicitar reembolso integral antes do envio.
                   </div>
                 </div>
               </div>
@@ -550,27 +553,29 @@ export default function RelatorioEmagrecimentoPage({
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-3">
-                      {EMAGRECIMENTO_REPORT_ASSETS.inlineCheckoutCards.map((item) => (
-                        <div
-                          key={item.src}
-                          className="overflow-hidden rounded-[28px] border border-zinc-200 bg-[#f8faf8] shadow-[0_16px_40px_rgba(15,23,42,0.05)]"
-                        >
-                          <div className="relative aspect-[0.92] overflow-hidden">
-                            <Image
-                              src={item.src}
-                              alt={item.alt}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 1024px) 100vw, 18vw"
-                            />
+                      {EMAGRECIMENTO_REPORT_ASSETS.inlineCheckoutCards.map(
+                        (item) => (
+                          <div
+                            key={item.src}
+                            className="overflow-hidden rounded-[28px] border border-zinc-200 bg-[#f8faf8] shadow-[0_16px_40px_rgba(15,23,42,0.05)]"
+                          >
+                            <div className="relative aspect-[0.92] overflow-hidden">
+                              <Image
+                                src={item.src}
+                                alt={item.alt}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 18vw"
+                              />
+                            </div>
+                            <div className="p-4">
+                              <p className="text-sm font-bold text-slate-900">
+                                {item.title}
+                              </p>
+                            </div>
                           </div>
-                          <div className="p-4">
-                            <p className="text-sm font-bold text-slate-900">
-                              {item.title}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
+                        ),
+                      )}
                     </div>
                   </div>
                 </div>

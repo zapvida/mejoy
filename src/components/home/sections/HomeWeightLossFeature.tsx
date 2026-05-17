@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import { track } from '@/lib/analytics';
-import { HOME_HUB_GLP } from '@/lib/home-hub-assets';
-import { MEDVI_HOME } from '@/lib/medvi-parity-tokens';
+import { track } from "@/lib/analytics";
+import { HOME_HUB_GLP } from "@/lib/home-hub-assets";
+import { MEDVI_HOME } from "@/lib/medvi-parity-tokens";
 
 /**
  * Bloco “Doctor-guided GLP-1” — espelho de home.medvi.org (duas colunas + mini-grid).
@@ -15,7 +15,11 @@ export function HomeWeightLossFeature() {
   const blockR = MEDVI_HOME.glpBlockRadiusPx;
 
   const handleCta = () => {
-    track('cta_click', { page: 'home', position: 'weight_loss_feature', section: 'home_glp_feature' });
+    track("cta_click", {
+      page: "home",
+      position: "weight_loss_feature",
+      section: "home_glp_feature",
+    });
   };
 
   return (
@@ -57,13 +61,30 @@ export function HomeWeightLossFeature() {
               id="home-glp-heading"
               className="mt-3 text-[1.65rem] font-bold leading-[1.1] tracking-[-0.035em] text-slate-950 sm:text-4xl md:text-[2.35rem]"
             >
-              Emagrecimento com mais{' '}
-              <span style={{ color: MEDVI_HOME.headlineHighlightGreen }}>clareza, cuidado e continuidade</span>
+              Emagrecimento com mais{" "}
+              <span style={{ color: MEDVI_HOME.headlineHighlightGreen }}>
+                clareza, cuidado e continuidade
+              </span>
             </h2>
             <p className="mt-4 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-[16px]">
-              Você começa entendendo seu perfil, vê o que faz sentido para o seu caso e só então decide como avançar.
-              Quando houver indicação, a avaliação médica entra com contexto e critério.
+              Você começa entendendo seu perfil, vê o que faz sentido para o seu
+              caso e só então decide como avançar. Quando houver indicação, a
+              avaliação médica entra com contexto e critério.
             </p>
+            <div className="mt-5 grid gap-2 text-sm font-medium text-slate-700">
+              {[
+                "Triagem gratuita antes da decisão",
+                "Avaliação médica antes de qualquer prescrição",
+                "PIX, WhatsApp oficial e dashboard na mesma jornada",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-3"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
               <div
                 className="relative aspect-[4/5] w-full overflow-hidden"

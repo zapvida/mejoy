@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { track } from '@/lib/analytics';
-import { useLandingPageKey } from '@/contexts/LandingAnalyticsContext';
-import { getLpPriceHook } from '@/lib/emagrecimento/launchPricing';
-import { TREATMENT_TRACKS } from '@/lib/emagrecimento/treatmentTracks';
+import Image from "next/image";
+import { track } from "@/lib/analytics";
+import { useLandingPageKey } from "@/contexts/LandingAnalyticsContext";
+import { getLpPriceHook } from "@/lib/emagrecimento/launchPricing";
+import { TREATMENT_TRACKS } from "@/lib/emagrecimento/treatmentTracks";
 
 export function PlansSectionObesidade() {
   const page = useLandingPageKey();
 
   const handleCtaClick = () => {
-    track('cta_click', {
+    track("cta_click", {
       page,
-      position: 'plans',
-      section: 'plans_section',
+      position: "plans",
+      section: "plans_section",
     });
   };
 
@@ -27,13 +27,16 @@ export function PlansSectionObesidade() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 text-center sm:mb-12">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">Tratamentos e medicações</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
+              Caminhos de cuidado
+            </p>
             <h2 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-              Compare caminhos com contexto, não com impulso.
+              Compare possibilidades com contexto, não como compra de remédio.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              O nome da medicação é só uma parte. O que decide o melhor caminho é perfil, tolerância, objetivo, risco
-              e indicação médica.
+              O nome da medicação é só uma parte. O que decide o melhor caminho
+              é perfil, tolerância, objetivo, risco e indicação médica. A MeJoy
+              vende uma jornada clínica, não uma prescrição automática.
             </p>
           </div>
 
@@ -74,25 +77,45 @@ export function PlansSectionObesidade() {
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-2xl font-bold text-slate-950">{track.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{track.subtitle}</p>
+                  <h3 className="mt-4 text-2xl font-bold text-slate-950">
+                    {track.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-[15px]">
+                    {track.subtitle}
+                  </p>
 
                   <div className="mt-5 grid grid-cols-1 gap-3 rounded-[24px] border border-zinc-100 bg-[#fbfdfc] p-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Perda observada</p>
-                      <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.efficacy}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Perda observada
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                        {track.efficacy}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Equivalência prática</p>
-                      <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.estimate}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Equivalência prática
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                        {track.estimate}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Segurança clínica</p>
-                      <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.safety}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Segurança clínica
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                        {track.safety}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">Quando tende a fazer sentido</p>
-                      <p className="mt-1 text-sm leading-relaxed text-slate-700">{track.bestFor}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+                        Quando tende a fazer sentido
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                        {track.bestFor}
+                      </p>
                     </div>
                   </div>
 
@@ -109,10 +132,12 @@ export function PlansSectionObesidade() {
           </div>
 
           <div className="mx-auto mt-8 max-w-3xl text-center">
-            <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">{getLpPriceHook()}</p>
+            <p className="text-sm font-medium leading-relaxed text-slate-500 sm:text-base">
+              {getLpPriceHook()}
+            </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
-              A comparação ajuda você a chegar mais informado na avaliação. Ela não substitui consulta nem promete
-              prescrição.
+              A comparação ajuda você a chegar mais informado na avaliação. Ela
+              não substitui consulta nem promete prescrição.
             </p>
           </div>
         </div>

@@ -184,6 +184,8 @@ export function EmagrecimentoCheckoutExperience({
   const redirectHandledRef = useRef(false);
   const experienceRef = useRef<HTMLElement | null>(null);
   const paymentStateRef = useRef<HTMLDivElement | null>(null);
+  const checkoutStartedRef = useRef(false);
+  const paymentResolvedRef = useRef(false);
 
   const selectedPrincipio = useMemo(() => {
     const normalizedDefault = (defaultPrincipio || "").trim().toLowerCase();
@@ -202,10 +204,8 @@ export function EmagrecimentoCheckoutExperience({
   }, [defaultPrincipio, selectedTrilha]);
   const dynamicCatalog = useMemo(
     () =>
-      buildEmagrecimentoCheckoutPlanCatalog(
-        selectedTrilha,
-        selectedPrincipio,
-      ).planCatalog,
+      buildEmagrecimentoCheckoutPlanCatalog(selectedTrilha, selectedPrincipio)
+        .planCatalog,
     [selectedPrincipio, selectedTrilha],
   );
   const availablePlans = dynamicCatalog.length
@@ -215,11 +215,14 @@ export function EmagrecimentoCheckoutExperience({
       : buildEmagrecimentoCheckoutPlanCatalog().planCatalog;
   const selectedPlanKey =
     planIdMapping[selectedPlan as keyof typeof planIdMapping] || selectedPlan;
-  const plan = availablePlans.find((option) => option.id === selectedPlanKey) || availablePlans[1];
+  const plan =
+    availablePlans.find((option) => option.id === selectedPlanKey) ||
+    availablePlans[1];
   const planApiKey = planIdToApiKey[plan.id] || "completo";
   const pixAmount = Math.round(plan.totalAmount * 0.9 * 100) / 100;
   const maxCardInstallments = Math.max(1, plan.installments || 1);
-  const selectedTrack = TREATMENT_TRACKS_BY_ID[selectedTrilha] || TREATMENT_TRACKS[3];
+  const selectedTrack =
+    TREATMENT_TRACKS_BY_ID[selectedTrilha] || TREATMENT_TRACKS[3];
   const principio = selectedPrincipio || selectedTrack.principle || "";
   const selectedTrackEstimate = estimateWeightLossRangeKg(
     prefillProfile?.weightKg ?? undefined,
@@ -245,12 +248,19 @@ export function EmagrecimentoCheckoutExperience({
   const selectionLocked = selectionVariant === "locked";
   const journeyFrames = EMAGRECIMENTO_CHECKOUT_ASSETS.journeyFrames;
   const checkoutHighlights = [
-    "Pagamento na mesma pagina do relatorio",
-    "PIX ou cartao com confirmacao acompanhada",
+    "PIX com menos campos e desconto imediato",
+    "Cartao em ate 12x quando preferir parcelar",
     "Dashboard liberado so apos pagamento confirmado",
   ];
   const paymentMethodLabel =
-    paymentMethod === "PIX" ? "PIX com desconto imediato" : "Cartao validado na mesma jornada";
+    paymentMethod === "PIX"
+      ? "PIX com desconto imediato"
+      : "Cartao validado na mesma jornada";
+  const dataStepIndex = allowPlanSelection ? 2 : 1;
+  const paymentStepIndex = allowPlanSelection ? 3 : 2;
+  const amountForTracking =
+    paymentMethod === "PIX" ? pixAmount : plan.totalAmount;
+  const requiresBillingAddress = paymentMethod === "CREDIT_CARD";
 
   const buildAppContinuationUrl = (paymentId: string) => {
     if (!appReturnUrl) return null;
@@ -347,6 +357,50 @@ export function EmagrecimentoCheckoutExperience({
     );
   }, [maxCardInstallments]);
 
+  useEffect(() => {
+    trackFunnelEvent("checkout_viewed", {
+      report_id: reportId,
+      triage_id: triageId,
+      plan_id: selectedPlan,
+      track_id: selectedTrilha,
+      payment_method: paymentMethod,
+      amount: amountForTracking,
+      surface: mode,
+    });
+  }, []);
+
+  useEffect(() => {
+    const emitAbandon = (reason: string) => {
+      if (!checkoutStartedRef.current || paymentResolvedRef.current) return;
+      trackFunnelEvent("checkout_abandon", {
+        report_id: reportId,
+        triage_id: triageId,
+        plan_id: selectedPlan,
+        track_id: selectedTrilha,
+        payment_method: paymentMethod,
+        amount: amountForTracking,
+        surface: mode,
+        reason,
+      });
+    };
+
+    const onPageHide = () => emitAbandon("pagehide");
+    window.addEventListener("pagehide", onPageHide);
+
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      emitAbandon("component_unmount");
+    };
+  }, [
+    amountForTracking,
+    mode,
+    paymentMethod,
+    reportId,
+    selectedPlan,
+    selectedTrilha,
+    triageId,
+  ]);
+
   const updatePlan = (planId: string) => {
     setSelectedPlan(planId);
     onSelectPlan?.(planId);
@@ -371,6 +425,33 @@ export function EmagrecimentoCheckoutExperience({
     if (pollingRef.current) {
       clearInterval(pollingRef.current);
       pollingRef.current = null;
+    }
+  };
+
+  const hasCreditCardBillingData = () => {
+    const cleanedDocument = formData.cpfCnpj.replace(/\D/g, "");
+    return (
+      (cleanedDocument.length === 11 || cleanedDocument.length === 14) &&
+      Boolean(formData.cep.trim()) &&
+      Boolean(formData.endereco.trim()) &&
+      Boolean(formData.enderecoNumero.trim()) &&
+      Boolean(formData.bairro.trim()) &&
+      Boolean(formData.cidade.trim()) &&
+      Boolean(formData.estado.trim())
+    );
+  };
+
+  const selectPaymentMethod = (method: PaymentMethod) => {
+    setPaymentMethod(method);
+    resetPaymentState();
+
+    if (
+      method === "CREDIT_CARD" &&
+      currentStep === paymentStepIndex &&
+      !hasCreditCardBillingData()
+    ) {
+      setCurrentStep(dataStepIndex);
+      window.setTimeout(() => keepExperienceInView("start"), 60);
     }
   };
 
@@ -452,8 +533,20 @@ export function EmagrecimentoCheckoutExperience({
   const resolveDashboardAccess = async (confirmedPaymentId: string) => {
     if (redirectHandledRef.current) return;
     redirectHandledRef.current = true;
+    paymentResolvedRef.current = true;
     setRedirecting(true);
     setPaymentConfirmed(true);
+
+    trackFunnelEvent("payment_confirmed", {
+      report_id: reportId,
+      triage_id: triageId,
+      payment_id: confirmedPaymentId,
+      plan_id: selectedPlan,
+      track_id: selectedTrilha,
+      payment_method: paymentMethod,
+      amount: amountForTracking,
+      surface: mode,
+    });
 
     trackFunnelEvent("clinical_payment_success", {
       report_id: reportId,
@@ -556,18 +649,24 @@ export function EmagrecimentoCheckoutExperience({
     if (!emailRegex.test(formData.email))
       nextErrors.email = "Digite um e-mail valido.";
     if (phoneError) nextErrors.telefone = phoneError;
-    if (cleanedDocument.length !== 11 && cleanedDocument.length !== 14) {
-      nextErrors.cpfCnpj = "Digite um CPF ou CNPJ valido.";
-    } else if (cleanedDocument.length === 11 && !validateCPF(cleanedDocument)) {
-      nextErrors.cpfCnpj = "Digite um CPF valido.";
+    if (requiresBillingAddress) {
+      if (cleanedDocument.length !== 11 && cleanedDocument.length !== 14) {
+        nextErrors.cpfCnpj = "Digite um CPF ou CNPJ valido.";
+      } else if (
+        cleanedDocument.length === 11 &&
+        !validateCPF(cleanedDocument)
+      ) {
+        nextErrors.cpfCnpj = "Digite um CPF valido.";
+      }
+      if (!formData.cep.trim()) nextErrors.cep = "Informe o CEP.";
+      if (!formData.endereco.trim())
+        nextErrors.endereco = "Informe o endereco.";
+      if (!formData.enderecoNumero.trim())
+        nextErrors.enderecoNumero = "Informe o numero.";
+      if (!formData.bairro.trim()) nextErrors.bairro = "Informe o bairro.";
+      if (!formData.cidade.trim()) nextErrors.cidade = "Informe a cidade.";
+      if (!formData.estado.trim()) nextErrors.estado = "Informe o estado.";
     }
-    if (!formData.cep.trim()) nextErrors.cep = "Informe o CEP.";
-    if (!formData.endereco.trim()) nextErrors.endereco = "Informe o endereco.";
-    if (!formData.enderecoNumero.trim())
-      nextErrors.enderecoNumero = "Informe o numero.";
-    if (!formData.bairro.trim()) nextErrors.bairro = "Informe o bairro.";
-    if (!formData.cidade.trim()) nextErrors.cidade = "Informe a cidade.";
-    if (!formData.estado.trim()) nextErrors.estado = "Informe o estado.";
 
     setFieldErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
@@ -605,8 +704,7 @@ export function EmagrecimentoCheckoutExperience({
   };
 
   const handleNext = () => {
-    const dataStep = allowPlanSelection ? 2 : 1;
-    if (currentStep === dataStep && !validateDataStep()) {
+    if (currentStep === dataStepIndex && !validateDataStep()) {
       keepExperienceInView("start");
       return;
     }
@@ -624,10 +722,35 @@ export function EmagrecimentoCheckoutExperience({
     try {
       await navigator.clipboard.writeText(pixQrCodeText);
       setCopiedPixCode(true);
+      trackFunnelEvent("pix_copied", {
+        report_id: reportId,
+        triage_id: triageId,
+        payment_id: paymentId,
+        plan_id: selectedPlan,
+        track_id: selectedTrilha,
+        payment_method: paymentMethod,
+        amount: pixAmount,
+        surface: mode,
+      });
       window.setTimeout(() => setCopiedPixCode(false), 1800);
     } catch (copyError) {
       console.error("[emagrecimento-checkout] pix copy failed", copyError);
     }
+  };
+
+  const trackPaymentLinkOpen = (
+    linkSurface: "pix_fallback" | "card_receipt",
+  ) => {
+    trackFunnelEvent("payment_link_opened", {
+      report_id: reportId,
+      triage_id: triageId,
+      payment_id: paymentId,
+      plan_id: selectedPlan,
+      track_id: selectedTrilha,
+      payment_method: paymentMethod,
+      amount: amountForTracking,
+      surface: linkSurface,
+    });
   };
 
   const handleSubmit = async () => {
@@ -635,13 +758,32 @@ export function EmagrecimentoCheckoutExperience({
     setError(null);
     setFieldErrors({});
 
-    if (!validateDataStep() || !validateCardStep()) {
+    if (!validateDataStep()) {
+      setCurrentStep(dataStepIndex);
+      keepExperienceInView("start");
+      return;
+    }
+
+    if (!validateCardStep()) {
+      setCurrentStep(paymentStepIndex);
       keepExperienceInView("start");
       return;
     }
 
     resetPaymentState();
+    checkoutStartedRef.current = true;
+    paymentResolvedRef.current = false;
     setLoading(true);
+
+    trackFunnelEvent("begin_checkout", {
+      report_id: reportId,
+      triage_id: triageId,
+      plan_id: selectedPlan,
+      track_id: selectedTrilha,
+      payment_method: paymentMethod,
+      amount: amountForTracking,
+      surface: mode,
+    });
 
     trackFunnelEvent("report_inline_checkout_started", {
       report_id: reportId,
@@ -713,6 +855,18 @@ export function EmagrecimentoCheckoutExperience({
       if (paymentMethod === "PIX") {
         setPixQrCode(data.payment.pixTransaction?.qrCodeBase64 || null);
         setPixQrCodeText(data.payment.pixTransaction?.qrCode || null);
+        trackFunnelEvent("pix_generated", {
+          report_id: reportId,
+          triage_id: triageId,
+          payment_id: data.payment.id,
+          plan_id: selectedPlan,
+          track_id: selectedTrilha,
+          payment_method: paymentMethod,
+          amount: pixAmount,
+          surface: mode,
+          has_qr_code: Boolean(data.payment.pixTransaction?.qrCodeBase64),
+          has_copy_code: Boolean(data.payment.pixTransaction?.qrCode),
+        });
         if (!data.payment.pixTransaction && data.retryable) {
           void hydratePixDetails(data.payment.id);
         }
@@ -725,6 +879,10 @@ export function EmagrecimentoCheckoutExperience({
         payment_method: paymentMethod,
         plano: selectedPlan,
         trilha: selectedTrilha,
+        plan_id: selectedPlan,
+        track_id: selectedTrilha,
+        amount: amountForTracking,
+        surface: mode,
       });
 
       if (PAID_STATUSES.has(data.payment.status)) {
@@ -736,6 +894,16 @@ export function EmagrecimentoCheckoutExperience({
       }
     } catch (submitError: any) {
       console.error("[emagrecimento-checkout] submit failed", submitError);
+      trackFunnelEvent("checkout_error", {
+        report_id: reportId,
+        triage_id: triageId,
+        plan_id: selectedPlan,
+        track_id: selectedTrilha,
+        payment_method: paymentMethod,
+        amount: amountForTracking,
+        surface: mode,
+        message: submitError?.message || "checkout_submit_failed",
+      });
       setError(
         submitError?.message ||
           "Nao conseguimos processar o pagamento agora. Revise os dados e tente novamente.",
@@ -818,7 +986,10 @@ export function EmagrecimentoCheckoutExperience({
           </div>
 
           {error && (
-            <div aria-live="polite" className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div
+              aria-live="polite"
+              className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            >
               {error}
             </div>
           )}
@@ -1067,6 +1238,63 @@ export function EmagrecimentoCheckoutExperience({
             {((allowPlanSelection && currentStep === 2) ||
               (!allowPlanSelection && currentStep === 1)) && (
               <div className="space-y-5">
+                <div className="rounded-[24px] border border-emerald-100 bg-[linear-gradient(180deg,#f7fbf8_0%,#eef8f2_100%)] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                    Forma de confirmacao
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                    PIX pede apenas dados de contato para gerar o pagamento e
+                    manter o atendimento. Cartao exige dados de cobranca.
+                  </p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => selectPaymentMethod("PIX")}
+                      className={cn(
+                        "rounded-2xl border bg-white p-4 text-left transition-all",
+                        paymentMethod === "PIX"
+                          ? "border-emerald-500 shadow-[0_12px_30px_rgba(5,150,105,0.10)]"
+                          : "border-zinc-200 hover:border-emerald-300",
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Wallet className="h-5 w-5 text-emerald-700" />
+                        <div>
+                          <p className="font-bold text-slate-900">
+                            PIX com 10% OFF
+                          </p>
+                          <p className="text-xs text-slate-600">
+                            Menos campos, QR code e copiar-colar na mesma
+                            pagina.
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => selectPaymentMethod("CREDIT_CARD")}
+                      className={cn(
+                        "rounded-2xl border bg-white p-4 text-left transition-all",
+                        paymentMethod === "CREDIT_CARD"
+                          ? "border-emerald-500 shadow-[0_12px_30px_rgba(5,150,105,0.10)]"
+                          : "border-zinc-200 hover:border-emerald-300",
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="h-5 w-5 text-emerald-700" />
+                        <div>
+                          <p className="font-bold text-slate-900">
+                            Cartao de credito
+                          </p>
+                          <p className="text-xs text-slate-600">
+                            Parcelamento com dados de cobranca validados.
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
                 <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                   <div className="rounded-[24px] border border-zinc-100 bg-[#fbfcfb] p-5">
                     <div className="mb-4">
@@ -1074,7 +1302,8 @@ export function EmagrecimentoCheckoutExperience({
                         Contato do paciente
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                        Usamos estes dados para contato oficial, recibo e continuidade do programa.
+                        Usamos estes dados para contato oficial, recibo e
+                        continuidade do programa.
                       </p>
                     </div>
 
@@ -1115,117 +1344,140 @@ export function EmagrecimentoCheckoutExperience({
                         error={fieldErrors.telefone}
                         placeholder="(11) 99999-9999"
                       />
-                      <RefinedInput
-                        label="CPF ou CNPJ"
-                        value={formData.cpfCnpj}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            cpfCnpj: formatCpfCnpj(event.target.value),
-                          }))
-                        }
-                        error={fieldErrors.cpfCnpj}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="rounded-[24px] border border-zinc-100 bg-zinc-50/80 p-5">
-                    <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-900">
-                      <MapPin className="h-4 w-4 text-emerald-700" />
-                      Endereco para cadastro e nota
-                      {loadingCep && (
-                        <span className="text-xs font-medium text-zinc-500">
-                          Buscando CEP...
-                        </span>
+                      {requiresBillingAddress && (
+                        <RefinedInput
+                          label="CPF ou CNPJ"
+                          value={formData.cpfCnpj}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              cpfCnpj: formatCpfCnpj(event.target.value),
+                            }))
+                          }
+                          error={fieldErrors.cpfCnpj}
+                        />
                       )}
                     </div>
-
-                    <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
-                      <RefinedInput
-                        label="CEP"
-                        value={formData.cep}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            cep: formatCEP(event.target.value),
-                          }))
-                        }
-                        onBlur={(event) => handleCepBlur(event.target.value)}
-                        error={fieldErrors.cep}
-                      />
-                      <RefinedInput
-                        label="Numero"
-                        value={formData.enderecoNumero}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            enderecoNumero: event.target.value,
-                          }))
-                        }
-                        error={fieldErrors.enderecoNumero}
-                      />
-                    </div>
-
-                    <div className="mt-4 grid gap-4">
-                      <RefinedInput
-                        label="Endereco"
-                        value={formData.endereco}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            endereco: event.target.value,
-                          }))
-                        }
-                        error={fieldErrors.endereco}
-                      />
-                      <RefinedInput
-                        label="Complemento"
-                        value={formData.complemento}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            complemento: event.target.value,
-                          }))
-                        }
-                      />
-                    </div>
-
-                    <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_1fr_120px]">
-                      <RefinedInput
-                        label="Bairro"
-                        value={formData.bairro}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            bairro: event.target.value,
-                          }))
-                        }
-                        error={fieldErrors.bairro}
-                      />
-                      <RefinedInput
-                        label="Cidade"
-                        value={formData.cidade}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            cidade: event.target.value,
-                          }))
-                        }
-                        error={fieldErrors.cidade}
-                      />
-                      <RefinedInput
-                        label="UF"
-                        value={formData.estado}
-                        onChange={(event) =>
-                          setFormData((previous) => ({
-                            ...previous,
-                            estado: event.target.value.toUpperCase().slice(0, 2),
-                          }))
-                        }
-                        error={fieldErrors.estado}
-                      />
-                    </div>
                   </div>
+
+                  {requiresBillingAddress ? (
+                    <div className="rounded-[24px] border border-zinc-100 bg-zinc-50/80 p-5">
+                      <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-900">
+                        <MapPin className="h-4 w-4 text-emerald-700" />
+                        Endereco para cadastro e nota
+                        {loadingCep && (
+                          <span className="text-xs font-medium text-zinc-500">
+                            Buscando CEP...
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
+                        <RefinedInput
+                          label="CEP"
+                          value={formData.cep}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              cep: formatCEP(event.target.value),
+                            }))
+                          }
+                          onBlur={(event) => handleCepBlur(event.target.value)}
+                          error={fieldErrors.cep}
+                        />
+                        <RefinedInput
+                          label="Numero"
+                          value={formData.enderecoNumero}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              enderecoNumero: event.target.value,
+                            }))
+                          }
+                          error={fieldErrors.enderecoNumero}
+                        />
+                      </div>
+
+                      <div className="mt-4 grid gap-4">
+                        <RefinedInput
+                          label="Endereco"
+                          value={formData.endereco}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              endereco: event.target.value,
+                            }))
+                          }
+                          error={fieldErrors.endereco}
+                        />
+                        <RefinedInput
+                          label="Complemento"
+                          value={formData.complemento}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              complemento: event.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+
+                      <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_1fr_120px]">
+                        <RefinedInput
+                          label="Bairro"
+                          value={formData.bairro}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              bairro: event.target.value,
+                            }))
+                          }
+                          error={fieldErrors.bairro}
+                        />
+                        <RefinedInput
+                          label="Cidade"
+                          value={formData.cidade}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              cidade: event.target.value,
+                            }))
+                          }
+                          error={fieldErrors.cidade}
+                        />
+                        <RefinedInput
+                          label="UF"
+                          value={formData.estado}
+                          onChange={(event) =>
+                            setFormData((previous) => ({
+                              ...previous,
+                              estado: event.target.value
+                                .toUpperCase()
+                                .slice(0, 2),
+                            }))
+                          }
+                          error={fieldErrors.estado}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-[24px] border border-emerald-100 bg-emerald-50/70 p-5">
+                      <div className="flex items-start gap-3">
+                        <ShieldCheck className="mt-1 h-5 w-5 text-emerald-700" />
+                        <div>
+                          <p className="text-sm font-bold text-slate-900">
+                            PIX sem friccao desnecessaria
+                          </p>
+                          <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                            Para gerar o PIX, a MeJoy usa nome, e-mail e
+                            WhatsApp. Dados completos podem ser solicitados
+                            depois, somente quando forem necessarios para
+                            operacao, nota ou envio.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
@@ -1258,14 +1510,15 @@ export function EmagrecimentoCheckoutExperience({
                         Forma de pagamento
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                        Escolha a opcao que melhor fecha a jornada agora. O acompanhamento de status continua automatico.
+                        Escolha a opcao que melhor fecha a jornada agora. O
+                        acompanhamento de status continua automatico.
                       </p>
                     </div>
 
                     <div className="grid gap-3 sm:grid-cols-2">
                       <button
                         type="button"
-                        onClick={() => setPaymentMethod("PIX")}
+                        onClick={() => selectPaymentMethod("PIX")}
                         className={cn(
                           "rounded-2xl border p-4 text-left transition-all",
                           paymentMethod === "PIX"
@@ -1287,7 +1540,7 @@ export function EmagrecimentoCheckoutExperience({
                       </button>
                       <button
                         type="button"
-                        onClick={() => setPaymentMethod("CREDIT_CARD")}
+                        onClick={() => selectPaymentMethod("CREDIT_CARD")}
                         className={cn(
                           "rounded-2xl border p-4 text-left transition-all",
                           paymentMethod === "CREDIT_CARD"
@@ -1423,21 +1676,26 @@ export function EmagrecimentoCheckoutExperience({
                       {paymentMethodLabel}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                      O pagamento confirma o fechamento e o acesso ao app continua automatico assim que o status virar pago.
+                      O pagamento confirma o fechamento e o acesso ao app
+                      continua automatico assim que o status virar pago.
                     </p>
                     <div className="mt-4 rounded-[20px] border border-white bg-white p-4 shadow-sm">
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
                         Acesso ao app
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                        O dashboard so abre depois da confirmacao real do pagamento. Antes disso, voce continua protegido nesta pagina.
+                        O dashboard so abre depois da confirmacao real do
+                        pagamento. Antes disso, voce continua protegido nesta
+                        pagina.
                       </p>
                     </div>
                     <div className="mt-4">
                       <div className="flex items-start justify-between gap-4 border-b border-emerald-100 pb-4">
                         <div>
                           <p className="font-semibold text-slate-900">PIX</p>
-                          <p className="mt-1 text-sm text-slate-600">Desconto imediato na mesma pagina</p>
+                          <p className="mt-1 text-sm text-slate-600">
+                            Desconto imediato na mesma pagina
+                          </p>
                         </div>
                         <span className="text-right text-lg font-bold text-emerald-700">
                           {formatCurrency(pixAmount)}
@@ -1501,8 +1759,8 @@ export function EmagrecimentoCheckoutExperience({
                         : "Estamos validando o cartao"}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                      Assim que o pagamento for confirmado, voce segue automaticamente
-                      para o dashboard MeJoy.
+                      Assim que o pagamento for confirmado, voce segue
+                      automaticamente para o dashboard MeJoy.
                     </p>
                   </div>
                   <div className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-emerald-800 shadow-sm">
@@ -1581,6 +1839,9 @@ export function EmagrecimentoCheckoutExperience({
                                 href={fallbackPaymentLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() =>
+                                  trackPaymentLinkOpen("pix_fallback")
+                                }
                               >
                                 Abrir link de pagamento seguro
                               </a>
@@ -1611,6 +1872,7 @@ export function EmagrecimentoCheckoutExperience({
                             href={fallbackPaymentLink}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() => trackPaymentLinkOpen("card_receipt")}
                           >
                             Abrir comprovante do pagamento
                           </a>

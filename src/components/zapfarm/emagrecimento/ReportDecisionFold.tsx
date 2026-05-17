@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import type { ReportViewModel } from '@/lib/report/derive';
-import { getRecommendedPlan } from '@/lib/emagrecimento/planRecommendation';
-import { planIdMapping } from '@/config/zapfarm/emagrecimento-plans';
-import { getResultsInvestmentBand } from '@/lib/emagrecimento/launchPricing';
+import Image from "next/image";
+import type { ReportViewModel } from "@/lib/report/derive";
+import { getRecommendedPlan } from "@/lib/emagrecimento/planRecommendation";
+import { planIdMapping } from "@/config/zapfarm/emagrecimento-plans";
+import { getResultsInvestmentBand } from "@/lib/emagrecimento/launchPricing";
 import {
   trilhaFromPreferencia,
   type EmagrecimentoTrilha,
-} from '@/lib/emagrecimento/checkoutUrls';
+} from "@/lib/emagrecimento/checkoutUrls";
 import {
   estimateWeightLossRangeKg,
   getMedicationTrackCard,
   medicationTrackCards,
-} from '@/lib/emagrecimento/medicationCards';
-import { EMAGRECIMENTO_REPORT_ASSETS } from '@/lib/emagrecimento-lp-assets';
-import { TREATMENT_TRACKS_BY_ID } from '@/lib/emagrecimento/treatmentTracks';
-import { buildEmagrecimentoReportWhatsappUrl } from '@/lib/emagrecimento/whatsappCta';
-import { trackFunnelEvent } from '@/lib/funnel/events-client';
-import { cn } from '@/lib/utils';
+} from "@/lib/emagrecimento/medicationCards";
+import { EMAGRECIMENTO_REPORT_ASSETS } from "@/lib/emagrecimento-lp-assets";
+import { TREATMENT_TRACKS_BY_ID } from "@/lib/emagrecimento/treatmentTracks";
+import { buildEmagrecimentoReportWhatsappUrl } from "@/lib/emagrecimento/whatsappCta";
+import { trackFunnelEvent } from "@/lib/funnel/events-client";
+import { cn } from "@/lib/utils";
 
 interface Props {
   vm: ReportViewModel;
@@ -28,27 +28,29 @@ interface Props {
   onOpenInlineCheckout?: () => void;
 }
 
-function getEligibilityCopy(
-  classification: string | undefined
-): { title: string; body: string; tone: string } {
+function getEligibilityCopy(classification: string | undefined): {
+  title: string;
+  body: string;
+  tone: string;
+} {
   switch (classification) {
-    case 'candidato_glp1':
+    case "candidato_glp1":
       return {
-        title: 'Elegibilidade preliminar favoravel',
-        body: 'Sua triagem aponta espaco para seguir com programa e avaliacao medica, com definicao clinica final somente na consulta.',
-        tone: 'border-emerald-200 bg-emerald-50 text-emerald-950',
+        title: "Elegibilidade preliminar favoravel para seguir",
+        body: "Sua triagem foi concluida e voce pode avancar para a avaliacao medica. A decisao sobre prescricao, dose e continuidade continua sendo individual e feita por medico habilitado.",
+        tone: "border-emerald-200 bg-emerald-50 text-emerald-950",
       };
-    case 'contraindicado':
+    case "contraindicado":
       return {
-        title: 'Avaliacao medica vem antes da prescricao',
-        body: 'Algumas respostas pedem confirmacao clinica mais cuidadosa. O fechamento continua disponivel, mas a seguranca vem primeiro.',
-        tone: 'border-amber-200 bg-amber-50 text-amber-950',
+        title: "Avaliacao medica vem antes da prescricao",
+        body: "Algumas respostas pedem uma leitura clinica mais cuidadosa. Voce pode confirmar o programa, mas nenhuma conduta medicamentosa segue sem validacao medica.",
+        tone: "border-amber-200 bg-amber-50 text-amber-950",
       };
     default:
       return {
-        title: 'Seu caso pede leitura medica final',
-        body: 'O relatorio ja organiza a melhor direcao de fechamento, mas a decisao clinica final continua sendo do medico.',
-        tone: 'border-slate-200 bg-slate-50 text-slate-900',
+        title: "Plano pronto para revisao medica",
+        body: "A triagem organizou seu contexto, seus objetivos e o caminho inicial. A consulta confirma o que faz sentido para o seu caso.",
+        tone: "border-slate-200 bg-slate-50 text-slate-900",
       };
   }
 }
@@ -62,43 +64,45 @@ export function ReportDecisionFold({
 }: Props) {
   const answers = (vm as any).answers || {};
   const classification = (vm as any).classification as
-    | 'candidato_glp1'
-    | 'nao_indicado'
-    | 'contraindicado'
+    | "candidato_glp1"
+    | "nao_indicado"
+    | "contraindicado"
     | undefined;
   const preferencia = answers.preferencia_principio_ativo as string | undefined;
   const impactoVida = answers.impacto_vida;
   const comorbidades = Array.isArray(answers.comorbidades)
-    ? answers.comorbidades.filter((item: string) => item !== 'nenhuma')
+    ? answers.comorbidades.filter((item: string) => item !== "nenhuma")
     : [];
   const recommendedLegacyPlan = classification
     ? getRecommendedPlan(classification, impactoVida, comorbidades)
-    : 'trimestral';
+    : "trimestral";
   const recommendedPlanId =
-    planIdMapping[recommendedLegacyPlan as keyof typeof planIdMapping] || 'programa-3m';
+    planIdMapping[recommendedLegacyPlan as keyof typeof planIdMapping] ||
+    "programa-3m";
   const investment = getResultsInvestmentBand();
   const eligibility = getEligibilityCopy(classification);
   const preferredTrack = trilhaFromPreferencia(preferencia);
   const preferredTrackTitle =
-    medicationTrackCards.find((track) => track.id === preferredTrack)?.title || 'Definicao clinica';
+    medicationTrackCards.find((track) => track.id === preferredTrack)?.title ||
+    "Definicao clinica";
   const selectedTrackCard = getMedicationTrackCard(selectedTrilha);
   const selectedTrack = TREATMENT_TRACKS_BY_ID[selectedTrilha];
   const estimatedRange = estimateWeightLossRangeKg(
     vm.basics.weightKg,
-    selectedTrackCard.efficacyRangePercent
+    selectedTrackCard.efficacyRangePercent,
   );
 
   const recommendation =
-    preferencia === 'tirzepatida'
-      ? 'Sua preferencia atual aponta para a trilha com tirzepatida, sujeita a confirmacao medica.'
-      : preferencia === 'semaglutida'
-        ? 'Sua preferencia atual aponta para a trilha com semaglutida, sujeita a confirmacao medica.'
-        : preferencia === 'contrave'
-          ? 'Sua preferencia atual aponta para a trilha oral com Contrave, sujeita a confirmacao medica.'
-          : 'Seu relatorio indica fechar o programa agora e deixar o principio ativo final para a consulta.';
+    preferencia === "tirzepatida"
+      ? "Sua preferencia aponta para uma trilha de alta potencia metabolica, sujeita a confirmacao medica."
+      : preferencia === "semaglutida"
+        ? "Sua preferencia aponta para uma trilha de previsibilidade clinica, sujeita a confirmacao medica."
+        : preferencia === "contrave"
+          ? "Sua preferencia aponta para uma trilha oral estruturada, sujeita a confirmacao medica."
+          : "Seu plano indica confirmar o programa agora e deixar a conduta final para a avaliacao medica.";
 
   const handleSelectTrack = (trilha: EmagrecimentoTrilha) => {
-    trackFunnelEvent('trilha_selected', {
+    trackFunnelEvent("trilha_selected", {
       report_id: reportId,
       triage_id: vm.triageId || reportId,
       trilha,
@@ -107,60 +111,80 @@ export function ReportDecisionFold({
   };
 
   const handleOpenCheckout = () => {
-    trackFunnelEvent('cta_clinical_handoff', {
+    trackFunnelEvent("cta_clinical_handoff", {
       report_id: reportId,
       triage_id: vm.triageId || reportId,
-      surface: 'decision_fold',
+      surface: "decision_fold",
       trilha: selectedTrilha,
     });
     onOpenInlineCheckout?.();
   };
 
   return (
-    <section className="container mx-auto px-4 pb-2 pt-4 sm:px-6" aria-label="Decisao do programa">
+    <section
+      className="container mx-auto px-4 pb-2 pt-4 sm:px-6"
+      aria-label="Decisao do programa"
+    >
       <div className="overflow-hidden rounded-[34px] border border-[#d7e3da] bg-white shadow-[0_30px_90px_rgba(15,23,42,0.08)]">
         <div className="grid lg:grid-cols-[1.02fr_0.98fr]">
           <div className="p-6 sm:p-8 lg:p-10">
             <span className="inline-flex rounded-full bg-[#f3ece4] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#5f4b3a]">
-              Relatorio pos-triagem
+              Plano MeJoy pronto
             </span>
 
             <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl lg:text-[3.2rem] lg:leading-[1.02]">
-              Seu proximo passo ja esta definido: fechar o programa aqui e seguir para a avaliacao medica.
+              Seu Plano MeJoy esta pronto. Agora confirme o programa para seguir
+              a avaliacao medica.
             </h1>
 
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Elegibilidade, trilha, plano e pagamento continuam na mesma pagina. O dashboard da MeJoy so abre depois da confirmacao real do pagamento.
+              Sua triagem organizou contexto, caminho inicial e plano
+              recomendado. Depois do pagamento confirmado, a MeJoy libera a
+              jornada medica, o dashboard e os proximos passos oficiais.
             </p>
 
-            <div className={cn('mt-6 rounded-[28px] border p-5', eligibility.tone)}>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em]">Leitura principal do relatorio</p>
+            <div
+              className={cn("mt-6 rounded-[28px] border p-5", eligibility.tone)}
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.18em]">
+                Leitura principal do relatorio
+              </p>
               <h2 className="mt-2 text-xl font-bold">{eligibility.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed sm:text-base">{eligibility.body}</p>
+              <p className="mt-2 text-sm leading-relaxed sm:text-base">
+                {eligibility.body}
+              </p>
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                  Leitura imediata
+                  Microvitoria da triagem
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">{recommendation}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                  {recommendation}
+                </p>
               </div>
               <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                   Faixa de investimento
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">{investment}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                  {investment}
+                </p>
                 <p className="mt-3 text-xs font-semibold text-emerald-700">
-                  Plano-base sugerido: {recommendedPlanId.replace('programa-', '').replace('m', ' meses')}
+                  Plano-base sugerido:{" "}
+                  {recommendedPlanId
+                    .replace("programa-", "")
+                    .replace("m", " meses")}
                 </p>
               </div>
               <div className="rounded-[24px] border border-zinc-100 bg-[#f8faf8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                  Regra de acesso
+                  Por que confirmar agora
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  Pagou e confirmou, entra no dashboard. Antes disso, voce continua aqui com checkout e suporte oficial.
+                  O pagamento reserva sua entrada no programa e libera o
+                  dashboard somente quando o status for confirmado.
                 </p>
               </div>
             </div>
@@ -171,10 +195,12 @@ export function ReportDecisionFold({
                   Proximo passo agora
                 </p>
                 <h3 className="mt-2 text-2xl font-bold text-slate-950">
-                  Fechar o programa nesta pagina
+                  Confirmar o programa nesta pagina
                 </h3>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700 sm:text-base">
-                  Seu relatorio ja fez a parte diagnostica. Agora voce escolhe a trilha, confirma o plano e paga sem sair do fluxo.
+                  Voce nao esta comprando uma medicacao isolada. Voce esta
+                  contratando uma jornada medica com avaliacao, acompanhamento,
+                  app e conduta individualizada.
                 </p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <button
@@ -182,7 +208,7 @@ export function ReportDecisionFold({
                     onClick={handleOpenCheckout}
                     className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
                   >
-                    Fechar meu programa agora
+                    Confirmar meu programa agora
                   </button>
                   <p className="text-sm text-slate-600">
                     O app libera so depois da confirmacao real do pagamento.
@@ -195,20 +221,21 @@ export function ReportDecisionFold({
                   Suporte oficial
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  Se quiser validar algo antes de pagar, o WhatsApp oficial entra sem quebrar a jornada.
+                  Se quiser validar algo antes de pagar, o WhatsApp oficial
+                  entra sem quebrar a jornada.
                 </p>
                 <a
                   href={buildEmagrecimentoReportWhatsappUrl({
                     reportId,
                     firstName: vm.basics.firstName,
-                    triageSlug: 'emagrecimento',
+                    triageSlug: "emagrecimento",
                   })}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
-                    trackFunnelEvent('whatsapp_report_cta', {
+                    trackFunnelEvent("whatsapp_report_cta", {
                       report_id: reportId,
-                      surface: 'decision_fold',
+                      surface: "decision_fold",
                     })
                   }
                   className="mt-4 inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
@@ -265,18 +292,25 @@ export function ReportDecisionFold({
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                     Preferencia atual
                   </p>
-                  <p className="mt-2 text-lg font-bold text-slate-900">{preferredTrackTitle}</p>
+                  <p className="mt-2 text-lg font-bold text-slate-900">
+                    {preferredTrackTitle}
+                  </p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    O relatorio respeita sua preferencia, mas a trilha final continua clinica.
+                    O relatorio respeita sua preferencia, mas a trilha final
+                    continua clinica.
                   </p>
                 </div>
                 <div className="rounded-[24px] border border-white bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.05)]">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                     Escolha atual
                   </p>
-                  <p className="mt-2 text-lg font-bold text-slate-900">{selectedTrack.title}</p>
+                  <p className="mt-2 text-lg font-bold text-slate-900">
+                    {selectedTrack.title}
+                  </p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {estimatedRange ? `Faixa media observada: ${estimatedRange.label}.` : selectedTrack.estimate}
+                    {estimatedRange
+                      ? `Faixa media observada: ${estimatedRange.label}.`
+                      : selectedTrack.estimate}
                   </p>
                 </div>
               </div>
@@ -288,21 +322,25 @@ export function ReportDecisionFold({
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                Trilha terapêutica
+                Caminho inicial
               </p>
               <h2 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-slate-950 sm:text-3xl">
-                Escolha a trilha terapêutica do seu programa
+                Escolha o caminho que sera revisado pelo medico
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-relaxed text-slate-600">
-              Cada opcao abaixo resume potencia, previsibilidade, faixa media de perda e seguranca clinica em linguagem direta.
+              Cada opcao resume objetivo, intensidade e seguranca. A decisao
+              final sobre prescricao continua medica.
             </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {medicationTrackCards.map((track) => {
               const selected = selectedTrilha === track.id;
-              const range = estimateWeightLossRangeKg(vm.basics.weightKg, track.efficacyRangePercent);
+              const range = estimateWeightLossRangeKg(
+                vm.basics.weightKg,
+                track.efficacyRangePercent,
+              );
               const trackContent = TREATMENT_TRACKS_BY_ID[track.id];
               return (
                 <button
@@ -310,10 +348,10 @@ export function ReportDecisionFold({
                   type="button"
                   onClick={() => handleSelectTrack(track.id)}
                   className={cn(
-                    'overflow-hidden rounded-[28px] border bg-white text-left transition-all',
+                    "overflow-hidden rounded-[28px] border bg-white text-left transition-all",
                     selected
-                      ? 'border-emerald-500 shadow-[0_20px_50px_rgba(5,150,105,0.14)]'
-                      : 'border-zinc-200 hover:border-emerald-300 hover:shadow-[0_16px_40px_rgba(15,23,42,0.06)]'
+                      ? "border-emerald-500 shadow-[0_20px_50px_rgba(5,150,105,0.14)]"
+                      : "border-zinc-200 hover:border-emerald-300 hover:shadow-[0_16px_40px_rgba(15,23,42,0.06)]",
                   )}
                 >
                   <div className="relative aspect-[1.18] overflow-hidden bg-[#f3f6f3]">
@@ -326,7 +364,7 @@ export function ReportDecisionFold({
                     />
                     <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
                       <span className="rounded-full bg-white/92 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-900 shadow-sm">
-                        {selected ? 'Selecionado' : 'Disponivel'}
+                        {selected ? "Selecionado" : "Disponivel"}
                       </span>
                       <span className="rounded-full bg-emerald-950/88 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
                         {track.potencyLabel}
@@ -336,8 +374,12 @@ export function ReportDecisionFold({
 
                   <div className="space-y-4 p-5">
                     <div>
-                      <p className="text-lg font-bold text-slate-950">{track.title}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-600">{track.subtitle}</p>
+                      <p className="text-lg font-bold text-slate-950">
+                        {track.title}
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                        {track.subtitle}
+                      </p>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
@@ -352,13 +394,19 @@ export function ReportDecisionFold({
                         <p className="mt-1">{track.efficacyText}</p>
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900">Quanto isso pode representar</p>
+                        <p className="font-semibold text-slate-900">
+                          Quanto isso pode representar
+                        </p>
                         <p className="mt-1">
-                          {range ? range.label : 'A faixa real depende da dose, da adesao e da resposta individual.'}
+                          {range
+                            ? range.label
+                            : "A faixa real depende da dose, da adesao e da resposta individual."}
                         </p>
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900">Seguranca clinica</p>
+                        <p className="font-semibold text-slate-900">
+                          Seguranca clinica
+                        </p>
                         <p className="mt-1">{track.safetyText}</p>
                       </div>
                     </div>
@@ -374,7 +422,9 @@ export function ReportDecisionFold({
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
                   Trilha selecionada agora
                 </p>
-                <h3 className="mt-2 text-2xl font-bold text-slate-950">{selectedTrackCard.title}</h3>
+                <h3 className="mt-2 text-2xl font-bold text-slate-950">
+                  {selectedTrackCard.title}
+                </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700 sm:text-base">
                   {selectedTrackCard.plainLanguageFit}
                 </p>
