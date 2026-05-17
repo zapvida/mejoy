@@ -40,6 +40,17 @@ function digitsOnlyPhone(): string {
   return d.length >= 10 ? d : '5511999999999';
 }
 
+export const EMAGRECIMENTO_DOCTOR_ORIENTATION_WHATSAPP_PHONE = '5547999009923';
+
+export const EMAGRECIMENTO_DOCTOR_ORIENTATION_WHATSAPP_TEXT =
+  'Atendimento MeJoy: quero orientações sobre meu plano de emagrecimento.';
+
+export function buildEmagrecimentoDoctorOrientationWhatsappUrl(): string {
+  return `https://wa.me/${EMAGRECIMENTO_DOCTOR_ORIENTATION_WHATSAPP_PHONE}?text=${encodeURIComponent(
+    EMAGRECIMENTO_DOCTOR_ORIENTATION_WHATSAPP_TEXT,
+  )}`;
+}
+
 /**
  * Link wa.me para o paciente enviar o relatório ao canal oficial (handoff humano + automações).
  */

@@ -415,18 +415,22 @@ export default function RelatorioEmagrecimentoPage({
                     Por que pacientes escolhem a MeJoy antes de iniciar
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    O pagamento confirma sua entrada no programa, mas a decisao
-                    sobre medicacao, dose, exames e continuidade continua sendo
-                    feita por medico habilitado. A jornada combina avaliacao,
-                    app, suporte oficial e politica clara antes de qualquer
-                    envio.
+                    O pagamento confirma sua entrada no programa, mas a decisão
+                    sobre medicação, dose, exames e continuidade continua sendo
+                    feita por médico habilitado. Antes do preço, o valor real é
+                    este: avaliação médica, WhatsApp oficial, dashboard,
+                    suporte, orientação clínica e política clara antes de
+                    qualquer envio.
                   </p>
 
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
                     {[
-                      "Avaliacao medica antes de qualquer prescricao",
+                      "Avaliação médica antes de qualquer prescrição",
+                      "Medicamentos originais quando prescritos e indicados",
+                      "Entrega expressa em regiões atendidas, após confirmação logística",
                       "Dados protegidos e contato oficial pelo WhatsApp",
-                      "Reembolso antes do envio se a conduta esperada nao for indicada",
+                      "Dashboard liberado após pagamento confirmado",
+                      "Reembolso antes do envio se a conduta esperada não for indicada",
                     ].map((item) => (
                       <div
                         key={item}
@@ -451,10 +455,11 @@ export default function RelatorioEmagrecimentoPage({
                     </div>
                   </div>
                   <div className="rounded-[24px] border border-dashed border-[#d7e3da] bg-white px-4 py-4 text-sm text-slate-600">
-                    Garantia de conduta segura: se a avaliacao medica concluir
-                    que a terapia esperada nao e indicada, nenhuma medicacao e
-                    enviada sem sua concordancia. Voce pode seguir por protocolo
-                    alternativo ou solicitar reembolso integral antes do envio.
+                    Garantia de conduta segura: se a avaliação médica concluir
+                    que a terapia esperada não é indicada, nenhuma medicação é
+                    enviada sem sua concordância. Você pode seguir por protocolo
+                    alternativo ou solicitar reembolso integral antes do envio,
+                    conforme política aplicável.
                   </div>
                 </div>
               </div>

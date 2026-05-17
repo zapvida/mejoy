@@ -14,6 +14,14 @@ test.describe("MeJoy report flow @pr-regression", () => {
       /Plano MeJoy esta pronto/i,
     );
     await expect(
+      page.getByRole("link", {
+        name: /Solicitar orientação médica gratuita de 10 min/i,
+      }),
+    ).toHaveAttribute(
+      "href",
+      /wa\.me\/5547999009923\?text=Atendimento%20MeJoy/i,
+    );
+    await expect(
       page.getByText("Escolha seu programa e confirme com seguranca").first(),
     ).toBeVisible();
 

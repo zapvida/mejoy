@@ -12,6 +12,7 @@ export type FunnelEventName =
   | "triage_completed"
   | "report_viewed"
   | "whatsapp_report_cta"
+  | "doctor_orientation_click"
   | "trilha_selected"
   | "plan_selected"
   | "report_plan_selected"
@@ -45,6 +46,7 @@ export const CANONICAL_LAUNCH_EVENT_NAMES: readonly FunnelEventName[] = [
   "triage_started",
   "triage_completed",
   "report_viewed",
+  "doctor_orientation_click",
   "plan_selected",
   "checkout_viewed",
   "begin_checkout",

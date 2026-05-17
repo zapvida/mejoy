@@ -5,18 +5,18 @@ import { DevicePhoneMobileIcon, ShieldCheckIcon, UserGroupIcon } from '@heroicon
 const proofCards = [
   {
     icon: ShieldCheckIcon,
-    title: 'Avaliação individual',
-    text: 'Prescrição não é automática. A decisão depende do seu perfil, histórico e consulta.',
+    title: 'Avaliação antes da prescrição',
+    text: 'A decisão depende do seu perfil, histórico e consulta. Medicamento só entra quando houver indicação médica.',
   },
   {
     icon: DevicePhoneMobileIcon,
-    title: 'Menos atrito',
-    text: 'Triagem, próximos passos e suporte ficam no mesmo caminho, sem você repetir tudo a cada etapa.',
+    title: 'Jornada no seu ritmo',
+    text: 'Triagem, relatório, WhatsApp, dashboard e checkout seguem no mesmo caminho, sem repetir tudo a cada etapa.',
   },
   {
     icon: UserGroupIcon,
-    title: 'Suporte oficial',
-    text: 'Você entende o que acontece depois da triagem e segue pelos canais oficiais da MeJoy.',
+    title: 'Operação de cuidado',
+    text: 'Quando houver prescrição e região atendida, a jornada organiza medicação original, orientação e entrega expressa.',
   },
 ] as const;
 
@@ -36,14 +36,20 @@ export function BenefitsSectionObesidade() {
               id="emagrecimento-proof-heading"
               className="mt-4 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl"
             >
-              Por que a MeJoy ajuda você a continuar
+              Valor alto porque a jornada é completa
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              O maior problema não é só começar. É conseguir seguir com direção, segurança e menos atrito ao longo da
-              rotina.
+              O programa não vende uma medicação solta. Ele organiza triagem, avaliação médica, suporte, app,
+              acompanhamento e próximos passos em uma experiência única.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-600">
-              {['Médicos com CRM', 'LGPD e privacidade', 'Suporte oficial', 'Próximos passos claros'].map((item) => (
+              {[
+                'Médicos com CRM',
+                'LGPD e privacidade',
+                'WhatsApp oficial',
+                'Dashboard MeJoy',
+                'Entrega expressa onde disponível',
+              ].map((item) => (
                 <span
                   key={item}
                   className="rounded-full border border-emerald-100 bg-white px-4 py-2 shadow-sm"

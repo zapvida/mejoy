@@ -34,10 +34,10 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
   {
     id: 'etapa-1-perfil',
     section: 1,
-    title: 'Vamos começar pelo seu perfil clínico.',
+    title: 'Seu perfil essencial.',
     description:
-      'Precisamos dos dados essenciais para calcular elegibilidade e iniciar sua leitura clínica.',
-    ctaLabel: 'Próximo',
+      'Altura, peso, meta e segurança inicial para montar a primeira leitura.',
+    ctaLabel: 'Continuar com segurança',
     items: [
       { kind: 'field', key: 'aceita_termos', required: true, resumeRequired: true },
       { kind: 'field', key: 'altura', required: true, resumeRequired: true },
@@ -51,10 +51,10 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
   {
     id: 'etapa-2-clinico',
     section: 2,
-    title: 'Agora precisamos do seu histórico de saúde.',
+    title: 'Segurança antes de qualquer prescrição.',
     description:
-      'Essas respostas reduzem risco, evitam contraindicações e aceleram a avaliação médica.',
-    ctaLabel: 'Próximo',
+      'Marque só o que se aplica. Se nada se aplicar, use “Nenhuma dessas”.',
+    ctaLabel: 'Ver objetivo e contato',
     items: [
       { kind: 'field', key: 'contraindicacoes_glp1', required: true, resumeRequired: true },
       {
@@ -100,11 +100,11 @@ export const EMAGRECIMENTO_INTAKE_PAGES: EmagrecimentoPageConfig[] = [
   {
     id: 'etapa-3-objetivo-e-contato',
     section: 3,
-    title: 'Falta só entender seu objetivo e onde enviar o resultado.',
+    title: 'Falta só seu objetivo e contato.',
     description:
-      'Com isso, a MeJoy monta sua leitura inicial e orienta o próximo passo pelo canal oficial.',
+      'A MeJoy monta seu Plano MeJoy e deixa o próximo passo pronto no canal oficial.',
     note: 'Prescrição e medicação somente quando indicadas após avaliação médica.',
-    ctaLabel: 'Gerar meu resultado inicial',
+    ctaLabel: 'Gerar meu Plano MeJoy',
     submit: true,
     items: [
       { kind: 'field', key: 'impacto_vida', required: true, resumeRequired: true },

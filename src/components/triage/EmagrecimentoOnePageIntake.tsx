@@ -122,38 +122,35 @@ const FIELD_LABEL_OVERRIDES: Record<string, string> = {
 };
 
 const FIELD_HELPER_OVERRIDES: Record<string, string> = {
-  altura: "Em centímetros. Se preferir, 1,70 também funciona.",
+  altura: "Em centímetros.",
   peso: "Em quilogramas.",
-  peso_meta: "Uma meta inicial já ajuda a leitura clínica.",
-  sexo: "Usado para critérios de segurança e gestação.",
-  gestacao: "GLP-1 não é indicado na gestação.",
-  data_nascimento: "Programa para maiores de 18 anos.",
+  peso_meta: "Uma meta inicial basta.",
+  sexo: "Critério de segurança clínica.",
+  gestacao: "Importante para elegibilidade.",
+  data_nascimento: "Apenas maiores de 18 anos.",
   contraindicacoes_glp1:
-    "Marque tudo o que se aplicar. Se nada se aplicar, escolha a opção correspondente.",
-  comorbidades: "Marque apenas o que já faz parte do seu histórico.",
+    "Se nada se aplicar, marque “Nenhuma dessas”.",
+  comorbidades: "Marque só diagnósticos ou contextos reais.",
   cirurgia_bariatrica_previa:
-    "Esse contexto ajuda a evitar recomendações inadequadas.",
-  uso_opioides_3meses: "Informação de segurança para a avaliação médica.",
-  medicamentos_prescritos_atual:
-    "Interações medicamentosas importam para a decisão clínica.",
+    "Ajuda a evitar condutas inadequadas.",
+  uso_opioides_3meses: "Dado de segurança médica.",
+  medicamentos_prescritos_atual: "Interações podem mudar a conduta.",
   uso_medicacao_emagrecimento_recente:
-    "Ajuda a entender tolerância e resposta recente.",
-  efeitos_colaterais_previos: "Só aparece se você indicar uso prévio.",
-  pressao_arterial_faixa:
-    "Não substitui aferição médica; serve como contexto inicial.",
-  frequencia_cardiaca_repouso:
-    "Se não souber, selecione a opção correspondente.",
-  impacto_vida: "Queremos medir o impacto real do peso no seu dia a dia.",
-  objetivo_principal: "Isso orienta a prioridade do relatório.",
+    "Ajuda a entender tolerância recente.",
+  efeitos_colaterais_previos: "Só se você já usou algo antes.",
+  pressao_arterial_faixa: "Contexto inicial, sem substituir aferição.",
+  frequencia_cardiaca_repouso: "Se não souber, selecione essa opção.",
+  impacto_vida: "Mostra prioridade e urgência percebida.",
+  objetivo_principal: "Define o foco do seu plano.",
   preferencia_principio_ativo: "A decisão final é sempre do médico.",
-  primeiro_nome: "Esse nome entra no seu resumo.",
-  whatsapp: "Canal oficial para envio do resultado e próximos passos.",
+  primeiro_nome: "Usado no seu plano.",
+  whatsapp: "Canal oficial para próximos passos.",
 };
 
 const TRIAGE_EDITORIAL_FACTS = [
-  { value: "3 etapas", label: "sem desviar do fluxo atual" },
-  { value: "1 resultado", label: "gerado logo apos a triagem" },
-  { value: "100%", label: "fechamento na mesma jornada" },
+  { value: "3 etapas", label: "perfil, segurança e objetivo" },
+  { value: "2-3 min", label: "sem pergunta solta" },
+  { value: "Plano", label: "pronto ao final" },
 ];
 
 const TRIAGE_HERO_FRAMES = EMAGRECIMENTO_TRIAGE_ASSETS.heroFrames;
@@ -929,11 +926,13 @@ export function EmagrecimentoOnePageIntake({
             </label>
           ) : null}
           {helperText ? (
-            <p className="mt-1 text-sm leading-6 text-slate-500">
+            <p className="mt-1 text-[13px] leading-5 text-slate-500">
               {helperText}
             </p>
           ) : null}
-          <div className={cn(options?.hideLabel ? "" : "mt-3")}>{children}</div>
+          <div className={cn(options?.hideLabel ? "" : "mt-2.5")}>
+            {children}
+          </div>
           {error ? (
             <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
           ) : null}
@@ -950,7 +949,7 @@ export function EmagrecimentoOnePageIntake({
 
       return (
         <div
-          className="rounded-[18px] border border-[#d4d8d0] bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+          className="rounded-[18px] border border-[#d4d8d0] bg-white p-3.5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
           data-step-key={step.key}
           data-triage-field-error={sectionErrors[step.key] ? "true" : undefined}
         >
@@ -1128,7 +1127,7 @@ export function EmagrecimentoOnePageIntake({
       const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           {fieldOptions.map((option) => {
             const selected = answers[step.key] === option.value;
             return (
@@ -1138,7 +1137,7 @@ export function EmagrecimentoOnePageIntake({
                 name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  "rounded-[18px] border px-4 py-4 text-left transition",
+                  "rounded-[18px] border px-4 py-3.5 text-left transition",
                   selected
                     ? "border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.08)]"
                     : "border-[#d8dfd5] bg-white hover:border-[#bfcabd]",
@@ -1169,7 +1168,7 @@ export function EmagrecimentoOnePageIntake({
       const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           {fieldOptions.map((option) => {
             const selected = answers[step.key] === option.value;
             return (
@@ -1179,7 +1178,7 @@ export function EmagrecimentoOnePageIntake({
                 name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  "rounded-[18px] border px-4 py-5 text-left transition",
+                  "rounded-[18px] border px-4 py-3.5 text-left transition",
                   selected
                     ? "border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.08)]"
                     : "border-[#d8dfd5] bg-white hover:border-[#bfcabd]",
@@ -1210,7 +1209,7 @@ export function EmagrecimentoOnePageIntake({
       const fieldOptions = step.options ?? [];
       return renderQuestionShell(
         step,
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           {fieldOptions.map((option) => {
             const selected = answers[step.key] === option.value;
             return (
@@ -1220,7 +1219,7 @@ export function EmagrecimentoOnePageIntake({
                 name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  "flex w-full items-start gap-3 rounded-[18px] border px-4 py-4 text-left transition",
+                  "flex w-full items-start gap-3 rounded-[18px] border px-4 py-3.5 text-left transition",
                   selected
                     ? "border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.06)]"
                     : "border-[#d8dfd5] bg-white hover:border-[#bfcabd]",
@@ -1280,7 +1279,7 @@ export function EmagrecimentoOnePageIntake({
               Seleções já marcadas acima seguem mantidas.
             </p>
           ) : null}
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {fieldOptions.map((option) => {
               const checked = selected.includes(option.value);
               return (
@@ -1292,7 +1291,7 @@ export function EmagrecimentoOnePageIntake({
                     toggleMultiselect(step, option.value, !checked)
                   }
                   className={cn(
-                    "flex w-full items-start gap-3 rounded-[18px] border px-4 py-4 text-left transition",
+                    "flex w-full items-start gap-3 rounded-[18px] border px-4 py-3.5 text-left transition",
                     checked
                       ? "border-[#2f6a49] bg-[#eef6ef] shadow-[0_10px_24px_rgba(47,106,73,0.06)]"
                       : "border-[#d8dfd5] bg-white hover:border-[#bfcabd]",
@@ -1346,7 +1345,7 @@ export function EmagrecimentoOnePageIntake({
     ) =>
       renderQuestionShell(
         step,
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {(step.cardOptions ?? []).map((option) => {
             const selected = answers[step.key] === option.value;
             return (
@@ -1356,7 +1355,7 @@ export function EmagrecimentoOnePageIntake({
                 name={step.key}
                 onClick={() => setField(step, option.value)}
                 className={cn(
-                  "rounded-[22px] border px-4 py-4 text-left transition",
+                  "rounded-[22px] border px-4 py-3.5 text-left transition",
                   selected
                     ? "border-[#2f6a49] bg-[#eef6ef] shadow-[0_12px_24px_rgba(47,106,73,0.08)]"
                     : "border-[#d8dfd5] bg-white hover:border-[#bfcabd]",
@@ -1451,27 +1450,27 @@ export function EmagrecimentoOnePageIntake({
     ) => (
       <section
         className={cn(
-          "px-5 py-5 sm:px-7 sm:py-6",
+          "px-4 py-4 sm:px-6 sm:py-5",
           options?.muted ? "bg-[#fbfbf7]" : "bg-white",
         )}
       >
         <div
           className={cn(
-            "rounded-[28px] border p-5 shadow-[0_18px_45px_rgba(15,23,42,0.04)] sm:p-6",
+            "rounded-[24px] border p-4 shadow-[0_14px_34px_rgba(15,23,42,0.035)] sm:p-5",
             options?.muted
               ? "border-[#e4e8de] bg-white"
               : "border-[#d8e3d5] bg-[linear-gradient(180deg,#f9fbf7_0%,#f1f6ef_100%)]",
           )}
         >
-          <div className="mb-4">
+          <div className="mb-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
-              Bloco da triagem
+              Etapa atual
             </p>
-            <h2 className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-slate-900 sm:text-[22px]">
+            <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.03em] text-slate-900 sm:text-[21px]">
               {title}
             </h2>
             {description ? (
-              <p className="mt-2 text-[14px] leading-6 text-slate-600">
+              <p className="mt-1.5 text-[13px] leading-5 text-slate-600 sm:text-sm">
                 {description}
               </p>
             ) : null}
@@ -1495,40 +1494,30 @@ export function EmagrecimentoOnePageIntake({
     return (
       <>
         {renderStageSection(
-          "Confirmação e documentos",
-          "Confirme para continuar.",
+          "Perfil, meta e segurança inicial",
+          "Preencha só o essencial para calcular o ponto de partida e evitar risco desnecessário.",
           <div className="space-y-4">
             {aceite ? renderFieldByStep(aceite) : null}
-          </div>,
-          { muted: true },
-        )}
-
-        {renderStageSection(
-          "Dados básicos",
-          "Esses dados ajudam a calcular elegibilidade e enquadramento inicial.",
-          <div className="space-y-5">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               {altura ? renderNumberField(altura) : null}
               {peso ? renderNumberField(peso) : null}
+              {pesoMeta ? renderNumberField(pesoMeta) : null}
             </div>
-            {pesoMeta ? renderNumberField(pesoMeta) : null}
-          </div>,
-        )}
-
-        {renderStageSection(
-          "Critérios iniciais de segurança",
-          "Usamos esse bloco para reduzir risco e orientar a análise médica.",
-          <div className="space-y-5">
-            {sexo ? renderSexField(sexo) : null}
-            {gestacao ? renderSelectField(gestacao) : null}
+            <div className="grid gap-4 lg:grid-cols-[0.8fr_1fr_1fr]">
+              {sexo ? renderSexField(sexo) : null}
+              {gestacao ? renderSelectField(gestacao) : null}
             {dataNascimento
               ? renderDateField(dataNascimento, {
                   helperText:
-                    "Digite no formato DD/MM/AAAA. Sem abrir calendário.",
+                    "DD/MM/AAAA, sem calendário.",
                 })
               : null}
+            </div>
+            <div className="rounded-[20px] border border-emerald-100 bg-white px-4 py-3 text-sm leading-6 text-slate-600">
+              A triagem prepara seu Plano MeJoy. Prescrição, dose e medicação
+              original só entram se houver indicação médica.
+            </div>
           </div>,
-          { muted: true },
         )}
       </>
     );
@@ -1567,31 +1556,30 @@ export function EmagrecimentoOnePageIntake({
       return (
         <>
           {renderStageSection(
-            "Perguntas de saúde",
-            "Comece pelos critérios que podem mudar elegibilidade ou conduta.",
-            <div className="space-y-5">
+            "Histórico que muda elegibilidade",
+            "Comece pelo bloco mais importante. Se nada se aplicar, marque a opção de segurança.",
+            <div className="space-y-4">
               {contraindicacoes
                 ? renderMultiselectField(contraindicacoes, undefined, {
                     label: "Histórico importante",
                     helperText:
-                      "Marque tudo o que se aplicar. Se nada se aplicar, escolha a opção correspondente.",
+                      "Marque tudo o que se aplicar ou “Nenhuma dessas”.",
                   })
                 : null}
             </div>,
-            { muted: true },
           )}
 
           {renderStageSection(
-            "Condições associadas",
-            "Marque apenas diagnósticos ou contextos que realmente fazem parte do seu histórico.",
-            <div className="space-y-5">
+            "Condições que dão contexto",
+            "Marque apenas diagnósticos ou contextos reais.",
+            <div className="space-y-4">
               {comorbidades && primeiraFatia
                 ? renderMultiselectField(
                     comorbidades,
                     primeiraFatia.optionValues,
                     {
-                      label: "Condições metabólicas e osteoarticulares",
-                      helperText: "Parte 1 de 2.",
+                      label: "Metabólicas e osteoarticulares",
+                      helperText: "Parte 1.",
                     },
                   )
                 : null}
@@ -1603,19 +1591,20 @@ export function EmagrecimentoOnePageIntake({
                       ...(segundaFatia.includeNoneOption ? ["nenhuma"] : []),
                     ],
                     {
-                      label: "Outras condições relevantes",
+                      label: "Outras condições",
                       helperText:
-                        "Parte 2 de 2. Se nada se aplicar, marque a opção correspondente.",
+                        "Parte 2. Se nada se aplicar, marque “Nenhuma dessas”.",
                     },
                   )
                 : null}
             </div>,
+            { muted: true },
           )}
 
           {renderStageSection(
-            "Histórico terapêutico",
-            "Esse bloco reduz retrabalho na consulta e evita repetir caminhos inadequados.",
-            <div className="grid gap-5 lg:grid-cols-2">
+            "Tratamentos e sinais atuais",
+            "Últimos pontos para reduzir retrabalho na consulta.",
+            <div className="grid gap-4 lg:grid-cols-2">
               {cirurgia ? renderBinaryField(cirurgia) : null}
               {opioides ? renderBinaryField(opioides) : null}
               {prescritos ? renderBinaryField(prescritos) : null}
@@ -1625,14 +1614,6 @@ export function EmagrecimentoOnePageIntake({
                     containerClassName: "lg:col-span-2",
                   })
                 : null}
-            </div>,
-            { muted: true },
-          )}
-
-          {renderStageSection(
-            "Contexto cardiometabólico",
-            "Mais dois sinais simples para fechar a leitura de risco inicial.",
-            <div className="grid gap-5 lg:grid-cols-2">
               {pressao ? renderSelectField(pressao) : null}
               {frequencia ? renderSelectField(frequencia) : null}
             </div>,
@@ -1661,8 +1642,8 @@ export function EmagrecimentoOnePageIntake({
       <>
         {renderStageSection(
           "Objetivo e preferência inicial",
-          "Queremos entender o impacto do peso na sua rotina e qual estratégia faz mais sentido avaliar.",
-          <div className="space-y-5">
+          "O que você quer resolver primeiro e qual caminho deseja avaliar.",
+          <div className="space-y-4">
             {impacto ? renderSelectField(impacto) : null}
             {objetivo ? renderSelectField(objetivo) : null}
             {preferencia ? renderSelectCardsField(preferencia) : null}
@@ -1672,9 +1653,9 @@ export function EmagrecimentoOnePageIntake({
 
         {renderStageSection(
           "Entrega do resultado",
-          "Seu resultado inicial e os próximos passos seguem pelo canal oficial da MeJoy.",
-          <div className="space-y-5">
-            <div className="grid gap-5 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          "Seu Plano MeJoy e os próximos passos seguem pelo canal oficial.",
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
               {primeiroNome ? renderTextField(primeiroNome) : null}
               {whatsapp ? renderTextField(whatsapp) : null}
             </div>
@@ -1736,16 +1717,30 @@ export function EmagrecimentoOnePageIntake({
           <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="bg-[linear-gradient(180deg,#f6fbf7_0%,#eff5ec_100%)] p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#446048]">
-                Plano MeJoy em preparação
+                Organizando seu Plano MeJoy
               </p>
               <p className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-slate-900">
-                Organizando sua leitura personalizada
+                Seu plano está sendo montado com segurança
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Sua triagem foi recebida. Agora a MeJoy cruza perfil,
-                elegibilidade preliminar, objetivo e próximos passos para
-                apresentar o plano inicial com clareza.
+                A MeJoy está cruzando perfil, segurança clínica e objetivo para
+                abrir uma próxima etapa clara, sem prometer prescrição
+                automática.
               </p>
+              <div className="mt-5 space-y-2 text-sm text-slate-700">
+                {[
+                  "Perfil corporal conferido",
+                  "Histórico de segurança organizado",
+                  "Caminho inicial preparado para revisão médica",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[18px] border border-emerald-100 bg-white px-4 py-3"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="p-8 text-center">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#2f6a49] border-t-transparent" />
@@ -1794,7 +1789,7 @@ export function EmagrecimentoOnePageIntake({
       data-testid="emagrecimento-intake"
     >
       <div className="mx-auto max-w-[74rem]">
-        <header className="pb-10 pt-2 sm:pt-5">
+        <header className="pb-5 pt-1 sm:pb-7 sm:pt-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <LogoWithName size="medium" priority />
@@ -1803,37 +1798,37 @@ export function EmagrecimentoOnePageIntake({
               Canal oficial MeJoy
             </div>
           </div>
-          <div className="mt-8 grid gap-8 lg:grid-cols-[0.96fr_1.04fr] lg:items-end">
+          <div className="mt-5 grid gap-6 lg:grid-cols-[0.96fr_1.04fr] lg:items-end">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#4b6b50] sm:text-xs">
                 Triagem clínica MeJoy
               </p>
-              <h1 className="mt-4 max-w-3xl text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.06em] text-slate-900 sm:text-[3.4rem]">
-                Sua avaliação começa por uma triagem simples, clínica e segura.
+              <h1 className="mt-3 max-w-3xl text-[2rem] font-semibold leading-[1.02] tracking-[-0.055em] text-slate-900 sm:text-[3rem]">
+                Triagem clínica MeJoy para montar seu plano.
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Esta triagem organiza seu contexto clínico em poucos passos, com
-                linguagem clara, privacidade e leitura fácil para preparar seu
-                Plano MeJoy antes da avaliação médica.
+              <p className="mt-3 max-w-2xl text-[15px] leading-6 text-slate-600 sm:text-lg sm:leading-7">
+                Responda o essencial, entenda o caminho provável e siga para um
+                relatório com próximo passo claro, seguro e sem prescrição
+                automática.
               </p>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
                 {TRIAGE_EDITORIAL_FACTS.map((fact) => (
                   <div
                     key={fact.value}
-                    className="rounded-[24px] border border-[#dbe4d7] bg-white px-4 py-4 shadow-[0_14px_35px_rgba(15,23,42,0.04)]"
+                    className="rounded-[20px] border border-[#dbe4d7] bg-white px-3 py-3 shadow-[0_10px_26px_rgba(15,23,42,0.035)] sm:px-4"
                   >
-                    <p className="text-lg font-semibold tracking-[-0.03em] text-slate-900">
+                    <p className="text-base font-semibold tracking-[-0.03em] text-slate-900 sm:text-lg">
                       {fact.value}
                     </p>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                    <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
                       {fact.label}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-600">
+              <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 sm:text-sm">
                 <span className="rounded-full border border-[#d8ddd5] bg-white px-4 py-2 shadow-sm">
                   Dados clínicos essenciais
                 </span>
@@ -1845,7 +1840,7 @@ export function EmagrecimentoOnePageIntake({
                 </span>
               </div>
 
-              <div className="mt-6 flex flex-col gap-4 rounded-[28px] border border-[#dbe4d7] bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.04)] sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-4 hidden flex-col gap-4 rounded-[28px] border border-[#dbe4d7] bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.04)] sm:flex sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
                     Confiança editorial
@@ -1884,7 +1879,7 @@ export function EmagrecimentoOnePageIntake({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-[0.86fr_1fr_0.88fr]">
+            <div className="hidden grid-cols-2 gap-4 lg:grid lg:grid-cols-[0.86fr_1fr_0.88fr]">
               <div className="grid gap-4">
                 <div className="overflow-hidden rounded-[30px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(15,23,42,0.07)] lg:self-end">
                   <div className="relative overflow-hidden rounded-[22px]">
@@ -1983,7 +1978,7 @@ export function EmagrecimentoOnePageIntake({
             className="overflow-hidden rounded-[34px] border border-[#dde5d7] bg-white shadow-[0_22px_65px_rgba(15,23,42,0.06)]"
             data-testid={`triage-stage-${currentPage.id}`}
           >
-            <div className="border-b border-[#e5ebe2] bg-[linear-gradient(180deg,#ffffff_0%,#f7faf6_100%)] px-5 py-7 sm:px-7 sm:pb-8 sm:pt-9">
+            <div className="border-b border-[#e5ebe2] bg-[linear-gradient(180deg,#ffffff_0%,#f7faf6_100%)] px-4 py-5 sm:px-7 sm:pb-7 sm:pt-8">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="inline-flex rounded-full bg-[#eef2eb] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#38573f]">
                   Etapa {currentPage.section} de {EMAGRECIMENTO_TOTAL_SECTIONS}
@@ -1993,9 +1988,9 @@ export function EmagrecimentoOnePageIntake({
                 </span>
               </div>
 
-              <div className="mt-6 grid gap-6 lg:grid-cols-[0.94fr_1.06fr] lg:items-end">
+              <div className="mt-4 grid gap-5 lg:grid-cols-[0.94fr_1.06fr] lg:items-end">
                 <div className="max-w-[36rem]">
-                  <h2 className="text-[34px] font-semibold tracking-[-0.05em] text-slate-900 sm:text-[42px] sm:leading-[1.02]">
+                  <h2 className="text-[28px] font-semibold leading-[1.04] tracking-[-0.05em] text-slate-900 sm:text-[38px]">
                     {currentPage.title}
                   </h2>
                   {currentPage.description ? (
@@ -2005,7 +2000,7 @@ export function EmagrecimentoOnePageIntake({
                   ) : null}
                 </div>
 
-                <div className="rounded-[28px] border border-[#dbe4d7] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.04)]">
+                <div className="hidden rounded-[28px] border border-[#dbe4d7] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.04)] md:block">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4b6b50]">
                     Ritmo desta etapa
                   </p>
@@ -2051,7 +2046,7 @@ export function EmagrecimentoOnePageIntake({
               {renderCurrentPageBody(currentPage)}
             </div>
 
-            <div className="border-t border-[#e5ebe2] bg-[#fcfdfb] px-5 py-5 sm:px-7 sm:py-6">
+            <div className="sticky bottom-0 z-20 border-t border-[#e5ebe2] bg-[#fcfdfb]/96 px-4 py-4 backdrop-blur sm:px-7 sm:py-5 md:static">
               {finalizeError ? (
                 <div className="mb-4 rounded-[18px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                   {finalizeError}

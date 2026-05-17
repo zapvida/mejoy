@@ -5,7 +5,7 @@ test.describe('MeJoy triage shell @pr-regression', () => {
   test('first page blocks submit until required answers are present', async ({ page }) => {
     await ensureEmagrecimentoTriageShell(page);
 
-    await page.getByRole('button', { name: 'Próximo' }).click();
+    await page.getByRole('button', { name: 'Continuar com segurança' }).click();
     await expect(page.getByText('Confirme os documentos para continuar.')).toBeVisible();
     await expect(page.getByText('Responda para continuar.').first()).toBeVisible();
   });
@@ -22,10 +22,24 @@ test.describe('MeJoy triage shell @pr-regression', () => {
     await page.getByRole('button', { name: 'Masculino' }).click();
     await page.locator('[data-step-key="data_nascimento"] input').fill('01/01/1990');
 
-    await page.getByRole('button', { name: 'Próximo' }).click();
-    await expect(page.getByRole('heading', { level: 2, name: /histórico de saúde/i })).toBeVisible();
+    await page.getByRole('button', { name: 'Continuar com segurança' }).click();
+    await expect(page.getByRole('heading', { level: 2, name: /segurança antes/i })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2 }).first()).toContainText(
-      'Agora precisamos do seu histórico de saúde.',
+      'Segurança antes de qualquer prescrição.',
     );
+  });
+
+  test('mobile intake keeps the primary action visible without horizontal scroll', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await ensureEmagrecimentoTriageShell(page);
+
+    await expect(page.locator('[data-testid="emagrecimento-intake"]')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Continuar com segurança' })).toBeVisible();
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const root = document.documentElement;
+      return root.scrollWidth > root.clientWidth + 1;
+    });
+    expect(hasHorizontalOverflow).toBeFalsy();
   });
 });

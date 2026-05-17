@@ -11,21 +11,21 @@ const steps = [
   {
     icon: ClipboardDocumentListIcon,
     title: 'Triagem inteligente',
-    text: 'Você responde sobre histórico, rotina, apetite, tentativas anteriores e objetivo. A plataforma organiza o que realmente muda a decisão.',
+    text: 'Você responde o essencial no celular, sem consulta fria nem formulário longo. A plataforma organiza perfil, meta e segurança para o Plano MeJoy.',
     image: EMAGRECIMENTO_LP.howTriagem,
     imageAlt: 'Pessoa preenchendo triagem de elegibilidade',
   },
   {
     icon: ChatBubbleLeftRightIcon,
     title: 'Avaliação e conduta',
-    text: 'Quando houver indicação, médico com CRM avalia seu caso, confirma limites, riscos, elegibilidade e próximos passos.',
+    text: 'Quando houver indicação, médico com CRM avalia seu caso, confirma limites, riscos e próximos passos por chat, chamada ou vídeo.',
     image: EMAGRECIMENTO_LP.howConsulta,
     imageAlt: 'Consulta médica online para avaliação de emagrecimento',
   },
   {
     icon: UserGroupIcon,
     title: 'Acompanhamento contínuo',
-    text: 'Depois da decisão inicial, app e WhatsApp oficial ajudam a sustentar check-ins, dúvidas e ajustes de rotina com mais constância.',
+    text: 'Depois da decisão inicial, app, dashboard e WhatsApp oficial ajudam a sustentar dúvidas, check-ins e organização da rotina.',
     image: EMAGRECIMENTO_LP.howAcompanhamento,
     imageAlt: 'Acompanhamento contínuo de rotina e resultados',
   },
@@ -56,10 +56,10 @@ export function HowItWorksSectionObesidade() {
               id="how-it-works-heading"
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4"
             >
-              Como a MeJoy transforma dúvida em decisão clara
+              Do sofá de casa a um próximo passo médico claro
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Você entende seu contexto, enxerga o que faz sentido agora e avança sem se perder no meio do caminho.
+              Você entende seu contexto, tira dúvidas pelo canal oficial e avança para avaliação médica quando fizer sentido.
             </p>
           </div>
 

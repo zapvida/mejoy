@@ -69,13 +69,15 @@ export function HomeWeightLossFeature() {
             <p className="mt-4 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-[16px]">
               Você começa entendendo seu perfil, vê o que faz sentido para o seu
               caso e só então decide como avançar. Quando houver indicação, a
-              avaliação médica entra com contexto e critério.
+              avaliação médica entra com contexto e critério, sem transformar o
+              fluxo em compra direta de medicação.
             </p>
             <div className="mt-5 grid gap-2 text-sm font-medium text-slate-700">
               {[
-                "Triagem gratuita antes da decisão",
+                "Triagem rápida antes da decisão",
                 "Avaliação médica antes de qualquer prescrição",
-                "PIX, WhatsApp oficial e dashboard na mesma jornada",
+                "WhatsApp oficial, dashboard e checkout na mesma jornada",
+                "Medicamentos originais apenas quando prescritos e indicados",
               ].map((item) => (
                 <div
                   key={item}

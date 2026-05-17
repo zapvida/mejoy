@@ -16,7 +16,10 @@ import {
 } from "@/lib/emagrecimento/medicationCards";
 import { EMAGRECIMENTO_REPORT_ASSETS } from "@/lib/emagrecimento-lp-assets";
 import { TREATMENT_TRACKS_BY_ID } from "@/lib/emagrecimento/treatmentTracks";
-import { buildEmagrecimentoReportWhatsappUrl } from "@/lib/emagrecimento/whatsappCta";
+import {
+  buildEmagrecimentoDoctorOrientationWhatsappUrl,
+  buildEmagrecimentoReportWhatsappUrl,
+} from "@/lib/emagrecimento/whatsappCta";
 import { trackFunnelEvent } from "@/lib/funnel/events-client";
 import { cn } from "@/lib/utils";
 
@@ -118,6 +121,16 @@ export function ReportDecisionFold({
       trilha: selectedTrilha,
     });
     onOpenInlineCheckout?.();
+  };
+
+  const handleDoctorOrientationClick = () => {
+    trackFunnelEvent("doctor_orientation_click", {
+      report_id: reportId,
+      triage_id: vm.triageId || reportId,
+      plan_id: recommendedPlanId,
+      track_id: selectedTrilha,
+      surface: "report_doctor_orientation_second_frame",
+    });
   };
 
   return (
@@ -314,6 +327,46 @@ export function ReportDecisionFold({
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-[#d7e3da] bg-[linear-gradient(135deg,#0f2f25_0%,#1f6b4b_58%,#f0f7ee_58%,#f8fbf6_100%)] px-6 py-6 sm:px-8 lg:px-10">
+          <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="max-w-2xl text-white">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100">
+                Antes de confirmar, se quiser
+              </p>
+              <h2 className="mt-2 text-2xl font-bold tracking-[-0.035em] sm:text-3xl">
+                Quer falar com um médico antes de confirmar?
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-emerald-50 sm:text-base">
+                Solicite uma orientação breve, sem custo, para entender os
+                próximos passos do seu Plano MeJoy. É uma conversa de
+                orientação, sem garantia de prescrição.
+              </p>
+            </div>
+            <div className="rounded-[28px] border border-white/70 bg-white p-5 shadow-[0_20px_55px_rgba(15,23,42,0.14)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                Orientação médica de até 10 min
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                Atendimento pelo WhatsApp oficial para tirar dúvidas sobre
+                segurança, próximos passos e funcionamento antes do pagamento.
+              </p>
+              <a
+                href={buildEmagrecimentoDoctorOrientationWhatsappUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleDoctorOrientationClick}
+                className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700"
+              >
+                Solicitar orientação médica gratuita de 10 min
+              </a>
+              <p className="mt-3 text-xs leading-5 text-slate-500">
+                Medicamentos originais e entrega expressa só entram quando
+                houver prescrição, disponibilidade e região atendida.
+              </p>
             </div>
           </div>
         </div>

@@ -38,7 +38,12 @@ export function FaqSectionObesidade() {
     {
       question: "O que acontece depois que eu inicio a triagem?",
       answer:
-        "Você recebe uma leitura inicial com próximos passos. Se houver indicação, segue para avaliação médica. Depois da conduta definida, o acompanhamento continua pelo app e WhatsApp oficial.",
+        "Você recebe um Plano MeJoy com leitura inicial, caminho provável e próximos passos. Se fizer sentido, segue para avaliação médica. Depois da conduta definida, o acompanhamento continua pelo app e WhatsApp oficial.",
+    },
+    {
+      question: "Posso falar com um médico antes de pagar?",
+      answer:
+        "No relatório você pode solicitar uma orientação breve de até 10 minutos pelo WhatsApp oficial, sem custo e sem garantia de prescrição. A ideia é tirar dúvidas sobre segurança, próximos passos e funcionamento do programa.",
     },
     {
       question: "Por que confirmar o programa antes da consulta?",
@@ -53,12 +58,17 @@ export function FaqSectionObesidade() {
     {
       question: "Preciso de receita? Como funciona a medicação?",
       answer:
-        "Sim, medicamentos sujeitos a prescrição exigem receita. Quando houver indicação médica, o profissional responsável prescreve e orienta o uso. Não existe liberação automática.",
+        "Sim, medicamentos sujeitos a prescrição exigem receita. Quando houver indicação médica, o profissional responsável prescreve e orienta o uso. Não existe liberação automática nem compra direta de medicação.",
     },
     {
       question: "O programa inclui medicamentos GLP-1 (ou similares)?",
       answer:
         "Pode incluir, mas somente quando fizer sentido para o seu perfil. Em alguns casos o médico pode considerar tirzepatida, semaglutida ou alternativa oral; em outros, o melhor caminho pode ser rotina, exames ou outra estratégia.",
+    },
+    {
+      question: "A entrega é em 24 horas?",
+      answer:
+        "A MeJoy trabalha com entrega expressa em regiões atendidas, após prescrição, disponibilidade e confirmação logística. O prazo real pode variar conforme cidade, estoque, horário e validações clínicas.",
     },
     {
       question: "Quanto custa e posso cancelar?",
